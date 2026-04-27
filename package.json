@@ -76,8 +76,6 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "sync-types": "node scripts/sync-types.mjs",
-    "generate-endpoints": "node scripts/generate-endpoints.mjs",
     "audit": "npm audit --omit=dev --audit-level=high && npm audit signatures",
     "release:dry": "semantic-release --dry-run",
     "prepare": "husky || true",

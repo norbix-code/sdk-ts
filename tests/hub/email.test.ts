@@ -4,7 +4,7 @@ import { EmailModule } from '../../src/hub/email.js';
 import { createMockFetch, expectedUrl, makeClient } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
+ * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
  * to refresh this file from the DTO definitions.
  *
  * Tests for hub.email (1 endpoints).

@@ -4,7 +4,7 @@ import { DatabaseModule } from '../../src/hub/database.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
+ * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
  * to refresh this file from the DTO definitions.
  *
  * Tests for hub.database (41 endpoints).

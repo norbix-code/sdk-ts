@@ -19,7 +19,7 @@ import { WebhooksModule } from './webhooks.js';
 
 /**
  * Auto-generated namespace exposing every hub endpoint group.
- * Refreshed by `npm run generate-endpoints`.
+ * Refreshed by `internal maintenance workflow`.
  */
 export class HubNamespace {
   public readonly accessToken: AccessTokenModule;

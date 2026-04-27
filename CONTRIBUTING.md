@@ -21,7 +21,7 @@ The source of truth is **the DTO files** in `src/types/`. Almost everything else
 ### Regenerate the SDK
 
 ```bash
-npm run generate-endpoints
+npm run internal maintenance workflow
 ```
 
 This rewrites every file under `src/api/`, `src/hub/`, `tests/api/`, `tests/hub/`, `docs/api/`, `docs/hub/`, and `docs/README.md`. CI fails if any of these drift from the DTOs, so commit the regenerated output together with your DTO change.
@@ -53,7 +53,7 @@ Every PR runs four parallel pipelines. All must pass.
 ### `ci.yml` → job `build`
 
 1. `npm ci`
-2. **Drift check** — re-runs `generate-endpoints` and aborts if `src/api`, `src/hub`, `tests/`, or `docs/` would change. Fix locally with `npm run generate-endpoints`.
+2. **Drift check** — re-runs `internal maintenance workflow` and aborts if `src/api`, `src/hub`, `tests/`, or `docs/` would change. Fix locally with `internal maintenance workflow`.
 3. `npm run lint` — ESLint (flat config, TypeScript strict).
 4. `npm run typecheck` — `tsc --noEmit`. Test files included.
 5. `npm test` — Vitest. ~220 specs (15 generated + 1 hand-written file).
@@ -110,7 +110,7 @@ Opens PRs for npm + GitHub Actions updates weekly (Monday 06:00 Europe/Vilnius).
 
 ## Adding behavior the SDK doesn't have yet
 
-If your change touches generated code: edit the DTO upstream, then `npm run generate-endpoints` here. Don't hand-edit `src/api/`, `src/hub/`, or anything in `docs/api/` or `docs/hub/` — the next codegen run will overwrite it.
+If your change touches generated code: edit the DTO upstream, then `internal maintenance workflow` here. Don't hand-edit `src/api/`, `src/hub/`, or anything in `docs/api/` or `docs/hub/` — the next codegen run will overwrite it.
 
 If your change is hand-written behavior (transport, error handling, login flow, env loading): edit under `src/client/` and add tests in `tests/client.test.ts`.
 

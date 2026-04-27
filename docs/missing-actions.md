@@ -2,7 +2,7 @@
 
 [← Back to docs index](./README.md) · [↑ Back to project README](../README.md)
 
-> Audit date: 2026-04-27. This document was refreshed after updating `api2.dtos.ts` and `hub2.dtos.ts` and running `npm run generate-endpoints`.
+> Audit date: 2026-04-27. This document was refreshed after updating `api2.dtos.ts` and `hub2.dtos.ts` and running `internal maintenance workflow`.
 
 > **File upload remains out of scope by design.** The SDK exposes file metadata and references through regular DTO endpoints. Raw binary upload/download flows are intentionally handled outside the generated endpoint client.
 
@@ -50,7 +50,7 @@ Run the full verification loop after DTO changes:
 
 ```bash
 cd /Users/djovaisas/Projects/norbix/sdks/norbix-js
-npm run generate-endpoints
+npm run internal maintenance workflow
 npm run typecheck
 npm test
 ```

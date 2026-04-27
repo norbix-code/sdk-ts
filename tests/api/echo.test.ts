@@ -4,7 +4,7 @@ import { EchoModule } from '../../src/api/echo.js';
 import { createMockFetch, expectedUrl, makeClient } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
+ * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
  * to refresh this file from the DTO definitions.
  *
  * Tests for api.echo (1 endpoints).

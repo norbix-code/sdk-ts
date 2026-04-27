@@ -150,7 +150,7 @@ try {
 
 ## How it stays in sync with the backend
 
-`npm run generate-endpoints` walks the DTOs and rewrites:
+`internal maintenance workflow` walks the DTOs and rewrites:
 
 - `src/api/*` and `src/hub/*` — the SDK module classes
 - `tests/api/*.test.ts` and `tests/hub/*.test.ts` — one Vitest spec per endpoint

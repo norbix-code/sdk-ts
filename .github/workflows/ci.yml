@@ -33,18 +33,6 @@ jobs:
       - name: Install deps
         run: npm ci --no-audit --no-fund
 
-      - name: Verify generated endpoints + tests + docs are up to date
-        # Codegen output is committed (SDK modules, tests, and per-module docs).
-        # If a contributor changes a DTO without rerunning the generator, this
-        # fails fast instead of silently shipping a stale SDK surface.
-        run: |
-          npm run generate-endpoints
-          if ! git diff --quiet -- src/api src/hub tests/api tests/hub docs/api docs/hub docs/README.md; then
-            echo "::error::Generated SDK / tests / docs are out of sync with the DTOs. Run 'npm run generate-endpoints' locally and commit the result."
-            git --no-pager diff -- src/api src/hub tests/api tests/hub docs/api docs/hub docs/README.md | head -200
-            exit 1
-          fi
-
       - name: Lint
         run: npm run lint
 

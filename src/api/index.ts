@@ -10,7 +10,7 @@ import { MembershipModule } from './membership.js';
 
 /**
  * Auto-generated namespace exposing every api endpoint group.
- * Refreshed by `npm run generate-endpoints`.
+ * Refreshed by `internal maintenance workflow`.
  */
 export class ApiNamespace {
   public readonly accessToken: AccessTokenModule;

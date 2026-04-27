@@ -4,7 +4,7 @@ import { MembershipModule } from '../../src/hub/membership.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
+ * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
  * to refresh this file from the DTO definitions.
  *
  * Tests for hub.membership (25 endpoints).

@@ -1,7 +1,7 @@
 # Norbix TypeScript SDK — documentation
 
 This folder is auto-managed. Per-module pages are regenerated from the DTO
-definitions every time you run `npm run generate-endpoints`. Hand-written
+definitions every time you follow the internal maintenance workflow. Hand-written
 integration guides live under `integrations/`.
 
 ## Reference

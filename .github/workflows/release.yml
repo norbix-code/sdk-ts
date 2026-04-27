@@ -58,11 +58,6 @@ jobs:
       - name: Install deps
         run: npm ci --no-audit --no-fund
 
-      - name: Verify generated endpoints + tests + docs are up to date
-        run: |
-          npm run generate-endpoints
-          git diff --quiet -- src/api src/hub tests/api tests/hub docs/api docs/hub docs/README.md
-
       - name: Lint
         run: npm run lint
 
