@@ -1,0 +1,1306 @@
+import type { RequestOverrideOptions, Transport } from '../client/transport.js';
+import type { CodeMashHub2 } from '../types/hub2.dtos.js';
+
+/**
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
+ * to refresh this file from the DTO definitions.
+ *
+ * Group: notifications
+ * Endpoints: 68
+ */
+export class NotificationsModule {
+  constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/notifications/user/preferences
+   * Request DTO: GetUserNotificationPreferences
+   */
+  getUserNotificationPreferences = (
+    request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetUserEmailPreferencesResponse> => {
+    return this.transport.send<CodeMashHub2.GetUserEmailPreferencesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/user/preferences',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/user/preferences
+   * Request DTO: UpdateUserNotificationsPreferences
+   */
+  updateUserNotificationsPreferences = (
+    request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/user/preferences',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/disable
+   * Request DTO: DisableEmail
+   */
+  disableEmail = (
+    request: Partial<CodeMashHub2.DisableEmail> = {} as Partial<CodeMashHub2.DisableEmail>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/disable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/enable
+   * Request DTO: EnableEmail
+   */
+  enableEmail = (
+    request: Partial<CodeMashHub2.EnableEmail> = {} as Partial<CodeMashHub2.EnableEmail>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/enable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/templates/attachments
+   * Request DTO: AttachFileToTemplateRequest
+   */
+  attachFileToTemplate = (
+    request: Partial<CodeMashHub2.AttachFileToTemplateRequest> = {} as Partial<CodeMashHub2.AttachFileToTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/attachments',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/templates
+   * Request DTO: CreateEmailTemplateRequest
+   */
+  createEmailTemplate = (
+    request: Partial<CodeMashHub2.CreateEmailTemplateRequest> = {} as Partial<CodeMashHub2.CreateEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/email/templates/{Id}
+   * Request DTO: DeleteEmailTemplateRequest
+   */
+  deleteEmailTemplate = (
+    request: Partial<CodeMashHub2.DeleteEmailTemplateRequest> = {} as Partial<CodeMashHub2.DeleteEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/templates/{id}
+   * Request DTO: GetEmailTemplate
+   */
+  getEmailTemplate = (
+    request: Partial<CodeMashHub2.GetEmailTemplate> = {} as Partial<CodeMashHub2.GetEmailTemplate>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailTemplateResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailTemplateResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/templates
+   * Request DTO: GetEmailTemplates
+   */
+  getEmailTemplates = (
+    request: Partial<CodeMashHub2.GetEmailTemplates> = {} as Partial<CodeMashHub2.GetEmailTemplates>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailTemplatesResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailTemplatesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/templates/mjml
+   * Request DTO: GetMjml
+   */
+  getMjml = (
+    request: Partial<CodeMashHub2.GetMjml> = {} as Partial<CodeMashHub2.GetMjml>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetHtmlFromMjmlResponse> => {
+    return this.transport.send<CodeMashHub2.GetHtmlFromMjmlResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/mjml',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/system-templates/{id}
+   * Request DTO: GetSystemEmailTemplate
+   */
+  getSystemEmailTemplate = (
+    request: Partial<CodeMashHub2.GetSystemEmailTemplate> = {} as Partial<CodeMashHub2.GetSystemEmailTemplate>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetSystemEmailTemplateResponse> => {
+    return this.transport.send<CodeMashHub2.GetSystemEmailTemplateResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/system-templates/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/system-templates
+   * Request DTO: GetSystemEmailTemplates
+   */
+  getSystemEmailTemplates = (
+    request: Partial<CodeMashHub2.GetSystemEmailTemplates> = {} as Partial<CodeMashHub2.GetSystemEmailTemplates>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetSystemEmailTemplatesResponse> => {
+    return this.transport.send<CodeMashHub2.GetSystemEmailTemplatesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/system-templates',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/templates/{id}/tokens
+   * Request DTO: GetEmailTemplateAvailableTokens
+   */
+  getEmailTemplateAvailableTokens = (
+    request: Partial<CodeMashHub2.GetEmailTemplateAvailableTokens> = {} as Partial<CodeMashHub2.GetEmailTemplateAvailableTokens>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailTemplateAvailableTokensResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailTemplateAvailableTokensResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{id}/tokens',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/templates
+   * Request DTO: UpdateEmailTemplateRequest
+   */
+  updateEmailTemplate = (
+    request: Partial<CodeMashHub2.UpdateEmailTemplateRequest> = {} as Partial<CodeMashHub2.UpdateEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/email/signatures/{id}
+   * Request DTO: DeleteEmailSignature
+   */
+  deleteEmailSignature = (
+    request: Partial<CodeMashHub2.DeleteEmailSignature> = {} as Partial<CodeMashHub2.DeleteEmailSignature>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/signatures/{id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/signatures/{id}
+   * Request DTO: GetEmailSignature
+   */
+  getEmailSignature = (
+    request: Partial<CodeMashHub2.GetEmailSignature> = {} as Partial<CodeMashHub2.GetEmailSignature>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailSignatureResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailSignatureResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/signatures/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/signatures
+   * Request DTO: GetEmailSignatures
+   */
+  getEmailSignatures = (
+    request: Partial<CodeMashHub2.GetEmailSignatures> = {} as Partial<CodeMashHub2.GetEmailSignatures>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailSignaturesResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailSignaturesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/signatures',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/signatures
+   * Request DTO: SaveEmailSignatureRequest
+   */
+  saveEmailSignature = (
+    request: Partial<CodeMashHub2.SaveEmailSignatureRequest> = {} as Partial<CodeMashHub2.SaveEmailSignatureRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/signatures',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/settings
+   * Request DTO: GetEmailSettings
+   */
+  getEmailSettings = (
+    request: Partial<CodeMashHub2.GetEmailSettings> = {} as Partial<CodeMashHub2.GetEmailSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/settings',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/integrations/confirm-human-delivery
+   * Request DTO: ConfirmEmailIntegrationHumanDeliveryRequest
+   */
+  confirmEmailIntegrationHumanDelivery = (
+    request: Partial<CodeMashHub2.ConfirmEmailIntegrationHumanDeliveryRequest> = {} as Partial<CodeMashHub2.ConfirmEmailIntegrationHumanDeliveryRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/confirm-human-delivery',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/email/integrations/{Id}
+   * Request DTO: DeleteEmailIntegration
+   */
+  deleteEmailIntegration = (
+    request: Partial<CodeMashHub2.DeleteEmailIntegration> = {} as Partial<CodeMashHub2.DeleteEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/integrations/{Id}/disable
+   * Request DTO: DisableEmailIntegration
+   */
+  disableEmailIntegration = (
+    request: Partial<CodeMashHub2.DisableEmailIntegration> = {} as Partial<CodeMashHub2.DisableEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/{Id}/disable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/integrations/{Id}/enable
+   * Request DTO: EnableEmailIntegration
+   */
+  enableEmailIntegration = (
+    request: Partial<CodeMashHub2.EnableEmailIntegration> = {} as Partial<CodeMashHub2.EnableEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/{Id}/enable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/integrations/{id}
+   * Request DTO: GetEmailIntegration
+   */
+  getEmailIntegration = (
+    request: Partial<CodeMashHub2.GetEmailIntegration> = {} as Partial<CodeMashHub2.GetEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/integrations
+   * Request DTO: GetEmailIntegrations
+   */
+  getEmailIntegrations = (
+    request: Partial<CodeMashHub2.GetEmailIntegrations> = {} as Partial<CodeMashHub2.GetEmailIntegrations>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailIntegrationsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailIntegrationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/integrations
+   * Request DTO: SaveEmailIntegration
+   */
+  saveEmailIntegration = (
+    request: Partial<CodeMashHub2.SaveEmailIntegration> = {} as Partial<CodeMashHub2.SaveEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/integrations/{Id}/default
+   * Request DTO: SetEmailsIntegrationAsDefault
+   */
+  setEmailsIntegrationAsDefault = (
+    request: Partial<CodeMashHub2.SetEmailsIntegrationAsDefault> = {} as Partial<CodeMashHub2.SetEmailsIntegrationAsDefault>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/{Id}/default',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/integrations/test
+   * Request DTO: TestEmailIntegration
+   */
+  testEmailIntegration = (
+    request: Partial<CodeMashHub2.TestEmailIntegration> = {} as Partial<CodeMashHub2.TestEmailIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestEmailIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.TestEmailIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/templates/{Id}/archive
+   * Request DTO: ArchiveEmailTemplateRequest
+   */
+  archiveEmailTemplate = (
+    request: Partial<CodeMashHub2.ArchiveEmailTemplateRequest> = {} as Partial<CodeMashHub2.ArchiveEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{Id}/archive',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/templates/{Id}/clone
+   * Request DTO: CloneEmailTemplateRequest
+   */
+  cloneEmailTemplate = (
+    request: Partial<CodeMashHub2.CloneEmailTemplateRequest> = {} as Partial<CodeMashHub2.CloneEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{Id}/clone',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/email/templates/{Id}/unarchive
+   * Request DTO: UnArchiveEmailTemplateRequest
+   */
+  unArchiveEmailTemplate = (
+    request: Partial<CodeMashHub2.UnArchiveEmailTemplateRequest> = {} as Partial<CodeMashHub2.UnArchiveEmailTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/templates/{Id}/unarchive',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/email/footers/{id}
+   * Request DTO: DeleteEmailFooter
+   */
+  deleteEmailFooter = (
+    request: Partial<CodeMashHub2.DeleteEmailFooter> = {} as Partial<CodeMashHub2.DeleteEmailFooter>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/footers/{id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/footers/{id}
+   * Request DTO: GetEmailFooter
+   */
+  getEmailFooter = (
+    request: Partial<CodeMashHub2.GetEmailFooter> = {} as Partial<CodeMashHub2.GetEmailFooter>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailFooterResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailFooterResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/footers/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/footers
+   * Request DTO: GetEmailFooters
+   */
+  getEmailFooters = (
+    request: Partial<CodeMashHub2.GetEmailFooters> = {} as Partial<CodeMashHub2.GetEmailFooters>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailFootersResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailFootersResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/footers',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/footers
+   * Request DTO: SaveEmailFooterRequest
+   */
+  saveEmailFooter = (
+    request: Partial<CodeMashHub2.SaveEmailFooterRequest> = {} as Partial<CodeMashHub2.SaveEmailFooterRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/footers',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/campaigns
+   * Request DTO: CreateEmailCampaignRequest
+   */
+  createEmailCampaign = (
+    request: Partial<CodeMashHub2.CreateEmailCampaignRequest> = {} as Partial<CodeMashHub2.CreateEmailCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/email/campaigns/{Id}
+   * Request DTO: DeleteEmailCampaignRequest
+   */
+  deleteEmailCampaign = (
+    request: Partial<CodeMashHub2.DeleteEmailCampaignRequest> = {} as Partial<CodeMashHub2.DeleteEmailCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns/{id}
+   * Request DTO: GetEmailCampaign
+   */
+  getEmailCampaign = (
+    request: Partial<CodeMashHub2.GetEmailCampaign> = {} as Partial<CodeMashHub2.GetEmailCampaign>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns
+   * Request DTO: GetEmailCampaigns
+   */
+  getEmailCampaigns = (
+    request: Partial<CodeMashHub2.GetEmailCampaigns> = {} as Partial<CodeMashHub2.GetEmailCampaigns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns/{id}/batches
+   * Request DTO: GetEmailCampaignBatches
+   */
+  getEmailCampaignBatches = (
+    request: Partial<CodeMashHub2.GetEmailCampaignBatches> = {} as Partial<CodeMashHub2.GetEmailCampaignBatches>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignBatchesResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignBatchesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{id}/batches',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}
+   * Request DTO: GetEmailCampaignBatchNotification
+   */
+  getEmailCampaignBatchNotification = (
+    request: Partial<CodeMashHub2.GetEmailCampaignBatchNotification> = {} as Partial<CodeMashHub2.GetEmailCampaignBatchNotification>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignBatchNotificationResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignBatchNotificationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}',
+      method: 'GET',
+      request,
+      pathParams: ['id', 'batchId', 'notificationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns/{id}/batches/{batchId}
+   * Request DTO: GetEmailCampaignBatchNotifications
+   */
+  getEmailCampaignBatchNotifications = (
+    request: Partial<CodeMashHub2.GetEmailCampaignBatchNotifications> = {} as Partial<CodeMashHub2.GetEmailCampaignBatchNotifications>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignBatchNotificationsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignBatchNotificationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{id}/batches/{batchId}',
+      method: 'GET',
+      request,
+      pathParams: ['id', 'batchId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/campaigns/{id}/stats
+   * Request DTO: GetEmailCampaignStatistics
+   */
+  getEmailCampaignStatistics = (
+    request: Partial<CodeMashHub2.GetEmailCampaignStatistics> = {} as Partial<CodeMashHub2.GetEmailCampaignStatistics>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignStatisticsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignStatisticsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{id}/stats',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/preview
+   * Request DTO: PreviewEmailNotification
+   */
+  previewEmailNotification = (
+    request: Partial<CodeMashHub2.PreviewEmailNotification> = {} as Partial<CodeMashHub2.PreviewEmailNotification>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.PreviewEmailNotificationResponse> => {
+    return this.transport.send<CodeMashHub2.PreviewEmailNotificationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/preview',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{id}
+   * Request DTO: GetEmailCampaignMessage
+   */
+  getEmailCampaignMessage = (
+    request: Partial<CodeMashHub2.GetEmailCampaignMessage> = {} as Partial<CodeMashHub2.GetEmailCampaignMessage>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignMessageResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignMessageResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['campaignId', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/emails/campaigns/{campaignId}/messages
+   * Request DTO: GetEmailCampaignMessagesRequest
+   */
+  getEmailCampaignMessages = (
+    request: Partial<CodeMashHub2.GetEmailCampaignMessagesRequest> = {} as Partial<CodeMashHub2.GetEmailCampaignMessagesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailCampaignMessagesResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailCampaignMessagesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages',
+      method: 'GET',
+      request,
+      pathParams: ['campaignId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/disable
+   * Request DTO: DisablePush
+   */
+  disablePush = (
+    request: Partial<CodeMashHub2.DisablePush> = {} as Partial<CodeMashHub2.DisablePush>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/disable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/enable
+   * Request DTO: EnablePush
+   */
+  enablePush = (
+    request: Partial<CodeMashHub2.EnablePush> = {} as Partial<CodeMashHub2.EnablePush>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/enable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/templates/{Id}/archive
+   * Request DTO: ArchivePushTemplateRequest
+   */
+  archivePushTemplate = (
+    request: Partial<CodeMashHub2.ArchivePushTemplateRequest> = {} as Partial<CodeMashHub2.ArchivePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{Id}/archive',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/templates/{Id}/clone
+   * Request DTO: ClonePushTemplateRequest
+   */
+  clonePushTemplate = (
+    request: Partial<CodeMashHub2.ClonePushTemplateRequest> = {} as Partial<CodeMashHub2.ClonePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{Id}/clone',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/templates
+   * Request DTO: CreatePushTemplateRequest
+   */
+  createPushTemplate = (
+    request: Partial<CodeMashHub2.CreatePushTemplateRequest> = {} as Partial<CodeMashHub2.CreatePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/push/templates/{Id}
+   * Request DTO: DeletePushTemplateRequest
+   */
+  deletePushTemplate = (
+    request: Partial<CodeMashHub2.DeletePushTemplateRequest> = {} as Partial<CodeMashHub2.DeletePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/templates/{id}
+   * Request DTO: GetPushTemplate
+   */
+  getPushTemplate = (
+    request: Partial<CodeMashHub2.GetPushTemplate> = {} as Partial<CodeMashHub2.GetPushTemplate>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushTemplateResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushTemplateResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/templates
+   * Request DTO: GetPushTemplates
+   */
+  getPushTemplates = (
+    request: Partial<CodeMashHub2.GetPushTemplates> = {} as Partial<CodeMashHub2.GetPushTemplates>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushTemplatesResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushTemplatesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/templates/{id}/tokens
+   * Request DTO: GetPushMessageContentTokens
+   */
+  getPushMessageContentTokens = (
+    request: Partial<CodeMashHub2.GetPushMessageContentTokens> = {} as Partial<CodeMashHub2.GetPushMessageContentTokens>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushMessageContentTokensResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushMessageContentTokensResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{id}/tokens',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/templates/{Id}/unarchive
+   * Request DTO: UnArchivePushTemplateRequest
+   */
+  unArchivePushTemplate = (
+    request: Partial<CodeMashHub2.UnArchivePushTemplateRequest> = {} as Partial<CodeMashHub2.UnArchivePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates/{Id}/unarchive',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/templates
+   * Request DTO: UpdatePushTemplateRequest
+   */
+  updatePushTemplate = (
+    request: Partial<CodeMashHub2.UpdatePushTemplateRequest> = {} as Partial<CodeMashHub2.UpdatePushTemplateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/templates',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/integrations/confirm-human-delivery
+   * Request DTO: ConfirmPushIntegrationHumanDeliveryRequest
+   */
+  confirmPushIntegrationHumanDelivery = (
+    request: Partial<CodeMashHub2.ConfirmPushIntegrationHumanDeliveryRequest> = {} as Partial<CodeMashHub2.ConfirmPushIntegrationHumanDeliveryRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/confirm-human-delivery',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/push/integrations/{Id}
+   * Request DTO: DeletePushIntegrationRequest
+   */
+  deletePushIntegration = (
+    request: Partial<CodeMashHub2.DeletePushIntegrationRequest> = {} as Partial<CodeMashHub2.DeletePushIntegrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/integrations/{Id}/disable
+   * Request DTO: DisablePushIntegrationRequest
+   */
+  disablePushIntegration = (
+    request: Partial<CodeMashHub2.DisablePushIntegrationRequest> = {} as Partial<CodeMashHub2.DisablePushIntegrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/{Id}/disable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/integrations/{Id}/enable
+   * Request DTO: EnablePushIntegrationRequest
+   */
+  enablePushIntegration = (
+    request: Partial<CodeMashHub2.EnablePushIntegrationRequest> = {} as Partial<CodeMashHub2.EnablePushIntegrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/{Id}/enable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/integrations/{id}
+   * Request DTO: GetPushIntegration
+   */
+  getPushIntegration = (
+    request: Partial<CodeMashHub2.GetPushIntegration> = {} as Partial<CodeMashHub2.GetPushIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/integrations
+   * Request DTO: GetPushIntegrations
+   */
+  getPushIntegrations = (
+    request: Partial<CodeMashHub2.GetPushIntegrations> = {} as Partial<CodeMashHub2.GetPushIntegrations>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushIntegrationsResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushIntegrationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/integrations
+   * Request DTO: SavePushIntegration
+   */
+  savePushIntegration = (
+    request: Partial<CodeMashHub2.SavePushIntegration> = {} as Partial<CodeMashHub2.SavePushIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/push/integrations/{Id}/default
+   * Request DTO: SetPushIntegrationAsDefaultRequest
+   */
+  setPushIntegrationAsDefault = (
+    request: Partial<CodeMashHub2.SetPushIntegrationAsDefaultRequest> = {} as Partial<CodeMashHub2.SetPushIntegrationAsDefaultRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/{Id}/default',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/integrations/test
+   * Request DTO: TestPushIntegration
+   */
+  testPushIntegration = (
+    request: Partial<CodeMashHub2.TestPushIntegration> = {} as Partial<CodeMashHub2.TestPushIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestEmailIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.TestEmailIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/integrations/app/request
+   * Account-scoped — requires `accountId` on the Norbix client.
+   * Request DTO: RegisterCodeMashAppPushIntegration
+   */
+  registerCodeMashAppPushIntegration = (
+    request: Partial<CodeMashHub2.RegisterCodeMashAppPushIntegration> = {} as Partial<CodeMashHub2.RegisterCodeMashAppPushIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/integrations/app/request',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'account',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/devices
+   * Request DTO: RegisterDevice
+   */
+  registerDevice = (
+    request: Partial<CodeMashHub2.RegisterDevice> = {} as Partial<CodeMashHub2.RegisterDevice>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/devices',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+}
