@@ -2,18 +2,18 @@
 
 [← Back to docs index](./README.md) · [↑ Back to project README](../README.md)
 
-> Audit date: 2026-04-27. This document was refreshed after regenerating `api2.dtos.ts` and `hub2.dtos.ts` from the current Community API/Hub gateways and running `npm run generate-endpoints`.
+> Audit date: 2026-04-27. This document was refreshed after updating `api2.dtos.ts` and `hub2.dtos.ts` and running `npm run generate-endpoints`.
 
 > **File upload remains out of scope by design.** The SDK exposes file metadata and references through regular DTO endpoints. Raw binary upload/download flows are intentionally handled outside the generated endpoint client.
 
 ## Current Coverage
 
-The regenerated SDK now exposes all ServiceStack metadata endpoints available from:
+The regenerated SDK now exposes all contract endpoints available from:
 
 | Gateway | Project references checked | Generated SDK surface |
 | --- | --- | --- |
-| Community API | `Gateway.Api.AI`, `Gateway.Api.Database`, `Gateway.Api.Membership`, API auth/access-token/API-key/echo metadata | 42 endpoints across 7 modules |
-| Community Hub | Account, Database, Code, Emails, Files, Logs, Membership, Payments, Push, AI, Triggers, Webhook, Scheduler, auth/access-token/API-key/echo metadata | 248 endpoints across 16 modules |
+| Community API | `Gateway.Api.AI`, `Gateway.Api.Database`, `Gateway.Api.Membership`, API auth/access-token/API-key/echo contracts | 42 endpoints across 7 modules |
+| Community Hub | Account, Database, Code, Emails, Files, Logs, Membership, Payments, Push, AI, Triggers, Webhook, Scheduler, auth/access-token/API-key/echo contracts | 248 endpoints across 16 modules |
 
 The old DTO-refresh gaps are closed:
 
@@ -35,9 +35,9 @@ await norbix.api.database.find(
 );
 ```
 
-## Remaining Non-Metadata Work
+## Remaining Non-generated Work
 
-These are not visible in ServiceStack `/metadata`, so the endpoint generator cannot discover them:
+These are not visible in the DTO contracts, so the endpoint generator cannot discover them:
 
 | Area | Status |
 | --- | --- |
@@ -46,11 +46,10 @@ These are not visible in ServiceStack `/metadata`, so the endpoint generator can
 
 ## Verification
 
-Run the full refresh/verification loop after gateway DTO changes:
+Run the full verification loop after DTO changes:
 
 ```bash
 cd /Users/djovaisas/Projects/norbix/sdks/norbix-js
-npm run sync-types
 npm run generate-endpoints
 npm run typecheck
 npm test

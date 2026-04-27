@@ -16,14 +16,7 @@ Node 18 or newer is required. We don't ship a runtime dependency tree — the SD
 
 ## Editing the SDK
 
-The source of truth is **the DTO files** in `src/types/`, which mirror what the gateways expose at `/metadata`. Almost everything else under `src/`, `tests/`, and `docs/` is regenerated from them.
-
-### Refresh the DTOs
-
-```bash
-npm run sync-types               # copies from ../../cloud/src/types/*
-npm run sync-types -- --remote   # OR regenerates via `x typescript` from /metadata
-```
+The source of truth is **the DTO files** in `src/types/`. Almost everything else under `src/`, `tests/`, and `docs/` is regenerated from them.
 
 ### Regenerate the SDK
 
@@ -127,12 +120,12 @@ If your change is hand-written behavior (transport, error handling, login flow, 
 .github/workflows/         CI, release, security workflows
 .husky/                    git hooks (commit-msg, pre-commit)
 docs/                      auto-generated module docs + hand-written guides
-scripts/                   codegen + sync-types (.mjs runs, .ts is a stub)
+scripts/                   codegen scripts (.mjs runs, .ts is a stub)
 src/
   client/                  hand-written: Norbix class, transport, errors, env
   api/                     auto-generated SDK modules
   hub/                     auto-generated SDK modules
-  types/                   ServiceStack-generated DTOs (overwritten by sync-types)
+  types/                   generated DTO contracts
 tests/
   api/                     auto-generated tests (one file per module)
   hub/                     auto-generated tests (one file per module)

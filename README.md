@@ -104,7 +104,7 @@ The full API surface is documented per module. Every page is auto-generated from
 
 ## Roadmap — missing actions
 
-Coverage tracks the gateway's `/metadata` output, so anything not exposed
+Coverage tracks the current DTO contract output, so anything not exposed
 there isn't auto-mapped yet. The list below is what's missing today. **File
 upload via the SDK is out of scope** — uploads happen out-of-band and never
 through the SDK.
@@ -121,9 +121,8 @@ through the SDK.
 | Transport | cluster routing, per-call token override |
 
 Most of these are **not** new gateway endpoints — they exist on the gateway
-already but aren't in the current `cloud/src/types/api2.dtos.ts`. Re-running
-`sync-types` against a fully-enabled gateway lights up the bulk of them
-automatically. SSE and the transport-level items remain as hand-written work.
+already but aren't in the current DTO contracts. SSE and the transport-level
+items remain as hand-written work.
 
 → [Full breakdown, per-action detail, and fix path](./docs/missing-actions.md)
 
@@ -151,7 +150,7 @@ try {
 
 ## How it stays in sync with the backend
 
-`npm run sync-types` copies `cloud/src/types/*.dtos.ts` and applies the regex fixes from the cloud README. `npm run generate-endpoints` walks the DTOs and rewrites:
+`npm run generate-endpoints` walks the DTOs and rewrites:
 
 - `src/api/*` and `src/hub/*` — the SDK module classes
 - `tests/api/*.test.ts` and `tests/hub/*.test.ts` — one Vitest spec per endpoint
