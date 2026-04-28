@@ -73,7 +73,7 @@ The SDK does not load `.env` files itself. Use `node --env-file=.env` (Node 20+)
 
 The full API surface is documented per module. Every page is auto-generated from the gateway DTOs and refreshed on every release.
 
-### API — project-scoped data (20 endpoints)
+### API — project-scoped data (42 endpoints)
 
 | Module | Endpoints | Description |
 | --- | ---: | --- |
@@ -84,7 +84,7 @@ The full API surface is documented per module. Every page is auto-generated from
 
 → [Full API index](./docs/api/_index.md)
 
-### Hub — project & account configuration (161 endpoints)
+### Hub — project & account configuration (248 endpoints)
 
 | Module | Endpoints | Description |
 | --- | ---: | --- |
@@ -102,29 +102,17 @@ The full API surface is documented per module. Every page is auto-generated from
 
 → [Full Hub index](./docs/hub/_index.md)
 
-## Roadmap — missing actions
+## Coverage and non-generated roadmap
 
-Coverage tracks the current DTO contract output, so anything not exposed
-there isn't auto-mapped yet. The list below is what's missing today. **File
-upload via the SDK is out of scope** — uploads happen out-of-band and never
-through the SDK.
+Generated coverage now reflects the current DTO contracts: API and Hub module
+pages are regenerated together with endpoint tests and indexes. Most historical
+"missing action" gaps are now closed.
 
-| Domain | Missing actions |
-| --- | --- |
-| Database (records) | `find`, `findMany`, `findOne`, `findById`, `count`, `distinct`, `insertOne`, `insertMany`, `updateOne`, `updateMany`, `replaceOne`, `deleteOne`, `deleteMany`, `aggregate`, `executeAggregate` |
-| Database (taxonomies, data plane) | `findTerms`, `findTermsChildren` |
-| Code (functions) | `executeFunction` |
-| IAM (user-self) | `getProfile`, `checkAuthentication`, `updateProfile`, `updatePassword`, `createPasswordReset`, `resendUserVerification`, `logout`, `/auth/{provider}` |
-| Notifications (user-side) | `registerDeviceToken`, `unregisterDevice`, `getNotification`, `markNotificationRead`, `getUnreadCount` |
-| AI | `ask`, `chat` |
-| Real-time (SSE) | `subscribe`, `authorizeConnection`, `heartbeat`, `close`, `handleServerEvent` |
-| Transport | cluster routing, per-call token override |
+The remaining work is primarily hand-written features outside DTO-driven code
+generation (for example, realtime/SSE helper abstractions and transport-level
+enhancements that are not endpoint metadata).
 
-Most of these are **not** new gateway endpoints — they exist on the gateway
-already but aren't in the current DTO contracts. SSE and the transport-level
-items remain as hand-written work.
-
-→ [Full breakdown, per-action detail, and fix path](./docs/missing-actions.md)
+→ [Current coverage audit and remaining non-generated items](./docs/missing-actions.md)
 
 ## Error handling
 
@@ -150,13 +138,13 @@ try {
 
 ## How it stays in sync with the backend
 
-`internal maintenance workflow` walks the DTOs and rewrites:
+The internal DTO maintenance workflow walks the DTOs and rewrites:
 
 - `src/api/*` and `src/hub/*` — the SDK module classes
 - `tests/api/*.test.ts` and `tests/hub/*.test.ts` — one Vitest spec per endpoint
 - `docs/api/*.md` and `docs/hub/*.md` — per-module reference pages with TS examples
 
-CI fails the build if any of these drift from the DTOs, so a contributor cannot accidentally ship a stale SDK or stale docs.
+CI runs lint, typecheck, tests, and build on every PR. Keep generated artifacts committed together with DTO changes so SDK code, tests, and docs stay aligned.
 
 ## Development
 

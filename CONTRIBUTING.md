@@ -20,11 +20,9 @@ The source of truth is **the DTO files** in `src/types/`. Almost everything else
 
 ### Regenerate the SDK
 
-```bash
-npm run internal maintenance workflow
-```
+Run the internal DTO maintenance workflow used by the team to regenerate SDK modules, tests, and docs from DTO contracts.
 
-This rewrites every file under `src/api/`, `src/hub/`, `tests/api/`, `tests/hub/`, `docs/api/`, `docs/hub/`, and `docs/README.md`. CI fails if any of these drift from the DTOs, so commit the regenerated output together with your DTO change.
+This rewrites generated files under `src/api/`, `src/hub/`, `tests/api/`, `tests/hub/`, `docs/api/`, `docs/hub/`, and `docs/README.md`. Commit regenerated output together with DTO changes so source, tests, and docs stay in sync.
 
 If you need to add behavior to the SDK that *isn't* per-endpoint (e.g. a new auth helper, a transport feature), edit `src/client/*` by hand. Those files are not regenerated.
 
@@ -53,12 +51,11 @@ Every PR runs four parallel pipelines. All must pass.
 ### `ci.yml` → job `build`
 
 1. `npm ci`
-2. **Drift check** — re-runs `internal maintenance workflow` and aborts if `src/api`, `src/hub`, `tests/`, or `docs/` would change. Fix locally with `internal maintenance workflow`.
-3. `npm run lint` — ESLint (flat config, TypeScript strict).
-4. `npm run typecheck` — `tsc --noEmit`. Test files included.
-5. `npm test` — Vitest. ~220 specs (15 generated + 1 hand-written file).
-6. `npm run build` — tsup dual ESM/CJS build into `dist/`.
-7. **Pack guard** — `npm pack --dry-run` to confirm only `dist/`, `README.md`, and `LICENSE` ship. Fails if the tarball exceeds 500 KB or contains forbidden paths (`src/`, `tests/`, `docs/`, etc.).
+2. `npm run lint` — ESLint (flat config, TypeScript strict).
+3. `npm run typecheck` — `tsc --noEmit`. Test files included.
+4. `npm test` — Vitest.
+5. `npm run build` — tsup dual ESM/CJS build into `dist/`.
+6. **Pack guard** — `npm pack --dry-run` to confirm only release files ship. Fails if the tarball exceeds 500 KB or contains forbidden paths (`src/`, `tests/`, `docs/`, etc.).
 
 ### `ci.yml` → job `security`
 
@@ -120,7 +117,7 @@ If your change is hand-written behavior (transport, error handling, login flow, 
 .github/workflows/         CI, release, security workflows
 .husky/                    git hooks (commit-msg, pre-commit)
 docs/                      auto-generated module docs + hand-written guides
-scripts/                   codegen scripts (.mjs runs, .ts is a stub)
+scripts/                   optional project scripts (currently minimal usage)
 src/
   client/                  hand-written: Norbix class, transport, errors, env
   api/                     auto-generated SDK modules
