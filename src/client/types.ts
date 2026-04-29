@@ -82,6 +82,40 @@ export interface NorbixConfig {
 
   /** Hook called once per response, regardless of success/failure. */
   onResponse?: (info: { url: string; status: number; durationMs: number }) => void;
+
+  /**
+   * Transport retry policy for transient failures (429/5xx/network/timeout).
+   * Defaults are conservative; set to 0 to disable.
+   */
+  retry?: {
+    /** Number of retries after the initial attempt. Default: 2 */
+    maxRetries?: number;
+    /** Base delay for exponential backoff. Default: 250 */
+    baseDelayMs?: number;
+    /** Maximum delay cap. Default: 5_000 */
+    maxDelayMs?: number;
+  };
+
+  /**
+   * Optional token refresh callback. If provided and a request fails with 401,
+   * the transport will call this to obtain a new bearer token and retry once.
+   *
+   * The callback should return the new JWT bearer token string (without "Bearer ").
+   */
+  refreshBearerToken?: (info: { url: string; status: 401 }) => Promise<string | undefined>;
+
+  /**
+   * Transport middleware chain. Each middleware can observe or mutate the
+   * request and response, and can choose to retry/short-circuit if desired.
+   */
+  middleware?: Array<
+    (ctx: {
+      url: string;
+      init: RequestInit;
+      attempt: number;
+      next: () => Promise<Response>;
+    }) => Promise<Response>
+  >;
 }
 
 /**
@@ -101,6 +135,9 @@ export interface ResolvedNorbixConfig {
   defaultHeaders: Record<string, string>;
   onRequest?: NorbixConfig['onRequest'];
   onResponse?: NorbixConfig['onResponse'];
+  retry: Required<NonNullable<NorbixConfig['retry']>>;
+  refreshBearerToken?: NorbixConfig['refreshBearerToken'];
+  middleware: NonNullable<NorbixConfig['middleware']>;
 }
 
 /** Credentials for `norbix.login(...)`. Mirrors the /auth Authenticate DTO. */

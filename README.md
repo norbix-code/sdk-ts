@@ -25,6 +25,13 @@ await norbix.api.database.find({ collectionName: 'orders' });
 await norbix.hub.database.getAllDatabaseSchemas();
 ```
 
+### Resource-style database access (recommended)
+
+```ts
+// Ergonomic resource wrapper over norbix.api.database.*
+const orders = await norbix.collection<{ id: string }>('orders').findItems();
+```
+
 ```ts
 // User mode — exchange credentials for a JWT
 const norbix = new Norbix({ projectId: 'proj_123' });
@@ -40,6 +47,15 @@ await norbix.api.database.find({ collectionName: 'orders' }); // acts as Alice
 | **JWT bearer** | Logged-in user session | `bearerToken: '...'`, `NORBIX_BEARER_TOKEN`, or `norbix.login(...)` |
 
 Both are sent as `Authorization: Bearer <token>`. If both are set, JWT wins. With neither set the SDK throws `NORBIX_NOT_AUTHENTICATED` on the first call.
+
+### SSR / multi-tenant safe usage
+
+If you need per-request scoping (different bearer tokens per request), prefer `with(...)` instead of mutating a shared singleton.
+
+```ts
+const scoped = norbix.with({ bearerToken: requestUserToken });
+await scoped.hub.account.getAccountStatus();
+```
 
 ## Configuration from `.env`
 

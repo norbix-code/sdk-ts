@@ -12,6 +12,9 @@ coverage
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.example.json
+# Generation scripts are dev-only — not shipped with the SDK. Generated
+# outputs (src/api/, src/hub/, src/types/*.dtos.ts) ARE committed and
+# used by CI and consumers.
 scripts/sync-types.mjs
 scripts/sync-types.ts
 scripts/generate-endpoints.mjs

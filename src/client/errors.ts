@@ -41,6 +41,48 @@ export class NorbixError extends Error {
   }
 }
 
+export class NorbixNetworkError extends NorbixError {
+  constructor(opts: { message: string; url?: string; raw?: unknown }) {
+    super({ message: opts.message, status: 0, code: 'NORBIX_NETWORK_ERROR', url: opts.url, raw: opts.raw });
+    this.name = 'NorbixNetworkError';
+  }
+}
+
+export class NorbixTimeoutError extends NorbixError {
+  constructor(opts: { message: string; url?: string; raw?: unknown }) {
+    super({ message: opts.message, status: 0, code: 'NORBIX_TIMEOUT', url: opts.url, raw: opts.raw });
+    this.name = 'NorbixTimeoutError';
+  }
+}
+
+export class NorbixAuthError extends NorbixError {
+  constructor(opts: { message: string; status: number; code?: string; fieldErrors?: NorbixErrorPayload['errors']; url?: string; raw?: unknown }) {
+    super({
+      message: opts.message,
+      status: opts.status,
+      code: opts.code ?? 'NORBIX_AUTH_ERROR',
+      fieldErrors: opts.fieldErrors ?? [],
+      raw: opts.raw,
+      url: opts.url,
+    });
+    this.name = 'NorbixAuthError';
+  }
+}
+
+export class NorbixValidationError extends NorbixError {
+  constructor(opts: { message: string; status: number; code?: string; fieldErrors?: NorbixErrorPayload['errors']; url?: string; raw?: unknown }) {
+    super({
+      message: opts.message,
+      status: opts.status,
+      code: opts.code ?? 'NORBIX_VALIDATION_ERROR',
+      fieldErrors: opts.fieldErrors ?? [],
+      raw: opts.raw,
+      url: opts.url,
+    });
+    this.name = 'NorbixValidationError';
+  }
+}
+
 /** Parse a fetch Response body into a NorbixError. Best-effort, never throws. */
 export async function fromResponse(res: Response, url: string): Promise<NorbixError> {
   let raw: unknown = undefined;
@@ -60,6 +102,18 @@ export async function fromResponse(res: Response, url: string): Promise<NorbixEr
     }
   } catch {
     // ignore
+  }
+
+  const message = payload?.message ?? `Request failed with status ${res.status}`;
+  const code = payload?.errorCode;
+  const fieldErrors = payload?.errors;
+
+  if (res.status === 401 || res.status === 403) {
+    return new NorbixAuthError({ message, status: res.status, code, fieldErrors, raw, url });
+  }
+
+  if (res.status === 400) {
+    return new NorbixValidationError({ message, status: res.status, code, fieldErrors, raw, url });
   }
 
   return new NorbixError({

@@ -1,5 +1,6 @@
 import { ApiNamespace } from '../api/index.js';
 import { HubNamespace } from '../hub/index.js';
+import { CollectionResource } from '../resources/collection.js';
 
 import { loadEnvConfig } from './env.js';
 import { Transport } from './transport.js';
@@ -14,6 +15,7 @@ const DEFAULT_BASE_URL_API = 'https://api.norbix.dev';
 const DEFAULT_BASE_URL_HUB = 'https://hub.norbix.dev';
 const DEFAULT_VERSION = 'v2';
 const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_RETRY = { maxRetries: 2, baseDelayMs: 250, maxDelayMs: 5_000 } as const;
 
 /**
  * Single entry point for the Norbix SDK.
@@ -38,6 +40,19 @@ export class Norbix {
   private cfg: ResolvedNorbixConfig;
   private transport: Transport;
 
+  /** Create a client using explicit configuration (readable alternative to `new Norbix(...)`). */
+  static create(config: NorbixConfig = {}, opts?: { envSource?: Record<string, string | undefined> }) {
+    return new Norbix(config, opts);
+  }
+
+  /**
+   * Create a client from environment variables only (still allows injecting envSource for tests).
+   * Equivalent to `new Norbix({}, opts)`.
+   */
+  static fromEnv(opts?: { envSource?: Record<string, string | undefined> }) {
+    return new Norbix({}, opts);
+  }
+
   constructor(
     config: NorbixConfig = {},
     opts?: { envSource?: Record<string, string | undefined> },
@@ -58,22 +73,59 @@ export class Norbix {
       );
     }
 
+    const baseUrlApi = config.baseUrl?.api ?? env.apiUrl ?? DEFAULT_BASE_URL_API;
+    const baseUrlHub = config.baseUrl?.hub ?? env.hubUrl ?? DEFAULT_BASE_URL_HUB;
+    assertHttpUrl('baseUrl.api', baseUrlApi);
+    assertHttpUrl('baseUrl.hub', baseUrlHub);
+
+    const timeoutMs = config.timeoutMs ?? env.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+    if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+      throw new Error(`Norbix: invalid timeoutMs "${String(timeoutMs)}" (must be a positive number)`);
+    }
+
+    const apiVersion = config.apiVersion ?? env.apiVersion ?? DEFAULT_VERSION;
+    const hubVersion = config.hubVersion ?? env.hubVersion ?? DEFAULT_VERSION;
+    if (!apiVersion) throw new Error('Norbix: apiVersion must be a non-empty string');
+    if (!hubVersion) throw new Error('Norbix: hubVersion must be a non-empty string');
+
+    const retry = {
+      maxRetries: config.retry?.maxRetries ?? DEFAULT_RETRY.maxRetries,
+      baseDelayMs: config.retry?.baseDelayMs ?? DEFAULT_RETRY.baseDelayMs,
+      maxDelayMs: config.retry?.maxDelayMs ?? DEFAULT_RETRY.maxDelayMs,
+    };
+    if (!Number.isFinite(retry.maxRetries) || retry.maxRetries < 0) {
+      throw new Error(`Norbix: invalid retry.maxRetries "${String(retry.maxRetries)}" (must be >= 0)`);
+    }
+    if (!Number.isFinite(retry.baseDelayMs) || retry.baseDelayMs < 0) {
+      throw new Error(
+        `Norbix: invalid retry.baseDelayMs "${String(retry.baseDelayMs)}" (must be >= 0)`,
+      );
+    }
+    if (!Number.isFinite(retry.maxDelayMs) || retry.maxDelayMs < 0) {
+      throw new Error(
+        `Norbix: invalid retry.maxDelayMs "${String(retry.maxDelayMs)}" (must be >= 0)`,
+      );
+    }
+
     this.cfg = {
       apiKey: config.apiKey ?? env.apiKey,
       bearerToken: config.bearerToken ?? env.bearerToken,
       projectId,
       accountId: config.accountId ?? env.accountId,
       baseUrl: {
-        api: config.baseUrl?.api ?? env.apiUrl ?? DEFAULT_BASE_URL_API,
-        hub: config.baseUrl?.hub ?? env.hubUrl ?? DEFAULT_BASE_URL_HUB,
+        api: baseUrlApi,
+        hub: baseUrlHub,
       },
-      apiVersion: config.apiVersion ?? env.apiVersion ?? DEFAULT_VERSION,
-      hubVersion: config.hubVersion ?? env.hubVersion ?? DEFAULT_VERSION,
-      timeoutMs: config.timeoutMs ?? env.timeoutMs ?? DEFAULT_TIMEOUT_MS,
+      apiVersion,
+      hubVersion,
+      timeoutMs,
       fetch: fetchImpl.bind(globalThis),
       defaultHeaders: config.defaultHeaders ?? {},
       onRequest: config.onRequest,
       onResponse: config.onResponse,
+      retry,
+      refreshBearerToken: config.refreshBearerToken,
+      middleware: config.middleware ?? [],
     };
 
     this.transport = new Transport(this.cfg);
@@ -141,8 +193,70 @@ export class Norbix {
     return Boolean(this.cfg.bearerToken ?? this.cfg.apiKey);
   }
 
+  /**
+   * Ergonomic database access wrapper over `norbix.api.database.*`.
+   * Keeps the generated API available, but gives a resource-first call style.
+   */
+  collection<TItem = unknown>(collectionName: string): CollectionResource<TItem> {
+    if (!collectionName) throw new Error('Norbix: collectionName must be a non-empty string');
+    return new CollectionResource<TItem>(this.api.database, collectionName);
+  }
+
   /** Read-only snapshot of the current config (useful for tests/diagnostics). */
   getConfig(): Readonly<ResolvedNorbixConfig> {
     return this.cfg;
   }
+
+  /**
+   * Snapshot suitable for logs/telemetry. Sensitive fields are redacted.
+   * Use `getConfig()` only in tests or trusted diagnostics.
+   */
+  getRedactedConfig(): Readonly<Omit<ResolvedNorbixConfig, 'fetch'>> {
+    const { fetch: _fetch, ...rest } = this.cfg;
+    return {
+      ...rest,
+      apiKey: rest.apiKey ? redactSecret(rest.apiKey) : undefined,
+      bearerToken: rest.bearerToken ? redactSecret(rest.bearerToken) : undefined,
+    };
+  }
+
+  /**
+   * Create a new client for per-request scoping (SSR/multi-tenant safe).
+   * The new instance does not share mutable auth or scope with the original.
+   */
+  with(overrides: Pick<NorbixConfig, 'apiKey' | 'bearerToken' | 'projectId' | 'accountId'>): Norbix {
+    const next: NorbixConfig = {
+      apiKey: overrides.apiKey ?? this.cfg.apiKey,
+      bearerToken: overrides.bearerToken ?? this.cfg.bearerToken,
+      projectId: overrides.projectId ?? this.cfg.projectId,
+      accountId: overrides.accountId ?? this.cfg.accountId,
+      baseUrl: this.cfg.baseUrl,
+      apiVersion: this.cfg.apiVersion,
+      hubVersion: this.cfg.hubVersion,
+      timeoutMs: this.cfg.timeoutMs,
+      fetch: this.cfg.fetch,
+      defaultHeaders: this.cfg.defaultHeaders,
+      onRequest: this.cfg.onRequest,
+      onResponse: this.cfg.onResponse,
+    };
+    // We pass envSource={} to guarantee this new instance is derived only from explicit inputs.
+    return new Norbix(next, { envSource: {} });
+  }
+}
+
+function assertHttpUrl(field: string, value: string): void {
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new Error(`Norbix: invalid ${field} "${value}" (must be an absolute http(s) URL)`);
+  }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    throw new Error(`Norbix: invalid ${field} "${value}" (must be an absolute http(s) URL)`);
+  }
+}
+
+function redactSecret(secret: string): string {
+  if (secret.length <= 8) return '********';
+  return `${secret.slice(0, 3)}…${secret.slice(-3)}`;
 }

@@ -1,6 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { Norbix, NorbixError } from '../src/index.js';
+import {
+  Norbix,
+  NorbixAuthError,
+  NorbixError,
+  NorbixNetworkError,
+  NorbixTimeoutError,
+  NorbixValidationError,
+} from '../src/index.js';
 
 function fakeFetch(opts: {
   status?: number;
@@ -162,6 +169,19 @@ describe('Env-var auto-load', () => {
       { envSource: { NORBIX_TIMEOUT_MS: '5000' } },
     );
     expect(norbix.getConfig().timeoutMs).toBe(5000);
+  });
+
+  it('Norbix.fromEnv() is equivalent to new Norbix({}, opts)', () => {
+    const a = Norbix.fromEnv({ envSource: { NORBIX_API_KEY: 'k', NORBIX_PROJECT_ID: 'p' } });
+    const b = new Norbix({}, { envSource: { NORBIX_API_KEY: 'k', NORBIX_PROJECT_ID: 'p' } });
+    expect(a.getConfig().projectId).toBe(b.getConfig().projectId);
+    expect(a.getConfig().apiKey).toBe(b.getConfig().apiKey);
+  });
+
+  it('Norbix.create() is a readable factory for new Norbix(...)', () => {
+    const a = Norbix.create({ apiKey: 'k', projectId: 'p', fetch: fakeFetch({}) });
+    const b = new Norbix({ apiKey: 'k', projectId: 'p', fetch: fakeFetch({}) });
+    expect(a.getConfig().projectId).toBe(b.getConfig().projectId);
   });
 });
 
@@ -394,5 +414,147 @@ describe('Runtime config helpers', () => {
     const cfg = norbix.getConfig();
     expect(cfg.projectId).toBe('p2');
     expect(cfg.accountId).toBe('a2');
+  });
+
+  it('getRedactedConfig masks secrets and omits fetch', () => {
+    const norbix = new Norbix({
+      apiKey: 'srv-super-secret',
+      bearerToken: 'jwt-super-secret',
+      projectId: 'p1',
+      fetch: fakeFetch({}),
+    });
+    const redacted = norbix.getRedactedConfig() as Record<string, unknown>;
+    expect(redacted.apiKey).not.toBe('srv-super-secret');
+    expect(redacted.bearerToken).not.toBe('jwt-super-secret');
+    expect('fetch' in redacted).toBe(false);
+  });
+
+  it('with() returns a new isolated client instance', async () => {
+    let captured: { url: string; init: RequestInit } | undefined;
+    const norbix = new Norbix({
+      bearerToken: 'shared-jwt',
+      projectId: 'p1',
+      fetch: fakeFetch({
+        body: {},
+        capture: (req) => {
+          captured = req;
+        },
+      }),
+    });
+
+    const scoped = norbix.with({ bearerToken: 'request-jwt' });
+    await scoped.hub.account.getAccountStatus();
+
+    expect(new Headers(captured!.init.headers).get('Authorization')).toBe('Bearer request-jwt');
+    expect(norbix.getConfig().bearerToken).toBe('shared-jwt');
+  });
+});
+
+describe('Resource API', () => {
+  it('collection(name).findItems returns the paginated items array', async () => {
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      fetch: fakeFetch({
+        body: { list: { items: [{ id: 1 }, { id: 2 }], hasMore: false, hasPrevious: false } },
+      }),
+    });
+
+    const items = await norbix.collection<{ id: number }>('orders').findItems();
+    expect(items).toEqual([{ id: 1 }, { id: 2 }]);
+  });
+});
+
+describe('Transport retry + refresh', () => {
+  it('retries transient 5xx for idempotent methods', async () => {
+    const fetchMock = vi.fn(async () => {
+      if (fetchMock.mock.calls.length === 1) return new Response('oops', { status: 503 });
+      return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+    });
+
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      retry: { maxRetries: 1, baseDelayMs: 0, maxDelayMs: 0 },
+      fetch: fetchMock as unknown as typeof fetch,
+    });
+
+    await call(norbix, 'hub', 'account', 'getAccountStatus');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('refreshBearerToken is called once on 401 and request is retried', async () => {
+    let lastAuth: string | null = null;
+    const fetchMock = vi.fn(async (_input: string | URL | Request, init?: RequestInit) => {
+      lastAuth = new Headers(init?.headers).get('Authorization');
+      if (fetchMock.mock.calls.length === 1)
+        return new Response('{"responseStatus":{"message":"no"}}', { status: 401 });
+      return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+    });
+
+    const refreshBearerToken = vi.fn(async () => 'fresh-jwt');
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      fetch: fetchMock as unknown as typeof fetch,
+      refreshBearerToken,
+    });
+
+    await call(norbix, 'hub', 'account', 'getAccountStatus');
+    expect(refreshBearerToken).toHaveBeenCalledTimes(1);
+    expect(lastAuth).toBe('Bearer fresh-jwt');
+  });
+});
+
+describe('Error subclasses', () => {
+  it('maps 401/403 responses to NorbixAuthError', async () => {
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      fetch: fakeFetch({
+        status: 401,
+        body: { responseStatus: { errorCode: 'Unauthorized', message: 'nope' } },
+      }),
+    });
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixAuthError);
+  });
+
+  it('maps 400 responses to NorbixValidationError', async () => {
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      fetch: fakeFetch({
+        status: 400,
+        body: { responseStatus: { errorCode: 'ValidationError', message: 'bad' } },
+      }),
+    });
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(
+      NorbixValidationError,
+    );
+  });
+
+  it('maps AbortError to NorbixTimeoutError', async () => {
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      timeoutMs: 1,
+      retry: { maxRetries: 0, baseDelayMs: 0, maxDelayMs: 0 },
+      fetch: vi.fn(async () => {
+        throw new DOMException('Aborted', 'AbortError');
+      }) as unknown as typeof fetch,
+    });
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixTimeoutError);
+  });
+
+  it('maps non-abort fetch throw to NorbixNetworkError', async () => {
+    const norbix = new Norbix({
+      apiKey: 'k',
+      projectId: 'p1',
+      retry: { maxRetries: 0, baseDelayMs: 0, maxDelayMs: 0 },
+      fetch: vi.fn(async () => {
+        throw new Error('dns');
+      }) as unknown as typeof fetch,
+    });
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixNetworkError);
   });
 });

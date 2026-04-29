@@ -1,4 +1,4 @@
-import { fromResponse, NorbixError } from './errors.js';
+import { fromResponse, NorbixError, NorbixNetworkError, NorbixTimeoutError } from './errors.js';
 import type { ResolvedNorbixConfig } from './types.js';
 
 export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -36,6 +36,13 @@ export interface RequestOverrideOptions {
   /** Per-call timeout override. */
   timeoutMs?: number;
 }
+
+export type TransportMiddleware = (ctx: {
+  url: string;
+  init: RequestInit;
+  attempt: number;
+  next: () => Promise<Response>;
+}) => Promise<Response>;
 
 /**
  * Tiny fetch-based transport. Handles:
@@ -98,44 +105,149 @@ export class Transport {
 
     if (body !== undefined) headers.set('Content-Type', 'application/json');
 
-    const controller = new AbortController();
     const timeoutMs = opts.timeoutMs ?? this.cfg.timeoutMs;
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    const startedAt = Date.now();
 
-    this.cfg.onRequest?.({ url, method: opts.method, headers });
+    const isIdempotent = opts.method === 'GET' || opts.method === 'DELETE';
+    const maxRetries = isIdempotent ? this.cfg.retry.maxRetries : 0;
 
-    let res: Response;
-    try {
-      res = await this.cfg.fetch(url, {
-        method: opts.method,
-        headers,
-        body,
-        signal: controller.signal,
-      });
-    } catch (err) {
-      clearTimeout(timer);
-      const reason =
-        err instanceof DOMException && err.name === 'AbortError'
-          ? `Request timed out after ${timeoutMs}ms`
-          : err instanceof Error
-            ? err.message
-            : 'Network error';
-      throw new NorbixError({ message: reason, status: 0, code: 'NORBIX_NETWORK_ERROR', url });
+    let didRefresh = false;
+    let attempt = 0;
+    // Total attempts = 1 + maxRetries
+    while (true) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      const startedAt = Date.now();
+
+      this.cfg.onRequest?.({ url, method: opts.method, headers });
+
+      let res: Response | undefined;
+      let fetchErr: unknown = undefined;
+      try {
+        const init: RequestInit = {
+          method: opts.method,
+          headers,
+          body,
+          signal: controller.signal,
+        };
+        let next: () => Promise<Response> = async () => this.cfg.fetch(url, init);
+        for (const mw of this.cfg.middleware ?? []) {
+          const prev = next;
+          next = () => mw({ url, init, attempt, next: prev });
+        }
+        res = await next();
+      } catch (err) {
+        fetchErr = err;
+      } finally {
+        clearTimeout(timer);
+      }
+
+      if (res) {
+        this.cfg.onResponse?.({ url, status: res.status, durationMs: Date.now() - startedAt });
+
+        // Optional 401 refresh flow: refresh once, then retry the original request.
+        if (
+          res.status === 401 &&
+          !didRefresh &&
+          opts.scope !== 'unauthenticated' &&
+          typeof this.cfg.refreshBearerToken === 'function'
+        ) {
+          const nextToken = await this.cfg.refreshBearerToken({ url, status: 401 });
+          if (nextToken) {
+            this.cfg.bearerToken = nextToken;
+            headers.set('Authorization', `Bearer ${nextToken}`);
+            didRefresh = true;
+            continue;
+          }
+        }
+
+        if (res.ok) {
+          if (res.status === 204) return undefined as TResponse;
+          const text = await res.text();
+          if (!text) return undefined as TResponse;
+          return JSON.parse(text) as TResponse;
+        }
+
+        // Non-OK: retry transient codes for idempotent methods.
+        if (isRetryableStatus(res.status) && attempt < maxRetries) {
+          const delay = retryDelayMs({
+            attempt,
+            baseDelayMs: this.cfg.retry.baseDelayMs,
+            maxDelayMs: this.cfg.retry.maxDelayMs,
+            retryAfter: res.headers.get('retry-after') ?? undefined,
+          });
+          await sleep(delay);
+          attempt++;
+          continue;
+        }
+
+        throw await fromResponse(res, url);
+      }
+
+      // Network/timeout errors: retry only for idempotent requests.
+      const isAbort = fetchErr instanceof DOMException && fetchErr.name === 'AbortError';
+      const reason = isAbort
+        ? `Request timed out after ${timeoutMs}ms`
+        : fetchErr instanceof Error
+          ? fetchErr.message
+          : 'Network error';
+
+      if (attempt < maxRetries) {
+        const delay = retryDelayMs({
+          attempt,
+          baseDelayMs: this.cfg.retry.baseDelayMs,
+          maxDelayMs: this.cfg.retry.maxDelayMs,
+          retryAfter: undefined,
+        });
+        await sleep(delay);
+        attempt++;
+        continue;
+      }
+
+      throw isAbort
+        ? new NorbixTimeoutError({ message: reason, url, raw: fetchErr })
+        : new NorbixNetworkError({ message: reason, url, raw: fetchErr });
     }
-
-    clearTimeout(timer);
-    this.cfg.onResponse?.({ url, status: res.status, durationMs: Date.now() - startedAt });
-
-    if (!res.ok) {
-      throw await fromResponse(res, url);
-    }
-
-    if (res.status === 204) return undefined as TResponse;
-    const text = await res.text();
-    if (!text) return undefined as TResponse;
-    return JSON.parse(text) as TResponse;
   }
+}
+
+function isRetryableStatus(status: number): boolean {
+  // 429 + transient server errors
+  return status === 429 || (status >= 500 && status <= 599);
+}
+
+function retryDelayMs(args: {
+  attempt: number;
+  baseDelayMs: number;
+  maxDelayMs: number;
+  retryAfter: string | undefined;
+}): number {
+  const retryAfter = parseRetryAfterMs(args.retryAfter);
+  if (retryAfter !== undefined) return clamp(retryAfter, 0, args.maxDelayMs);
+
+  // Exponential backoff with jitter.
+  const exp = args.baseDelayMs * Math.pow(2, args.attempt);
+  const jitter = Math.random() * args.baseDelayMs;
+  return clamp(Math.round(exp + jitter), 0, args.maxDelayMs);
+}
+
+function parseRetryAfterMs(value: string | undefined): number | undefined {
+  if (!value) return undefined;
+  const s = Number(value);
+  if (Number.isFinite(s) && s >= 0) return Math.round(s * 1000);
+  const dt = Date.parse(value);
+  if (!Number.isNaN(dt)) {
+    return Math.max(0, dt - Date.now());
+  }
+  return undefined;
+}
+
+function clamp(n: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, n));
+}
+
+async function sleep(ms: number): Promise<void> {
+  if (ms <= 0) return;
+  await new Promise((r) => setTimeout(r, ms));
 }
 
 function buildUrlAndBody(args: {
@@ -151,7 +263,7 @@ function buildUrlAndBody(args: {
   const consumedFromBody = new Set<string>();
   const tokenRegex = /\{([^/{}]+)\}/g;
   path = path.replace(tokenRegex, (_match, token: string) => {
-    const value = lookupCaseInsensitive(args.request, token);
+    const value = args.request[token];
     if (value === undefined || value === null) {
       throw new NorbixError({
         message: `Missing path parameter "${token}" for ${args.path}`,
@@ -159,12 +271,11 @@ function buildUrlAndBody(args: {
         code: 'NORBIX_MISSING_PATH_PARAM',
       });
     }
-    consumedFromBody.add(matchKey(args.request, token) ?? token);
+    consumedFromBody.add(token);
     return encodeURIComponent(String(value));
   });
   for (const p of args.pathParams) {
-    const k = matchKey(args.request, p);
-    if (k) consumedFromBody.add(k);
+    if (p in args.request) consumedFromBody.add(p);
   }
 
   const remaining: Record<string, unknown> = {};
@@ -182,20 +293,6 @@ function buildUrlAndBody(args: {
   }
   const body = Object.keys(remaining).length > 0 ? JSON.stringify(remaining) : undefined;
   return { url, body };
-}
-
-function lookupCaseInsensitive(obj: Record<string, unknown>, key: string): unknown {
-  const k = matchKey(obj, key);
-  return k === undefined ? undefined : obj[k];
-}
-
-function matchKey(obj: Record<string, unknown>, key: string): string | undefined {
-  if (key in obj) return key;
-  const lower = key.toLowerCase();
-  for (const k of Object.keys(obj)) {
-    if (k.toLowerCase() === lower) return k;
-  }
-  return undefined;
 }
 
 function joinUrl(base: string, path: string): string {

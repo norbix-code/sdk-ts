@@ -1,5 +1,5 @@
 {
-  "name": "@norbix/ts",
+  "name": "norbix",
   "version": "0.0.0-development",
   "description": "Official TypeScript SDK for Norbix — one client for both API and Hub. Works in Node and the browser.",
   "author": "UAB Isidos",
