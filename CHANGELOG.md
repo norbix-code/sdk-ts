@@ -1,3 +1,7 @@
+## <small>1.0.1 (2026-06-13)</small>
+
+* fix(release): publish as @norbix.ai/ts under npm org ([cad7db8](https://github.com/norbix-code/sdk-ts/commit/cad7db8))
+
 ## 1.0.0 (2026-06-13)
 
 * fix(ci): raise npm pack size guard for generated DTO bundle ([4fefe3f](https://github.com/norbix-code/sdk-ts/commit/4fefe3f))

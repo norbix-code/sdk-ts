@@ -1,6 +1,6 @@
 {
   "name": "@norbix.ai/ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official TypeScript SDK for Norbix — one client for both API and Hub. Works in Node and the browser.",
   "author": "UAB Isidos",
   "license": "MIT",
