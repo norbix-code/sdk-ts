@@ -1,56 +1,72 @@
-# Endpoint coverage audit for `@norbix/ts`
+# Endpoint coverage audit for `norbix`
 
 [← Back to docs index](./README.md) · [↑ Back to project README](../README.md)
 
-> Audit date: 2026-04-27. This document was refreshed after updating `api2.dtos.ts` and `hub2.dtos.ts` and running `internal maintenance workflow`.
+> Audit date: 2026-05-21. Refreshed after the gateway `Community.Api` /
+> `Community.Hub` projects were updated, `api2.dtos.ts` / `hub2.dtos.ts` were
+> regenerated, and the SDK endpoint modules were rebuilt from those DTOs.
 
-> **File upload remains out of scope by design.** The SDK exposes file metadata and references through regular DTO endpoints. Raw binary upload/download flows are intentionally handled outside the generated endpoint client.
+## Current coverage
 
-## Current Coverage
+The SDK is generated from the gateway DTO contracts. After the latest sync it
+exposes every route the gateway publishes in its metadata:
 
-The regenerated SDK now exposes all contract endpoints available from:
+| Surface                                | Modules | Endpoints |
+| -------------------------------------- | ------: | --------: |
+| `norbix.api` (runtime, project-scoped) |       8 |        66 |
+| `norbix.hub` (control plane)           |      17 |       313 |
+| **Total**                              |  **25** |   **379** |
 
-| Gateway | Project references checked | Generated SDK surface |
-| --- | --- | --- |
-| Community API | `Gateway.Api.AI`, `Gateway.Api.Database`, `Gateway.Api.Membership`, API auth/access-token/API-key/echo contracts | 42 endpoints across 7 modules |
-| Community Hub | Account, Database, Code, Emails, Files, Logs, Membership, Payments, Push, AI, Triggers, Webhook, Scheduler, auth/access-token/API-key/echo contracts | 248 endpoints across 16 modules |
+## What the latest sync added (+89 endpoints)
 
-The old DTO-refresh gaps are closed:
+Two new modules and a large set of new actions on existing modules:
 
-| Area from old audit | Current status |
-| --- | --- |
-| Database records | Covered by `norbix.api.database`: `find`, `findOne`, `count`, `distinct`, `insertOne`, `insertMany`, `updateOne`, `updateMany`, `replaceOne`, `deleteOne`, `deleteMany`, `aggregate`, `executeAggregate`. |
-| Database taxonomies | Covered by `norbix.api.database.findTerms` and `findTermsChildren`. |
-| AI chat | Covered by `norbix.api.chat.askChat` and Hub AI configuration endpoints under `norbix.hub.ai`. |
-| Auth | Covered by high-level `norbix.login(...)` plus generated `norbix.api.auth.authenticate(...)`. Generated `/auth` routes are unauthenticated. |
-| Hub admin/configuration | Covered by generated Hub modules including `account`, `database`, `email`, `files`, `logs`, `membership`, `notifications`, `payments`, `scheduler`, and `webhooks`. |
-| Per-call bearer token | Covered. Every generated endpoint now accepts a second `{ bearerToken?, timeoutMs? }` options argument. |
+| Module              | Change             | Highlights                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `api.files`         | **New module (8)** | `requestUploadUrl`, `commitUpload`, `downloadFileApi`, `getSignedUrl`, `getFileInfo`, `listFiles`, `deleteFileApi`, `deleteManyFilesApi`                                                                                                                                                                                                                                                                        |
+| `api.membership`    | +16                | Passkeys (`passkeyRegistrationOptions`, `verifyPasskeyRegistration`, `passkeyAuthenticationOptions`, `verifyPasskeyAuthentication`, `listPasskeys`, `renamePasskey`, `revokePasskey`, `hasPasskey`, `refreshPasskeyToken`, `passkeyLogout`), email verification (`startEmailVerification`, `confirmEmailVerification`), magic links (`requestMagicLink`, `consumeMagicLink`), `useRecoveryCode`, `linkIdentity` |
+| `hub.notifications` | +55                | SMS campaigns/templates/integrations/settings/preview, push campaigns and batches, contacts (CRUD, identities, marketing-state consent/unsubscribe), email validation integrations, razor-syntax-check                                                                                                                                                                                                          |
+| `hub.resources`     | **New module (1)** | `resolveResources`                                                                                                                                                                                                                                                                                                                                                                                              |
+| `hub.database`      | +3                 | Integration test, connection string, flex tiers                                                                                                                                                                                                                                                                                                                                                                 |
+| `hub.files`         | +2                 | Folder / item browser endpoints                                                                                                                                                                                                                                                                                                                                                                                 |
+| `hub.membership`    | +2                 | Passkey settings, policy options                                                                                                                                                                                                                                                                                                                                                                                |
+| `hub.logs`          | +1                 | Audit log endpoint                                                                                                                                                                                                                                                                                                                                                                                              |
+| `hub.webhooks`      | +1                 | Inbound webhook route                                                                                                                                                                                                                                                                                                                                                                                           |
 
-Example per-request token override:
+### File upload
 
-```ts
-await norbix.api.database.find(
-  { collectionName: 'orders' },
-  { bearerToken: requestUserToken },
-);
-```
+File upload **is** in the SDK, but it does not stream binary content through the
+Norbix API. The `api.files` module uses the signed-URL pattern:
+`requestUploadUrl` returns a direct-to-storage URL, the client uploads the bytes
+straight to storage, then `commitUpload` records the result. This keeps file
+bytes off the Norbix API path.
 
-## Remaining Non-generated Work
+## Still not covered
 
-These are not visible in the DTO contracts, so the endpoint generator cannot discover them:
+These are not in the gateway DTO metadata, so the endpoint generator cannot
+discover them. They are tracked as follow-up work.
 
-| Area | Status |
-| --- | --- |
-| Real-time / Server Events | `ConfigureServerEvents` is enabled in both Community API and Hub hosts, but EventSource/SSE subscription helpers are not emitted by metadata. Add a hand-written module only once the public stream URL and auth/token flow are finalized. |
-| Cluster routing | No current generated endpoint requires a legacy `cluster` parameter. The old gateway comment mentions cluster/database key routing, but there is no active SDK contract to implement yet. |
+| Area                            | Status                                                                                                                                                                                                                                                                                                          |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Code functions (`/code/*`)      | The `Hub.Code` projects are referenced by `Community.Hub.csproj`, but no `/code/*` routes appear in `hub2.dtos.ts`. They are likely gated behind a release flag, so the gateway does not publish them in metadata. Once the gateway exposes them, a re-sync picks them up automatically — no SDK change needed. |
+| Real-time / Server Events (SSE) | `ConfigureServerEvents` is enabled on both hosts, but SSE is a streaming transport, not a REST contract, so metadata never describes it. Needs a hand-written `events` module once the public stream URL and token flow are final.                                                                              |
+| Cluster routing                 | No generated endpoint requires a legacy `cluster` parameter. Nothing to implement until a contract needs it.                                                                                                                                                                                                    |
 
-## Verification
+## How the SDK is refreshed
 
-Run the full verification loop after DTO changes:
+The endpoint modules, their tests, and the per-module docs are generated from
+the DTO contracts by an internal maintenance workflow. The steps:
+
+1. The gateway projects change and the cloud DTOs (`api2.dtos.ts`,
+   `hub2.dtos.ts`) are regenerated from gateway metadata.
+2. The fresh DTOs are synced into `src/types/`.
+3. The endpoint generator rebuilds `src/api/*`, `src/hub/*`, their tests, and
+   `docs/api` / `docs/hub`.
+
+Verification loop after any DTO change:
 
 ```bash
-cd /Users/djovaisas/Projects/norbix/sdks/norbix-js
-npm run internal maintenance workflow
+cd sdks/norbix-js
 npm run typecheck
 npm test
 ```

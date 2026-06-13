@@ -14,6 +14,7 @@ Accessed as `norbix.hub.webhooks` on the [`Norbix`](../../README.md#authenticati
 | [`revealWebhookIntegrationSecret`](#revealwebhookintegrationsecret) | `GET` | `/{version}/webhooks/integration/secret` | `project` |
 | [`rotateWebhookIntegrationSecret`](#rotatewebhookintegrationsecret) | `POST` | `/{version}/webhooks/integration/secret/rotate` | `project` |
 | [`updateWebhookIntegrationExtraHeaders`](#updatewebhookintegrationextraheaders) | `PUT` | `/{version}/webhooks/integration/extra-headers` | `project` |
+| [`receiveWebhook`](#receivewebhook) | `POST` | `/{version}/webhooks/{source}/{integrationInstanceId}` | `project` |
 | [`disableWebhookDestination`](#disablewebhookdestination) | `PUT` | `/{version}/webhooks/destinations/{DestinationId}/disable` | `project` |
 | [`enableWebhookDestination`](#enablewebhookdestination) | `PUT` | `/{version}/webhooks/destinations/{DestinationId}/enable` | `project` |
 | [`removeWebhookDestination`](#removewebhookdestination) | `DELETE` | `/{version}/webhooks/destinations/{DestinationId}` | `project` |
@@ -105,6 +106,30 @@ const result = await norbix.hub.webhooks.updateWebhookIntegrationExtraHeaders({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### receiveWebhook
+
+`POST` `/{version}/webhooks/{source}/{integrationInstanceId}`
+
+
+
+**Request DTO**: `CodeMashHub2.ReceiveWebhook`
+**Response**: `CodeMashHub2.HttpResult`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.webhooks.receiveWebhook({
+  source: 'source-here',
+  integrationInstanceId: 'integrationInstanceId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.HttpResult
 ```
 
 [↑ Top](#endpoints)

@@ -4,7 +4,7 @@ import { AiModule } from '../../src/hub/ai.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Tests for hub.ai (14 endpoints).

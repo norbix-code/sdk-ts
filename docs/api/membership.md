@@ -24,10 +24,26 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`getUsers`](#getusers) | `GET` | `/{version}/membership/users` | `project` |
 | [`getUserPreferences`](#getuserpreferences) | `GET` | `/{version}/membership/users/{id}/preferences` | `project` |
 | [`inviteUser`](#inviteuser) | `POST` | `/{version}/membership/users/invite` | `project` |
+| [`linkIdentity`](#linkidentity) | `POST` | `/{version}/membership/users/{userId}/link-identity` | `project` |
 | [`assignRolePermissions`](#assignrolepermissions) | `PUT` | `/{version}/membership/users/assign-roles` | `project` |
 | [`unblockUser`](#unblockuser) | `PATCH` | `/{version}/membership/users/unblock` | `project` |
 | [`updateUser`](#updateuser) | `PUT` | `/{version}/membership/users` | `project` |
 | [`updateUserPreferences`](#updateuserpreferences) | `PUT` | `/{version}/membership/users/{id}/preferences` | `project` |
+| [`passkeyAuthenticationOptions`](#passkeyauthenticationoptions) | `POST` | `/{version}/membership/userauth/passkey/authentication-options` | `project` |
+| [`verifyPasskeyAuthentication`](#verifypasskeyauthentication) | `POST` | `/{version}/membership/userauth/passkey/verify-authentication` | `project` |
+| [`listPasskeys`](#listpasskeys) | `GET` | `/{version}/membership/userauth/passkeys` | `project` |
+| [`renamePasskey`](#renamepasskey) | `POST` | `/{version}/membership/userauth/passkeys/{CredentialId}/rename` | `project` |
+| [`revokePasskey`](#revokepasskey) | `POST` | `/{version}/membership/userauth/passkeys/{CredentialId}/revoke` | `project` |
+| [`useRecoveryCode`](#userecoverycode) | `POST` | `/{version}/membership/userauth/recovery/use-code` | `project` |
+| [`requestMagicLink`](#requestmagiclink) | `POST` | `/{version}/membership/userauth/recovery/magic-link/request` | `project` |
+| [`consumeMagicLink`](#consumemagiclink) | `POST` | `/{version}/membership/userauth/recovery/magic-link/consume` | `project` |
+| [`hasPasskey`](#haspasskey) | `POST` | `/{version}/membership/userauth/has-passkey` | `project` |
+| [`startEmailVerification`](#startemailverification) | `POST` | `/{version}/membership/userauth/email/start-verification` | `project` |
+| [`confirmEmailVerification`](#confirmemailverification) | `POST` | `/{version}/membership/userauth/email/confirm-verification` | `project` |
+| [`passkeyRegistrationOptions`](#passkeyregistrationoptions) | `POST` | `/{version}/membership/userauth/passkey/registration-options` | `project` |
+| [`verifyPasskeyRegistration`](#verifypasskeyregistration) | `POST` | `/{version}/membership/userauth/passkey/verify-registration` | `project` |
+| [`refreshPasskeyToken`](#refreshpasskeytoken) | `POST` | `/{version}/membership/userauth/token/refresh` | `project` |
+| [`passkeyLogout`](#passkeylogout) | `POST` | `/{version}/membership/userauth/logout` | `project` |
 
 ## Reference
 
@@ -341,6 +357,29 @@ const result = await norbix.api.membership.inviteUser({
 
 [↑ Top](#endpoints)
 
+### linkIdentity
+
+`POST` `/{version}/membership/users/{userId}/link-identity`
+
+
+
+**Request DTO**: `CodeMashApi2.LinkIdentityRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.linkIdentity({
+  userId: 'userId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### assignRolePermissions
 
 `PUT` `/{version}/membership/users/assign-roles`
@@ -426,6 +465,338 @@ const result = await norbix.api.membership.updateUserPreferences({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### passkeyAuthenticationOptions
+
+`POST` `/{version}/membership/userauth/passkey/authentication-options`
+
+
+
+**Request DTO**: `CodeMashApi2.PasskeyAuthenticationOptionsRequest`
+**Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.passkeyAuthenticationOptions({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyCeremonyOptionsResponse
+```
+
+[↑ Top](#endpoints)
+
+### verifyPasskeyAuthentication
+
+`POST` `/{version}/membership/userauth/passkey/verify-authentication`
+
+Verify / confirm the resource.
+
+**Request DTO**: `CodeMashApi2.VerifyPasskeyAuthenticationRequest`
+**Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.verifyPasskeyAuthentication({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyAuthTokensResponse
+```
+
+[↑ Top](#endpoints)
+
+### listPasskeys
+
+`GET` `/{version}/membership/userauth/passkeys`
+
+
+
+**Request DTO**: `CodeMashApi2.ListPasskeysRequest`
+**Response**: `CodeMashApi2.PasskeyListResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.listPasskeys({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyListResponse
+```
+
+[↑ Top](#endpoints)
+
+### renamePasskey
+
+`POST` `/{version}/membership/userauth/passkeys/{CredentialId}/rename`
+
+
+
+**Request DTO**: `CodeMashApi2.RenamePasskeyRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.renamePasskey({
+  CredentialId: 'CredentialId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### revokePasskey
+
+`POST` `/{version}/membership/userauth/passkeys/{CredentialId}/revoke`
+
+
+
+**Request DTO**: `CodeMashApi2.RevokePasskeyRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.revokePasskey({
+  CredentialId: 'CredentialId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### useRecoveryCode
+
+`POST` `/{version}/membership/userauth/recovery/use-code`
+
+
+
+**Request DTO**: `CodeMashApi2.UseRecoveryCodeRequest`
+**Response**: `CodeMashApi2.PasskeyRecoveryResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.useRecoveryCode({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyRecoveryResponse
+```
+
+[↑ Top](#endpoints)
+
+### requestMagicLink
+
+`POST` `/{version}/membership/userauth/recovery/magic-link/request`
+
+
+
+**Request DTO**: `CodeMashApi2.RequestMagicLinkRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.requestMagicLink({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### consumeMagicLink
+
+`POST` `/{version}/membership/userauth/recovery/magic-link/consume`
+
+
+
+**Request DTO**: `CodeMashApi2.ConsumeMagicLinkRequest`
+**Response**: `CodeMashApi2.PasskeyRecoveryResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.consumeMagicLink({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyRecoveryResponse
+```
+
+[↑ Top](#endpoints)
+
+### hasPasskey
+
+`POST` `/{version}/membership/userauth/has-passkey`
+
+
+
+**Request DTO**: `CodeMashApi2.HasPasskeyRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.hasPasskey({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### startEmailVerification
+
+`POST` `/{version}/membership/userauth/email/start-verification`
+
+
+
+**Request DTO**: `CodeMashApi2.StartEmailVerificationRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.startEmailVerification({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### confirmEmailVerification
+
+`POST` `/{version}/membership/userauth/email/confirm-verification`
+
+
+
+**Request DTO**: `CodeMashApi2.ConfirmEmailVerificationRequest`
+**Response**: `CodeMashApi2.PasskeyVerificationTokenResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.confirmEmailVerification({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyVerificationTokenResponse
+```
+
+[↑ Top](#endpoints)
+
+### passkeyRegistrationOptions
+
+`POST` `/{version}/membership/userauth/passkey/registration-options`
+
+
+
+**Request DTO**: `CodeMashApi2.PasskeyRegistrationOptionsRequest`
+**Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.passkeyRegistrationOptions({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyCeremonyOptionsResponse
+```
+
+[↑ Top](#endpoints)
+
+### verifyPasskeyRegistration
+
+`POST` `/{version}/membership/userauth/passkey/verify-registration`
+
+Verify / confirm the resource.
+
+**Request DTO**: `CodeMashApi2.VerifyPasskeyRegistrationRequest`
+**Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.verifyPasskeyRegistration({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyAuthTokensResponse
+```
+
+[↑ Top](#endpoints)
+
+### refreshPasskeyToken
+
+`POST` `/{version}/membership/userauth/token/refresh`
+
+
+
+**Request DTO**: `CodeMashApi2.RefreshPasskeyTokenRequest`
+**Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.refreshPasskeyToken({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyAuthTokensResponse
+```
+
+[↑ Top](#endpoints)
+
+### passkeyLogout
+
+`POST` `/{version}/membership/userauth/logout`
+
+
+
+**Request DTO**: `CodeMashApi2.PasskeyLogoutRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.passkeyLogout({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
 ```
 
 [↑ Top](#endpoints)

@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: webhooks
- * Endpoints: 8
+ * Endpoints: 9
  */
 export class WebhooksModule {
   constructor(private readonly transport: Transport) {}
@@ -82,6 +82,25 @@ export class WebhooksModule {
       method: 'PUT',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/webhooks/{source}/{integrationInstanceId}
+   * Request DTO: ReceiveWebhook
+   */
+  receiveWebhook = (
+    request: Partial<CodeMashHub2.ReceiveWebhook> = {} as Partial<CodeMashHub2.ReceiveWebhook>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.HttpResult> => {
+    return this.transport.send<CodeMashHub2.HttpResult>({
+      target: 'hub',
+      path: '/{version}/webhooks/{source}/{integrationInstanceId}',
+      method: 'POST',
+      request,
+      pathParams: ['source', 'integrationInstanceId'],
       scope: 'project',
       ...options,
     });

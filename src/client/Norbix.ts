@@ -40,8 +40,18 @@ export class Norbix {
   private cfg: ResolvedNorbixConfig;
   private transport: Transport;
 
+  /**
+   * Whether each base URL is the SDK default (not user/env supplied). Only
+   * default base URLs are ever rewritten when a region is set; a custom
+   * `baseUrl` is never touched.
+   */
+  private readonly usesDefaultBaseUrl: { api: boolean; hub: boolean };
+
   /** Create a client using explicit configuration (readable alternative to `new Norbix(...)`). */
-  static create(config: NorbixConfig = {}, opts?: { envSource?: Record<string, string | undefined> }) {
+  static create(
+    config: NorbixConfig = {},
+    opts?: { envSource?: Record<string, string | undefined> },
+  ) {
     return new Norbix(config, opts);
   }
 
@@ -77,10 +87,16 @@ export class Norbix {
     const baseUrlHub = config.baseUrl?.hub ?? env.hubUrl ?? DEFAULT_BASE_URL_HUB;
     assertHttpUrl('baseUrl.api', baseUrlApi);
     assertHttpUrl('baseUrl.hub', baseUrlHub);
+    this.usesDefaultBaseUrl = {
+      api: config.baseUrl?.api === undefined && env.apiUrl === undefined,
+      hub: config.baseUrl?.hub === undefined && env.hubUrl === undefined,
+    };
 
     const timeoutMs = config.timeoutMs ?? env.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
-      throw new Error(`Norbix: invalid timeoutMs "${String(timeoutMs)}" (must be a positive number)`);
+      throw new Error(
+        `Norbix: invalid timeoutMs "${String(timeoutMs)}" (must be a positive number)`,
+      );
     }
 
     const apiVersion = config.apiVersion ?? env.apiVersion ?? DEFAULT_VERSION;
@@ -94,7 +110,9 @@ export class Norbix {
       maxDelayMs: config.retry?.maxDelayMs ?? DEFAULT_RETRY.maxDelayMs,
     };
     if (!Number.isFinite(retry.maxRetries) || retry.maxRetries < 0) {
-      throw new Error(`Norbix: invalid retry.maxRetries "${String(retry.maxRetries)}" (must be >= 0)`);
+      throw new Error(
+        `Norbix: invalid retry.maxRetries "${String(retry.maxRetries)}" (must be >= 0)`,
+      );
     }
     if (!Number.isFinite(retry.baseDelayMs) || retry.baseDelayMs < 0) {
       throw new Error(
@@ -112,6 +130,8 @@ export class Norbix {
       bearerToken: config.bearerToken ?? env.bearerToken,
       projectId,
       accountId: config.accountId ?? env.accountId,
+      env: config.env ?? env.env ?? 'PROD',
+      region: config.region ?? env.region,
       baseUrl: {
         api: baseUrlApi,
         hub: baseUrlHub,
@@ -128,9 +148,30 @@ export class Norbix {
       middleware: config.middleware ?? [],
     };
 
+    this.applyRegionToBaseUrls();
+
     this.transport = new Transport(this.cfg);
     this.api = new ApiNamespace(this.transport);
     this.hub = new HubNamespace(this.transport);
+  }
+
+  /**
+   * (Re)compose the base URLs for the configured region. Only the SDK's
+   * default URLs are ever rewritten — `https://api.norbix.dev` becomes
+   * `https://nb-eu-germany.api.norbix.dev` — and clearing the region restores
+   * the defaults. A user-supplied custom base URL is never touched.
+   */
+  private applyRegionToBaseUrls(): void {
+    if (this.usesDefaultBaseUrl.api) {
+      this.cfg.baseUrl.api = this.cfg.region
+        ? composeRegionalUrl(this.cfg.region, DEFAULT_BASE_URL_API)
+        : DEFAULT_BASE_URL_API;
+    }
+    if (this.usesDefaultBaseUrl.hub) {
+      this.cfg.baseUrl.hub = this.cfg.region
+        ? composeRegionalUrl(this.cfg.region, DEFAULT_BASE_URL_HUB)
+        : DEFAULT_BASE_URL_HUB;
+    }
   }
 
   /**
@@ -188,6 +229,38 @@ export class Norbix {
     this.cfg.accountId = scope.accountId;
   }
 
+  /**
+   * Switch the project environment all subsequent requests target (sent as the
+   * `norbix-env` header). Pass `'PROD'` or `undefined` to return to production.
+   * Per-call `env` overrides still take precedence for individual requests.
+   */
+  setEnv(env: string | undefined): void {
+    this.cfg.env = env ?? 'PROD';
+  }
+
+  /** Current project environment the client targets (defaults to `PROD`). */
+  getEnv(): string {
+    return this.cfg.env;
+  }
+
+  /**
+   * Switch the Norbix region all subsequent requests target (sent as the
+   * `nb-region` header). Pass `undefined` to clear the region — no header is
+   * sent when no region is set. When the client uses the SDK's default base
+   * URLs, the regional URL is recomposed under the same rule as construction;
+   * a custom `baseUrl` is never rewritten. Per-call `region` overrides still
+   * take precedence for individual requests (header only — never the URL).
+   */
+  setRegion(region: string | undefined): void {
+    this.cfg.region = region || undefined;
+    this.applyRegionToBaseUrls();
+  }
+
+  /** Current Norbix region the client targets (e.g. `nb-eu-germany`), if any. */
+  getRegion(): string | undefined {
+    return this.cfg.region;
+  }
+
   /** True when the client has either a JWT bearer token or an API key. */
   isAuthenticated(): boolean {
     return Boolean(this.cfg.bearerToken ?? this.cfg.apiKey);
@@ -224,13 +297,26 @@ export class Norbix {
    * Create a new client for per-request scoping (SSR/multi-tenant safe).
    * The new instance does not share mutable auth or scope with the original.
    */
-  with(overrides: Pick<NorbixConfig, 'apiKey' | 'bearerToken' | 'projectId' | 'accountId'>): Norbix {
+  with(
+    overrides: Pick<
+      NorbixConfig,
+      'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region'
+    >,
+  ): Norbix {
     const next: NorbixConfig = {
       apiKey: overrides.apiKey ?? this.cfg.apiKey,
       bearerToken: overrides.bearerToken ?? this.cfg.bearerToken,
       projectId: overrides.projectId ?? this.cfg.projectId,
       accountId: overrides.accountId ?? this.cfg.accountId,
-      baseUrl: this.cfg.baseUrl,
+      env: overrides.env ?? this.cfg.env,
+      region: overrides.region ?? this.cfg.region,
+      // Pass `undefined` for SDK-default base URLs so the new instance
+      // recomposes them for its own (possibly overridden) region instead of
+      // inheriting a URL composed for the old region as if it were custom.
+      baseUrl: {
+        api: this.usesDefaultBaseUrl.api ? undefined : this.cfg.baseUrl.api,
+        hub: this.usesDefaultBaseUrl.hub ? undefined : this.cfg.baseUrl.hub,
+      },
       apiVersion: this.cfg.apiVersion,
       hubVersion: this.cfg.hubVersion,
       timeoutMs: this.cfg.timeoutMs,
@@ -254,6 +340,14 @@ function assertHttpUrl(field: string, value: string): void {
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {
     throw new Error(`Norbix: invalid ${field} "${value}" (must be an absolute http(s) URL)`);
   }
+}
+
+/**
+ * Compose a regional base URL by prefixing the region code as a subdomain:
+ * `https://api.norbix.dev` + `nb-eu-germany` → `https://nb-eu-germany.api.norbix.dev`.
+ */
+function composeRegionalUrl(region: string, defaultUrl: string): string {
+  return defaultUrl.replace('://', `://${region}.`);
 }
 
 function redactSecret(secret: string): string {

@@ -2,7 +2,7 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: echo

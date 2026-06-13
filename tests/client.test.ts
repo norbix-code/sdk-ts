@@ -516,7 +516,9 @@ describe('Error subclasses', () => {
         body: { responseStatus: { errorCode: 'Unauthorized', message: 'nope' } },
       }),
     });
-    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixAuthError);
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(
+      NorbixAuthError,
+    );
   });
 
   it('maps 400 responses to NorbixValidationError', async () => {
@@ -543,7 +545,9 @@ describe('Error subclasses', () => {
         throw new DOMException('Aborted', 'AbortError');
       }) as unknown as typeof fetch,
     });
-    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixTimeoutError);
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(
+      NorbixTimeoutError,
+    );
   });
 
   it('maps non-abort fetch throw to NorbixNetworkError', async () => {
@@ -555,6 +559,8 @@ describe('Error subclasses', () => {
         throw new Error('dns');
       }) as unknown as typeof fetch,
     });
-    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(NorbixNetworkError);
+    await expect(call(norbix, 'hub', 'account', 'getAccountStatus')).rejects.toBeInstanceOf(
+      NorbixNetworkError,
+    );
   });
 });

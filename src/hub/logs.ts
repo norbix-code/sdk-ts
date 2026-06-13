@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: logs
- * Endpoints: 9
+ * Endpoints: 14
  */
 export class LogsModule {
   constructor(private readonly transport: Transport) {}
@@ -174,6 +174,101 @@ export class LogsModule {
     return this.transport.send<CodeMashHub2.TestLoggingIntegrationResponse>({
       target: 'hub',
       path: '/{version}/logs/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/logs/clean
+   * Request DTO: CleanLogs
+   */
+  cleanLogs = (
+    request: Partial<CodeMashHub2.CleanLogs> = {} as Partial<CodeMashHub2.CleanLogs>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CleanLogsResponse> => {
+    return this.transport.send<CodeMashHub2.CleanLogsResponse>({
+      target: 'hub',
+      path: '/{version}/logs/clean',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/logs/audit
+   * Request DTO: GetLogsByCorrelationId
+   */
+  getLogsByCorrelationId = (
+    request: Partial<CodeMashHub2.GetLogsByCorrelationId> = {} as Partial<CodeMashHub2.GetLogsByCorrelationId>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogsByCorrelationIdResponse> => {
+    return this.transport.send<CodeMashHub2.GetLogsByCorrelationIdResponse>({
+      target: 'hub',
+      path: '/{version}/logs/audit',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/logs
+   * Request DTO: GetLogs
+   */
+  getLogs = (
+    request: Partial<CodeMashHub2.GetLogs> = {} as Partial<CodeMashHub2.GetLogs>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogsResponse> => {
+    return this.transport.send<CodeMashHub2.GetLogsResponse>({
+      target: 'hub',
+      path: '/{version}/logs',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/logs/settings
+   * Request DTO: GetLogSettings
+   */
+  getLogSettings = (
+    request: Partial<CodeMashHub2.GetLogSettings> = {} as Partial<CodeMashHub2.GetLogSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetLogSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/logs/settings',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/logs/settings
+   * Request DTO: SaveLogSettings
+   */
+  saveLogSettings = (
+    request: Partial<CodeMashHub2.SaveLogSettings> = {} as Partial<CodeMashHub2.SaveLogSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.SaveLogSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.SaveLogSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/logs/settings',
       method: 'POST',
       request,
       pathParams: [],

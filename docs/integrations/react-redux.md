@@ -1,4 +1,4 @@
-# Using `@norbix/ts` with React + Redux Toolkit
+# Using `norbix` with React + Redux Toolkit
 
 [← Back to docs index](../README.md) · [↑ Back to project README](../../README.md)
 
@@ -33,7 +33,7 @@ The SDK manages **its own** state (the bearer token in memory). Redux holds the 
 
 ```ts
 // src/lib/norbix.ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from 'norbix';
 
 export const norbix = new Norbix({
   projectId: import.meta.env.VITE_NORBIX_PROJECT_ID,
@@ -45,7 +45,7 @@ export const norbix = new Norbix({
 ```ts
 // src/features/auth/authSlice.ts
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { LoginCredentials } from '@norbix/ts';
+import type { LoginCredentials } from 'norbix';
 
 import { norbix } from '../../lib/norbix';
 
@@ -196,7 +196,7 @@ If you already use [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) 
 ```ts
 // src/features/auth/authApi.ts
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { LoginCredentials, LoginResponse } from '@norbix/ts';
+import type { LoginCredentials, LoginResponse } from 'norbix';
 
 import { norbix } from '../../lib/norbix';
 

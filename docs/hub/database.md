@@ -44,8 +44,11 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`enableDatabaseIntegration`](#enabledatabaseintegration) | `PUT` | `/{version}/database/integrations/{Id}/enable` | `project` |
 | [`getDatabaseIntegration`](#getdatabaseintegration) | `GET` | `/{version}/database/integrations/{id}` | `project` |
 | [`getDatabaseIntegrations`](#getdatabaseintegrations) | `GET` | `/{version}/database/integrations` | `project` |
+| [`getAllowedFlexTiers`](#getallowedflextiers) | `GET` | `/{version}/database/integrations/flex-tiers` | `project` |
+| [`revealManagedFlexConnectionString`](#revealmanagedflexconnectionstring) | `GET` | `/{version}/database/integrations/{Id}/connection-string` | `project` |
 | [`saveDatabaseIntegration`](#savedatabaseintegration) | `POST` | `/{version}/database/integrations` | `project` |
 | [`setDatabaseIntegrationAsDefault`](#setdatabaseintegrationasdefault) | `PUT` | `/{version}/database/integrations/{Id}/default` | `project` |
+| [`testDatabaseIntegration`](#testdatabaseintegration) | `POST` | `/{version}/database/integrations/test` | `project` |
 | [`deleteDatabaseAggregate`](#deletedatabaseaggregate) | `DELETE` | `/{version}/database/aggregates/{Id}` | `project` |
 | [`getDatabaseAggregate`](#getdatabaseaggregate) | `GET` | `/{version}/database/aggregates/{Id}` | `project` |
 | [`getDatabaseAggregates`](#getdatabaseaggregates) | `GET` | `/{version}/database/aggregates` | `project` |
@@ -830,6 +833,51 @@ const result = await norbix.hub.database.getDatabaseIntegrations({
 
 [↑ Top](#endpoints)
 
+### getAllowedFlexTiers
+
+`GET` `/{version}/database/integrations/flex-tiers`
+
+List all items.
+
+**Request DTO**: `CodeMashHub2.GetAllowedFlexTiers`
+**Response**: `CodeMashHub2.GetAllowedFlexTiersResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getAllowedFlexTiers({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAllowedFlexTiersResponse
+```
+
+[↑ Top](#endpoints)
+
+### revealManagedFlexConnectionString
+
+`GET` `/{version}/database/integrations/{Id}/connection-string`
+
+Reveal the masked value.
+
+**Request DTO**: `CodeMashHub2.RevealManagedFlexConnectionString`
+**Response**: `CodeMashHub2.RevealManagedFlexConnectionStringResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.revealManagedFlexConnectionString({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RevealManagedFlexConnectionStringResponse
+```
+
+[↑ Top](#endpoints)
+
 ### saveDatabaseIntegration
 
 `POST` `/{version}/database/integrations`
@@ -871,6 +919,28 @@ const result = await norbix.hub.database.setDatabaseIntegrationAsDefault({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### testDatabaseIntegration
+
+`POST` `/{version}/database/integrations/test`
+
+Run a connection / delivery test against the integration.
+
+**Request DTO**: `CodeMashHub2.TestDatabaseIntegration`
+**Response**: `CodeMashHub2.TestDatabaseIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.testDatabaseIntegration({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.TestDatabaseIntegrationResponse
 ```
 
 [↑ Top](#endpoints)

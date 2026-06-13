@@ -4,10 +4,10 @@ import { MembershipModule } from '../../src/hub/membership.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.membership (25 endpoints).
+ * Tests for hub.membership (30 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.membership', () => {
-  it('module exposes 25 method(s)', () => {
+  it('module exposes 30 method(s)', () => {
     const mock = createMockFetch();
     const mod = new MembershipModule({} as never);
     void mod; // silence unused — we only need the type
@@ -47,6 +47,8 @@ describe('hub.membership', () => {
     expect(typeof ns['getPolicy']).toBe('function');
     expect(typeof ns['getPolicies']).toBe('function');
     expect(typeof ns['updatePolicy']).toBe('function');
+    expect(typeof ns['getPasskeySettings']).toBe('function');
+    expect(typeof ns['savePasskeySettings']).toBe('function');
     expect(typeof ns['deleteMembershipIntegration']).toBe('function');
     expect(typeof ns['disableMembershipIntegration']).toBe('function');
     expect(typeof ns['enableMembershipIntegration']).toBe('function');
@@ -54,6 +56,9 @@ describe('hub.membership', () => {
     expect(typeof ns['getMembershipIntegrations']).toBe('function');
     expect(typeof ns['saveMembershipIntegration']).toBe('function');
     expect(typeof ns['setMembershipIntegrationAsDefault']).toBe('function');
+    expect(typeof ns['getAuthorizationSettings']).toBe('function');
+    expect(typeof ns['updateAuthorizationSettings']).toBe('function');
+    expect(typeof ns['getAuthenticationSettings']).toBe('function');
   });
 
   it('disableMembership: GET /{version}/membership/disable', async () => {
@@ -470,6 +475,52 @@ describe('hub.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('getPasskeySettings: GET /{version}/membership/passkey/settings', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/membership/passkey/settings',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['getPasskeySettings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('savePasskeySettings: POST /{version}/membership/passkey/settings', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/membership/passkey/settings',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['savePasskeySettings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('deleteMembershipIntegration: DELETE /{version}/membership/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{Id}');
     const expected = expectedUrl({
@@ -626,6 +677,75 @@ describe('hub.membership', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getAuthorizationSettings: GET /{version}/membership/authorization', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/membership/authorization',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['getAuthorizationSettings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('updateAuthorizationSettings: PUT /{version}/membership/authorization', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/membership/authorization',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['updateAuthorizationSettings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getAuthenticationSettings: GET /{version}/membership/authentication', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/membership/authentication',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['getAuthenticationSettings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

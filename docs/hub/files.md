@@ -25,6 +25,8 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 | [`getFilesIntegrations`](#getfilesintegrations) | `GET` | `/{version}/files/integrations` | `project` |
 | [`saveFilesIntegration`](#savefilesintegration) | `POST` | `/{version}/files/integrations` | `project` |
 | [`setFilesIntegrationAsDefault`](#setfilesintegrationasdefault) | `PUT` | `/{version}/files/integrations/{Id}/default` | `project` |
+| [`getFile`](#getfile) | `GET` | `/{version}/files/item` | `project` |
+| [`getFolderFiles`](#getfolderfiles) | `GET` | `/{version}/files/folder` | `project` |
 
 ## Reference
 
@@ -363,6 +365,50 @@ const result = await norbix.hub.files.setFilesIntegrationAsDefault({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getFile
+
+`GET` `/{version}/files/item`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetFile`
+**Response**: `CodeMashHub2.GetFileResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.getFile({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetFileResponse
+```
+
+[↑ Top](#endpoints)
+
+### getFolderFiles
+
+`GET` `/{version}/files/folder`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetFolderFiles`
+**Response**: `CodeMashHub2.GetFolderFilesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.getFolderFiles({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetFolderFilesResponse
 ```
 
 [↑ Top](#endpoints)

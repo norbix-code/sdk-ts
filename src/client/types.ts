@@ -21,6 +21,7 @@
  *   NORBIX_BEARER_TOKEN
  *   NORBIX_PROJECT_ID
  *   NORBIX_ACCOUNT_ID
+ *   NORBIX_REGION
  *   NORBIX_API_URL
  *   NORBIX_HUB_URL
  *   NORBIX_API_VERSION
@@ -50,6 +51,34 @@ export interface NorbixConfig {
    * (team, billing, account profile). Falls back to `NORBIX_ACCOUNT_ID`.
    */
   accountId?: string;
+
+  /**
+   * Project environment every request targets, sent as the `norbix-env`
+   * header. Each project owns a set of named environments; `PROD` always
+   * exists and is the default. A non-PROD env (e.g. `TEST`, `STAGING`) scopes
+   * every read and write to that environment's integrations — there is no
+   * cross-env fallback. Defaults to `PROD`. Falls back to `NORBIX_ENV`.
+   *
+   * Override per call via the `env` option on any request, or switch the
+   * client default at runtime with `setEnv(...)`.
+   */
+  env?: string;
+
+  /**
+   * Norbix region every request targets, sent as the `nb-region` header
+   * (a region code, e.g. `nb-eu-germany`). Unlike `env`, there is no default
+   * region — when unset, no header is sent and the backend picks the project's
+   * primary region. Falls back to `NORBIX_REGION`.
+   *
+   * When the client uses the SDK's default base URLs, setting a region also
+   * composes the regional URL (`https://nb-eu-germany.api.norbix.dev`); a
+   * user-supplied custom `baseUrl` is never rewritten.
+   *
+   * Override per call via the `region` option on any request (header only —
+   * never changes the URL), or switch the client default at runtime with
+   * `setRegion(...)`.
+   */
+  region?: string;
 
   /**
    * Override default base URLs. Useful for self-hosted deployments,
@@ -127,6 +156,10 @@ export interface ResolvedNorbixConfig {
   bearerToken?: string;
   projectId: string;
   accountId?: string;
+  /** Resolved project environment. Defaults to `PROD`. */
+  env: string;
+  /** Resolved Norbix region (e.g. `nb-eu-germany`). No default — may be unset. */
+  region?: string;
   baseUrl: { api: string; hub: string };
   apiVersion: string;
   hubVersion: string;

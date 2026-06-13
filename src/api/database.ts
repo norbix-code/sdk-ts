@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 18
+ * Endpoints: 19
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -253,6 +253,25 @@ export class DatabaseModule {
       method: 'GET',
       request,
       pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}/own
+   * Request DTO: FindOwnRequest
+   */
+  findOwn = (
+    request: Partial<CodeMashApi2.FindOwnRequest> = {} as Partial<CodeMashApi2.FindOwnRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.FindResponse> => {
+    return this.transport.send<CodeMashApi2.FindResponse>({
+      target: 'api',
+      path: '/{version}/database/collections/{collectionName}/own',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName'],
       scope: 'project',
       ...options,
     });

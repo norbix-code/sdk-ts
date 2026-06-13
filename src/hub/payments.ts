@@ -2,7 +2,7 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: payments
@@ -51,8 +51,6 @@ export class PaymentsModule {
 
   /**
    * DELETE /{version}/payments/triggers/{triggerId}
-   * Aliases:
-   *   - DELETE /{version}/triggers
    * Request DTO: DeletePaymentsTrigger
    */
   deletePaymentsTrigger = (
@@ -72,8 +70,6 @@ export class PaymentsModule {
 
   /**
    * PATCH /{version}/payments/triggers/{triggerId}/disable
-   * Aliases:
-   *   - PUT /{version}/triggers/disable
    * Request DTO: DisablePaymentsTrigger
    */
   disablePaymentsTrigger = (
@@ -93,8 +89,6 @@ export class PaymentsModule {
 
   /**
    * PATCH /{version}/payments/triggers/{triggerId}/enable
-   * Aliases:
-   *   - PUT /{version}/triggers/enable
    * Request DTO: EnablePaymentsTrigger
    */
   enablePaymentsTrigger = (
@@ -152,8 +146,6 @@ export class PaymentsModule {
 
   /**
    * POST /{version}/payments/triggers
-   * Aliases:
-   *   - POST /{version}/triggers
    * Request DTO: SavePaymentsTrigger
    */
   savePaymentsTrigger = (

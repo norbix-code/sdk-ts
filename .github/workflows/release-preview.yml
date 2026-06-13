@@ -16,11 +16,12 @@ permissions:
 
 env:
   NODE_VERSION: '22'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   preview:
     name: semantic-release · dry run
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4

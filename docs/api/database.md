@@ -23,6 +23,7 @@ Accessed as `norbix.api.database` on the [`Norbix`](../../README.md#authenticati
 | [`executeAggregate`](#executeaggregate) | `POST` | `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute` | `project` |
 | [`find`](#find) | `GET` | `/{version}/database/collections/{collectionName}` | `project` |
 | [`findOne`](#findone) | `GET` | `/{version}/database/collections/{collectionName}/{id}` | `project` |
+| [`findOwn`](#findown) | `GET` | `/{version}/database/collections/{collectionName}/own` | `project` |
 | [`insertMany`](#insertmany) | `POST` | `/{version}/database/collections/{collectionName}/many` | `project` |
 | [`insertOne`](#insertone) | `POST` | `/{version}/database/collections/{collectionName}` | `project` |
 | [`replaceOne`](#replaceone) | `PUT` | `/{version}/database/collections/{collectionName}/{id}/replace` | `project` |
@@ -330,6 +331,29 @@ const result = await norbix.api.database.findOne({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.FindOneResponse
+```
+
+[↑ Top](#endpoints)
+
+### findOwn
+
+`GET` `/{version}/database/collections/{collectionName}/own`
+
+Search / paginate items.
+
+**Request DTO**: `CodeMashApi2.FindOwnRequest`
+**Response**: `CodeMashApi2.FindResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.database.findOwn({
+  collectionName: 'collectionName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.FindResponse
 ```
 
 [↑ Top](#endpoints)

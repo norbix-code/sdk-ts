@@ -8,6 +8,8 @@ coverage
 .npm
 .eslintcache
 *.log
+# Vitest writes a transient compiled-config file next to vitest.config.ts
+vitest.config.ts.timestamp-*.mjs
 .idea
 .vscode/*
 !.vscode/extensions.json

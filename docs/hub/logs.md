@@ -19,6 +19,11 @@ Accessed as `norbix.hub.logs` on the [`Norbix`](../../README.md#authentication) 
 | [`getLoggingIntegrations`](#getloggingintegrations) | `GET` | `/{version}/logs/integrations` | `project` |
 | [`saveLoggingIntegration`](#saveloggingintegration) | `POST` | `/{version}/logs/integrations` | `project` |
 | [`testLoggingIntegration`](#testloggingintegration) | `POST` | `/{version}/logs/integrations/test` | `project` |
+| [`cleanLogs`](#cleanlogs) | `POST` | `/{version}/logs/clean` | `project` |
+| [`getLogsByCorrelationId`](#getlogsbycorrelationid) | `GET` | `/{version}/logs/audit` | `project` |
+| [`getLogs`](#getlogs) | `GET` | `/{version}/logs` | `project` |
+| [`getLogSettings`](#getlogsettings) | `GET` | `/{version}/logs/settings` | `project` |
+| [`saveLogSettings`](#savelogsettings) | `POST` | `/{version}/logs/settings` | `project` |
 
 ## Reference
 
@@ -220,6 +225,116 @@ const result = await norbix.hub.logs.testLoggingIntegration({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestLoggingIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### cleanLogs
+
+`POST` `/{version}/logs/clean`
+
+
+
+**Request DTO**: `CodeMashHub2.CleanLogs`
+**Response**: `CodeMashHub2.CleanLogsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.cleanLogs({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.CleanLogsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getLogsByCorrelationId
+
+`GET` `/{version}/logs/audit`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetLogsByCorrelationId`
+**Response**: `CodeMashHub2.GetLogsByCorrelationIdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.getLogsByCorrelationId({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetLogsByCorrelationIdResponse
+```
+
+[↑ Top](#endpoints)
+
+### getLogs
+
+`GET` `/{version}/logs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetLogs`
+**Response**: `CodeMashHub2.GetLogsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.getLogs({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetLogsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getLogSettings
+
+`GET` `/{version}/logs/settings`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetLogSettings`
+**Response**: `CodeMashHub2.GetLogSettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.getLogSettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetLogSettingsResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveLogSettings
+
+`POST` `/{version}/logs/settings`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveLogSettings`
+**Response**: `CodeMashHub2.SaveLogSettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.saveLogSettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.SaveLogSettingsResponse
 ```
 
 [↑ Top](#endpoints)

@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 15
+ * Endpoints: 17
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -51,8 +51,6 @@ export class FilesModule {
 
   /**
    * DELETE /{version}/files/triggers/{triggerId}
-   * Aliases:
-   *   - DELETE /{version}/triggers
    * Request DTO: DeleteFilesTrigger
    */
   deleteFilesTrigger = (
@@ -72,8 +70,6 @@ export class FilesModule {
 
   /**
    * PATCH /{version}/files/triggers/{triggerId}/disable
-   * Aliases:
-   *   - PUT /{version}/triggers/disable
    * Request DTO: DisableFilesTrigger
    */
   disableFilesTrigger = (
@@ -93,8 +89,6 @@ export class FilesModule {
 
   /**
    * PATCH /{version}/files/triggers/{triggerId}/enable
-   * Aliases:
-   *   - PUT /{version}/triggers/enable
    * Request DTO: EnableFilesTrigger
    */
   enableFilesTrigger = (
@@ -152,8 +146,6 @@ export class FilesModule {
 
   /**
    * POST /{version}/files/triggers
-   * Aliases:
-   *   - POST /{version}/triggers
    * Request DTO: SaveFilesTrigger
    */
   saveFilesTrigger = (
@@ -299,6 +291,44 @@ export class FilesModule {
       method: 'PUT',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/item
+   * Request DTO: GetFile
+   */
+  getFile = (
+    request: Partial<CodeMashHub2.GetFile> = {} as Partial<CodeMashHub2.GetFile>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetFileResponse> => {
+    return this.transport.send<CodeMashHub2.GetFileResponse>({
+      target: 'hub',
+      path: '/{version}/files/item',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/folder
+   * Request DTO: GetFolderFiles
+   */
+  getFolderFiles = (
+    request: Partial<CodeMashHub2.GetFolderFiles> = {} as Partial<CodeMashHub2.GetFolderFiles>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetFolderFilesResponse> => {
+    return this.transport.send<CodeMashHub2.GetFolderFilesResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder',
+      method: 'GET',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

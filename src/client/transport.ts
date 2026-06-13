@@ -28,6 +28,19 @@ export interface RequestOptions<TBody = unknown> {
   timeoutMs?: number;
   /** Per-call bearer token override, useful for SSR and multi-tenant request scopes. */
   bearerToken?: string;
+  /**
+   * Per-call environment override. Sent as the `norbix-env` header, selecting
+   * which project environment the request targets. Falls back to the client's
+   * configured `env`. `PROD` (the default) sends no header.
+   */
+  env?: string;
+  /**
+   * Per-call region override. Sent as the `nb-region` header (a region code,
+   * e.g. `nb-eu-germany`). Falls back to the client's configured `region`.
+   * There is no default region — when neither is set, no header is sent.
+   * Affects the header only; it never changes the request URL.
+   */
+  region?: string;
 }
 
 export interface RequestOverrideOptions {
@@ -35,6 +48,17 @@ export interface RequestOverrideOptions {
   bearerToken?: string;
   /** Per-call timeout override. */
   timeoutMs?: number;
+  /**
+   * Per-call environment override. Sent as the `norbix-env` header, overriding
+   * the client's configured `env` for this single call. `PROD` sends no header.
+   */
+  env?: string;
+  /**
+   * Per-call region override. Sent as the `nb-region` header, overriding the
+   * client's configured `region` for this single call. Affects the header
+   * only — the request URL is never rewritten per call.
+   */
+  region?: string;
 }
 
 export type TransportMiddleware = (ctx: {
@@ -102,6 +126,18 @@ export class Transport {
 
     if (this.cfg.projectId) headers.set('X-CM-ProjectId', this.cfg.projectId);
     if (this.cfg.accountId) headers.set('X-CM-AccountId', this.cfg.accountId);
+
+    // Environment selector. Per-call override wins over the client default.
+    // `PROD` is the backend default, so we omit the header for it to keep
+    // production requests byte-identical to the pre-environments behavior.
+    const env = opts.env ?? this.cfg.env;
+    if (env && env !== 'PROD') headers.set('norbix-env', env);
+
+    // Region selector. Per-call override wins over the client default. Unlike
+    // env there is no default region — the header is injected only when a
+    // region is resolved, so region-less traffic stays byte-identical.
+    const region = opts.region ?? this.cfg.region;
+    if (region) headers.set('nb-region', region);
 
     if (body !== undefined) headers.set('Content-Type', 'application/json');
 

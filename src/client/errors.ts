@@ -43,20 +43,39 @@ export class NorbixError extends Error {
 
 export class NorbixNetworkError extends NorbixError {
   constructor(opts: { message: string; url?: string; raw?: unknown }) {
-    super({ message: opts.message, status: 0, code: 'NORBIX_NETWORK_ERROR', url: opts.url, raw: opts.raw });
+    super({
+      message: opts.message,
+      status: 0,
+      code: 'NORBIX_NETWORK_ERROR',
+      url: opts.url,
+      raw: opts.raw,
+    });
     this.name = 'NorbixNetworkError';
   }
 }
 
 export class NorbixTimeoutError extends NorbixError {
   constructor(opts: { message: string; url?: string; raw?: unknown }) {
-    super({ message: opts.message, status: 0, code: 'NORBIX_TIMEOUT', url: opts.url, raw: opts.raw });
+    super({
+      message: opts.message,
+      status: 0,
+      code: 'NORBIX_TIMEOUT',
+      url: opts.url,
+      raw: opts.raw,
+    });
     this.name = 'NorbixTimeoutError';
   }
 }
 
 export class NorbixAuthError extends NorbixError {
-  constructor(opts: { message: string; status: number; code?: string; fieldErrors?: NorbixErrorPayload['errors']; url?: string; raw?: unknown }) {
+  constructor(opts: {
+    message: string;
+    status: number;
+    code?: string;
+    fieldErrors?: NorbixErrorPayload['errors'];
+    url?: string;
+    raw?: unknown;
+  }) {
     super({
       message: opts.message,
       status: opts.status,
@@ -70,7 +89,14 @@ export class NorbixAuthError extends NorbixError {
 }
 
 export class NorbixValidationError extends NorbixError {
-  constructor(opts: { message: string; status: number; code?: string; fieldErrors?: NorbixErrorPayload['errors']; url?: string; raw?: unknown }) {
+  constructor(opts: {
+    message: string;
+    status: number;
+    code?: string;
+    fieldErrors?: NorbixErrorPayload['errors'];
+    url?: string;
+    raw?: unknown;
+  }) {
     super({
       message: opts.message,
       status: opts.status,

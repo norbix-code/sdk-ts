@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 41
+ * Endpoints: 44
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -51,8 +51,6 @@ export class DatabaseModule {
 
   /**
    * DELETE /{version}/database/schemas/triggers/{triggerId}
-   * Aliases:
-   *   - DELETE /{version}/triggers
    * Request DTO: DeleteSchemaTrigger
    */
   deleteSchemaTrigger = (
@@ -72,8 +70,6 @@ export class DatabaseModule {
 
   /**
    * PATCH /{version}/database/schemas/triggers/{triggerId}/disable
-   * Aliases:
-   *   - PUT /{version}/triggers/disable
    * Request DTO: DisableSchemaTrigger
    */
   disableSchemaTrigger = (
@@ -93,8 +89,6 @@ export class DatabaseModule {
 
   /**
    * PATCH /{version}/database/schemas/triggers/{triggerId}/enable
-   * Aliases:
-   *   - PUT /{version}/triggers/enable
    * Request DTO: EnableSchemaTrigger
    */
   enableSchemaTrigger = (
@@ -152,8 +146,6 @@ export class DatabaseModule {
 
   /**
    * POST /{version}/database/schemas/triggers
-   * Aliases:
-   *   - POST /{version}/triggers
    * Request DTO: SaveSchemaTrigger
    */
   saveSchemaTrigger = (
@@ -666,6 +658,44 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/integrations/flex-tiers
+   * Request DTO: GetAllowedFlexTiers
+   */
+  getAllowedFlexTiers = (
+    request: Partial<CodeMashHub2.GetAllowedFlexTiers> = {} as Partial<CodeMashHub2.GetAllowedFlexTiers>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAllowedFlexTiersResponse> => {
+    return this.transport.send<CodeMashHub2.GetAllowedFlexTiersResponse>({
+      target: 'hub',
+      path: '/{version}/database/integrations/flex-tiers',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/integrations/{Id}/connection-string
+   * Request DTO: RevealManagedFlexConnectionString
+   */
+  revealManagedFlexConnectionString = (
+    request: Partial<CodeMashHub2.RevealManagedFlexConnectionString> = {} as Partial<CodeMashHub2.RevealManagedFlexConnectionString>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RevealManagedFlexConnectionStringResponse> => {
+    return this.transport.send<CodeMashHub2.RevealManagedFlexConnectionStringResponse>({
+      target: 'hub',
+      path: '/{version}/database/integrations/{Id}/connection-string',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/database/integrations
    * Request DTO: SaveDatabaseIntegration
    */
@@ -698,6 +728,25 @@ export class DatabaseModule {
       method: 'PUT',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/integrations/test
+   * Request DTO: TestDatabaseIntegration
+   */
+  testDatabaseIntegration = (
+    request: Partial<CodeMashHub2.TestDatabaseIntegration> = {} as Partial<CodeMashHub2.TestDatabaseIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestDatabaseIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.TestDatabaseIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/database/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

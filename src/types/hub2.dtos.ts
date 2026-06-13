@@ -1,5 +1,5 @@
 /* Options:
-Date: 2026-04-27 16:28:58
+Date: 2026-06-12 16:20:52
 Version: 10.06
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -15,10 +15,11 @@ AddDescriptionAsComments: True
 //DefaultImports: 
 */
 
+// @ts-nocheck
+
 
 export module CodeMashHub2
 {
-    // @ts-nocheck
 
     export interface IReturn<T>
     {
@@ -48,11 +49,14 @@ export module CodeMashHub2
     {
     }
 
-    export type IReadOnlySet<T> = ReadonlyArray<T>;
-    export type IReadOnlyList<T> = ReadonlyArray<T>;
+    export type IReadOnlySet<T> = T[];
+    export type IReadOnlyList<T> = T[];
     export type IList<T> = T[];
+    export type IReadOnlyDictionary<TValue> = Record<string, TValue>;
+    export type Dictionary<TValue> = Record<string, TValue>;
     export type HashSet<T> = T[];
-    export type IReadOnlyDictionary<TKey extends string | number | symbol, TValue> = Record<TKey, TValue>;
+    export type Blob = globalThis.Blob;
+
 
     // @DataContract
     export enum EmailProvider
@@ -61,6 +65,7 @@ export module CodeMashHub2
         SendGrid = 'SendGrid',
         MailGun = 'MailGun',
         AwsSes = 'AwsSes',
+        Fake = 'Fake',
     }
 
     export class EmailIntegrationRequest
@@ -85,6 +90,7 @@ export module CodeMashHub2
 
     export class SmtpEmailIntegrationRequest extends EmailIntegrationRequest
     {
+        declare provider: EmailProvider;
         public domain: string;
         public port: SmtpPorts;
         public userName: string;
@@ -101,6 +107,7 @@ export module CodeMashHub2
 
     export class AwsSesEmailIntegrationRequest extends EmailIntegrationRequest
     {
+        declare provider: EmailProvider;
         public integrationType: AwsIntegrationType;
         public awsRegion: string;
         public emailIdentityArn: string;
@@ -115,16 +122,25 @@ export module CodeMashHub2
 
     export class SendGridEmailIntegrationRequest extends EmailIntegrationRequest
     {
+        declare provider: EmailProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<SendGridEmailIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export enum MailGunRegion
+    {
+        Us = 'Us',
+        Eu = 'Eu',
+    }
+
     export class MailGunEmailIntegrationRequest extends EmailIntegrationRequest
     {
+        declare provider: EmailProvider;
         public domain: string;
         public apiKey: string;
         public webhookSigningKey: string;
+        public region: MailGunRegion;
 
         public constructor(init?: Partial<MailGunEmailIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
@@ -177,6 +193,7 @@ export module CodeMashHub2
         public source: EmailCampaignRecipientsSourceTypes;
         public templateId: string;
         public integrationId?: string;
+        public validationIntegrationId?: string;
         public language?: string;
         public initiatorId?: string;
         public notes?: string;
@@ -191,6 +208,7 @@ export module CodeMashHub2
 
     export class EmailToAllUsersDeliverySettingsRequest extends EmailCampaignRequest
     {
+        declare source: EmailCampaignRecipientsSourceTypes;
         public rolesNames?: string[];
         public userTags?: string[];
 
@@ -199,6 +217,7 @@ export module CodeMashHub2
 
     export class EmailToAccountUsersDeliverySettingsRequest extends EmailCampaignRequest
     {
+        declare source: EmailCampaignRecipientsSourceTypes;
         public userRecipients: string[] = [];
         public userCc?: string[];
         public userBcc?: string[];
@@ -215,6 +234,7 @@ export module CodeMashHub2
 
     export class EmailToCollectionRecordsDeliverySettingsRequest extends EmailCampaignRequest
     {
+        declare source: EmailCampaignRecipientsSourceTypes;
         public fields: string[] = [];
         public schemaName: string;
         public fieldType: CollectionEmailCampaignRecipientField;
@@ -226,6 +246,7 @@ export module CodeMashHub2
 
     export class EmailToEmailsDeliverySettingsRequest extends EmailCampaignRequest
     {
+        declare source: EmailCampaignRecipientsSourceTypes;
         public recipients: string[] = [];
         public recipientsCc?: string[];
         public recipientsBcc?: string[];
@@ -236,6 +257,7 @@ export module CodeMashHub2
 
     export class EmailToUsersDeliverySettingsRequest extends EmailCampaignRequest
     {
+        declare source: EmailCampaignRecipientsSourceTypes;
         public userRecipients: string[] = [];
         public userCc?: string[];
         public userBcc?: string[];
@@ -299,6 +321,7 @@ export module CodeMashHub2
 
     export class MembershipTriggerRequest extends SaveTriggerRequest
     {
+        declare type: TriggerType;
         public when: MembershipTriggerType;
 
         public constructor(init?: Partial<MembershipTriggerRequest>) { super(init); (Object as any).assign(this, init); }
@@ -313,6 +336,7 @@ export module CodeMashHub2
 
     export class SchemaTriggerRequest extends SaveTriggerRequest
     {
+        declare type: TriggerType;
         public schemaId: string;
         public when: SchemaTriggerType;
         public configurationCode?: string;
@@ -394,6 +418,7 @@ export module CodeMashHub2
 
     export class FilesTriggerRequest extends SaveTriggerRequest
     {
+        declare type: TriggerType;
         public when: FilesTriggerType;
         public fileRef: FileResourceRefDto;
 
@@ -409,6 +434,7 @@ export module CodeMashHub2
 
     export class PaymentTriggerRequest extends SaveTriggerRequest
     {
+        declare type: TriggerType;
         public when: PaymentTriggerType;
 
         public constructor(init?: Partial<PaymentTriggerRequest>) { super(init); (Object as any).assign(this, init); }
@@ -416,9 +442,8 @@ export module CodeMashHub2
 
     export enum DatabaseProvider
     {
-        CodeMashMongoDbAtlasCluster = 'CodeMashMongoDbAtlasCluster',
-        CodeMashMongoDbAtlasServerless = 'CodeMashMongoDbAtlasServerless',
         MongoDbConnectionString = 'MongoDbConnectionString',
+        CodeMashMongoDbAtlasFlexManaged = 'CodeMashMongoDbAtlasFlexManaged',
     }
 
     export class DatabaseIntegrationRequest
@@ -431,28 +456,21 @@ export module CodeMashHub2
         public constructor(init?: Partial<DatabaseIntegrationRequest>) { (Object as any).assign(this, init); }
     }
 
-    export class MongoDbAtlasServerlessDatabaseIntegrationRequest extends DatabaseIntegrationRequest
-    {
-        public databaseName?: string;
-        public connectionString: string;
-
-        public constructor(init?: Partial<MongoDbAtlasServerlessDatabaseIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class MongoDbAtlasClusterDatabaseIntegrationRequest extends DatabaseIntegrationRequest
-    {
-        public databaseName?: string;
-        public connectionString: string;
-
-        public constructor(init?: Partial<MongoDbAtlasClusterDatabaseIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class MongoDbConnectionStringDatabaseIntegrationRequest extends DatabaseIntegrationRequest
     {
+        declare provider: DatabaseProvider;
         public databaseName?: string;
         public connectionString: string;
 
         public constructor(init?: Partial<MongoDbConnectionStringDatabaseIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class MongoDbAtlasFlexManagedDatabaseIntegrationRequest extends DatabaseIntegrationRequest
+    {
+        declare provider: DatabaseProvider;
+        public norbixRegionCode: string;
+
+        public constructor(init?: Partial<MongoDbAtlasFlexManagedDatabaseIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class FilesIntegrationRequest
@@ -467,6 +485,7 @@ export module CodeMashHub2
 
     export class GoogleDriveFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public rootFolderId?: string;
         public serviceAccountJsonKey: string;
 
@@ -475,6 +494,7 @@ export module CodeMashHub2
 
     export class FtpFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public host: string;
         public port: number;
         public rootPath?: string;
@@ -487,6 +507,7 @@ export module CodeMashHub2
 
     export class DropBoxFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public rootPath?: string;
         public accessToken: string;
 
@@ -495,6 +516,7 @@ export module CodeMashHub2
 
     export class AppleICloudFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public containerIdentifier: string;
         public relativePath?: string;
         public keyId: string;
@@ -513,6 +535,7 @@ export module CodeMashHub2
 
     export class AwsS3FilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public integrationType: AwsS3IntegrationType;
         public bucketName: string;
         public region: string;
@@ -526,6 +549,7 @@ export module CodeMashHub2
 
     export class GoogleCloudFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public bucketName: string;
         public serviceAccountJsonKey: string;
 
@@ -534,6 +558,7 @@ export module CodeMashHub2
 
     export class AzureBlobFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public blobName: string;
         public connectionString: string;
 
@@ -542,6 +567,7 @@ export module CodeMashHub2
 
     export class LocalFilesIntegrationRequest extends FilesIntegrationRequest
     {
+        declare provider: FileProvider;
         public rootPath?: string;
 
         public constructor(init?: Partial<LocalFilesIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -550,14 +576,19 @@ export module CodeMashHub2
     export enum LoggingProvider
     {
         Console = 'Console',
+        NorbixLogging = 'NorbixLogging',
         DataDog = 'DataDog',
-        Kafka = 'Kafka',
-        Zabbix = 'Zabbix',
-        MicrosoftTeams = 'MicrosoftTeams',
-        Slack = 'Slack',
-        Telegram = 'Telegram',
-        AMQP = 'AMQP',
         NewRelic = 'NewRelic',
+        Sentry = 'Sentry',
+        GrafanaLoki = 'GrafanaLoki',
+        Axiom = 'Axiom',
+        ElasticCloud = 'ElasticCloud',
+        AWSCloudWatch = 'AWSCloudWatch',
+        GCPCloudLogging = 'GCPCloudLogging',
+        AzureMonitorLogs = 'AzureMonitorLogs',
+        GenericHttp = 'GenericHttp',
+        Kafka = 'Kafka',
+        AMQP = 'AMQP',
         Prometheus = 'Prometheus',
         AzureOTel = 'AzureOTel',
         Splunk = 'Splunk',
@@ -582,6 +613,7 @@ export module CodeMashHub2
 
     export class AmqpLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public host: string;
         public port: number;
         public virtualHost: string;
@@ -595,6 +627,7 @@ export module CodeMashHub2
 
     export class AwsKinesisLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public streamName: string;
         public region: string;
         public accessKey: string;
@@ -611,6 +644,7 @@ export module CodeMashHub2
 
     export class AwsS3LoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public integrationType: AwsS3LoggingIntegrationType;
         public bucketName: string;
         public region: string;
@@ -622,16 +656,9 @@ export module CodeMashHub2
         public constructor(init?: Partial<AwsS3LoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class TelegramLoggingIntegrationRequest extends LoggingIntegrationRequest
-    {
-        public chatId: string;
-        public botToken: string;
-
-        public constructor(init?: Partial<TelegramLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class NewRelicLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public region: string;
         public serviceName: string;
         public apiKey: string;
@@ -639,16 +666,9 @@ export module CodeMashHub2
         public constructor(init?: Partial<NewRelicLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class MicrosoftTeamsLoggingIntegrationRequest extends LoggingIntegrationRequest
-    {
-        public channelName?: string;
-        public webhookUrl: string;
-
-        public constructor(init?: Partial<MicrosoftTeamsLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class MongoDbLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public databaseName?: string;
         public connectionString: string;
 
@@ -657,6 +677,7 @@ export module CodeMashHub2
 
     export class KafkaLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public bootstrapServers: string;
         public topic: string;
         public securityProtocol?: string;
@@ -668,6 +689,7 @@ export module CodeMashHub2
 
     export class PrometheusLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public endpointUrl: string;
         public jobName?: string;
         public bearerToken?: string;
@@ -677,6 +699,7 @@ export module CodeMashHub2
 
     export class DataDogLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public site: string;
         public serviceName: string;
         public environment: string;
@@ -687,6 +710,7 @@ export module CodeMashHub2
 
     export class InternalKafkaLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public bootstrapServers: string;
         public topic: string;
         public securityProtocol?: string;
@@ -698,6 +722,7 @@ export module CodeMashHub2
 
     export class ElasticSearchLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public uri: string;
         public index: string;
         public username?: string;
@@ -706,17 +731,9 @@ export module CodeMashHub2
         public constructor(init?: Partial<ElasticSearchLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class ZabbixLoggingIntegrationRequest extends LoggingIntegrationRequest
-    {
-        public apiUrl: string;
-        public hostName: string;
-        public apiToken: string;
-
-        public constructor(init?: Partial<ZabbixLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class SplunkLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public hecEndpointUrl: string;
         public index: string;
         public hecToken: string;
@@ -726,6 +743,7 @@ export module CodeMashHub2
 
     export class AzureOtelLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public endpointUrl: string;
         public resourceName: string;
         public connectionString: string;
@@ -735,6 +753,7 @@ export module CodeMashHub2
 
     export class KibanaLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public uri: string;
         public spaceId?: string;
         public apiKey: string;
@@ -744,6 +763,7 @@ export module CodeMashHub2
 
     export class LocalFileLoggingIntegrationRequest extends LoggingIntegrationRequest
     {
+        declare provider: LoggingProvider;
         public rootPath?: string;
 
         public constructor(init?: Partial<LocalFileLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -817,6 +837,7 @@ export module CodeMashHub2
 
     export class OktaMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public domain: string;
         public clientId: string;
         public clientSecret: string;
@@ -827,6 +848,7 @@ export module CodeMashHub2
 
     export class XMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public apiKey: string;
         public apiSecretKey: string;
         public oAuthModes?: OAuthModeConfig[];
@@ -836,6 +858,7 @@ export module CodeMashHub2
 
     export class GoogleMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public clientId: string;
         public clientSecret: string;
         public oAuthModes?: OAuthModeConfig[];
@@ -845,6 +868,7 @@ export module CodeMashHub2
 
     export class MicrosoftMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public tenantId: string;
         public clientId: string;
         public clientSecret: string;
@@ -855,6 +879,7 @@ export module CodeMashHub2
 
     export class GitHubMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public clientId: string;
         public clientSecret: string;
         public oAuthModes?: OAuthModeConfig[];
@@ -864,6 +889,7 @@ export module CodeMashHub2
 
     export class MetaMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public appId: string;
         public appSecret: string;
         public oAuthModes?: OAuthModeConfig[];
@@ -873,6 +899,7 @@ export module CodeMashHub2
 
     export class AppleMembershipIntegrationRequest extends MembershipIntegrationRequest
     {
+        declare provider: MembershipProvider;
         public teamId: string;
         public appBundleId: string;
         public serviceId: string;
@@ -906,7 +933,7 @@ export module CodeMashHub2
     export class PaymentIntegrationRequest
     {
         public integrationId?: string;
-        public gatewayPlatform: PaymentGatewayPlatform;
+        public provider: PaymentGatewayPlatform;
         public integrationName: string;
         public isEnabled: boolean;
 
@@ -915,6 +942,7 @@ export module CodeMashHub2
 
     export class LemonSqueezyPaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public storeId: string;
         public apiKey: string;
         public webhookSigningSecret: string;
@@ -925,6 +953,7 @@ export module CodeMashHub2
 
     export class AdyenPaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public merchantAccount: string;
         public apiKey: string;
         public environment: string;
@@ -936,6 +965,7 @@ export module CodeMashHub2
 
     export class MolliePaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public profileId: string;
         public apiKey: string;
         public isTestMode: boolean;
@@ -945,6 +975,7 @@ export module CodeMashHub2
 
     export class PaddlePaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public apiKey: string;
         public webhookEndpointSecretKey: string;
         public environment: string;
@@ -955,6 +986,7 @@ export module CodeMashHub2
 
     export class PayPalPaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public clientId: string;
         public clientSecret: string;
         public environment: string;
@@ -965,6 +997,7 @@ export module CodeMashHub2
 
     export class StripePaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public publishableKey: string;
         public secretKey: string;
         public webhookSigningSecret: string;
@@ -976,6 +1009,7 @@ export module CodeMashHub2
 
     export class AppleInAppPaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public merchantIdentifier: string;
         public merchantDomain: string;
         public displayName: string;
@@ -989,6 +1023,7 @@ export module CodeMashHub2
 
     export class GoogleInAppPaymentIntegrationRequest extends PaymentIntegrationRequest
     {
+        declare provider: PaymentGatewayPlatform;
         public merchantId: string;
         public merchantName: string;
         public gateway: string;
@@ -1016,6 +1051,7 @@ export module CodeMashHub2
         CodeMashChromePlugin = 'CodeMashChromePlugin',
         CodeMashChromeWeb = 'CodeMashChromeWeb',
         Expo = 'Expo',
+        Fake = 'Fake',
     }
 
     export class PushIntegrationRequest
@@ -1030,6 +1066,7 @@ export module CodeMashHub2
 
     export class EdgeWebPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public vapidPublicKey: string;
         public vapidPrivateKey: string;
         public subject?: string;
@@ -1039,6 +1076,7 @@ export module CodeMashHub2
 
     export class ChromePluginPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public extensionId: string;
         public vapidPublicKey: string;
         public vapidPrivateKey: string;
@@ -1049,6 +1087,7 @@ export module CodeMashHub2
 
     export class SafariPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public websitePushId: string;
         public certificateP12Base64: string;
         public certificatePassword: string;
@@ -1058,6 +1097,7 @@ export module CodeMashHub2
 
     export class ChromeWebPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public vapidPublicKey: string;
         public vapidPrivateKey: string;
         public subject?: string;
@@ -1067,6 +1107,7 @@ export module CodeMashHub2
 
     export class FirefoxWebPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public vapidPublicKey: string;
         public vapidPrivateKey: string;
         public subject?: string;
@@ -1076,6 +1117,7 @@ export module CodeMashHub2
 
     export class AndroidFirebasePushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public projectId: string;
         public clientEmail: string;
         public serviceAccountJson: string;
@@ -1085,6 +1127,7 @@ export module CodeMashHub2
 
     export class AppleApnsPushIntegrationRequest extends PushIntegrationRequest
     {
+        declare provider: PushProvider;
         public teamId: string;
         public appBundleId: string;
         public keyId: string;
@@ -1126,6 +1169,7 @@ export module CodeMashHub2
 
     export class AwsLambdaCodeIntegrationRequest extends CodeIntegrationRequest
     {
+        declare provider: CodeProvider;
         public integrationType: AwsLambdaIntegrationType;
         public region: string;
         public roleArn?: string;
@@ -1138,6 +1182,7 @@ export module CodeMashHub2
 
     export class AzureFunctionsCodeIntegrationRequest extends CodeIntegrationRequest
     {
+        declare provider: CodeProvider;
         public functionAppName: string;
         public resourceGroup?: string;
         public connectionStringOrKey: string;
@@ -1147,6 +1192,7 @@ export module CodeMashHub2
 
     export class GoogleCloudFunctionsCodeIntegrationRequest extends CodeIntegrationRequest
     {
+        declare provider: CodeProvider;
         public projectId: string;
         public region?: string;
         public serviceAccountJsonKey: string;
@@ -1180,12 +1226,14 @@ export module CodeMashHub2
 
     export class OllamaLlmIntegrationRequest extends LlmIntegrationRequest
     {
+        declare provider: LlmProvider;
 
         public constructor(init?: Partial<OllamaLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class OpenRouterLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<OpenRouterLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1193,6 +1241,7 @@ export module CodeMashHub2
 
     export class MistralLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<MistralLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1200,6 +1249,7 @@ export module CodeMashHub2
 
     export class GrokLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<GrokLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1207,6 +1257,7 @@ export module CodeMashHub2
 
     export class GroqLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<GroqLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1214,6 +1265,7 @@ export module CodeMashHub2
 
     export class GoogleLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<GoogleLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1221,6 +1273,7 @@ export module CodeMashHub2
 
     export class AnthropicLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<AnthropicLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1228,6 +1281,7 @@ export module CodeMashHub2
 
     export class OpenAiLlmIntegrationRequest extends LlmIntegrationRequest implements ILlmApiKeyRequest
     {
+        declare provider: LlmProvider;
         public apiKey: string;
 
         public constructor(init?: Partial<OpenAiLlmIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
@@ -1238,6 +1292,11 @@ export module CodeMashHub2
         Docker = 'Docker',
         Obsidian = 'Obsidian',
         GoogleCalendar = 'GoogleCalendar',
+        Stripe = 'Stripe',
+        GitHub = 'GitHub',
+        MongoDb = 'MongoDb',
+        Playwright = 'Playwright',
+        BraveSearch = 'BraveSearch',
     }
 
     export enum McpTransport
@@ -1264,6 +1323,8 @@ export module CodeMashHub2
 
     export class PlaywrightMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public command?: string;
         public args?: string[];
         public headless: string;
@@ -1273,6 +1334,8 @@ export module CodeMashHub2
 
     export class MongoDbMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public command?: string;
         public args?: string[];
         public connectionString: string;
@@ -1282,6 +1345,8 @@ export module CodeMashHub2
 
     export class GitHubMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public serverUrl: string;
         public accessToken: string;
 
@@ -1290,6 +1355,8 @@ export module CodeMashHub2
 
     export class StripeMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public serverUrl: string;
         public apiKey: string;
 
@@ -1298,6 +1365,8 @@ export module CodeMashHub2
 
     export class BraveSearchMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public serverUrl: string;
         public apiKey: string;
 
@@ -1306,6 +1375,8 @@ export module CodeMashHub2
 
     export class ObsidianMcpIntegrationRequest extends McpIntegrationRequest
     {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public command?: string;
         public args?: string[];
         public environmentVariables?: { [index:string]: string; };
@@ -1320,9 +1391,19 @@ export module CodeMashHub2
         System = 'System',
     }
 
-    // @DataContract
-    export class TemplateDto implements IHasViewId
+    export enum NotificationMedium
     {
+        Email = 'Email',
+        Sms = 'Sms',
+        Push = 'Push',
+    }
+
+    // @DataContract
+    export class TemplateDto implements IHasViewId, IHasDatabaseId
+    {
+        // @DataMember
+        public id?: string;
+
         // @DataMember
         public viewId: string;
 
@@ -1334,6 +1415,9 @@ export module CodeMashHub2
 
         // @DataMember
         public communicationChannel: CommunicationChannel;
+
+        // @DataMember
+        public medium: NotificationMedium;
 
         // @DataMember
         public isActive: boolean;
@@ -1379,7 +1463,7 @@ export module CodeMashHub2
         public body: EmailBodyDto;
 
         // @DataMember
-        public staticAttachments?: IReadOnlySet<FileResourceRefDto>;
+        public staticAttachments?: FileResourceRefDto[];
 
         public constructor(init?: Partial<EmailMessageContentDto>) { (Object as any).assign(this, init); }
     }
@@ -1394,7 +1478,7 @@ export module CodeMashHub2
         public content: EmailMessageContentDto;
 
         // @DataMember
-        public staticAttachments?: IReadOnlySet<FileResourceRefDto>;
+        public staticAttachments?: FileResourceRefDto[];
 
         public constructor(init?: Partial<EmailMessageTranslationDto>) { (Object as any).assign(this, init); }
     }
@@ -1403,10 +1487,10 @@ export module CodeMashHub2
     export class EmailTemplateDto extends TemplateDto implements IBindableContract
     {
         // @DataMember
-        public translations: IReadOnlySet<EmailMessageTranslationDto>;
+        public translations: EmailMessageTranslationDto[] = [];
 
         // @DataMember
-        public staticAttachments?: IReadOnlySet<FileResourceRefDto>;
+        public staticAttachments?: FileResourceRefDto[];
 
         public constructor(init?: Partial<EmailTemplateDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1439,7 +1523,7 @@ export module CodeMashHub2
     export class PushTemplateDto extends TemplateDto implements IHasRazorTemplateCode, IBindableContract
     {
         // @DataMember
-        public translations: IReadOnlySet<PushMessageTranslationDto>;
+        public translations: PushMessageTranslationDto[] = [];
 
         public constructor(init?: Partial<PushTemplateDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1472,7 +1556,7 @@ export module CodeMashHub2
     export class SmsTemplateDto extends TemplateDto implements IHasRazorTemplateCode, IBindableContract
     {
         // @DataMember
-        public translations: IReadOnlySet<SmsMessageTranslationDto>;
+        public translations: SmsMessageTranslationDto[] = [];
 
         public constructor(init?: Partial<SmsTemplateDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1485,7 +1569,7 @@ export module CodeMashHub2
     }
 
     // @DataContract
-    export class SystemEmailTemplateDto extends EmailTemplateDto implements IHasDatabaseId
+    export class SystemEmailTemplateDto extends EmailTemplateDto
     {
         // @DataMember
         public imagePreview: string;
@@ -1505,9 +1589,6 @@ export module CodeMashHub2
         // @DataMember
         public hiddenSystemEmailTemplate: boolean;
 
-        // @DataMember
-        public id?: string;
-
         public constructor(init?: Partial<SystemEmailTemplateDto>) { super(init); (Object as any).assign(this, init); }
     }
 
@@ -1525,7 +1606,7 @@ export module CodeMashHub2
         public recipientsSourceType: EmailCampaignRecipientsSourceTypes;
 
         // @DataMember
-        public mappedTokens?: IReadOnlySet<TokenMappingDto>;
+        public mappedTokens?: TokenMappingDto[];
 
         // @DataMember
         public campaignTime?: number;
@@ -1554,6 +1635,7 @@ export module CodeMashHub2
         SpecifiedUsers = 'SpecifiedUsers',
         Collection = 'Collection',
         Devices = 'Devices',
+        AccountUsers = 'AccountUsers',
     }
 
     // @DataContract
@@ -1611,6 +1693,9 @@ export module CodeMashHub2
     export class WebhookDeliverySettingsDto
     {
         // @DataMember
+        public destinationIds?: string[];
+
+        // @DataMember
         public eventName?: string;
 
         // @DataMember
@@ -1620,7 +1705,7 @@ export module CodeMashHub2
         public includeRawPayload: boolean;
 
         // @DataMember
-        public mappedTokens?: IReadOnlySet<TokenMappingDto>;
+        public mappedTokens?: TokenMappingDto[];
 
         public constructor(init?: Partial<WebhookDeliverySettingsDto>) { (Object as any).assign(this, init); }
     }
@@ -1638,10 +1723,10 @@ export module CodeMashHub2
     export class EmailToAllUsersDeliverySettingsDto extends EmailCampaignDeliverySettingsDto
     {
         // @DataMember
-        public rolesNames?: IReadOnlySet<string>;
+        public rolesNames?: string[];
 
         // @DataMember
-        public userTags?: IReadOnlySet<string>;
+        public userTags?: string[];
 
         public constructor(init?: Partial<EmailToAllUsersDeliverySettingsDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1650,13 +1735,13 @@ export module CodeMashHub2
     export class EmailToAccountUsersDeliverySettingsDto extends EmailCampaignDeliverySettingsDto
     {
         // @DataMember
-        public userRecipients: IReadOnlySet<string>;
+        public userRecipients: string[] = [];
 
         // @DataMember
-        public userCc?: IReadOnlySet<string>;
+        public userCc?: string[];
 
         // @DataMember
-        public userBcc?: IReadOnlySet<string>;
+        public userBcc?: string[];
 
         // @DataMember
         public singleEmailStrategy: boolean;
@@ -1668,13 +1753,13 @@ export module CodeMashHub2
     export class EmailToUsersDeliverySettingsDto extends EmailCampaignDeliverySettingsDto
     {
         // @DataMember
-        public userRecipients: IReadOnlySet<string>;
+        public userRecipients: string[] = [];
 
         // @DataMember
-        public userCc?: IReadOnlySet<string>;
+        public userCc?: string[];
 
         // @DataMember
-        public userBcc?: IReadOnlySet<string>;
+        public userBcc?: string[];
 
         // @DataMember
         public singleEmailStrategy: boolean;
@@ -1686,13 +1771,13 @@ export module CodeMashHub2
     export class EmailToEmailAddressesDeliverySettingsDto extends EmailCampaignDeliverySettingsDto
     {
         // @DataMember
-        public recipients: IReadOnlySet<string>;
+        public recipients: string[] = [];
 
         // @DataMember
-        public recipientsCc?: IReadOnlySet<string>;
+        public recipientsCc?: string[];
 
         // @DataMember
-        public recipientsBcc?: IReadOnlySet<string>;
+        public recipientsBcc?: string[];
 
         // @DataMember
         public singleEmailStrategy: boolean;
@@ -1704,7 +1789,7 @@ export module CodeMashHub2
     export class EmailToCollectionRecordsDeliverySettingsDto extends EmailCampaignDeliverySettingsDto
     {
         // @DataMember
-        public fields: IReadOnlySet<string>;
+        public fields: string[] = [];
 
         // @DataMember
         public schemaName: string;
@@ -1713,10 +1798,10 @@ export module CodeMashHub2
         public fieldType: CollectionEmailCampaignRecipientField;
 
         // @DataMember
-        public roleNames?: IReadOnlySet<string>;
+        public roleNames?: string[];
 
         // @DataMember
-        public languages?: IReadOnlySet<string>;
+        public languages?: string[];
 
         public constructor(init?: Partial<EmailToCollectionRecordsDeliverySettingsDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1740,6 +1825,15 @@ export module CodeMashHub2
         public recipients: string[] = [];
 
         public constructor(init?: Partial<PushToUsersDeliverySettingsDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushToAccountUsersDeliverySettingsDto extends PushCampaignDeliverySettingsDto
+    {
+        // @DataMember
+        public recipients: string[] = [];
+
+        public constructor(init?: Partial<PushToAccountUsersDeliverySettingsDto>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -1862,6 +1956,7 @@ export module CodeMashHub2
         public viewId: string;
         public integrationName: string;
         public isEnabled: boolean;
+        public env?: string;
         public lastIntegrationTestAtUtc?: string;
         public lastIntegrationTestSucceeded?: boolean;
         public lastIntegrationTestErrors: IReadOnlyList<string>;
@@ -1873,7 +1968,7 @@ export module CodeMashHub2
 
     export class LlmIntegrationDto extends IntegrationDto
     {
-        public provider: LlmProvider;
+        declare provider: LlmProvider;
         public baseUrl?: string;
         public defaultModel?: string;
         public isConfigured: boolean;
@@ -1949,8 +2044,8 @@ export module CodeMashHub2
 
     export class McpIntegrationDto extends IntegrationDto
     {
-        public provider: McpProvider;
-        public transport: McpTransport;
+        declare provider: McpProvider;
+        declare transport: McpTransport;
         public metadata: McpMetadata;
         public isConfigured: boolean;
         public isSystemOwned: boolean;
@@ -1982,7 +2077,7 @@ export module CodeMashHub2
 
     export class CodeIntegrationDto extends IntegrationDto
     {
-        public provider: CodeProvider;
+        declare provider: CodeProvider;
 
         public constructor(init?: Partial<CodeIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2158,7 +2253,7 @@ export module CodeMashHub2
 
     export class MembershipIntegrationDto extends IntegrationDto
     {
-        public provider: MembershipProvider;
+        declare provider: MembershipProvider;
 
         public constructor(init?: Partial<MembershipIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2218,7 +2313,7 @@ export module CodeMashHub2
 
     export class LoggingIntegrationDto extends IntegrationDto
     {
-        public provider: LoggingProvider;
+        declare provider: LoggingProvider;
 
         public constructor(init?: Partial<LoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2318,13 +2413,6 @@ export module CodeMashHub2
         public constructor(init?: Partial<LocalFileLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class MicrosoftTeamsLoggingIntegrationDto extends LoggingIntegrationDto
-    {
-        public channelName?: string;
-
-        public constructor(init?: Partial<MicrosoftTeamsLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class MongoDbLoggingIntegrationDto extends LoggingIntegrationDto
     {
         public databaseName?: string;
@@ -2356,31 +2444,9 @@ export module CodeMashHub2
         public constructor(init?: Partial<SplunkLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class TelegramLoggingIntegrationDto extends LoggingIntegrationDto
-    {
-        public chatId: string;
-
-        public constructor(init?: Partial<TelegramLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class ZabbixLoggingIntegrationDto extends LoggingIntegrationDto
-    {
-        public apiUrl: string;
-        public hostName: string;
-
-        public constructor(init?: Partial<ZabbixLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class SlackLoggingIntegrationDto extends LoggingIntegrationDto
-    {
-        public channelName?: string;
-
-        public constructor(init?: Partial<SlackLoggingIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class FilesIntegrationDto extends IntegrationDto
     {
-        public provider: FileProvider;
+        declare provider: FileProvider;
 
         public constructor(init?: Partial<FilesIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2458,23 +2524,9 @@ export module CodeMashHub2
 
     export class DatabaseIntegrationDto extends IntegrationDto
     {
-        public provider: DatabaseProvider;
+        declare provider: DatabaseProvider;
 
         public constructor(init?: Partial<DatabaseIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class MongoDbAtlasClusterIntegrationDto extends DatabaseIntegrationDto
-    {
-        public databaseName?: string;
-
-        public constructor(init?: Partial<MongoDbAtlasClusterIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class MongoDbAtlasServerlessIntegrationDto extends DatabaseIntegrationDto
-    {
-        public databaseName?: string;
-
-        public constructor(init?: Partial<MongoDbAtlasServerlessIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class MongoDbConnectionStringIntegrationDto extends DatabaseIntegrationDto
@@ -2482,6 +2534,29 @@ export module CodeMashHub2
         public databaseName?: string;
 
         public constructor(init?: Partial<MongoDbConnectionStringIntegrationDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export enum IntegrationStatus
+    {
+        Unknown = 'Unknown',
+        Pending = 'Pending',
+        Provisioning = 'Provisioning',
+        Active = 'Active',
+        Failed = 'Failed',
+        Deprovisioning = 'Deprovisioning',
+    }
+
+    export class MongoDbAtlasFlexManagedIntegrationDto extends DatabaseIntegrationDto
+    {
+        public databaseName?: string;
+        public norbixRegionCode: string;
+        public flexTierCode: string;
+        public status: IntegrationStatus;
+        public atlasProjectId?: string;
+        public atlasClusterName?: string;
+        public failureReason?: string;
+
+        public constructor(init?: Partial<MongoDbAtlasFlexManagedIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
     export enum SmsProvider
@@ -2493,11 +2568,12 @@ export module CodeMashHub2
         Bird = 'Bird',
         Telesign = 'Telesign',
         Sinch = 'Sinch',
+        Fake = 'Fake',
     }
 
     export class SmsIntegrationDto extends IntegrationDto
     {
-        public provider: SmsProvider;
+        declare provider: SmsProvider;
 
         public constructor(init?: Partial<SmsIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2560,7 +2636,7 @@ export module CodeMashHub2
 
     export class PushIntegrationDto extends IntegrationDto
     {
-        public provider: PushProvider;
+        declare provider: PushProvider;
 
         public constructor(init?: Partial<PushIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2623,11 +2699,17 @@ export module CodeMashHub2
 
     export class EmailIntegrationDto extends IntegrationDto
     {
-        public provider: EmailProvider;
+        declare provider: EmailProvider;
         public emailAddress: string;
         public emailSenderName?: string;
 
         public constructor(init?: Partial<EmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class FakeEmailIntegrationDto extends EmailIntegrationDto
+    {
+
+        public constructor(init?: Partial<FakeEmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class AwsSesEmailIntegrationDto extends EmailIntegrationDto
@@ -2656,6 +2738,7 @@ export module CodeMashHub2
     export class MailGunEmailIntegrationDto extends EmailIntegrationDto
     {
         public domain: string;
+        public region: MailGunRegion;
 
         public constructor(init?: Partial<MailGunEmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2690,7 +2773,7 @@ export module CodeMashHub2
         public selectedEvents: IReadOnlyList<string>;
 
         // @DataMember
-        public extraHeaders?: IReadOnlyDictionary<string, string>;
+        public extraHeaders?: IReadOnlyDictionary<string>;
 
         // @DataMember
         public isEnabled: boolean;
@@ -2700,8 +2783,9 @@ export module CodeMashHub2
 
     export class WebhookIntegrationDto extends IntegrationDto
     {
+        public isConfigured: boolean;
         public destinations: IReadOnlyList<WebhookDestinationDto>;
-        public extraHeaders?: IReadOnlyDictionary<string, string>;
+        public extraHeaders?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<WebhookIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2810,7 +2894,7 @@ export module CodeMashHub2
         public listingViewId: string;
 
         // @DataMember
-        public transport: MarketplaceTransport;
+        declare transport: MarketplaceTransport;
 
         // @DataMember
         public vendor: string;
@@ -2822,43 +2906,9 @@ export module CodeMashHub2
         public description?: string;
 
         // @DataMember
-        public config: IReadOnlyDictionary<string, string>;
+        public config: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<MarketplaceIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export enum MarketplaceMappingSource
-    {
-        Default = 'Default',
-        Resolver = 'Resolver',
-        FromRequest = 'FromRequest',
-    }
-
-    // @DataContract
-    export class MarketplaceMappingDto
-    {
-        // @DataMember
-        public parameterName: string;
-
-        // @DataMember
-        public source: MarketplaceMappingSource;
-
-        // @DataMember
-        public defaultValue?: string;
-
-        // @DataMember
-        public resolver?: TokenMappingResolverType;
-
-        // @DataMember
-        public tokenKey?: string;
-
-        // @DataMember
-        public fromRequestPath?: string;
-
-        // @DataMember
-        public isRequired: boolean;
-
-        public constructor(init?: Partial<MarketplaceMappingDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -2883,7 +2933,10 @@ export module CodeMashHub2
         public isEnabled: boolean;
 
         // @DataMember
-        public mappings: IReadOnlyList<MarketplaceMappingDto>;
+        public requestTemplate: string;
+
+        // @DataMember
+        public mappedTokens: TokenMappingDto[] = [];
 
         public constructor(init?: Partial<MarketplaceFunctionBindingDto>) { (Object as any).assign(this, init); }
     }
@@ -2926,6 +2979,12 @@ export module CodeMashHub2
 
         // @DataMember
         public parameters: IReadOnlyList<MarketplaceFunctionParameterDto>;
+
+        // @DataMember
+        public requestSchema?: string;
+
+        // @DataMember
+        public requestTemplate?: string;
 
         public constructor(init?: Partial<MarketplaceFunctionDefinitionDto>) { (Object as any).assign(this, init); }
     }
@@ -3021,11 +3080,26 @@ export module CodeMashHub2
         accountId: string;
     }
 
-    export class CodeMashRequestBase extends RequestBase implements IHasProjectId
+    export class Env
+    {
+        public value: string;
+        public isProd: boolean;
+
+        public constructor(init?: Partial<Env>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract(Namespace="http://codemash.io/types/")
+    export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
+        // @DataMember
         // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
         public projectId: string;
+
+        /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
+        public env?: string;
 
         public constructor(init?: Partial<CodeMashRequestBase>) { super(init); (Object as any).assign(this, init); }
     }
@@ -3033,6 +3107,11 @@ export module CodeMashHub2
     export interface IHasProjectId
     {
         projectId: string;
+    }
+
+    export interface IHasEnv
+    {
+        env?: string;
     }
 
     // @DataContract
@@ -3127,6 +3206,7 @@ export module CodeMashHub2
     {
         public value: string;
         public get viewId(): string { return this.value; }
+        public viewId?: string;
 
         public constructor(init?: Partial<AggregateId>) { (Object as any).assign(this, init); }
     }
@@ -3167,11 +3247,53 @@ export module CodeMashHub2
         public constructor(init?: Partial<CodeMashSubscriptionId>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class ExternalCustomerId
+    export class ProjectId extends AggregateId implements IHasDomainEntityId
     {
-        public id: string;
 
-        public constructor(init?: Partial<ExternalCustomerId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<ProjectId>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class IntegrationId extends AggregateId implements IHasDomainEntityId
+    {
+
+        public constructor(init?: Partial<IntegrationId>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export enum ResourceRefKind
+    {
+        Contact = 'Contact',
+        Document = 'Document',
+        File = 'File',
+        PaymentCustomer = 'PaymentCustomer',
+        Order = 'Order',
+        Payment = 'Payment',
+        Product = 'Product',
+        Integration = 'Integration',
+    }
+
+    export class ResourceRef
+    {
+        public projectId: ProjectId;
+        public integrationId?: IntegrationId;
+        public kind: ResourceRefKind;
+
+        public constructor(init?: Partial<ResourceRef>) { (Object as any).assign(this, init); }
+    }
+
+    export enum ResourceSource
+    {
+        Norbix = 'Norbix',
+        Stripe = 'Stripe',
+        Shopify = 'Shopify',
+    }
+
+    export class PaymentCustomerRef extends ResourceRef
+    {
+        declare kind: ResourceRefKind;
+        declare source: ResourceSource;
+        public externalId: string;
+
+        public constructor(init?: Partial<PaymentCustomerRef>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class Quantity
@@ -3184,7 +3306,7 @@ export module CodeMashHub2
     export class CodeMashManagedServiceSubscription
     {
         public subscriptionId: CodeMashSubscriptionId;
-        public refCustomerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
         public refSubscriptionId: string;
         public issuedOn: UtcDateTime;
         public willExpireOn: UtcDateTime;
@@ -3210,12 +3332,6 @@ export module CodeMashHub2
         public constructor(init?: Partial<CodeMashLicense>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class ProjectId extends AggregateId implements IHasDomainEntityId
-    {
-
-        public constructor(init?: Partial<ProjectId>) { super(init); (Object as any).assign(this, init); }
-    }
-
     // @DataContract
     export class ProjectName
     {
@@ -3228,17 +3344,11 @@ export module CodeMashHub2
         public constructor(init?: Partial<ProjectName>) { (Object as any).assign(this, init); }
     }
 
-    export class IntegrationId extends AggregateId implements IHasDomainEntityId
+    export class NorbixRegion
     {
+        public code: string;
 
-        public constructor(init?: Partial<IntegrationId>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class ProjectRegionId
-    {
-        public value: string;
-
-        public constructor(init?: Partial<ProjectRegionId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<NorbixRegion>) { (Object as any).assign(this, init); }
     }
 
     export enum Continent
@@ -3256,7 +3366,7 @@ export module CodeMashHub2
     export class ProjectRegion
     {
         // @DataMember
-        public id: ProjectRegionId;
+        public region: NorbixRegion;
 
         // @DataMember
         public name?: string;
@@ -3314,18 +3424,36 @@ export module CodeMashHub2
         public constructor(init?: Partial<FileResource>) { (Object as any).assign(this, init); }
     }
 
+    // @DataContract
+    export class FileResourceRef
+    {
+        // @DataMember(Order=1)
+        public resource: FileResource;
+
+        // @DataMember(Order=2)
+        public integrationId: IntegrationId;
+
+        // @DataMember(Order=3)
+        public provider: FileProvider;
+
+        // @DataMember(Order=4)
+        public path: string;
+
+        public constructor(init?: Partial<FileResourceRef>) { (Object as any).assign(this, init); }
+    }
+
     export class ProjectLogo
     {
-        public fileResource: FileResource;
-        public publicUrl?: string;
+        public fileResource: FileResourceRef;
+        public publicUrl: string;
 
         public constructor(init?: Partial<ProjectLogo>) { (Object as any).assign(this, init); }
     }
 
     export class ProjectIcon
     {
-        public fileResource: FileResource;
-        public publicUrl?: string;
+        public fileResource: FileResourceRef;
+        public publicUrl: string;
 
         public constructor(init?: Partial<ProjectIcon>) { (Object as any).assign(this, init); }
     }
@@ -3435,6 +3563,55 @@ export module CodeMashHub2
         public constructor(init?: Partial<TimeZone>) { (Object as any).assign(this, init); }
     }
 
+    export class BillingPeriod
+    {
+        public year: number;
+        public month: number;
+        public startUtc: string;
+        public endExclusiveUtc: string;
+        public lastInstantUtc: string;
+
+        public constructor(init?: Partial<BillingPeriod>) { (Object as any).assign(this, init); }
+    }
+
+    export class AtlasClusterChargeRecord
+    {
+        public atlasProjectId: string;
+        public atlasClusterName: string;
+        public cents: number;
+
+        public constructor(init?: Partial<AtlasClusterChargeRecord>) { (Object as any).assign(this, init); }
+    }
+
+    export class AtlasUsageRecord
+    {
+        public period: BillingPeriod;
+        public totalCents: number;
+        public perCluster: IReadOnlyList<AtlasClusterChargeRecord>;
+        public recordedAtUtc: UtcDateTime;
+
+        public constructor(init?: Partial<AtlasUsageRecord>) { (Object as any).assign(this, init); }
+    }
+
+    export enum UsageIngestionFailureReason
+    {
+        UnknownCustomer = 1,
+        MeterNotFound = 2,
+        ValidationFailed = 3,
+        ImportSetFailed = 4,
+    }
+
+    export class UsageIngestionFailure
+    {
+        public reason: UsageIngestionFailureReason;
+        public period?: BillingPeriod;
+        public stripeEventId: string;
+        public message: string;
+        public reportedAtUtc: UtcDateTime;
+
+        public constructor(init?: Partial<UsageIngestionFailure>) { (Object as any).assign(this, init); }
+    }
+
     // @DataContract
     export class DeleteTrigger extends CodeMashRequestBase
     {
@@ -3483,21 +3660,42 @@ export module CodeMashHub2
     export class GetTrigger extends CodeMashRequestBase
     {
         public id: string;
+        public schemaId?: string;
 
         public constructor(init?: Partial<GetTrigger>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class CodeMashListPaginationRequestBase extends RequestBase implements IHasProjectId
+    export class CodeMashListPaginationRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
         // @DataMember
         // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
         public projectId: string;
 
-        /** @description Paging */
+        /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
         // @DataMember
-        // @ApiMember(DataType="object", Description="Paging", IsRequired=true, Name="paging", ParameterType="body")
-        public paging: PagingArgs;
+        // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
+        public env?: string;
+
+        public resolvedEnv: Env;
+        /** @description Cursor token — fetch the page AFTER this item. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Cursor token — fetch the page AFTER this item.", Name="startingAfter", ParameterType="query")
+        public startingAfter?: string;
+
+        /** @description Cursor token — fetch the page BEFORE this item. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Cursor token — fetch the page BEFORE this item.", Name="endingBefore", ParameterType="query")
+        public endingBefore?: string;
+
+        /** @description Amount of records to return. */
+        // @DataMember
+        // @ApiMember(DataType="integer", Description="Amount of records to return.", Format="int32", Name="pageSize", ParameterType="query")
+        public pageSize?: number;
+
+        /** @description Paging */
+        // @ApiMember(DataType="object", Description="Paging", Name="paging", ParameterType="body")
+        public paging?: PagingArgs;
 
         public constructor(init?: Partial<CodeMashListPaginationRequestBase>) { super(init); (Object as any).assign(this, init); }
     }
@@ -3505,6 +3703,8 @@ export module CodeMashHub2
     // @DataContract
     export class GetTriggers extends CodeMashListPaginationRequestBase
     {
+        // @DataMember
+        public schemaId?: string;
 
         public constructor(init?: Partial<GetTriggers>) { super(init); (Object as any).assign(this, init); }
     }
@@ -3520,8 +3720,9 @@ export module CodeMashHub2
 
     export class Integration implements IIntegrationIdentification, IHasDomainEntityId
     {
+        public viewId?: string;
         public integrationId: IntegrationId;
-        public get viewId(): string { return this.integrationId?.viewId; }
+        public env: Env;
         public capability: string;
         public isSystemOwned: boolean;
         public integrationName: DisplayName;
@@ -3538,7 +3739,7 @@ export module CodeMashHub2
 
     export class MembershipIntegration extends Integration
     {
-        public provider: MembershipProvider;
+        declare provider: MembershipProvider;
 
         public constructor(init?: Partial<MembershipIntegration>) { super(init); (Object as any).assign(this, init); }
     }
@@ -3575,6 +3776,10 @@ export module CodeMashHub2
         ServerEvents = 512,
         Ai = 1024,
         Sms = 2048,
+        Project = 4096,
+        Compliance = 8192,
+        Contacts = 16384,
+        Marketplace = 32768,
     }
 
     export class PermissionAction
@@ -3697,15 +3902,15 @@ export module CodeMashHub2
 
     export class Trigger implements IHasDomainEntityId
     {
+        public viewId?: string;
         public triggerId: TriggerId;
-        public get viewId(): string { return this.triggerId?.viewId; }
         public name: DisplayName;
         public triggerAction: TriggerAction;
         public activationCode?: TemplateCode;
         public description?: string;
         public isEnabled: boolean;
+        public env: Env;
         public integrationId?: IntegrationId;
-        public type: TriggerType;
 
         public constructor(init?: Partial<Trigger>) { (Object as any).assign(this, init); }
     }
@@ -3728,6 +3933,9 @@ export module CodeMashHub2
     {
         // @DataMember
         public softDelete: boolean;
+
+        // @DataMember
+        public hasRecordOwner: boolean;
 
         public constructor(init?: Partial<SchemaSettingsDto>) { (Object as any).assign(this, init); }
     }
@@ -3764,9 +3972,23 @@ export module CodeMashHub2
 
     export class DatabaseIntegration extends Integration
     {
-        public provider: DatabaseProvider;
+        declare provider: DatabaseProvider;
+        public status: IntegrationStatus;
+        public atlasProjectId?: string;
+        public atlasClusterName?: string;
+        public failureReason?: string;
 
         public constructor(init?: Partial<DatabaseIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export enum ProjectStatus
+    {
+        Active = 'Active',
+        Provisioning = 'Provisioning',
+        ProvisioningFailed = 'ProvisioningFailed',
+        NoDatabase = 'NoDatabase',
+        Disabled = 'Disabled',
+        Removed = 'Removed',
     }
 
     export class SchemaName
@@ -3843,15 +4065,17 @@ export module CodeMashHub2
     export class SchemaSettings
     {
         public softDelete: boolean;
+        public hasRecordOwner: boolean;
 
         public constructor(init?: Partial<SchemaSettings>) { (Object as any).assign(this, init); }
     }
 
     export class Schema implements IHasDomainEntityId
     {
+        public viewId?: string;
         public schemaName: SchemaName;
         public id: SchemaId;
-        public get viewId(): string { return this.id?.viewId; }
+        public env: Env;
         public draft?: SchemaDraft;
         public publishedVersions: IReadOnlyList<PublishedSchemaVersion>;
         public triggers?: Trigger[];
@@ -3894,9 +4118,9 @@ export module CodeMashHub2
 
     export class Taxonomy implements IHasDomainEntityId
     {
+        public viewId?: string;
         public parentId?: TaxonomyId;
         public id: TaxonomyId;
-        public get viewId(): string { return this.id?.viewId; }
         public name: TaxonomyName;
         public description?: string;
         public termsMetaVisualSchema?: VisualSchema;
@@ -3914,6 +4138,48 @@ export module CodeMashHub2
         public configuration?: TemplateCode;
 
         public constructor(init?: Partial<SchemaTrigger>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class UserId implements IHasDomainEntityId
+    {
+        public viewId?: string;
+        public value: string;
+
+        public constructor(init?: Partial<UserId>) { (Object as any).assign(this, init); }
+    }
+
+    export class FileIntegration extends Integration
+    {
+        declare provider: FileProvider;
+
+        public constructor(init?: Partial<FileIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class FileTrigger extends Trigger
+    {
+        public when: FilesTriggerType;
+        public fileResourceRef?: FileResourceRef;
+
+        public constructor(init?: Partial<FileTrigger>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export enum EmailValidationProvider
+    {
+        ZeroBounce = 1,
+        NeverBounce = 2,
+        Bouncer = 3,
+        MailgunValidate = 4,
+    }
+
+    export class EmailValidationIntegrationRequest
+    {
+        public integrationId?: string;
+        public provider: EmailValidationProvider;
+        public integrationName: string;
+        public isEnabled: boolean;
+
+        public constructor(init?: Partial<EmailValidationIntegrationRequest>) { (Object as any).assign(this, init); }
     }
 
     export class SaveEmailTemplate extends CodeMashRequestBase
@@ -3949,6 +4215,16 @@ export module CodeMashHub2
         public constructor(init?: Partial<EmailFooterId>) { (Object as any).assign(this, init); }
     }
 
+    export class EmailFooter
+    {
+        public id: EmailFooterId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<TemplateCode>[] = [];
+        public env: Env;
+
+        public constructor(init?: Partial<EmailFooter>) { (Object as any).assign(this, init); }
+    }
+
     // @DataContract
     export class EmailSenderName
     {
@@ -3958,7 +4234,7 @@ export module CodeMashHub2
 
     export class EmailIntegration extends Integration
     {
-        public provider: EmailProvider;
+        declare provider: EmailProvider;
         public emailAddress: EmailAddress;
         public emailSenderName?: EmailSenderName;
 
@@ -3972,27 +4248,208 @@ export module CodeMashHub2
         public constructor(init?: Partial<EmailSignatureId>) { (Object as any).assign(this, init); }
     }
 
+    export class EmailSignature
+    {
+        public id: EmailSignatureId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<TemplateCode>[] = [];
+        public env: Env;
+
+        public constructor(init?: Partial<EmailSignature>) { (Object as any).assign(this, init); }
+    }
+
     // @DataContract
-    export class FileResourceRef
+    export class Template<TMessageContent> implements IBindableContract
+    {
+        // @DataMember
+        public templateId: TemplateId;
+
+        // @DataMember
+        public templateName: DisplayName;
+
+        // @DataMember
+        public translations: MessageTranslation<TMessageContent>[] = [];
+
+        // @DataMember
+        public communicationChannel: CommunicationChannel;
+
+        // @DataMember
+        public isActive: boolean;
+
+        // @DataMember
+        public description?: string;
+
+        // @DataMember
+        public tags?: Tag[];
+
+        // @DataMember
+        public fileIntegrationId?: IntegrationId;
+
+        // @DataMember
+        public env: Env;
+
+        public constructor(init?: Partial<Template<TMessageContent>>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class EmailSubject
+    {
+
+        public constructor(init?: Partial<EmailSubject>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class EmailBody
+    {
+        // @DataMember
+        public code: TemplateCode;
+
+        // @DataMember
+        public structure?: string;
+
+        // @DataMember
+        public emailTemplateEngine: EmailTemplateEngine;
+
+        public constructor(init?: Partial<EmailBody>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class EmailMessageContent
     {
         // @DataMember(Order=1)
-        public resource: FileResource;
+        public subject: EmailSubject;
 
         // @DataMember(Order=2)
-        public integrationId: IntegrationId;
+        public body: EmailBody;
 
         // @DataMember(Order=3)
-        public provider: FileProvider;
+        public staticAttachments?: FileResourceRef[];
 
-        // @DataMember(Order=4)
-        public path: string;
+        public constructor(init?: Partial<EmailMessageContent>) { (Object as any).assign(this, init); }
+    }
 
-        public constructor(init?: Partial<FileResourceRef>) { (Object as any).assign(this, init); }
+    // @DataContract
+    export class EmailTemplate extends Template<EmailMessageContent>
+    {
+        // @DataMember
+        public staticAttachments?: FileResourceRef[];
+
+        public constructor(init?: Partial<EmailTemplate>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class EmailValidationIntegration extends Integration
+    {
+        declare provider: EmailValidationProvider;
+
+        public constructor(init?: Partial<EmailValidationIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class CampaignId
+    {
+        public id: string;
+
+        public constructor(init?: Partial<CampaignId>) { (Object as any).assign(this, init); }
+    }
+
+    export class CampaignBatchId
+    {
+        public id: string;
+
+        public constructor(init?: Partial<CampaignBatchId>) { (Object as any).assign(this, init); }
+    }
+
+    export class NotificationId extends AggregateId implements IHasDomainEntityId
+    {
+
+        public constructor(init?: Partial<NotificationId>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class ErrorDto
+    {
+        public message: string;
+        public errorCode?: string;
+        public context?: { [index:string]: string; };
+        public stackTrace?: ErrorDto[];
+
+        public constructor(init?: Partial<ErrorDto>) { (Object as any).assign(this, init); }
+    }
+
+    export enum EmailDeliveryEventType
+    {
+        Unknown = 'Unknown',
+        Delivered = 'Delivered',
+        Open = 'Open',
+        Click = 'Click',
+        SoftBounce = 'SoftBounce',
+        HardBounce = 'HardBounce',
+        Complaint = 'Complaint',
+        Unsubscribed = 'Unsubscribed',
+    }
+
+    export class SaveSmsTemplate extends CodeMashRequestBase
+    {
+        public templateName: string;
+        public description?: string;
+        public communicationChannel: CommunicationChannel;
+        public tags?: string[];
+        public translations: SmsMessageTranslationDto[] = [];
+
+        public constructor(init?: Partial<SaveSmsTemplate>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class SmsIntegrationRequest
+    {
+        public integrationId?: string;
+        public provider: SmsProvider;
+        public integrationName: string;
+        public isEnabled: boolean;
+
+        public constructor(init?: Partial<SmsIntegrationRequest>) { (Object as any).assign(this, init); }
+    }
+
+    export class SmsIntegration extends Integration
+    {
+        declare provider: SmsProvider;
+
+        public constructor(init?: Partial<SmsIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class SmsTitle
+    {
+        public value: TemplateCode;
+
+        public constructor(init?: Partial<SmsTitle>) { (Object as any).assign(this, init); }
+    }
+
+    export class SmsBody
+    {
+        public value: TemplateCode;
+
+        public constructor(init?: Partial<SmsBody>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsMessageContent
+    {
+        // @DataMember(Order=1)
+        public title: SmsTitle;
+
+        // @DataMember(Order=2)
+        public body: SmsBody;
+
+        public constructor(init?: Partial<SmsMessageContent>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsTemplate extends Template<SmsMessageContent>
+    {
+
+        public constructor(init?: Partial<SmsTemplate>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class CodeIntegration extends Integration
     {
-        public provider: CodeProvider;
+        declare provider: CodeProvider;
 
         public constructor(init?: Partial<CodeIntegration>) { super(init); (Object as any).assign(this, init); }
     }
@@ -4025,46 +4482,51 @@ export module CodeMashHub2
 
     export class MarketplaceIntegration extends Integration
     {
-        declare public capability: string;
+        declare capability: string;
         public listingViewId: string;
-        public transport: MarketplaceIntegrationTransport;
+        declare transport: MarketplaceIntegrationTransport;
         public vendor: string;
         public category: MarketplaceIntegrationCategory;
         public description?: string;
-        public config: IReadOnlyDictionary<string, string>;
+        public config: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<MarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export enum MarketplaceMappingSourceKind
+    export class TokenKey
     {
-        Default = 'Default',
-        Resolver = 'Resolver',
-        FromRequest = 'FromRequest',
+        public value: string;
+
+        public constructor(init?: Partial<TokenKey>) { (Object as any).assign(this, init); }
     }
 
-    export class MarketplaceFunctionMapping
+    export class TokenValue
     {
-        public parameterName: string;
-        public source: MarketplaceMappingSourceKind;
-        public defaultValue?: string;
-        public resolver?: TokenMappingResolverType;
-        public tokenKey?: string;
-        public fromRequestPath?: string;
-        public isRequired: boolean;
+        public value: string;
+        public tokenMappingResolverType: TokenMappingResolverType;
 
-        public constructor(init?: Partial<MarketplaceFunctionMapping>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<TokenValue>) { (Object as any).assign(this, init); }
+    }
+
+    export class TokenMapping
+    {
+        public key: TokenKey;
+        public value: TokenValue;
+
+        public constructor(init?: Partial<TokenMapping>) { (Object as any).assign(this, init); }
     }
 
     export class MarketplaceFunctionBinding implements IHasDomainEntityId
     {
         public bindingId: string;
         public integrationId: IntegrationId;
+        public env: Env;
         public functionKey: string;
         public displayName: DisplayName;
         public description?: string;
         public isEnabled: boolean;
-        public mappings: IReadOnlyList<MarketplaceFunctionMapping>;
+        public requestTemplate: string;
+        public mappedTokens: TokenMapping[] = [];
         public viewId: string;
 
         public constructor(init?: Partial<MarketplaceFunctionBinding>) { (Object as any).assign(this, init); }
@@ -4134,41 +4596,28 @@ export module CodeMashHub2
         public constructor(init?: Partial<PushDeviceDto>) { (Object as any).assign(this, init); }
     }
 
-    export class PushIntegration extends Integration
+    export class PushCampaignRequest
     {
-        public provider: PushProvider;
+        public source: PushCampaignRecipientsSourceTypes;
+        public templateId: string;
+        public integrationId?: string;
+        public language?: string;
+        public initiatorId?: string;
+        public notes?: string;
+        // @DataMember
+        public mappedTokens?: TokenMappingDto[];
 
-        public constructor(init?: Partial<PushIntegration>) { super(init); (Object as any).assign(this, init); }
+        // @DataMember
+        public campaignTime?: number;
+
+        public constructor(init?: Partial<PushCampaignRequest>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract
-    export class Template<TMessageContent> implements IBindableContract
+    export class PushIntegration extends Integration
     {
-        // @DataMember
-        public templateId: TemplateId;
+        declare provider: PushProvider;
 
-        // @DataMember
-        public templateName: DisplayName;
-
-        // @DataMember
-        public translations: MessageTranslation<TMessageContent>[] = [];
-
-        // @DataMember
-        public communicationChannel: CommunicationChannel;
-
-        // @DataMember
-        public isActive: boolean;
-
-        // @DataMember
-        public description?: string;
-
-        // @DataMember
-        public tags?: Tag[];
-
-        // @DataMember
-        public fileIntegrationId?: IntegrationId;
-
-        public constructor(init?: Partial<Template<TMessageContent>>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<PushIntegration>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -4209,11 +4658,42 @@ export module CodeMashHub2
         public constructor(init?: Partial<PushTemplate>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class PaymentIntegration extends Integration
+    {
+        declare provider: PaymentGatewayPlatform;
+
+        public constructor(init?: Partial<PaymentIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PaymentTrigger extends Trigger
+    {
+        public when: PaymentTriggerType;
+
+        public constructor(init?: Partial<PaymentTrigger>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class LoggingIntegration extends Integration
     {
-        public provider: LoggingProvider;
+        declare provider: LoggingProvider;
 
         public constructor(init?: Partial<LoggingIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class LlmIntegration extends Integration
+    {
+        declare provider: LlmProvider;
+        public defaultModel: string;
+
+        public constructor(init?: Partial<LlmIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class McpIntegration extends Integration
+    {
+        declare provider: McpProvider;
+        declare transport: McpTransport;
+        public metadata: McpMetadata;
+
+        public constructor(init?: Partial<McpIntegration>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class WebhookDestinationId extends AggregateId implements IHasDomainEntityId
@@ -4234,8 +4714,8 @@ export module CodeMashHub2
         public destinationId: WebhookDestinationId;
         public destinationName: DisplayName;
         public endpointUrl: DomainUrl;
-        public selectedEvents: IReadOnlySet<TriggerEventName>;
-        public extraHeaders?: IReadOnlyDictionary<string, string>;
+        public selectedEvents: TriggerEventName[] = [];
+        public extraHeaders?: IReadOnlyDictionary<string>;
         public isEnabled: boolean;
 
         public constructor(init?: Partial<WebhookDestination>) { (Object as any).assign(this, init); }
@@ -4243,9 +4723,9 @@ export module CodeMashHub2
 
     export class WebhookIntegration extends Integration
     {
-        declare public capability: string;
-        public destinations: IReadOnlySet<WebhookDestination>;
-        public extraHeaders?: IReadOnlyDictionary<string, string>;
+        declare capability: string;
+        public destinations: WebhookDestination[] = [];
+        public extraHeaders?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<WebhookIntegration>) { super(init); (Object as any).assign(this, init); }
     }
@@ -4263,18 +4743,18 @@ export module CodeMashHub2
         public constructor(init?: Partial<TaskId>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class UserId implements IHasDomainEntityId
+    export class CronExpression
     {
         public value: string;
-        public get viewId(): string { return this.value; }
+        public parsed: CronExpression;
 
-        public constructor(init?: Partial<UserId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<CronExpression>) { (Object as any).assign(this, init); }
     }
 
     export class SchedulerTask implements IHasDomainEntityId
     {
+        public viewId?: string;
         public id: TaskId;
-        public get viewId(): string { return this.id?.viewId; }
         public type: SchedulerTaskType;
         public name: DisplayName;
         public description?: string;
@@ -4285,6 +4765,27 @@ export module CodeMashHub2
         public stopOnError: boolean;
 
         public constructor(init?: Partial<SchedulerTask>) { (Object as any).assign(this, init); }
+    }
+
+    export enum ResourceKindDto
+    {
+        Contact = 'contact',
+        Document = 'document',
+        File = 'file',
+        PaymentCustomer = 'paymentCustomer',
+        Order = 'order',
+        Payment = 'payment',
+        Product = 'product',
+        Integration = 'integration',
+    }
+
+    export class ResourceRefDto
+    {
+        public projectId: string;
+        public integrationId?: string;
+        public kind: ResourceKindDto;
+
+        public constructor(init?: Partial<ResourceRefDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -4336,6 +4837,16 @@ export module CodeMashHub2
         public constructor(init?: Partial<CodeMashLicenseFromEndpointDto>) { (Object as any).assign(this, init); }
     }
 
+    export class EchoRegionDto
+    {
+        public code: string;
+        public displayName: string;
+        public apiUrl: string;
+        public hubUrl: string;
+
+        public constructor(init?: Partial<EchoRegionDto>) { (Object as any).assign(this, init); }
+    }
+
     // @DataContract
     export class AccountOwnerDto
     {
@@ -4357,16 +4868,6 @@ export module CodeMashHub2
         public constructor(init?: Partial<AccountOwnerDto>) { (Object as any).assign(this, init); }
     }
 
-    export class ErrorDto
-    {
-        public message: string;
-        public errorCode?: string;
-        public context?: { [index:string]: string; };
-        public stackTrace?: IReadOnlySet<ErrorDto>;
-
-        public constructor(init?: Partial<ErrorDto>) { (Object as any).assign(this, init); }
-    }
-
     export class CodeMashResponseStatus
     {
         public isSuccess: boolean;
@@ -4375,8 +4876,10 @@ export module CodeMashHub2
         public constructor(init?: Partial<CodeMashResponseStatus>) { (Object as any).assign(this, init); }
     }
 
+    // @DataContract
     export class ResponseBase
     {
+        // @DataMember
         public responseStatus: CodeMashResponseStatus;
 
         public constructor(init?: Partial<ResponseBase>) { (Object as any).assign(this, init); }
@@ -4432,11 +4935,139 @@ export module CodeMashHub2
         public constructor(init?: Partial<AccountStatusDto>) { (Object as any).assign(this, init); }
     }
 
-    export enum ProjectStatus
+    // @DataContract
+    export class UsageBillingClusterChargeDto
     {
-        Active = 'Active',
-        Disabled = 'Disabled',
-        Removed = 'Removed',
+        // @DataMember
+        public atlasProjectId: string;
+
+        // @DataMember
+        public atlasClusterName: string;
+
+        // @DataMember
+        public cents: number;
+
+        public constructor(init?: Partial<UsageBillingClusterChargeDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class UsageBillingPeriodDto
+    {
+        // @DataMember
+        public period: string;
+
+        // @DataMember
+        public totalCents: number;
+
+        // @DataMember
+        public perCluster: UsageBillingClusterChargeDto[] = [];
+
+        // @DataMember
+        public recordedAtUtc: string;
+
+        public constructor(init?: Partial<UsageBillingPeriodDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class UsageBillingIngestionFailureDto
+    {
+        // @DataMember
+        public reason: string;
+
+        // @DataMember
+        public period?: string;
+
+        // @DataMember
+        public stripeEventId: string;
+
+        // @DataMember
+        public message: string;
+
+        // @DataMember
+        public reportedAtUtc: string;
+
+        public constructor(init?: Partial<UsageBillingIngestionFailureDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class UsageBillingDto
+    {
+        // @DataMember
+        public accountId: string;
+
+        // @DataMember
+        public atlas: { [index:string]: UsageBillingPeriodDto; } = {};
+
+        // @DataMember
+        public ingestionFailures: UsageBillingIngestionFailureDto[] = [];
+
+        public constructor(init?: Partial<UsageBillingDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PromotionItemDto
+    {
+        // @DataMember
+        public type: string;
+
+        // @DataMember
+        public id: string;
+
+        public constructor(init?: Partial<PromotionItemDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PromotionBlockerDto
+    {
+        // @DataMember
+        public contentType: string;
+
+        // @DataMember
+        public contentId: string;
+
+        // @DataMember
+        public refKind: string;
+
+        // @DataMember
+        public unresolvedRef: string;
+
+        public constructor(init?: Partial<PromotionBlockerDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PromotionResultDto
+    {
+        // @DataMember
+        public contentMirrored: PromotionItemDto[] = [];
+
+        // @DataMember
+        public contentDeleted: PromotionItemDto[] = [];
+
+        // @DataMember
+        public integrationsSeeded: PromotionItemDto[] = [];
+
+        // @DataMember
+        public integrationsSkipped: PromotionItemDto[] = [];
+
+        // @DataMember
+        public blockers: PromotionBlockerDto[] = [];
+
+        // @DataMember
+        public fromVersion?: number;
+
+        // @DataMember
+        public wasDryRun: boolean;
+
+        public constructor(init?: Partial<PromotionResultDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class ProjectEnvironmentsDto
+    {
+        // @DataMember
+        public environments: string[] = [];
+
+        public constructor(init?: Partial<ProjectEnvironmentsDto>) { (Object as any).assign(this, init); }
     }
 
     export class ProjectRegionDto
@@ -4549,36 +5180,6 @@ export module CodeMashHub2
     }
 
     // @DataContract
-    export class EmailSignatureDto implements IHasViewId
-    {
-        // @DataMember
-        public viewId: string;
-
-        // @DataMember
-        public displayName?: string;
-
-        // @DataMember
-        public translations: TranslationDto[] = [];
-
-        public constructor(init?: Partial<EmailSignatureDto>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class EmailFooterDto implements IHasViewId
-    {
-        // @DataMember
-        public viewId: string;
-
-        // @DataMember
-        public displayName?: string;
-
-        // @DataMember
-        public translations: TranslationDto[] = [];
-
-        public constructor(init?: Partial<EmailFooterDto>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
     export class EmailDto
     {
         // @DataMember
@@ -4586,12 +5187,6 @@ export module CodeMashHub2
 
         // @DataMember
         public defaultIntegrationViewId?: string;
-
-        // @DataMember
-        public signatures?: EmailSignatureDto[];
-
-        // @DataMember
-        public footers?: EmailFooterDto[];
 
         public constructor(init?: Partial<EmailDto>) { (Object as any).assign(this, init); }
     }
@@ -4683,6 +5278,9 @@ export module CodeMashHub2
         // @DataMember
         public authorization?: AuthorizationDto;
 
+        // @DataMember
+        public requireEmailValidation: boolean;
+
         public constructor(init?: Partial<MembershipDto>) { (Object as any).assign(this, init); }
     }
 
@@ -4691,6 +5289,9 @@ export module CodeMashHub2
     {
         // @DataMember
         public isEnabled: boolean;
+
+        // @DataMember
+        public isEstablished: boolean;
 
         public constructor(init?: Partial<LoggingDto>) { (Object as any).assign(this, init); }
     }
@@ -4837,7 +5438,13 @@ export module CodeMashHub2
         public languages: string[] = [];
 
         // @DataMember
-        public regions?: ProjectRegionDto[];
+        public primaryRegion?: ProjectRegionDto;
+
+        // @DataMember
+        public additionalRegions?: ProjectRegionDto[];
+
+        // @DataMember
+        public isMultiRegionEligible: boolean;
 
         // @DataMember
         public brand?: ProjectBrandDto;
@@ -4847,6 +5454,12 @@ export module CodeMashHub2
 
         // @DataMember
         public allowedOrigins?: string[];
+
+        // @DataMember
+        public environments: string[] = [];
+
+        // @DataMember
+        public environmentRanks: { [index:string]: number; } = {};
 
         // @DataMember
         public database?: DatabaseDto;
@@ -4951,13 +5564,19 @@ export module CodeMashHub2
         public isActive: boolean;
 
         // @DataMember
+        public projectStatus: ProjectStatus;
+
+        // @DataMember
         public name: string;
 
         // @DataMember
         public uniqueName: string;
 
         // @DataMember
-        public regions?: ProjectRegionDto[];
+        public primaryRegion?: ProjectRegionDto;
+
+        // @DataMember
+        public additionalRegions?: ProjectRegionDto[];
 
         public constructor(init?: Partial<ProjectListItemDto>) { (Object as any).assign(this, init); }
     }
@@ -5014,6 +5633,16 @@ export module CodeMashHub2
         Other = 'Other',
     }
 
+    export enum MarketingBlockReason
+    {
+        Unspecified = 'Unspecified',
+        Unsubscribed = 'Unsubscribed',
+        Complaint = 'Complaint',
+        HardBounce = 'HardBounce',
+        InvalidEmail = 'InvalidEmail',
+        AdminBlock = 'AdminBlock',
+    }
+
     export class UserGeneralInfoDto
     {
         public phone?: string;
@@ -5034,7 +5663,8 @@ export module CodeMashHub2
         public timeZone?: string;
         public language?: string;
         public blockAllMarketingMessages: boolean;
-        public blockedTags?: { [index:string]: IReadOnlySet<string>; };
+        public blockedTags?: { [index:string]: HashSet<string>; };
+        public blockReasons?: MarketingBlockReason[];
         public extraMetadata?: string;
         public notes?: string;
 
@@ -5061,14 +5691,42 @@ export module CodeMashHub2
         public registration?: RegistrationDto;
         public login?: LoginDto;
         public generalInfo?: UserGeneralInfoDto;
-        public roles?: IReadOnlySet<string>;
-        public pushDevices?: IReadOnlySet<string>;
-        public tags?: IReadOnlySet<string>;
+        public roles?: string[];
+        public pushDevices?: string[];
+        public tags?: string[];
         public status: UserStatus;
         public createdOn: string;
         public modifiedOn: string;
 
         public constructor(init?: Partial<UserDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class AccountPasswordPolicyDto
+    {
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public maxNumbers?: number;
+        public minUpper?: number;
+        public maxUpper?: number;
+        public minLower?: number;
+        public maxLower?: number;
+        public minSpecial?: number;
+        public maxSpecial?: number;
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<AccountPasswordPolicyDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class AccountTeamRoleDto
+    {
+        public id: string;
+        public name: string;
+        public description: string;
+        public isSystem: boolean;
+        public policies?: string[];
+
+        public constructor(init?: Partial<AccountTeamRoleDto>) { (Object as any).assign(this, init); }
     }
 
     export class CodeMashSubscriptionDto
@@ -5123,7 +5781,7 @@ export module CodeMashHub2
     export class MembershipTriggerProjectionList extends TriggerProjectionList
     {
         // @DataMember
-        public type: MembershipTriggerType;
+        declare type: MembershipTriggerType;
 
         public constructor(init?: Partial<MembershipTriggerProjectionList>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5146,6 +5804,21 @@ export module CodeMashHub2
         public constructor(init?: Partial<RoleListProjectionDto>) { (Object as any).assign(this, init); }
     }
 
+    export class PasskeySettingsDto
+    {
+        public enabled: boolean;
+        public codeTtlMinutes: number;
+        public maxCredentialsPerUser: number;
+        public recoveryCodeCount: number;
+        public generateRecoveryCodesAtSignup: boolean;
+        public authenticatorAttachment: string;
+        public allowMagicLinkRecovery: boolean;
+        public refreshTokenTtlDays: number;
+        public rpId?: string;
+
+        public constructor(init?: Partial<PasskeySettingsDto>) { (Object as any).assign(this, init); }
+    }
+
     export class IntegrationListProjection implements IHasViewId
     {
         public viewId: string;
@@ -5163,16 +5836,43 @@ export module CodeMashHub2
     export class MembershipIntegrationListProjection extends IntegrationListProjection
     {
         // @DataMember
-        public provider: MembershipProvider;
+        declare provider: MembershipProvider;
 
         public constructor(init?: Partial<MembershipIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class AuthorizationSettingsDto
+    {
+        // @DataMember
+        public defaultRoles: string[] = [];
+
+        // @DataMember
+        public allowedRegistrationRoles: string[] = [];
+
+        // @DataMember
+        public allowGuestUsers: boolean;
+
+        // @DataMember
+        public guestCleanupPeriodDays?: number;
+
+        public constructor(init?: Partial<AuthorizationSettingsDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class AuthenticationSettingsDto
+    {
+        // @DataMember
+        public flows: string[] = [];
+
+        public constructor(init?: Partial<AuthenticationSettingsDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
     export class SchemaTriggerProjectionList extends TriggerProjectionList
     {
         // @DataMember
-        public type: SchemaTriggerType;
+        declare type: SchemaTriggerType;
 
         public constructor(init?: Partial<SchemaTriggerProjectionList>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5417,9 +6117,39 @@ export module CodeMashHub2
     export class DatabaseIntegrationListProjection extends IntegrationListProjection
     {
         // @DataMember
-        public provider: DatabaseProvider;
+        declare provider: DatabaseProvider;
 
         public constructor(init?: Partial<DatabaseIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class FlexTierDto
+    {
+        // @DataMember
+        public code: string;
+
+        // @DataMember
+        public step: number;
+
+        // @DataMember
+        public displayName: string;
+
+        public constructor(init?: Partial<FlexTierDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class IntegrationTestResultItemDto
+    {
+        // @DataMember
+        public operation: string;
+
+        // @DataMember
+        public result: string;
+
+        // @DataMember
+        public errors?: IReadOnlyList<string>;
+
+        public constructor(init?: Partial<IntegrationTestResultItemDto>) { (Object as any).assign(this, init); }
     }
 
     export class MongoDbAggregateListProjection implements IHasViewId
@@ -5440,7 +6170,7 @@ export module CodeMashHub2
     export class FilesTriggerProjectionList extends TriggerProjectionList
     {
         // @DataMember
-        public type: FilesTriggerType;
+        declare type: FilesTriggerType;
 
         public constructor(init?: Partial<FilesTriggerProjectionList>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5448,14 +6178,35 @@ export module CodeMashHub2
     export class FilesIntegrationListProjection extends IntegrationListProjection
     {
         // @DataMember
-        public provider: FileProvider;
+        declare provider: FileProvider;
 
         public constructor(init?: Partial<FilesIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
-    export class TemplateListProjection implements IHasViewId
+    export class TestEmailValidationItemDto
     {
+        // @DataMember
+        public address: string;
+
+        // @DataMember
+        public verdict: string;
+
+        // @DataMember
+        public reason?: string;
+
+        // @DataMember
+        public score?: number;
+
+        public constructor(init?: Partial<TestEmailValidationItemDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TemplateListProjection implements IHasViewId, IHasDatabaseId
+    {
+        // @DataMember
+        public id?: string;
+
         // @DataMember
         public viewId: string;
 
@@ -5472,6 +6223,14 @@ export module CodeMashHub2
         public tags?: string[];
 
         public constructor(init?: Partial<TemplateListProjection>) { (Object as any).assign(this, init); }
+    }
+
+    export class EmailTemplateListProjection extends TemplateListProjection
+    {
+        public hasAttachments: boolean;
+        public languages: IReadOnlyList<string>;
+
+        public constructor(init?: Partial<EmailTemplateListProjection>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -5504,18 +6263,25 @@ export module CodeMashHub2
         public constructor(init?: Partial<HtmlFromMjmlResponse>) { (Object as any).assign(this, init); }
     }
 
-    export class EmailTemplateListProjection extends TemplateListProjection
-    {
-        public hasAttachments: boolean;
-        public languages: IReadOnlySet<string>;
-
-        public constructor(init?: Partial<EmailTemplateListProjection>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class SystemEmailTemplateListProjection extends EmailTemplateListProjection
     {
 
         public constructor(init?: Partial<SystemEmailTemplateListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class EmailSignatureDto implements IHasViewId
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public displayName?: string;
+
+        // @DataMember
+        public translations: TranslationDto[] = [];
+
+        public constructor(init?: Partial<EmailSignatureDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -5539,12 +6305,39 @@ export module CodeMashHub2
         public constructor(init?: Partial<ListItemWithTranslationsProjection>) { super(init); (Object as any).assign(this, init); }
     }
 
+    // @DataContract
+    export class EmailFooterDto implements IHasViewId
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public displayName?: string;
+
+        // @DataMember
+        public translations: TranslationDto[] = [];
+
+        public constructor(init?: Partial<EmailFooterDto>) { (Object as any).assign(this, init); }
+    }
+
     export class EmailSettings implements IBindableContract
     {
-        public signatures?: IList<ListItemWithTranslationsProjection>;
-        public footers?: IList<ListItemWithTranslationsProjection>;
+        public signatures?: IList<EmailSignatureDto>;
+        public footers?: IList<EmailFooterDto>;
 
         public constructor(init?: Partial<EmailSettings>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class DomainHealthRecordItemDto
+    {
+        // @DataMember
+        public record: string;
+
+        // @DataMember
+        public value: string;
+
+        public constructor(init?: Partial<DomainHealthRecordItemDto>) { (Object as any).assign(this, init); }
     }
 
     export class EmailIntegrationListProjection extends IntegrationListProjection
@@ -5554,21 +6347,6 @@ export module CodeMashHub2
         public senderDisplayName?: string;
 
         public constructor(init?: Partial<EmailIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class IntegrationTestResultItemDto
-    {
-        // @DataMember
-        public operation: string;
-
-        // @DataMember
-        public result: string;
-
-        // @DataMember
-        public errors?: IReadOnlyList<string>;
-
-        public constructor(init?: Partial<IntegrationTestResultItemDto>) { (Object as any).assign(this, init); }
     }
 
     export enum CampaignStatus
@@ -5587,7 +6365,7 @@ export module CodeMashHub2
     {
         public time: string;
         public status: CampaignStatus;
-        public errors?: IReadOnlySet<ErrorDto>;
+        public errors?: ErrorDto[];
 
         public constructor(init?: Partial<CampaignStatusChangeEntryDto>) { (Object as any).assign(this, init); }
     }
@@ -5611,13 +6389,13 @@ export module CodeMashHub2
         public campaignProcessingIntegrationId?: string;
 
         // @DataMember
-        public statusHistory: IReadOnlySet<CampaignStatusChangeEntryDto>;
+        public statusHistory: CampaignStatusChangeEntryDto[] = [];
 
         // @DataMember
         public status?: CampaignStatusChangeEntryDto;
 
         // @DataMember
-        public tokenMappingValues?: IReadOnlySet<TokenMappingDto>;
+        public tokenMappingValues?: TokenMappingDto[];
 
         // @DataMember
         public notes?: string;
@@ -5639,6 +6417,9 @@ export module CodeMashHub2
 
         // @DataMember
         public template: EmailTemplateDto;
+
+        // @DataMember
+        public validationIntegrationId?: string;
 
         // @DataMember
         public templateIsSystem: boolean;
@@ -5688,7 +6469,7 @@ export module CodeMashHub2
     {
         public time: string;
         public status: CampaignBatchStatus;
-        public errors?: IReadOnlySet<ErrorDto>;
+        public errors?: ErrorDto[];
 
         public constructor(init?: Partial<BatchStatusChangeEntryDto>) { (Object as any).assign(this, init); }
     }
@@ -5727,7 +6508,7 @@ export module CodeMashHub2
         public timeZoneId?: string;
 
         // @DataMember
-        public userTokenMappings?: IReadOnlySet<TokenMappingDto>;
+        public userTokenMappings?: TokenMappingDto[];
 
         public constructor(init?: Partial<EmailRecipientDto>) { (Object as any).assign(this, init); }
     }
@@ -5736,13 +6517,13 @@ export module CodeMashHub2
     export class EmailRecipientsDto
     {
         // @DataMember
-        public to?: IReadOnlySet<EmailRecipientDto>;
+        public to?: EmailRecipientDto[];
 
         // @DataMember
-        public cc?: IReadOnlySet<EmailRecipientDto>;
+        public cc?: EmailRecipientDto[];
 
         // @DataMember
-        public bcc?: IReadOnlySet<EmailRecipientDto>;
+        public bcc?: EmailRecipientDto[];
 
         // @DataMember
         public startingAfter?: string;
@@ -5770,6 +6551,7 @@ export module CodeMashHub2
         Failed = 'Failed',
         Viewed = 'Viewed',
         Clicked = 'Clicked',
+        BlockedByValidation = 'BlockedByValidation',
     }
 
     export class NotificationStatusChangeEntryDto
@@ -5777,8 +6559,8 @@ export module CodeMashHub2
         public time: string;
         public status: CampaignNotificationStatus;
         public sourceId?: string;
-        public errors?: IReadOnlySet<ErrorDto>;
-        public tags?: IReadOnlySet<string>;
+        public errors?: ErrorDto[];
+        public tags?: string[];
 
         public constructor(init?: Partial<NotificationStatusChangeEntryDto>) { (Object as any).assign(this, init); }
     }
@@ -5808,7 +6590,7 @@ export module CodeMashHub2
         public model?: { [index:string]: string; };
 
         // @DataMember
-        public statusHistory: IReadOnlySet<NotificationStatusChangeEntryDto>;
+        public statusHistory: NotificationStatusChangeEntryDto[] = [];
 
         // @DataMember
         public id: string;
@@ -5847,25 +6629,305 @@ export module CodeMashHub2
     }
 
     // @DataContract
+    export class SmsTemplateListProjection extends TemplateListProjection
+    {
+
+        public constructor(init?: Partial<SmsTemplateListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class SmsSettings implements IBindableContract
+    {
+
+        public constructor(init?: Partial<SmsSettings>) { (Object as any).assign(this, init); }
+    }
+
+    export class SmsIntegrationListProjection extends IntegrationListProjection
+    {
+        // @DataMember
+        declare provider: SmsProvider;
+
+        public constructor(init?: Partial<SmsIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsCampaignDto extends CampaignDto
+    {
+        // @DataMember
+        public recipients: SmsCampaignDeliverySettingsDto;
+
+        // @DataMember
+        public template: SmsTemplateDto;
+
+        public constructor(init?: Partial<SmsCampaignDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsRecipientDto
+    {
+        // @DataMember
+        public phoneNumber: string;
+
+        // @DataMember
+        public userId: string;
+
+        // @DataMember
+        public language?: string;
+
+        // @DataMember
+        public userTokenMappings?: TokenMappingDto[];
+
+        // @DataMember
+        public timeZoneId?: string;
+
+        // @DataMember
+        public record?: string;
+
+        public constructor(init?: Partial<SmsRecipientDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsRecipientsDto
+    {
+        // @DataMember
+        public to?: SmsRecipientDto[];
+
+        // @DataMember
+        public startingAfter?: string;
+
+        // @DataMember
+        public hasMore: boolean;
+
+        public constructor(init?: Partial<SmsRecipientsDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsCampaignBatchDto extends CampaignBatchDto
+    {
+        // @DataMember
+        public recipients: SmsRecipientsDto;
+
+        public constructor(init?: Partial<SmsCampaignBatchDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class SmsCampaignBatchNotificationDto extends CampaignBatchNotificationDto
+    {
+        // @DataMember
+        public recipients: SmsRecipientsDto;
+
+        // @DataMember
+        public content?: SmsMessageContentDto;
+
+        public constructor(init?: Partial<SmsCampaignBatchNotificationDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MarketplaceListingProjection implements IHasViewId
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public slug: string;
+
+        // @DataMember
+        public displayName: string;
+
+        // @DataMember
+        public vendor: string;
+
+        // @DataMember
+        public category: MarketplaceCategory;
+
+        // @DataMember
+        public transport: MarketplaceTransport;
+
+        // @DataMember
+        public iconUrl?: string;
+
+        // @DataMember
+        public isOfficial: boolean;
+
+        // @DataMember
+        public functionCount: number;
+
+        public constructor(init?: Partial<MarketplaceListingProjection>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MarketplaceIntegrationListProjection implements IHasViewId
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public integrationName: string;
+
+        // @DataMember
+        public isEnabled: boolean;
+
+        // @DataMember
+        public listingViewId: string;
+
+        // @DataMember
+        public vendor: string;
+
+        // @DataMember
+        public category: MarketplaceCategory;
+
+        // @DataMember
+        public transport: MarketplaceTransport;
+
+        // @DataMember
+        public lastIntegrationTestAtUtc?: string;
+
+        // @DataMember
+        public lastIntegrationTestSucceeded?: boolean;
+
+        // @DataMember
+        public lastIntegrationTestErrors: IReadOnlyList<string>;
+
+        // @DataMember
+        public humanDeliveryConfirmedAtUtc?: string;
+
+        // @DataMember
+        public requiresHumanDeliveryConfirmation: boolean;
+
+        public constructor(init?: Partial<MarketplaceIntegrationListProjection>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MarketplaceFunctionBindingProjection implements IHasViewId
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public integrationViewId: string;
+
+        // @DataMember
+        public functionKey: string;
+
+        // @DataMember
+        public displayName: string;
+
+        // @DataMember
+        public isEnabled: boolean;
+
+        // @DataMember
+        public mappingCount: number;
+
+        public constructor(init?: Partial<MarketplaceFunctionBindingProjection>) { (Object as any).assign(this, init); }
+    }
+
+    export class CodeIntegrationListProjection extends IntegrationListProjection
+    {
+        // @DataMember
+        declare provider: CodeProvider;
+
+        public constructor(init?: Partial<CodeIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
     export class PushTemplateListProjection extends TemplateListProjection
     {
 
         public constructor(init?: Partial<PushTemplateListProjection>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class PushSettings
+    {
+        public marketingTags?: TagDefinitionDto[];
+        public transactionalTags?: TagDefinitionDto[];
+
+        public constructor(init?: Partial<PushSettings>) { (Object as any).assign(this, init); }
+    }
+
     export class PushIntegrationListProjection extends IntegrationListProjection
     {
         // @DataMember
-        public provider: PushProvider;
+        declare provider: PushProvider;
 
         public constructor(init?: Partial<PushIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushCampaignDto extends CampaignDto
+    {
+        // @DataMember
+        public recipients: PushCampaignDeliverySettingsDto;
+
+        // @DataMember
+        public template: PushTemplateDto;
+
+        public constructor(init?: Partial<PushCampaignDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushRecipientDto
+    {
+        // @DataMember
+        public deviceTokens: PushDeviceDeliveryTokenDto[] = [];
+
+        // @DataMember
+        public userId: string;
+
+        // @DataMember
+        public language?: string;
+
+        // @DataMember
+        public userTokenMappings?: TokenMappingDto[];
+
+        // @DataMember
+        public timeZoneId?: string;
+
+        // @DataMember
+        public record?: string;
+
+        public constructor(init?: Partial<PushRecipientDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushRecipientsDto
+    {
+        // @DataMember
+        public to?: PushRecipientDto[];
+
+        // @DataMember
+        public startingAfter?: string;
+
+        // @DataMember
+        public hasMore: boolean;
+
+        public constructor(init?: Partial<PushRecipientsDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushCampaignBatchDto extends CampaignBatchDto
+    {
+        // @DataMember
+        public recipients: PushRecipientsDto;
+
+        public constructor(init?: Partial<PushCampaignBatchDto>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushCampaignBatchNotificationDto extends CampaignBatchNotificationDto
+    {
+        // @DataMember
+        public recipients: PushRecipientsDto;
+
+        // @DataMember
+        public content?: PushMessageContentDto;
+
+        public constructor(init?: Partial<PushCampaignBatchNotificationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
     export class PaymentTriggerProjectionList extends TriggerProjectionList
     {
         // @DataMember
-        public type: PaymentTriggerType;
+        declare type: PaymentTriggerType;
 
         public constructor(init?: Partial<PaymentTriggerProjectionList>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5881,9 +6943,48 @@ export module CodeMashHub2
     export class LoggingIntegrationListProjection extends IntegrationListProjection
     {
         // @DataMember
-        public provider: LoggingProvider;
+        declare provider: LoggingProvider;
 
         public constructor(init?: Partial<LoggingIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TenantLogEntryDto
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public timestamp: string;
+
+        // @DataMember
+        public module: string;
+
+        // @DataMember
+        public level: string;
+
+        // @DataMember
+        public eventCode: string;
+
+        // @DataMember
+        public title: string;
+
+        // @DataMember
+        public message: string;
+
+        // @DataMember
+        public correlationId?: string;
+
+        // @DataMember
+        public traceId?: string;
+
+        // @DataMember
+        public spanId?: string;
+
+        // @DataMember
+        public meta?: IReadOnlyDictionary<string>;
+
+        public constructor(init?: Partial<TenantLogEntryDto>) { (Object as any).assign(this, init); }
     }
 
     export class LlmIntegrationListProjection extends IntegrationListProjection
@@ -5898,12 +6999,160 @@ export module CodeMashHub2
     export class McpIntegrationListProjection extends IntegrationListProjection
     {
         public mcpProvider: McpProvider;
-        public transport: McpTransport;
+        declare transport: McpTransport;
         public category?: string;
         public description?: string;
         public icon?: string;
 
         public constructor(init?: Partial<McpIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export interface IVirtualDirectory
+    {
+    }
+
+    export interface IVirtualPathProvider
+    {
+        rootDirectory?: IVirtualDirectory;
+        virtualPathSeparator?: string;
+        realPathSeparator?: string;
+    }
+
+    export interface IVirtualFile
+    {
+        virtualPathProvider?: IVirtualPathProvider;
+        extension?: string;
+        length: number;
+    }
+
+    // @Flags()
+    export enum CacheControl
+    {
+        None = 0,
+        Public = 1,
+        Private = 2,
+        MustRevalidate = 4,
+        NoCache = 8,
+        NoStore = 16,
+        NoTransform = 32,
+        ProxyRevalidate = 64,
+    }
+
+    export interface IContentTypeWriter
+    {
+    }
+
+    // @Flags()
+    export enum RequestAttributes
+    {
+        None = 0,
+        Localhost = 1,
+        LocalSubnet = 2,
+        External = 4,
+        Secure = 8,
+        InSecure = 16,
+        AnySecurityMode = 24,
+        HttpHead = 32,
+        HttpGet = 64,
+        HttpPost = 128,
+        HttpPut = 256,
+        HttpDelete = 512,
+        HttpPatch = 1024,
+        HttpOptions = 2048,
+        HttpOther = 4096,
+        AnyHttpMethod = 8160,
+        OneWay = 8192,
+        Reply = 16384,
+        AnyCallStyle = 24576,
+        Soap11 = 32768,
+        Soap12 = 65536,
+        Xml = 131072,
+        Json = 262144,
+        Jsv = 524288,
+        ProtoBuf = 1048576,
+        Csv = 2097152,
+        Html = 4194304,
+        Jsonl = 8388608,
+        MsgPack = 16777216,
+        FormatOther = 33554432,
+        AnyFormat = 67076096,
+        Http = 67108864,
+        MessageQueue = 134217728,
+        Tcp = 268435456,
+        Grpc = 536870912,
+        EndpointOther = 1073741824,
+        AnyEndpoint = 2080374784,
+        InProcess = -2147483648,
+        InternalNetworkAccess = -2147483645,
+        AnyNetworkAccessType = -2147483641,
+        Any = -1,
+    }
+
+    export interface IRequestPreferences
+    {
+        acceptsBrotli: boolean;
+        acceptsDeflate: boolean;
+        acceptsGzip: boolean;
+    }
+
+    export interface IHttpFile
+    {
+        name?: string;
+        fileName?: string;
+        contentLength: number;
+        contentType?: string;
+        inputStream?: string;
+    }
+
+    export interface IRequest
+    {
+        originalRequest?: Object;
+        response?: IResponse;
+        operationName?: string;
+        verb?: string;
+        requestAttributes: RequestAttributes;
+        requestPreferences?: IRequestPreferences;
+        dto?: Object;
+        contentType?: string;
+        isLocal: boolean;
+        userAgent?: string;
+        cookies?: { [index:string]: any; };
+        responseContentType?: string;
+        hasExplicitResponseContentType: boolean;
+        items?: { [index:string]: Object; };
+        headers?: any;
+        queryString?: any;
+        formData?: any;
+        useBufferedStream: boolean;
+        rawUrl?: string;
+        absoluteUri?: string;
+        userHostAddress?: string;
+        remoteIp?: string;
+        authorization?: string;
+        isSecureConnection: boolean;
+        acceptTypes?: string[];
+        pathInfo?: string;
+        originalPathInfo?: string;
+        inputStream?: string;
+        contentLength: number;
+        files?: IHttpFile[];
+        urlReferrer?: string;
+    }
+
+    export interface IResponse
+    {
+        originalResponse?: Object;
+        request?: IRequest;
+        statusCode: number;
+        statusDescription?: string;
+        contentType?: string;
+        outputStream?: string;
+        dto?: Object;
+        useBufferedStream: boolean;
+        isClosed: boolean;
+        keepAlive: boolean;
+        hasStarted: boolean;
+        items?: { [index:string]: Object; };
     }
 
     // @DataContract
@@ -5928,6 +7177,79 @@ export module CodeMashHub2
         public viewId: string;
 
         public constructor(init?: Partial<SchedulerTaskListProjection>) { (Object as any).assign(this, init); }
+    }
+
+    export enum ResolvedRefStatus
+    {
+        Ok = 'ok',
+        NotFound = 'notFound',
+        Unauthorized = 'unauthorized',
+        SourceError = 'sourceError',
+        Erased = 'erased',
+    }
+
+    export class ResolvedResourceEntry
+    {
+        public ref: ResourceRefDto;
+        public status: ResolvedRefStatus;
+        public resolved?: Object;
+        public diagnostic?: string;
+
+        public constructor(init?: Partial<ResolvedResourceEntry>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class ContactDto
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public projectId: string;
+
+        // @DataMember
+        public primaryEmail?: string;
+
+        // @DataMember
+        public primaryPhone?: string;
+
+        // @DataMember
+        public displayName?: string;
+
+        // @DataMember
+        public firstName?: string;
+
+        // @DataMember
+        public lastName?: string;
+
+        // @DataMember
+        public company?: string;
+
+        // @DataMember
+        public locale?: string;
+
+        // @DataMember
+        public timeZone?: string;
+
+        // @DataMember
+        public tags?: string[];
+
+        // @DataMember
+        public lifecycle: string;
+
+        // @DataMember
+        public sourceOfCreation: string;
+
+        // @DataMember
+        public mergedIntoContactId?: string;
+
+        // @DataMember
+        public createdOn: string;
+
+        // @DataMember
+        public modifiedOn: string;
+
+        public constructor(init?: Partial<ContactDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -5997,6 +7319,11 @@ export module CodeMashHub2
         viewId: string;
     }
 
+    export interface IHasDatabaseId
+    {
+        id?: string;
+    }
+
     export interface IBindableContract
     {
     }
@@ -6005,14 +7332,9 @@ export module CodeMashHub2
     {
     }
 
-    export interface IHasDatabaseId
-    {
-        id?: string;
-    }
-
     export interface IHasDomainEntityId
     {
-        viewId: string;
+        viewId?: string;
     }
 
     export interface IIntegrationIdentification
@@ -6020,51 +7342,6 @@ export module CodeMashHub2
         integrationId: IntegrationId;
         capability: string;
         isSystemOwned: boolean;
-    }
-
-    // @DataContract
-    export class EmailSubject
-    {
-
-        public constructor(init?: Partial<EmailSubject>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class EmailBody
-    {
-        // @DataMember
-        public code: TemplateCode;
-
-        // @DataMember
-        public structure?: string;
-
-        // @DataMember
-        public emailTemplateEngine: EmailTemplateEngine;
-
-        public constructor(init?: Partial<EmailBody>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class EmailMessageContent
-    {
-        // @DataMember(Order=1)
-        public subject: EmailSubject;
-
-        // @DataMember(Order=2)
-        public body: EmailBody;
-
-        // @DataMember(Order=3)
-        public staticAttachments?: FileResourceRef[];
-
-        public constructor(init?: Partial<EmailMessageContent>) { (Object as any).assign(this, init); }
-    }
-
-    export class CronExpression
-    {
-        public value: string;
-        public parsed: CronExpression;
-
-        public constructor(init?: Partial<CronExpression>) { (Object as any).assign(this, init); }
     }
 
     export interface IHasResponsibleUserId
@@ -6078,28 +7355,13 @@ export module CodeMashHub2
         order: number;
     }
 
-    export class FileTrigger extends Trigger
-    {
-        public when: FilesTriggerType;
-        public fileResourceRef?: FileResourceRef;
-
-        public constructor(init?: Partial<FileTrigger>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class PaymentTrigger extends Trigger
-    {
-        public when: PaymentTriggerType;
-
-        public constructor(init?: Partial<PaymentTrigger>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class StringField extends JsonSchemaField
     {
         public format?: string;
         public pattern?: string;
         public minLength?: number;
         public maxLength?: number;
-        public translateOptions?: IReadOnlyDictionary<string, string>;
+        public translateOptions?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<StringField>) { super(init); (Object as any).assign(this, init); }
     }
@@ -6216,7 +7478,7 @@ export module CodeMashHub2
         public maxLength?: number;
 
         // @DataMember
-        public translateOptions?: IReadOnlyDictionary<string, string>;
+        public translateOptions?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<StringFieldDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -6360,6 +7622,7 @@ export module CodeMashHub2
         public mjmlUrl: string;
         public license?: CodeMashLicenseFromEndpointDto;
         public askForEnterpriseLicenseEmail?: string;
+        public regions?: EchoRegionDto[];
 
         public constructor(init?: Partial<EchoResponse>) { (Object as any).assign(this, init); }
     }
@@ -6416,6 +7679,27 @@ export module CodeMashHub2
         public constructor(init?: Partial<CreateTeamMemberFromInvitationResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetAccountUsageBillingResponse extends ResponseBase
+    {
+        public item?: UsageBillingDto;
+
+        public constructor(init?: Partial<GetAccountUsageBillingResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PromoteEnvironmentResponse extends ResponseBase
+    {
+        public item?: PromotionResultDto;
+
+        public constructor(init?: Partial<PromoteEnvironmentResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetProjectEnvironmentsResponse extends ResponseBase
+    {
+        public item?: ProjectEnvironmentsDto;
+
+        public constructor(init?: Partial<GetProjectEnvironmentsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetProjectResponse extends ResponseBase
     {
         public item?: ProjectDto;
@@ -6458,6 +7742,27 @@ export module CodeMashHub2
         public list?: PaginatedResponse<UserDto>;
 
         public constructor(init?: Partial<GetAccountCollaboratorsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAccountPasswordPolicyResponse extends ResponseBase
+    {
+        public policy?: AccountPasswordPolicyDto;
+
+        public constructor(init?: Partial<GetAccountPasswordPolicyResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAccountTeamPoliciesResponse extends ResponseBase
+    {
+        public policies?: PolicyItemDto[];
+
+        public constructor(init?: Partial<GetAccountTeamPoliciesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAccountTeamRolesResponse extends ResponseBase
+    {
+        public roles?: AccountTeamRoleDto[];
+
+        public constructor(init?: Partial<GetAccountTeamRolesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetLicensesResponse extends ResponseBase
@@ -6520,6 +7825,13 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetPoliciesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetPasskeySettingsResponse extends ResponseBase
+    {
+        public result?: PasskeySettingsDto;
+
+        public constructor(init?: Partial<GetPasskeySettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetMembershipIntegrationResponse extends ResponseBase
     {
         public item?: MembershipIntegrationDto;
@@ -6532,6 +7844,20 @@ export module CodeMashHub2
         public list?: PaginatedResponse<MembershipIntegrationListProjection>;
 
         public constructor(init?: Partial<GetMembershipIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAuthorizationSettingsResponse extends ResponseBase
+    {
+        public result?: AuthorizationSettingsDto;
+
+        public constructor(init?: Partial<GetAuthorizationSettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAuthenticationSettingsResponse extends ResponseBase
+    {
+        public result?: AuthenticationSettingsDto;
+
+        public constructor(init?: Partial<GetAuthenticationSettingsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetSchemaTriggerResponse extends GetTriggerResponse
@@ -6618,6 +7944,29 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetDatabaseIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetAllowedFlexTiersResponse extends ResponseBase
+    {
+        public tiers?: FlexTierDto[];
+
+        public constructor(init?: Partial<GetAllowedFlexTiersResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class RevealManagedFlexConnectionStringResponse extends ResponseBase
+    {
+        public connectionString?: string;
+
+        public constructor(init?: Partial<RevealManagedFlexConnectionStringResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TestDatabaseIntegrationResponse extends ResponseBase
+    {
+        // @DataMember
+        public items?: IReadOnlyList<IntegrationTestResultItemDto>;
+
+        public constructor(init?: Partial<TestDatabaseIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetDatabaseAggregateResponse extends ResponseBase
     {
         public item?: MongoDbAggregateDto;
@@ -6667,6 +8016,32 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetFilesIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetFileResponse extends ResponseBase
+    {
+        public file?: FileResourceRefDto;
+        public isPublic?: boolean;
+        public publicUrl?: string;
+
+        public constructor(init?: Partial<GetFileResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetFolderFilesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<FileResourceRefDto>;
+        public folders?: string[];
+
+        public constructor(init?: Partial<GetFolderFilesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TestEmailValidationIntegrationResponse extends ResponseBase
+    {
+        // @DataMember
+        public items: TestEmailValidationItemDto[] = [];
+
+        public constructor(init?: Partial<TestEmailValidationIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetEmailTemplateResponse extends ResponseBase
     {
         public item?: EmailTemplateDto;
@@ -6676,7 +8051,7 @@ export module CodeMashHub2
 
     export class GetEmailTemplatesResponse extends ResponseBase
     {
-        public list?: PaginatedResponse<TemplateListProjection>;
+        public list?: PaginatedResponse<EmailTemplateListProjection>;
 
         public constructor(init?: Partial<GetEmailTemplatesResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -6730,6 +8105,18 @@ export module CodeMashHub2
         public systemTags?: GroupDefinitionDto[];
 
         public constructor(init?: Partial<GetEmailSettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class CheckEmailIntegrationDomainHealthResponse extends ResponseBase
+    {
+        // @DataMember
+        public domain?: string;
+
+        // @DataMember
+        public items?: IReadOnlyList<DomainHealthRecordItemDto>;
+
+        public constructor(init?: Partial<CheckEmailIntegrationDomainHealthResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetEmailIntegrationResponse extends ResponseBase
@@ -6835,6 +8222,211 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetEmailCampaignMessagesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetSmsTemplateResponse extends ResponseBase
+    {
+        public item?: SmsTemplateDto;
+
+        public constructor(init?: Partial<GetSmsTemplateResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsTemplatesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<SmsTemplateListProjection>;
+
+        public constructor(init?: Partial<GetSmsTemplatesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsMessageContentTokensResponse extends ResponseBase
+    {
+        public tokens?: { [index:string]: string[]; };
+
+        public constructor(init?: Partial<GetSmsMessageContentTokensResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class RenderSmsTextResponse extends ResponseBase
+    {
+        public variables?: string[];
+        public text?: string;
+
+        public constructor(init?: Partial<RenderSmsTextResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsSettingsResponse extends ResponseBase
+    {
+        public settings?: SmsSettings;
+
+        public constructor(init?: Partial<GetSmsSettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsIntegrationResponse extends ResponseBase
+    {
+        public item?: SmsIntegrationDto;
+
+        public constructor(init?: Partial<GetSmsIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsIntegrationsResponse extends ResponseBase
+    {
+        public defaultIntegrationId?: string;
+        public list?: PaginatedResponse<SmsIntegrationListProjection>;
+
+        public constructor(init?: Partial<GetSmsIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TestSmsIntegrationResponse extends ResponseBase
+    {
+        // @DataMember
+        public items?: IReadOnlyList<IntegrationTestResultItemDto>;
+
+        public constructor(init?: Partial<TestSmsIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignResponse extends ResponseBase
+    {
+        public smsCampaign?: SmsCampaignDto;
+
+        public constructor(init?: Partial<GetSmsCampaignResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<SmsCampaignDto>;
+
+        public constructor(init?: Partial<GetSmsCampaignsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignBatchesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<SmsCampaignBatchDto>;
+
+        public constructor(init?: Partial<GetSmsCampaignBatchesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignBatchNotificationResponse extends ResponseBase
+    {
+        public campaignNotification?: SmsCampaignBatchNotificationDto;
+
+        public constructor(init?: Partial<GetSmsCampaignBatchNotificationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignBatchNotificationsResponse extends ResponseBase
+    {
+        public batchStatusHistory?: BatchStatusChangeEntryDto[];
+        public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
+
+        public constructor(init?: Partial<GetSmsCampaignBatchNotificationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignStatisticsResponse extends ResponseBase
+    {
+        public stats?: CampaignStatsDto;
+
+        public constructor(init?: Partial<GetSmsCampaignStatisticsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PreviewSmsNotificationResponse extends ResponseBase
+    {
+        public body?: string;
+
+        public constructor(init?: Partial<PreviewSmsNotificationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignMessageResponse extends ResponseBase
+    {
+        public smsMessageEntity?: SmsCampaignBatchNotificationDto;
+
+        public constructor(init?: Partial<GetSmsCampaignMessageResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSmsCampaignMessagesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
+
+        public constructor(init?: Partial<GetSmsCampaignMessagesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceTokensResponse extends ResponseBase
+    {
+        public tokens?: string[];
+
+        public constructor(init?: Partial<GetMarketplaceTokensResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceListingsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<MarketplaceListingProjection>;
+
+        public constructor(init?: Partial<GetMarketplaceListingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceIntegrationResponse extends ResponseBase
+    {
+        public integration?: MarketplaceIntegrationDto;
+
+        public constructor(init?: Partial<GetMarketplaceIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceIntegrationsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<MarketplaceIntegrationListProjection>;
+
+        public constructor(init?: Partial<GetMarketplaceIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceBindingResponse extends ResponseBase
+    {
+        public binding?: MarketplaceFunctionBindingDto;
+
+        public constructor(init?: Partial<GetMarketplaceBindingResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceBindingsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<MarketplaceFunctionBindingProjection>;
+
+        public constructor(init?: Partial<GetMarketplaceBindingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetMarketplaceFunctionCatalogResponse extends ResponseBase
+    {
+        public functions: IReadOnlyList<MarketplaceFunctionDefinitionDto>;
+
+        public constructor(init?: Partial<GetMarketplaceFunctionCatalogResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class InvokeMarketplaceFunctionBindingResponse extends ResponseBase
+    {
+        public isSuccess: boolean;
+        public output?: Object;
+        public vendorRequestId?: string;
+
+        public constructor(init?: Partial<InvokeMarketplaceFunctionBindingResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetCodeIntegrationResponse extends ResponseBase
+    {
+        public item?: CodeIntegrationDto;
+
+        public constructor(init?: Partial<GetCodeIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetCodeIntegrationsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<CodeIntegrationListProjection>;
+
+        public constructor(init?: Partial<GetCodeIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TestCodeIntegrationResponse extends ResponseBase
+    {
+        // @DataMember
+        public items?: IReadOnlyList<IntegrationTestResultItemDto>;
+
+        public constructor(init?: Partial<TestCodeIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetPushTemplateResponse extends ResponseBase
     {
         public item?: PushTemplateDto;
@@ -6856,6 +8448,23 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetPushMessageContentTokensResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class RenderPushResponse extends ResponseBase
+    {
+        public variables?: string[];
+        public title?: string;
+        public body?: string;
+        public subtitle?: string;
+
+        public constructor(init?: Partial<RenderPushResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushSettingsResponse extends ResponseBase
+    {
+        public settings?: PushSettings;
+
+        public constructor(init?: Partial<GetPushSettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetPushIntegrationResponse extends ResponseBase
     {
         public item?: PushIntegrationDto;
@@ -6869,6 +8478,72 @@ export module CodeMashHub2
         public list?: PaginatedResponse<PushIntegrationListProjection>;
 
         public constructor(init?: Partial<GetPushIntegrationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignResponse extends ResponseBase
+    {
+        public item?: PushCampaignDto;
+
+        public constructor(init?: Partial<GetPushCampaignResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<PushCampaignDto>;
+
+        public constructor(init?: Partial<GetPushCampaignsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignBatchesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<PushCampaignBatchDto>;
+
+        public constructor(init?: Partial<GetPushCampaignBatchesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignBatchNotificationResponse extends ResponseBase
+    {
+        public campaignNotification?: PushCampaignBatchNotificationDto;
+
+        public constructor(init?: Partial<GetPushCampaignBatchNotificationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignBatchNotificationsResponse extends ResponseBase
+    {
+        public batchStatusHistory?: BatchStatusChangeEntryDto[];
+        public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
+
+        public constructor(init?: Partial<GetPushCampaignBatchNotificationsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignStatisticsResponse extends ResponseBase
+    {
+        public stats?: CampaignStatsDto;
+
+        public constructor(init?: Partial<GetPushCampaignStatisticsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PreviewPushNotificationResponse extends ResponseBase
+    {
+        public title?: string;
+        public body?: string;
+        public subtitle?: string;
+
+        public constructor(init?: Partial<PreviewPushNotificationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignMessageResponse extends ResponseBase
+    {
+        public pushMessageEntity?: PushCampaignBatchNotificationDto;
+
+        public constructor(init?: Partial<GetPushCampaignMessageResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetPushCampaignMessagesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
+
+        public constructor(init?: Partial<GetPushCampaignMessagesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetPaymentsTriggerResponse extends GetTriggerResponse
@@ -6928,6 +8603,41 @@ export module CodeMashHub2
         public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
         public constructor(init?: Partial<TestLoggingIntegrationResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class CleanLogsResponse extends ResponseBase
+    {
+
+        public constructor(init?: Partial<CleanLogsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetLogsByCorrelationIdResponse extends ResponseBase
+    {
+        public items?: IReadOnlyList<TenantLogEntryDto>;
+
+        public constructor(init?: Partial<GetLogsByCorrelationIdResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetLogsResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<TenantLogEntryDto>;
+
+        public constructor(init?: Partial<GetLogsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetLogSettingsResponse extends ResponseBase
+    {
+        public skipCloudDashboardLogs: boolean;
+        public skipHttpBodyMeta: boolean;
+        public hasNorbixLogging: boolean;
+
+        public constructor(init?: Partial<GetLogSettingsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class SaveLogSettingsResponse extends ResponseBase
+    {
+
+        public constructor(init?: Partial<SaveLogSettingsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class AskChatResponse extends ResponseBase
@@ -6997,6 +8707,38 @@ export module CodeMashHub2
         public constructor(init?: Partial<RotateWebhookIntegrationSecretResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class HttpResult
+    {
+        public responseText?: string;
+        public responseStream?: string;
+        public fileInfo?: any;
+        public virtualFile?: IVirtualFile;
+        public contentType?: string;
+        public headers?: { [index:string]: string; };
+        public cookies?: any[];
+        public eTag?: string;
+        public age?: string;
+        public maxAge?: string;
+        public expires?: string;
+        public lastModified?: string;
+        public cacheControl: CacheControl;
+        public resultScope?: any;
+        public allowsPartialResponse: boolean;
+        public options?: { [index:string]: string; };
+        public status: number;
+        public statusCode: any;
+        public statusDescription?: string;
+        public response?: Object;
+        public responseFilter?: IContentTypeWriter;
+        public requestContext?: IRequest;
+        public view?: string;
+        public template?: string;
+        public paddingLength: number;
+        public isPartialRequest: boolean;
+
+        public constructor(init?: Partial<HttpResult>) { (Object as any).assign(this, init); }
+    }
+
     export class SaveWebhookDestinationResponse extends ResponseBase
     {
         public destinationId?: string;
@@ -7016,6 +8758,28 @@ export module CodeMashHub2
         public list?: PaginatedResponse<SchedulerTaskListProjection>;
 
         public constructor(init?: Partial<GetSchedulerTasksResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class ResolveResourcesResponse extends ResponseBase
+    {
+        public resolved: IReadOnlyList<ResolvedResourceEntry>;
+
+        public constructor(init?: Partial<ResolveResourcesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetContactResponse extends ResponseBase
+    {
+        public item?: ContactDto;
+
+        public constructor(init?: Partial<GetContactResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetAllContactsResponse extends ResponseBase
+    {
+        public items?: IReadOnlyList<ContactDto>;
+        public nextCursor?: string;
+
+        public constructor(init?: Partial<GetAllContactsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -7111,6 +8875,330 @@ export module CodeMashHub2
         public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
     }
 
+    // @Route("/{version}/code/enable", "GET")
+    export class EnableCode extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<EnableCode>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableCode'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/disable", "GET")
+    export class DisableCode extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<DisableCode>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableCode'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations", "GET")
+    export class GetCodeIntegrations extends CodeMashListPaginationRequestBase implements IReturn<GetCodeIntegrationsResponse>
+    {
+
+        public constructor(init?: Partial<GetCodeIntegrations>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetCodeIntegrations'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetCodeIntegrationsResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/{id}", "GET")
+    export class GetCodeIntegration extends CodeMashRequestBase implements IReturn<GetCodeIntegrationResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetCodeIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetCodeIntegration'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetCodeIntegrationResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations", "POST")
+    // @DataContract
+    export class SaveCodeIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember(Name="integration")
+        public integration: CodeIntegrationRequest;
+
+        public constructor(init?: Partial<SaveCodeIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveCodeIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/test", "POST")
+    export class TestCodeIntegration extends CodeMashRequestBase implements IReturn<TestCodeIntegrationResponse>
+    {
+        public integrationId: string;
+
+        public constructor(init?: Partial<TestCodeIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'TestCodeIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new TestCodeIntegrationResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/confirm-human-delivery", "POST")
+    // @DataContract
+    export class ConfirmCodeIntegrationHumanDeliveryRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public integrationId: string;
+
+        public constructor(init?: Partial<ConfirmCodeIntegrationHumanDeliveryRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ConfirmCodeIntegrationHumanDeliveryRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/{Id}/default", "PUT")
+    export class SetCodeIntegrationAsDefault extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<SetCodeIntegrationAsDefault>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SetCodeIntegrationAsDefault'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/{Id}", "DELETE")
+    export class DeleteCodeIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteCodeIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteCodeIntegrationRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/{Id}/enable", "PUT")
+    export class EnableCodeIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<EnableCodeIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableCodeIntegrationRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/integrations/{Id}/disable", "PUT")
+    export class DisableCodeIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DisableCodeIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableCodeIntegrationRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/listings", "GET")
+    export class GetMarketplaceListings extends CodeMashListPaginationRequestBase implements IReturn<GetMarketplaceListingsResponse>
+    {
+        public categories?: MarketplaceCategory[];
+        public transports?: MarketplaceTransport[];
+        public search?: string;
+        public officialOnly?: boolean;
+
+        public constructor(init?: Partial<GetMarketplaceListings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceListings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceListingsResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/listings/{ListingViewId}/functions/{FunctionKey}/tokens", "GET")
+    export class GetMarketplaceListingFunctionTokens extends CodeMashRequestBase implements IReturn<GetMarketplaceTokensResponse>
+    {
+        public listingViewId: string;
+        public functionKey: string;
+
+        public constructor(init?: Partial<GetMarketplaceListingFunctionTokens>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceListingFunctionTokens'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceTokensResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations", "GET")
+    export class GetMarketplaceIntegrations extends CodeMashListPaginationRequestBase implements IReturn<GetMarketplaceIntegrationsResponse>
+    {
+
+        public constructor(init?: Partial<GetMarketplaceIntegrations>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceIntegrations'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceIntegrationsResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}", "GET")
+    export class GetMarketplaceIntegration extends CodeMashRequestBase implements IReturn<GetMarketplaceIntegrationResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<GetMarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceIntegration'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceIntegrationResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations", "POST")
+    // @DataContract
+    export class SaveMarketplaceIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember
+        public integration: MarketplaceIntegrationDto;
+
+        // @DataMember
+        public secrets: { [index:string]: string; } = {};
+
+        public constructor(init?: Partial<SaveMarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveMarketplaceIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}", "DELETE")
+    export class DeleteMarketplaceIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<DeleteMarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteMarketplaceIntegration'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/enable", "POST")
+    export class EnableMarketplaceIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<EnableMarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableMarketplaceIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/disable", "POST")
+    export class DisableMarketplaceIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<DisableMarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableMarketplaceIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings", "GET")
+    export class GetMarketplaceBindings extends CodeMashListPaginationRequestBase implements IReturn<GetMarketplaceBindingsResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<GetMarketplaceBindings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceBindings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceBindingsResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}", "GET")
+    export class GetMarketplaceBinding extends CodeMashRequestBase implements IReturn<GetMarketplaceBindingResponse>
+    {
+        public integrationViewId: string;
+        public bindingViewId: string;
+
+        public constructor(init?: Partial<GetMarketplaceBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceBinding'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceBindingResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings", "POST")
+    // @DataContract
+    export class SaveMarketplaceFunctionBinding extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember
+        public integrationViewId: string;
+
+        // @DataMember
+        public binding: MarketplaceFunctionBindingDto;
+
+        public constructor(init?: Partial<SaveMarketplaceFunctionBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveMarketplaceFunctionBinding'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}", "DELETE")
+    export class DeleteMarketplaceFunctionBinding extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+        public bindingViewId: string;
+
+        public constructor(init?: Partial<DeleteMarketplaceFunctionBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteMarketplaceFunctionBinding'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable", "POST")
+    export class EnableMarketplaceFunctionBinding extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+        public bindingViewId: string;
+
+        public constructor(init?: Partial<EnableMarketplaceFunctionBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableMarketplaceFunctionBinding'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable", "POST")
+    export class DisableMarketplaceFunctionBinding extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        public integrationViewId: string;
+        public bindingViewId: string;
+
+        public constructor(init?: Partial<DisableMarketplaceFunctionBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableMarketplaceFunctionBinding'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens", "GET")
+    export class GetMarketplaceBindingTokens extends CodeMashRequestBase implements IReturn<GetMarketplaceTokensResponse>
+    {
+        public integrationViewId: string;
+        public bindingViewId: string;
+
+        public constructor(init?: Partial<GetMarketplaceBindingTokens>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceBindingTokens'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceTokensResponse(); }
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke", "POST")
+    // @DataContract
+    export class InvokeMarketplaceFunctionBinding extends CodeMashRequestBase implements IReturn<InvokeMarketplaceFunctionBindingResponse>
+    {
+        // @DataMember
+        public integrationViewId: string;
+
+        // @DataMember
+        public bindingViewId: string;
+
+        // @DataMember
+        public payload: { [index:string]: Object; } = {};
+
+        public constructor(init?: Partial<InvokeMarketplaceFunctionBinding>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'InvokeMarketplaceFunctionBinding'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new InvokeMarketplaceFunctionBindingResponse(); }
+    }
+
     // @Route("/internal/_typegen", "GET")
     export class InternalsTypeGen
     {
@@ -7127,9 +9215,8 @@ export module CodeMashHub2
         public typegen_10_SchemaTriggerRequest?: SchemaTriggerRequest;
         public typegen_11_FilesTriggerRequest?: FilesTriggerRequest;
         public typegen_12_PaymentTriggerRequest?: PaymentTriggerRequest;
-        public typegen_13_MongoDbAtlasServerlessDatabaseIntegrationRequest?: MongoDbAtlasServerlessDatabaseIntegrationRequest;
-        public typegen_14_MongoDbAtlasClusterDatabaseIntegrationRequest?: MongoDbAtlasClusterDatabaseIntegrationRequest;
         public typegen_15_MongoDbConnectionStringDatabaseIntegrationRequest?: MongoDbConnectionStringDatabaseIntegrationRequest;
+        public typegen_16_MongoDbAtlasFlexManagedDatabaseIntegrationRequest?: MongoDbAtlasFlexManagedDatabaseIntegrationRequest;
         public typegen_16_GoogleDriveFilesIntegrationRequest?: GoogleDriveFilesIntegrationRequest;
         public typegen_17_FtpFilesIntegrationRequest?: FtpFilesIntegrationRequest;
         public typegen_18_DropBoxFilesIntegrationRequest?: DropBoxFilesIntegrationRequest;
@@ -7141,16 +9228,13 @@ export module CodeMashHub2
         public typegen_24_AmqpLoggingIntegrationRequest?: AmqpLoggingIntegrationRequest;
         public typegen_25_AwsKinesisLoggingIntegrationRequest?: AwsKinesisLoggingIntegrationRequest;
         public typegen_26_AwsS3LoggingIntegrationRequest?: AwsS3LoggingIntegrationRequest;
-        public typegen_27_TelegramLoggingIntegrationRequest?: TelegramLoggingIntegrationRequest;
         public typegen_28_NewRelicLoggingIntegrationRequest?: NewRelicLoggingIntegrationRequest;
-        public typegen_29_MicrosoftTeamsLoggingIntegrationRequest?: MicrosoftTeamsLoggingIntegrationRequest;
         public typegen_30_MongoDbLoggingIntegrationRequest?: MongoDbLoggingIntegrationRequest;
         public typegen_31_KafkaLoggingIntegrationRequest?: KafkaLoggingIntegrationRequest;
         public typegen_32_PrometheusLoggingIntegrationRequest?: PrometheusLoggingIntegrationRequest;
         public typegen_33_DataDogLoggingIntegrationRequest?: DataDogLoggingIntegrationRequest;
         public typegen_34_InternalKafkaLoggingIntegrationRequest?: InternalKafkaLoggingIntegrationRequest;
         public typegen_35_ElasticSearchLoggingIntegrationRequest?: ElasticSearchLoggingIntegrationRequest;
-        public typegen_36_ZabbixLoggingIntegrationRequest?: ZabbixLoggingIntegrationRequest;
         public typegen_37_SplunkLoggingIntegrationRequest?: SplunkLoggingIntegrationRequest;
         public typegen_38_AzureOtelLoggingIntegrationRequest?: AzureOtelLoggingIntegrationRequest;
         public typegen_39_KibanaLoggingIntegrationRequest?: KibanaLoggingIntegrationRequest;
@@ -7209,6 +9293,7 @@ export module CodeMashHub2
         public typegen_94_EmailToCollectionRecordsDeliverySettingsDto?: EmailToCollectionRecordsDeliverySettingsDto;
         public typegen_95_PushToAllUsersDeliverySettingsDto?: PushToAllUsersDeliverySettingsDto;
         public typegen_96_PushToUsersDeliverySettingsDto?: PushToUsersDeliverySettingsDto;
+        public typegen_229_PushToAccountUsersDeliverySettingsDto?: PushToAccountUsersDeliverySettingsDto;
         public typegen_97_PushToCollectionRecordsDeliverySettingsDto?: PushToCollectionRecordsDeliverySettingsDto;
         public typegen_98_PushToDevicesDeliverySettingsDto?: PushToDevicesDeliverySettingsDto;
         public typegen_99_SmsToAllUsersDeliverySettingsDto?: SmsToAllUsersDeliverySettingsDto;
@@ -7263,14 +9348,10 @@ export module CodeMashHub2
         public typegen_143_KafkaLoggingIntegrationDto?: KafkaLoggingIntegrationDto;
         public typegen_144_KibanaLoggingIntegrationDto?: KibanaLoggingIntegrationDto;
         public typegen_145_LocalFileLoggingIntegrationDto?: LocalFileLoggingIntegrationDto;
-        public typegen_146_MicrosoftTeamsLoggingIntegrationDto?: MicrosoftTeamsLoggingIntegrationDto;
         public typegen_147_MongoDbLoggingIntegrationDto?: MongoDbLoggingIntegrationDto;
         public typegen_148_NewRelicLoggingIntegrationDto?: NewRelicLoggingIntegrationDto;
         public typegen_149_PrometheusLoggingIntegrationDto?: PrometheusLoggingIntegrationDto;
         public typegen_150_SplunkLoggingIntegrationDto?: SplunkLoggingIntegrationDto;
-        public typegen_151_TelegramLoggingIntegrationDto?: TelegramLoggingIntegrationDto;
-        public typegen_152_ZabbixLoggingIntegrationDto?: ZabbixLoggingIntegrationDto;
-        public typegen_191_SlackLoggingIntegrationDto?: SlackLoggingIntegrationDto;
         public typegen_153_AppleICloudFilesIntegrationDto?: AppleICloudFilesIntegrationDto;
         public typegen_154_AwsS3CrossAccountRoleFilesIntegrationDto?: AwsS3CrossAccountRoleFilesIntegrationDto;
         public typegen_155_AwsS3IamFilesIntegrationDto?: AwsS3IamFilesIntegrationDto;
@@ -7280,9 +9361,8 @@ export module CodeMashHub2
         public typegen_159_GoogleCloudFilesIntegrationDto?: GoogleCloudFilesIntegrationDto;
         public typegen_160_GoogleDriveFilesIntegrationDto?: GoogleDriveFilesIntegrationDto;
         public typegen_161_LocalFilesIntegrationDto?: LocalFilesIntegrationDto;
-        public typegen_162_MongoDbAtlasClusterIntegrationDto?: MongoDbAtlasClusterIntegrationDto;
-        public typegen_163_MongoDbAtlasServerlessIntegrationDto?: MongoDbAtlasServerlessIntegrationDto;
         public typegen_164_MongoDbConnectionStringIntegrationDto?: MongoDbConnectionStringIntegrationDto;
+        public typegen_165_MongoDbAtlasFlexManagedIntegrationDto?: MongoDbAtlasFlexManagedIntegrationDto;
         public typegen_165_BirdSmsIntegrationDto?: BirdSmsIntegrationDto;
         public typegen_166_PlivoSmsIntegrationDto?: PlivoSmsIntegrationDto;
         public typegen_167_SinchSmsIntegrationDto?: SinchSmsIntegrationDto;
@@ -7311,7 +9391,33 @@ export module CodeMashHub2
         public typegen_198_MarketplaceListingDto?: MarketplaceListingDto;
         public typegen_199_MarketplaceFunctionDefinitionDto?: MarketplaceFunctionDefinitionDto;
         public typegen_200_MarketplaceFunctionParameterDto?: MarketplaceFunctionParameterDto;
-        public typegen_201_MarketplaceMappingDto?: MarketplaceMappingDto;
+        public typegen_201_EnableCode?: EnableCode;
+        public typegen_202_DisableCode?: DisableCode;
+        public typegen_203_GetCodeIntegrations?: GetCodeIntegrations;
+        public typegen_204_GetCodeIntegration?: GetCodeIntegration;
+        public typegen_205_SaveCodeIntegration?: SaveCodeIntegration;
+        public typegen_206_TestCodeIntegration?: TestCodeIntegration;
+        public typegen_207_ConfirmCodeIntegrationHumanDeliveryRequest?: ConfirmCodeIntegrationHumanDeliveryRequest;
+        public typegen_208_SetCodeIntegrationAsDefault?: SetCodeIntegrationAsDefault;
+        public typegen_209_DeleteCodeIntegrationRequest?: DeleteCodeIntegrationRequest;
+        public typegen_210_EnableCodeIntegrationRequest?: EnableCodeIntegrationRequest;
+        public typegen_211_DisableCodeIntegrationRequest?: DisableCodeIntegrationRequest;
+        public typegen_212_GetMarketplaceListings?: GetMarketplaceListings;
+        public typegen_213_GetMarketplaceListingFunctionTokens?: GetMarketplaceListingFunctionTokens;
+        public typegen_214_GetMarketplaceIntegrations?: GetMarketplaceIntegrations;
+        public typegen_215_GetMarketplaceIntegration?: GetMarketplaceIntegration;
+        public typegen_216_SaveMarketplaceIntegration?: SaveMarketplaceIntegration;
+        public typegen_217_DeleteMarketplaceIntegration?: DeleteMarketplaceIntegration;
+        public typegen_218_EnableMarketplaceIntegration?: EnableMarketplaceIntegration;
+        public typegen_219_DisableMarketplaceIntegration?: DisableMarketplaceIntegration;
+        public typegen_221_GetMarketplaceBindings?: GetMarketplaceBindings;
+        public typegen_222_GetMarketplaceBinding?: GetMarketplaceBinding;
+        public typegen_223_SaveMarketplaceFunctionBinding?: SaveMarketplaceFunctionBinding;
+        public typegen_224_DeleteMarketplaceFunctionBinding?: DeleteMarketplaceFunctionBinding;
+        public typegen_225_EnableMarketplaceFunctionBinding?: EnableMarketplaceFunctionBinding;
+        public typegen_226_DisableMarketplaceFunctionBinding?: DisableMarketplaceFunctionBinding;
+        public typegen_227_GetMarketplaceBindingTokens?: GetMarketplaceBindingTokens;
+        public typegen_228_InvokeMarketplaceFunctionBinding?: InvokeMarketplaceFunctionBinding;
 
         public constructor(init?: Partial<InternalsTypeGen>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'InternalsTypeGen'; }
@@ -7445,6 +9551,18 @@ export module CodeMashHub2
         public createResponse() { return new CreateTeamMemberFromInvitationResponse(); }
     }
 
+    /** @description Get Account Usage Billing. */
+    // @Route("/{version}/account/usage-billing", "GET")
+    // @Api(Description="Get Account Usage Billing.")
+    export class GetAccountUsageBilling extends RequestBase implements IReturn<GetAccountUsageBillingResponse>
+    {
+
+        public constructor(init?: Partial<GetAccountUsageBilling>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAccountUsageBilling'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAccountUsageBillingResponse(); }
+    }
+
     // @Route("/{version}/account/verify", "GET")
     export class VerifyAccount extends RequestBase implements IReturn<EmptyResponse>, IHasAccountId
     {
@@ -7530,7 +9648,10 @@ export module CodeMashHub2
         public projectName: string;
 
         // @DataMember
-        public regions?: string[];
+        public primaryRegion?: string;
+
+        // @DataMember
+        public additionalRegions?: string[];
 
         // @DataMember
         public description?: string;
@@ -7549,6 +9670,97 @@ export module CodeMashHub2
         public getTypeName() { return 'DeleteProject'; }
         public getMethod() { return 'DELETE'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments", "POST")
+    // @DataContract
+    export class CreateProjectEnvironmentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public environmentName: string;
+
+        // @DataMember(Name="integration")
+        public integration: DatabaseIntegrationRequest;
+
+        public constructor(init?: Partial<CreateProjectEnvironmentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateProjectEnvironmentRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments/{environmentName}", "DELETE")
+    // @DataContract
+    export class DeleteProjectEnvironmentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public environmentName: string;
+
+        public constructor(init?: Partial<DeleteProjectEnvironmentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteProjectEnvironmentRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments/{environmentName}/rank", "PATCH")
+    // @DataContract
+    export class SetEnvironmentRankRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public environmentName: string;
+
+        // @DataMember
+        public rank: number;
+
+        public constructor(init?: Partial<SetEnvironmentRankRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SetEnvironmentRankRequest'; }
+        public getMethod() { return 'PATCH'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments/promote", "POST")
+    // @DataContract
+    export class PromoteEnvironmentRequest extends CodeMashRequestBase implements IReturn<PromoteEnvironmentResponse>
+    {
+        // @DataMember
+        public sourceEnv: string;
+
+        // @DataMember
+        public targetEnv: string;
+
+        // @DataMember
+        public dryRun: boolean;
+
+        public constructor(init?: Partial<PromoteEnvironmentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PromoteEnvironmentRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PromoteEnvironmentResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments/promote/rollback", "POST")
+    // @DataContract
+    export class RollbackPromotionRequest extends CodeMashRequestBase implements IReturn<PromoteEnvironmentResponse>
+    {
+        // @DataMember
+        public targetEnv: string;
+
+        // @DataMember
+        public fromVersion: number;
+
+        public constructor(init?: Partial<RollbackPromotionRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RollbackPromotionRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PromoteEnvironmentResponse(); }
+    }
+
+    // @Route("/{version}/account/projects/environments", "GET")
+    // @DataContract
+    export class GetProjectEnvironments extends CodeMashRequestBase implements IReturn<GetProjectEnvironmentsResponse>
+    {
+
+        public constructor(init?: Partial<GetProjectEnvironments>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetProjectEnvironments'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetProjectEnvironmentsResponse(); }
     }
 
     /** @description Gets project info. */
@@ -7622,7 +9834,7 @@ export module CodeMashHub2
     // @Api(Description="Updates project icon")
     export class UpdateProjectIcon extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
-        public fileResource?: FileResourceDto;
+        public fileResource?: FileResourceRefDto;
 
         public constructor(init?: Partial<UpdateProjectIcon>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'UpdateProjectIcon'; }
@@ -7635,7 +9847,7 @@ export module CodeMashHub2
     // @Api(Description="Updates project logo")
     export class UpdateProjectLogo extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
-        public fileResource?: FileResourceDto;
+        public fileResource?: FileResourceRefDto;
 
         public constructor(init?: Partial<UpdateProjectLogo>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'UpdateProjectLogo'; }
@@ -7763,7 +9975,8 @@ export module CodeMashHub2
     // @Api(Description="Updates project regions")
     export class UpdateProjectRegions extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
-        public regions?: string[];
+        public primaryRegion?: string;
+        public additionalRegions?: string[];
 
         public constructor(init?: Partial<UpdateProjectRegions>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'UpdateProjectRegions'; }
@@ -7794,6 +10007,34 @@ export module CodeMashHub2
         public createResponse() { return new CreateAccountResponse(); }
     }
 
+    // @Route("/{version}/account/team/member/password", "POST")
+    export class ChangeTeamMemberPassword extends RequestBase implements IReturn<IdResponse>
+    {
+        public email: string;
+        public currentPassword: string;
+        public newPassword: string;
+
+        public constructor(init?: Partial<ChangeTeamMemberPassword>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ChangeTeamMemberPassword'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/member/create", "POST")
+    export class CreateTeamMember extends RequestBase implements IReturn<IdResponse>
+    {
+        public email: string;
+        public displayName?: string;
+        public password?: string;
+        public roles?: string[];
+        public sendInvitation: boolean;
+
+        public constructor(init?: Partial<CreateTeamMember>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateTeamMember'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
     // @Route("/{version}/account/collaborators", "GET")
     export class GetAccountCollaborators extends RequestBase implements IReturn<GetAccountCollaboratorsResponse>
     {
@@ -7801,6 +10042,7 @@ export module CodeMashHub2
         public userShouldHavePushDevice: boolean;
         public projectId?: string;
         public userIds?: string[];
+        public roleNames?: string[];
         public pagingArgs?: PagingArgs;
 
         public constructor(init?: Partial<GetAccountCollaborators>) { super(init); (Object as any).assign(this, init); }
@@ -7809,10 +10051,117 @@ export module CodeMashHub2
         public createResponse() { return new GetAccountCollaboratorsResponse(); }
     }
 
+    // @Route("/{version}/account/team/password-policy", "GET")
+    export class GetAccountPasswordPolicy extends RequestBase implements IReturn<GetAccountPasswordPolicyResponse>
+    {
+
+        public constructor(init?: Partial<GetAccountPasswordPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAccountPasswordPolicy'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAccountPasswordPolicyResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles", "GET")
+    export class GetAccountTeamRoles extends RequestBase implements IReturn<GetAccountTeamRolesResponse>
+    {
+
+        public constructor(init?: Partial<GetAccountTeamRoles>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAccountTeamRoles'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAccountTeamRolesResponse(); }
+    }
+
+    // @Route("/{version}/account/team/policies", "GET")
+    export class GetAccountTeamPolicies extends RequestBase implements IReturn<GetAccountTeamPoliciesResponse>
+    {
+
+        public constructor(init?: Partial<GetAccountTeamPolicies>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAccountTeamPolicies'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAccountTeamPoliciesResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles", "POST")
+    export class CreateAccountRole extends RequestBase implements IReturn<IdResponse>
+    {
+        public roleName: string;
+        public description?: string;
+        public policies?: string[];
+
+        public constructor(init?: Partial<CreateAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateAccountRole'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles", "PUT")
+    export class UpdateAccountRole extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+        public roleName: string;
+        public description?: string;
+        public policies?: string[];
+
+        public constructor(init?: Partial<UpdateAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateAccountRole'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles/{Id}", "DELETE")
+    export class DeleteAccountRole extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteAccountRole'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/policies", "POST")
+    export class CreateAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    {
+        public policyName: string;
+        public description?: string;
+        public policyDocumentJson?: string;
+
+        public constructor(init?: Partial<CreateAccountPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateAccountPolicy'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/policies", "PUT")
+    export class UpdateAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+        public policyName: string;
+        public description?: string;
+        public policyDocumentJson?: string;
+
+        public constructor(init?: Partial<UpdateAccountPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateAccountPolicy'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/policies/{Id}", "DELETE")
+    export class DeleteAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteAccountPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteAccountPolicy'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
     // @Route("/{version}/account/team/member/invite", "POST")
     export class SendInviteToTeamMember extends RequestBase implements IReturn<EmptyResponse>
     {
         public email: string;
+        public roles?: string[];
 
         public constructor(init?: Partial<SendInviteToTeamMember>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'SendInviteToTeamMember'; }
@@ -7926,8 +10275,10 @@ export module CodeMashHub2
         public id: ProjectId;
         public name: ProjectName;
         public databaseIntegrationId: IntegrationId;
-        public regions?: ProjectRegion[];
+        public primaryRegion?: ProjectRegion;
+        public additionalRegions?: ProjectRegion[];
         public description?: string;
+        public isProvisioning: boolean;
 
         public constructor(init?: Partial<ProjectCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectCreated'; }
@@ -8002,6 +10353,38 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class ProjectEnvironmentCreated
+    {
+        public env: Env;
+        public ranks: { [index:string]: number; } = {};
+
+        public constructor(init?: Partial<ProjectEnvironmentCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectEnvironmentCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectEnvironmentDeleted
+    {
+        public env: Env;
+        public ranks: { [index:string]: number; } = {};
+
+        public constructor(init?: Partial<ProjectEnvironmentDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectEnvironmentDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectEnvironmentRanksChanged
+    {
+        public ranks: { [index:string]: number; } = {};
+
+        public constructor(init?: Partial<ProjectEnvironmentRanksChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectEnvironmentRanksChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class ProjectDefaultLanguageChanged
     {
         public language: Language;
@@ -8064,19 +10447,11 @@ export module CodeMashHub2
 
     export class ProjectRegionsChanged
     {
-        public regions?: ProjectRegion[];
+        public primaryRegion?: ProjectRegion;
+        public additionalRegions?: ProjectRegion[];
 
         public constructor(init?: Partial<ProjectRegionsChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectRegionsChanged'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() {}
-    }
-
-    export class ProjectEnabled
-    {
-
-        public constructor(init?: Partial<ProjectEnabled>) { (Object as any).assign(this, init); }
-        public getTypeName() { return 'ProjectEnabled'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -8168,7 +10543,7 @@ export module CodeMashHub2
 
     export class CustomerCreated
     {
-        public customerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
 
         public constructor(init?: Partial<CustomerCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CustomerCreated'; }
@@ -8188,11 +10563,31 @@ export module CodeMashHub2
 
     export class SubscriptionCanceled
     {
-        public customerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
         public subscriptionId: string;
 
         public constructor(init?: Partial<SubscriptionCanceled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SubscriptionCanceled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AtlasUsageRecorded
+    {
+        public record: AtlasUsageRecord;
+
+        public constructor(init?: Partial<AtlasUsageRecorded>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AtlasUsageRecorded'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UsageBillingIngestionFailed
+    {
+        public failure: UsageIngestionFailure;
+
+        public constructor(init?: Partial<UsageBillingIngestionFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UsageBillingIngestionFailed'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -8242,7 +10637,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/membership/triggers/{triggerId}", "DELETE")
-    // @Route("/{version}/triggers", "DELETE")
     // @DataContract
     export class DeleteMembershipTrigger extends DeleteTrigger implements IReturn<EmptyResponse>
     {
@@ -8254,26 +10648,24 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/membership/triggers/{triggerId}/disable", "PATCH")
-    // @Route("/{version}/triggers/disable", "PUT")
     // @DataContract
     export class DisableMembershipTrigger extends DisableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<DisableMembershipTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DisableMembershipTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/membership/triggers/{triggerId}/enable", "PATCH")
-    // @Route("/{version}/triggers/enable", "PUT")
     // @DataContract
     export class EnableMembershipTrigger extends EnableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<EnableMembershipTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnableMembershipTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
@@ -8302,7 +10694,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/membership/triggers", "POST")
-    // @Route("/{version}/triggers", "POST")
     // @DataContract
     export class SaveMembershipTrigger extends SaveTrigger implements IReturn<IdResponse>
     {
@@ -8451,6 +10842,39 @@ export module CodeMashHub2
         public createResponse() { return new IdResponse(); }
     }
 
+    /** @description Gets the project's passkey authentication settings. */
+    // @Route("/{version}/membership/passkey/settings", "GET")
+    // @Api(Description="Gets the project's passkey authentication settings.")
+    export class GetPasskeySettings extends CodeMashRequestBase implements IReturn<GetPasskeySettingsResponse>
+    {
+
+        public constructor(init?: Partial<GetPasskeySettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPasskeySettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPasskeySettingsResponse(); }
+    }
+
+    /** @description Saves the project's passkey authentication settings. */
+    // @Route("/{version}/membership/passkey/settings", "POST")
+    // @Api(Description="Saves the project's passkey authentication settings.")
+    export class SavePasskeySettings extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public enabled: boolean;
+        public codeTtlMinutes: number;
+        public maxCredentialsPerUser: number;
+        public recoveryCodeCount: number;
+        public generateRecoveryCodesAtSignup: boolean;
+        public authenticatorAttachment: string;
+        public allowMagicLinkRecovery: boolean;
+        public refreshTokenTtlDays: number;
+        public rpId?: string;
+
+        public constructor(init?: Partial<SavePasskeySettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SavePasskeySettings'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     // @Route("/{version}/membership/integrations/{Id}", "DELETE")
     export class DeleteMembershipIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
@@ -8509,7 +10933,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveMembershipIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: MembershipIntegrationRequest;
 
         public constructor(init?: Partial<SaveMembershipIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -8529,6 +10953,46 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
+    /** @description Gets the project's membership authorization (role-assignment) settings. */
+    // @Route("/{version}/membership/authorization", "GET")
+    // @Api(Description="Gets the project's membership authorization (role-assignment) settings.")
+    export class GetAuthorizationSettings extends CodeMashRequestBase implements IReturn<GetAuthorizationSettingsResponse>
+    {
+
+        public constructor(init?: Partial<GetAuthorizationSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAuthorizationSettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAuthorizationSettingsResponse(); }
+    }
+
+    /** @description Updates the project's membership authorization (role-assignment) settings. */
+    // @Route("/{version}/membership/authorization", "PUT")
+    // @Api(Description="Updates the project's membership authorization (role-assignment) settings.")
+    export class UpdateAuthorizationSettings extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public defaultRoles?: string[];
+        public allowedRegistrationRoles?: string[];
+        public allowGuestUsers: boolean;
+        public guestCleanupPeriodDays?: number;
+
+        public constructor(init?: Partial<UpdateAuthorizationSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateAuthorizationSettings'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Gets the project's configured membership authentication sign-in flows. */
+    // @Route("/{version}/membership/authentication", "GET")
+    // @Api(Description="Gets the project's configured membership authentication sign-in flows.")
+    export class GetAuthenticationSettings extends CodeMashRequestBase implements IReturn<GetAuthenticationSettingsResponse>
+    {
+
+        public constructor(init?: Partial<GetAuthenticationSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAuthenticationSettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAuthenticationSettingsResponse(); }
+    }
+
     export class MembershipIntegrationSaved
     {
         public integration: MembershipIntegration;
@@ -8545,6 +11009,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<MembershipIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipIntegrationTested'; }
@@ -8556,6 +11021,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<MembershipIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipIntegrationRenamed'; }
@@ -8566,6 +11032,7 @@ export module CodeMashHub2
     export class MembershipIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MembershipIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipIntegrationDeleted'; }
@@ -8586,6 +11053,7 @@ export module CodeMashHub2
     export class MembershipIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MembershipIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipIntegrationEnabled'; }
@@ -8596,6 +11064,7 @@ export module CodeMashHub2
     export class MembershipIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MembershipIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipIntegrationDisabled'; }
@@ -8711,8 +11180,19 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class MembershipTriggerMirrored
+    {
+        public trigger: Trigger;
+
+        public constructor(init?: Partial<MembershipTriggerMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'MembershipTriggerMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class MembershipTriggerEnabled extends TriggerByIdEventBase
     {
+        public env: Env;
 
         public constructor(init?: Partial<MembershipTriggerEnabled>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipTriggerEnabled'; }
@@ -8722,6 +11202,7 @@ export module CodeMashHub2
 
     export class MembershipTriggerDisabled extends TriggerByIdEventBase
     {
+        public env: Env;
 
         public constructor(init?: Partial<MembershipTriggerDisabled>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipTriggerDisabled'; }
@@ -8731,6 +11212,7 @@ export module CodeMashHub2
 
     export class MembershipTriggerDeleted extends TriggerByIdEventBase
     {
+        public env: Env;
 
         public constructor(init?: Partial<MembershipTriggerDeleted>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'MembershipTriggerDeleted'; }
@@ -8759,7 +11241,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/database/schemas/triggers/{triggerId}", "DELETE")
-    // @Route("/{version}/triggers", "DELETE")
     // @DataContract
     export class DeleteSchemaTrigger extends DeleteTrigger implements IReturn<EmptyResponse>
     {
@@ -8771,26 +11252,24 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/database/schemas/triggers/{triggerId}/disable", "PATCH")
-    // @Route("/{version}/triggers/disable", "PUT")
     // @DataContract
     export class DisableSchemaTrigger extends DisableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<DisableSchemaTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DisableSchemaTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/database/schemas/triggers/{triggerId}/enable", "PATCH")
-    // @Route("/{version}/triggers/enable", "PUT")
     // @DataContract
     export class EnableSchemaTrigger extends EnableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<EnableSchemaTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnableSchemaTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
@@ -8811,7 +11290,6 @@ export module CodeMashHub2
     // @Api(Description="Gets database triggers")
     export class GetSchemaTriggers extends GetTriggers implements IReturn<GetSchemaTriggersResponse>
     {
-        public schemaId: string;
 
         public constructor(init?: Partial<GetSchemaTriggers>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetSchemaTriggers'; }
@@ -8820,7 +11298,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/database/schemas/triggers", "POST")
-    // @Route("/{version}/triggers", "POST")
     // @DataContract
     export class SaveSchemaTrigger extends SaveTrigger implements IReturn<IdResponse>
     {
@@ -9025,10 +11502,11 @@ export module CodeMashHub2
         public id: string;
 
         // @DataMember(Name="version")
-        // @ApiMember(DataType="integer", Name="version", ParameterType="query")
-        public schemaVersion?: number;
+                // @ApiMember(DataType="integer", Name="version", ParameterType="query")
+                /** Schema version query param (shares name with API path `version`). */
+                declare version: any;
 
-        public constructor(init?: Partial<GetDatabaseSchema>) { super(init); (Object as any).assign(this, init); }
+        public constructor(init?: Partial<GetDatabaseSchema>) { super(init as any); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetDatabaseSchema'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new GetDatabaseSchemaResponse(); }
@@ -9096,6 +11574,9 @@ export module CodeMashHub2
     {
         // @DataMember
         public id: string;
+
+        // @DataMember
+        public confirmed: boolean;
 
         public constructor(init?: Partial<PublishDatabaseSchemaRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'PublishDatabaseSchemaRequest'; }
@@ -9234,11 +11715,32 @@ export module CodeMashHub2
         public createResponse() { return new GetDatabaseIntegrationsResponse(); }
     }
 
+    // @Route("/{version}/database/integrations/flex-tiers", "GET")
+    export class GetAllowedFlexTiers extends CodeMashRequestBase implements IReturn<GetAllowedFlexTiersResponse>
+    {
+
+        public constructor(init?: Partial<GetAllowedFlexTiers>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAllowedFlexTiers'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAllowedFlexTiersResponse(); }
+    }
+
+    // @Route("/{version}/database/integrations/{Id}/connection-string", "GET")
+    export class RevealManagedFlexConnectionString extends CodeMashRequestBase implements IReturn<RevealManagedFlexConnectionStringResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<RevealManagedFlexConnectionString>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RevealManagedFlexConnectionString'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new RevealManagedFlexConnectionStringResponse(); }
+    }
+
     // @Route("/{version}/database/integrations", "POST")
     // @DataContract
     export class SaveDatabaseIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: DatabaseIntegrationRequest;
 
         public constructor(init?: Partial<SaveDatabaseIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -9256,6 +11758,17 @@ export module CodeMashHub2
         public getTypeName() { return 'SetDatabaseIntegrationAsDefaultRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/database/integrations/test", "POST")
+    export class TestDatabaseIntegration extends CodeMashRequestBase implements IReturn<TestDatabaseIntegrationResponse>
+    {
+        public integrationId: string;
+
+        public constructor(init?: Partial<TestDatabaseIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'TestDatabaseIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new TestDatabaseIntegrationResponse(); }
     }
 
     // @Route("/{version}/database/aggregates/{Id}", "DELETE")
@@ -9419,6 +11932,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<DatabaseIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'DatabaseIntegrationTested'; }
@@ -9430,6 +11944,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<DatabaseIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'DatabaseIntegrationRenamed'; }
@@ -9439,6 +11954,7 @@ export module CodeMashHub2
 
     export class DatabaseIntegrationSetAsDefault
     {
+        public env: Env;
         public id: IntegrationId;
 
         public constructor(init?: Partial<DatabaseIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
@@ -9450,6 +11966,7 @@ export module CodeMashHub2
     export class DatabaseIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<DatabaseIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'DatabaseIntegrationDeleted'; }
@@ -9460,6 +11977,7 @@ export module CodeMashHub2
     export class DatabaseIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<DatabaseIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'DatabaseIntegrationEnabled'; }
@@ -9470,9 +11988,67 @@ export module CodeMashHub2
     export class DatabaseIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<DatabaseIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'DatabaseIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class DatabaseIntegrationProvisioningStarted
+    {
+        public integrationId: IntegrationId;
+        public atlasProjectId: string;
+        public atlasClusterName: string;
+
+        public constructor(init?: Partial<DatabaseIntegrationProvisioningStarted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'DatabaseIntegrationProvisioningStarted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class DatabaseIntegrationProvisioningCompleted
+    {
+        public integrationId: IntegrationId;
+        public connectionStringTemplate: string;
+
+        public constructor(init?: Partial<DatabaseIntegrationProvisioningCompleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'DatabaseIntegrationProvisioningCompleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class DatabaseIntegrationProvisioningFailed
+    {
+        public integrationId: IntegrationId;
+        public reason: string;
+        public retryable: boolean;
+
+        public constructor(init?: Partial<DatabaseIntegrationProvisioningFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'DatabaseIntegrationProvisioningFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class DatabaseIntegrationDeprovisioned
+    {
+        public integrationId: IntegrationId;
+        public atlasProjectId: string;
+        public atlasClusterName: string;
+
+        public constructor(init?: Partial<DatabaseIntegrationDeprovisioned>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'DatabaseIntegrationDeprovisioned'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectStatusChanged
+    {
+        public status: ProjectStatus;
+
+        public constructor(init?: Partial<ProjectStatusChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectStatusChanged'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -9487,10 +12063,21 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class SchemaMirrored
+    {
+        public schema: Schema;
+
+        public constructor(init?: Partial<SchemaMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SchemaMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class SchemaDraftUpdated
     {
         public id: SchemaId;
         public draft: SchemaDraft;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaDraftUpdated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaDraftUpdated'; }
@@ -9501,6 +12088,7 @@ export module CodeMashHub2
     export class SchemaDraftDiscarded
     {
         public id: SchemaId;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaDraftDiscarded>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaDraftDiscarded'; }
@@ -9513,6 +12101,7 @@ export module CodeMashHub2
         public id: SchemaId;
         public version: PublishedSchemaVersion;
         public diff: SchemaDiff;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaVersionPublished>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaVersionPublished'; }
@@ -9524,6 +12113,7 @@ export module CodeMashHub2
     {
         public id: SchemaId;
         public settings: SchemaSettings;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaSettingsUpdated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaSettingsUpdated'; }
@@ -9534,6 +12124,7 @@ export module CodeMashHub2
     export class SchemaDeleted
     {
         public id: SchemaId;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaDeleted'; }
@@ -9546,6 +12137,7 @@ export module CodeMashHub2
         public schemaId: SchemaId;
         public newName: SchemaName;
         public renameUniqueName: boolean;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaRenamed'; }
@@ -9557,6 +12149,7 @@ export module CodeMashHub2
     {
         public id: SchemaId;
         public integrations: IntegrationId[] = [];
+        public env: Env;
 
         public constructor(init?: Partial<SchemaDataCleared>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaDataCleared'; }
@@ -9615,9 +12208,20 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class DatabaseTriggerMirrored
+    {
+        public trigger: Trigger;
+
+        public constructor(init?: Partial<DatabaseTriggerMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'DatabaseTriggerMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class SchemaTriggerEnabled extends TriggerByIdEventBase
     {
         public schemaId: SchemaId;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaTriggerEnabled>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaTriggerEnabled'; }
@@ -9628,6 +12232,7 @@ export module CodeMashHub2
     export class SchemaTriggerDisabled extends TriggerByIdEventBase
     {
         public schemaId: SchemaId;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaTriggerDisabled>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaTriggerDisabled'; }
@@ -9638,9 +12243,126 @@ export module CodeMashHub2
     export class SchemaTriggerDeleted extends TriggerByIdEventBase
     {
         public schemaId: SchemaId;
+        public env: Env;
 
         public constructor(init?: Partial<SchemaTriggerDeleted>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'SchemaTriggerDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordInserted
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public id: string;
+        public document: Object;
+
+        public constructor(init?: Partial<RecordInserted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordInserted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordUpdated
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public id: string;
+        public from: Object;
+        public to: Object;
+
+        public constructor(init?: Partial<RecordUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordDeleted
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public id: string;
+        public document: Object;
+
+        public constructor(init?: Partial<RecordDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordReplaced
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public id: string;
+        public from: Object;
+        public to: Object;
+
+        public constructor(init?: Partial<RecordReplaced>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordReplaced'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordResponsibilityChanged
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public id: string;
+        public fromOwner: UserId;
+        public toOwner: UserId;
+
+        public constructor(init?: Partial<RecordResponsibilityChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordResponsibilityChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordsInserted
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public ids: IReadOnlyList<string>;
+        public documents: IReadOnlyList<Object>;
+
+        public constructor(init?: Partial<RecordsInserted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordsInserted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordsUpdated
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public matchedCount: number;
+        public modifiedCount: number;
+        public update: Object;
+
+        public constructor(init?: Partial<RecordsUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordsUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class RecordsDeleted
+    {
+        public projectId: ProjectId;
+        public databaseIntegrationId: IntegrationId;
+        public schemaName: SchemaName;
+        public deletedCount: number;
+        public filter: Object;
+
+        public constructor(init?: Partial<RecordsDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'RecordsDeleted'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -9666,7 +12388,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/files/triggers/{triggerId}", "DELETE")
-    // @Route("/{version}/triggers", "DELETE")
     // @DataContract
     export class DeleteFilesTrigger extends DeleteTrigger implements IReturn<EmptyResponse>
     {
@@ -9678,26 +12399,24 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/files/triggers/{triggerId}/disable", "PATCH")
-    // @Route("/{version}/triggers/disable", "PUT")
     // @DataContract
     export class DisableFilesTrigger extends DisableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<DisableFilesTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DisableFilesTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/files/triggers/{triggerId}/enable", "PATCH")
-    // @Route("/{version}/triggers/enable", "PUT")
     // @DataContract
     export class EnableFilesTrigger extends EnableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<EnableFilesTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnableFilesTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
@@ -9726,7 +12445,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/files/triggers", "POST")
-    // @Route("/{version}/triggers", "POST")
     // @DataContract
     export class SaveFilesTrigger extends SaveTrigger implements IReturn<IdResponse>
     {
@@ -9795,7 +12513,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveFilesIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: FilesIntegrationRequest;
 
         public constructor(init?: Partial<SaveFilesIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -9813,6 +12531,211 @@ export module CodeMashHub2
         public getTypeName() { return 'SetFilesIntegrationAsDefaultRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/files/item", "GET")
+    export class GetFile extends CodeMashRequestBase implements IReturn<GetFileResponse>
+    {
+        public filesIntegrationId: string;
+        public path: string;
+
+        public constructor(init?: Partial<GetFile>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetFile'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetFileResponse(); }
+    }
+
+    // @Route("/{version}/files/folder", "GET")
+    export class GetFolderFiles extends CodeMashListPaginationRequestBase implements IReturn<GetFolderFilesResponse>
+    {
+        public filesIntegrationId: string;
+        public path?: string;
+
+        public constructor(init?: Partial<GetFolderFiles>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetFolderFiles'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetFolderFilesResponse(); }
+    }
+
+    export class FilesEstablished
+    {
+
+        public constructor(init?: Partial<FilesEstablished>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesEstablished'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesEnabled
+    {
+
+        public constructor(init?: Partial<FilesEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesDisabled
+    {
+
+        public constructor(init?: Partial<FilesDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationSaved
+    {
+        public integration: FileIntegration;
+
+        public constructor(init?: Partial<FilesIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<FilesIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationRenamed
+    {
+        public id: IntegrationId;
+        public name: DisplayName;
+        public env?: Env;
+
+        public constructor(init?: Partial<FilesIntegrationRenamed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationRenamed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<FilesIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<FilesIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<FilesIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesIntegrationSetAsDefault
+    {
+        public env: Env;
+        public id: IntegrationId;
+
+        public constructor(init?: Partial<FilesIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesIntegrationSetAsDefault'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesTriggerSaved
+    {
+        public trigger: FileTrigger;
+
+        public constructor(init?: Partial<FilesTriggerSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesTriggerSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesTriggerMirrored
+    {
+        public trigger: Trigger;
+
+        public constructor(init?: Partial<FilesTriggerMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesTriggerMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesTriggerEnabled extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<FilesTriggerEnabled>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesTriggerEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesTriggerDisabled extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<FilesTriggerDisabled>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesTriggerDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FilesTriggerDeleted extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<FilesTriggerDeleted>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FilesTriggerDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FileUploaded
+    {
+        public projectId: ProjectId;
+        public integrationId: IntegrationId;
+        public fileRef: FileResourceRef;
+
+        public constructor(init?: Partial<FileUploaded>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FileUploaded'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class FileDeleted
+    {
+        public projectId: ProjectId;
+        public integrationId: IntegrationId;
+        public path: string;
+
+        public constructor(init?: Partial<FileDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'FileDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
     }
 
     // @Route("/{version}/notifications/email/disable", "GET")
@@ -9833,6 +12756,30 @@ export module CodeMashHub2
         public getTypeName() { return 'EnableEmail'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/email/validation/integrations", "POST")
+    // @DataContract
+    export class SaveEmailValidationIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember(Name="integration")
+        public integration: EmailValidationIntegrationRequest;
+
+        public constructor(init?: Partial<SaveEmailValidationIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveEmailValidationIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/notifications/email/validation/integrations/test", "POST")
+    export class TestEmailValidationIntegration extends CodeMashRequestBase implements IReturn<TestEmailValidationIntegrationResponse>
+    {
+        public integrationId: string;
+
+        public constructor(init?: Partial<TestEmailValidationIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'TestEmailValidationIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new TestEmailValidationIntegrationResponse(); }
     }
 
     // @Route("/{version}/notifications/email/templates/attachments", "POST")
@@ -10043,6 +12990,19 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
+    // @Route("/{version}/notifications/email/integrations/domain-health", "POST")
+    // @DataContract
+    export class CheckEmailIntegrationDomainHealthRequest extends CodeMashRequestBase implements IReturn<CheckEmailIntegrationDomainHealthResponse>
+    {
+        // @DataMember
+        public integrationId: string;
+
+        public constructor(init?: Partial<CheckEmailIntegrationDomainHealthRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CheckEmailIntegrationDomainHealthRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new CheckEmailIntegrationDomainHealthResponse(); }
+    }
+
     // @Route("/{version}/notifications/email/integrations/{Id}/enable", "PUT")
     export class EnableEmailIntegration extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
@@ -10079,7 +13039,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveEmailIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: EmailIntegrationRequest;
 
         public constructor(init?: Partial<SaveEmailIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -10103,7 +13063,7 @@ export module CodeMashHub2
     export class TestEmailIntegration extends CodeMashRequestBase implements IReturn<TestEmailIntegrationResponse>
     {
         public integrationId: string;
-        public to?: string;
+        public to: string;
 
         public constructor(init?: Partial<TestEmailIntegration>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'TestEmailIntegration'; }
@@ -10365,6 +13325,16 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class ProjectDatabaseConnected
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<ProjectDatabaseConnected>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectDatabaseConnected'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class EmailServiceEnabled
     {
 
@@ -10388,6 +13358,7 @@ export module CodeMashHub2
         public id: EmailFooterId;
         public name: DisplayName;
         public translations: MessageTranslation<TemplateCode>[] = [];
+        public env?: Env;
 
         public constructor(init?: Partial<EmailFooterSaved>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailFooterSaved'; }
@@ -10395,9 +13366,20 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class EmailFooterMirrored
+    {
+        public footer: EmailFooter;
+
+        public constructor(init?: Partial<EmailFooterMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailFooterMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class EmailFooterDeleted
     {
         public id: EmailFooterId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailFooterDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailFooterDeleted'; }
@@ -10421,6 +13403,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailIntegrationTested'; }
@@ -10443,6 +13426,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailIntegrationRenamed'; }
@@ -10452,6 +13436,7 @@ export module CodeMashHub2
 
     export class EmailIntegrationSetAsDefault
     {
+        public env: Env;
         public id: IntegrationId;
 
         public constructor(init?: Partial<EmailIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
@@ -10463,6 +13448,7 @@ export module CodeMashHub2
     export class EmailIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailIntegrationDeleted'; }
@@ -10473,6 +13459,7 @@ export module CodeMashHub2
     export class EmailIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailIntegrationEnabled'; }
@@ -10483,6 +13470,7 @@ export module CodeMashHub2
     export class EmailIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailIntegrationDisabled'; }
@@ -10495,6 +13483,7 @@ export module CodeMashHub2
         public id: EmailSignatureId;
         public name: DisplayName;
         public translations: MessageTranslation<TemplateCode>[] = [];
+        public env?: Env;
 
         public constructor(init?: Partial<EmailSignatureSaved>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailSignatureSaved'; }
@@ -10502,9 +13491,20 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class EmailSignatureMirrored
+    {
+        public signature: EmailSignature;
+
+        public constructor(init?: Partial<EmailSignatureMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailSignatureMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class EmailSignatureDeleted
     {
         public id: EmailSignatureId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailSignatureDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailSignatureDeleted'; }
@@ -10521,6 +13521,7 @@ export module CodeMashHub2
         public description?: string;
         public tags?: Tag[];
         public languageAgnosticAttachments?: FileResourceRef[];
+        public env?: Env;
 
         public constructor(init?: Partial<EmailTemplateCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailTemplateCreated'; }
@@ -10538,9 +13539,30 @@ export module CodeMashHub2
         public tags?: Tag[];
         public languageAgnosticAttachments?: FileResourceRef[];
         public attachmentsToBeDeleted?: FileResourceRef[];
+        public env?: Env;
 
         public constructor(init?: Partial<EmailTemplateUpdated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailTemplateUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailTemplateMirrored
+    {
+        public template: EmailTemplate;
+
+        public constructor(init?: Partial<EmailTemplateMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailTemplateMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailTemplateBackfilled
+    {
+        public template: EmailTemplate;
+
+        public constructor(init?: Partial<EmailTemplateBackfilled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailTemplateBackfilled'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -10550,6 +13572,7 @@ export module CodeMashHub2
         public templateId: TemplateId;
         public filesToBeDeleted?: FileResourceRef[];
         public fileIntegrationId?: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailTemplateDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailTemplateDeleted'; }
@@ -10560,6 +13583,7 @@ export module CodeMashHub2
     export class EmailTemplateArchived
     {
         public templateId: TemplateId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailTemplateArchived>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailTemplateArchived'; }
@@ -10570,11 +13594,895 @@ export module CodeMashHub2
     export class EmailTemplateUnArchived
     {
         public templateId: TemplateId;
+        public env?: Env;
 
         public constructor(init?: Partial<EmailTemplateUnArchived>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailTemplateUnArchived'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
+    }
+
+    export class EmailValidationIntegrationSaved
+    {
+        public integration: EmailValidationIntegration;
+
+        public constructor(init?: Partial<EmailValidationIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailValidationIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailValidationIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<EmailValidationIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailValidationIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailValidationIntegrationSecretsConfigured
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<EmailValidationIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailValidationIntegrationSecretsConfigured'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailValidationIntegrationSecretsConfigurationFailed
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<EmailValidationIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailValidationIntegrationSecretsConfigurationFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailValidationIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<EmailValidationIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailValidationIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailBatchRegistered
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public startingAfter?: string;
+
+        public constructor(init?: Partial<EmailBatchRegistered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailBatchRegistered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailNotificationRead
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public notificationId: NotificationId;
+
+        public constructor(init?: Partial<EmailNotificationRead>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailNotificationRead'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailNotificationClicked
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public notificationId: NotificationId;
+        public sourceId?: string;
+
+        public constructor(init?: Partial<EmailNotificationClicked>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailNotificationClicked'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailCampaignStarted
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+
+        public constructor(init?: Partial<EmailCampaignStarted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailCampaignStarted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailCampaignStopped
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+
+        public constructor(init?: Partial<EmailCampaignStopped>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailCampaignStopped'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailCampaignCompleted
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+        public errors?: ErrorDto[];
+
+        public constructor(init?: Partial<EmailCampaignCompleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailCampaignCompleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailCampaignFailed
+    {
+        public projectId: ProjectId;
+        public campaignId: CampaignId;
+        public errors: ErrorDto[] = [];
+
+        public constructor(init?: Partial<EmailCampaignFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailCampaignFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailCampaignTriggered
+    {
+        public projectId: ProjectId;
+        public triggerId: TriggerId;
+        public triggerType: TriggerType;
+        public sourceEvent: string;
+        public tokenMappings?: IReadOnlyDictionary<string>;
+
+        public constructor(init?: Partial<EmailCampaignTriggered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailCampaignTriggered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailDeliveryEventReceived
+    {
+        public projectId: ProjectId;
+        public integrationId: IntegrationId;
+        public recipient: EmailAddress;
+        public type: EmailDeliveryEventType;
+        public occurredAt: string;
+        public providerMessageId?: string;
+        public reason?: string;
+
+        public constructor(init?: Partial<EmailDeliveryEventReceived>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailDeliveryEventReceived'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    // @Route("/{version}/notifications/sms/disable", "GET")
+    export class DisableSms extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<DisableSms>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableSms'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/enable", "GET")
+    export class EnableSms extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<EnableSms>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableSms'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{Id}/archive", "PUT")
+    export class ArchiveSmsTemplateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<ArchiveSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ArchiveSmsTemplateRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{Id}/clone", "POST")
+    export class CloneSmsTemplateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<CloneSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CloneSmsTemplateRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates", "POST")
+    export class CreateSmsTemplateRequest extends SaveSmsTemplate implements IReturn<IdResponse>
+    {
+
+        public constructor(init?: Partial<CreateSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateSmsTemplateRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{Id}", "DELETE")
+    export class DeleteSmsTemplateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteSmsTemplateRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{id}", "GET")
+    export class GetSmsTemplate extends CodeMashRequestBase implements IReturn<GetSmsTemplateResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetSmsTemplate>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsTemplate'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsTemplateResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates", "GET")
+    export class GetSmsTemplates extends CodeMashListPaginationRequestBase implements IReturn<GetSmsTemplatesResponse>
+    {
+        public showArchived?: boolean;
+        public templateId?: string;
+
+        public constructor(init?: Partial<GetSmsTemplates>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsTemplates'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsTemplatesResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{id}/tokens", "GET")
+    export class GetSmsMessageContentTokens extends CodeMashRequestBase implements IReturn<GetSmsMessageContentTokensResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetSmsMessageContentTokens>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsMessageContentTokens'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsMessageContentTokensResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/render", "POST")
+    export class RenderSms extends CodeMashRequestBase implements IReturn<RenderSmsTextResponse>
+    {
+        public code: string;
+        public tokens?: TokenMappingDto[];
+        public isForPreview: boolean;
+
+        public constructor(init?: Partial<RenderSms>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RenderSms'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new RenderSmsTextResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates/{Id}/unarchive", "PUT")
+    export class UnArchiveSmsTemplateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<UnArchiveSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UnArchiveSmsTemplateRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/templates", "PUT")
+    export class UpdateSmsTemplateRequest extends SaveSmsTemplate implements IReturn<EmptyResponse>
+    {
+        public viewId: string;
+
+        public constructor(init?: Partial<UpdateSmsTemplateRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateSmsTemplateRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/settings", "GET")
+    export class GetSmsSettings extends CodeMashRequestBase implements IReturn<GetSmsSettingsResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetSmsSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsSettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsSettingsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/confirm-human-delivery", "POST")
+    // @DataContract
+    export class ConfirmSmsIntegrationHumanDeliveryRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public integrationId: string;
+
+        public constructor(init?: Partial<ConfirmSmsIntegrationHumanDeliveryRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ConfirmSmsIntegrationHumanDeliveryRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/{Id}", "DELETE")
+    export class DeleteSmsIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteSmsIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteSmsIntegrationRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/{Id}/disable", "PUT")
+    export class DisableSmsIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DisableSmsIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DisableSmsIntegrationRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/{Id}/enable", "PUT")
+    export class EnableSmsIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<EnableSmsIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'EnableSmsIntegrationRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/{id}", "GET")
+    export class GetSmsIntegration extends CodeMashRequestBase implements IReturn<GetSmsIntegrationResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetSmsIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsIntegration'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsIntegrationResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations", "GET")
+    export class GetSmsIntegrations extends CodeMashListPaginationRequestBase implements IReturn<GetSmsIntegrationsResponse>
+    {
+
+        public constructor(init?: Partial<GetSmsIntegrations>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsIntegrations'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsIntegrationsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations", "POST")
+    // @DataContract
+    export class SaveSmsIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember(Name="integration")
+        public integration: SmsIntegrationRequest;
+
+        public constructor(init?: Partial<SaveSmsIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveSmsIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/{Id}/default", "PUT")
+    export class SetSmsIntegrationAsDefaultRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<SetSmsIntegrationAsDefaultRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SetSmsIntegrationAsDefaultRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/integrations/test", "POST")
+    export class TestSmsIntegration extends CodeMashRequestBase implements IReturn<TestSmsIntegrationResponse>
+    {
+        public integrationId: string;
+        public to?: string;
+
+        public constructor(init?: Partial<TestSmsIntegration>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'TestSmsIntegration'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new TestSmsIntegrationResponse(); }
+    }
+
+    /** @description Create SMS campaign */
+    // @Route("/{version}/notifications/sms/campaigns", "POST")
+    // @Api(Description="Create SMS campaign")
+    // @DataContract
+    export class CreateSmsCampaignRequest extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember
+        public templateId: string;
+
+        // @DataMember
+        public databaseIntegrationId: string;
+
+        // @DataMember
+        public language?: string;
+
+        // @DataMember
+        public initiatorId?: string;
+
+        // @DataMember
+        public deliveryType: SmsCampaignRecipientsSourceTypes;
+
+        // @DataMember
+        public allUsers?: SmsToAllUsersDeliverySettingsDto;
+
+        // @DataMember
+        public specifiedUsers?: SmsToUsersDeliverySettingsDto;
+
+        // @DataMember
+        public collection?: SmsToCollectionRecordsDeliverySettingsDto;
+
+        // @DataMember
+        public phoneNumbers?: SmsToPhoneNumbersDeliverySettingsDto;
+
+        public constructor(init?: Partial<CreateSmsCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateSmsCampaignRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}", "DELETE")
+    export class DeleteSmsCampaign extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<DeleteSmsCampaign>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteSmsCampaign'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}", "GET")
+    export class GetSmsCampaign extends CodeMashRequestBase implements IReturn<GetSmsCampaignResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaign>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaign'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns", "GET")
+    export class GetSmsCampaigns extends CodeMashListPaginationRequestBase implements IReturn<GetSmsCampaignsResponse>
+    {
+        public databaseIntegrationId: string;
+        public templateId?: string;
+        public from?: number;
+        public to?: number;
+
+        public constructor(init?: Partial<GetSmsCampaigns>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaigns'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}/batches", "GET")
+    export class GetSmsCampaignBatches extends CodeMashListPaginationRequestBase implements IReturn<GetSmsCampaignBatchesResponse>
+    {
+        public id?: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignBatches>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignBatches'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignBatchesResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
+    export class GetSmsCampaignBatchNotification extends CodeMashListPaginationRequestBase implements IReturn<GetSmsCampaignBatchNotificationResponse>
+    {
+        public id: string;
+        public batchId: string;
+        public notificationId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignBatchNotification>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignBatchNotification'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignBatchNotificationResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}", "GET")
+    export class GetSmsCampaignBatchNotifications extends CodeMashListPaginationRequestBase implements IReturn<GetSmsCampaignBatchNotificationsResponse>
+    {
+        public id: string;
+        public batchId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignBatchNotifications>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignBatchNotifications'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignBatchNotificationsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{id}/stats", "GET")
+    export class GetSmsCampaignStatistics extends CodeMashRequestBase implements IReturn<GetSmsCampaignStatisticsResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignStatistics>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignStatistics'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignStatisticsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/preview", "GET")
+    export class PreviewSmsNotification extends RequestBase implements IReturn<PreviewSmsNotificationResponse>
+    {
+        public hash: string;
+
+        public constructor(init?: Partial<PreviewSmsNotification>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PreviewSmsNotification'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PreviewSmsNotificationResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}", "GET")
+    export class GetSmsCampaignMessage extends CodeMashRequestBase implements IReturn<GetSmsCampaignMessageResponse>
+    {
+        public campaignId: string;
+        public campaignBatchId: string;
+        public notificationId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignMessage>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignMessage'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignMessageResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages", "GET")
+    export class GetSmsCampaignMessagesRequest extends CodeMashListPaginationRequestBase implements IReturn<GetSmsCampaignMessagesResponse>
+    {
+        public campaignId: string;
+        public campaignBatchId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetSmsCampaignMessagesRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsCampaignMessagesRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSmsCampaignMessagesResponse(); }
+    }
+
+    export class SmsIntegrationSaved
+    {
+        public integration: SmsIntegration;
+
+        public constructor(init?: Partial<SmsIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationHumanDeliveryConfirmed
+    {
+        public id: IntegrationId;
+        public confirmedAtUtc: string;
+
+        public constructor(init?: Partial<SmsIntegrationHumanDeliveryConfirmed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationHumanDeliveryConfirmed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationRenamed
+    {
+        public id: IntegrationId;
+        public name: DisplayName;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsIntegrationRenamed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationRenamed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationSetAsDefault
+    {
+        public env: Env;
+        public id: IntegrationId;
+
+        public constructor(init?: Partial<SmsIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationSetAsDefault'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsServiceEstablished
+    {
+        public defaultTemplates?: SmsTemplate[];
+
+        public constructor(init?: Partial<SmsServiceEstablished>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsServiceEstablished'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsServiceEnabled
+    {
+
+        public constructor(init?: Partial<SmsServiceEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsServiceEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsServiceDisabled
+    {
+
+        public constructor(init?: Partial<SmsServiceDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsServiceDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateCreated
+    {
+        public templateId: TemplateId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<SmsMessageContent>[] = [];
+        public channel: CommunicationChannel;
+        public description?: string;
+        public tags?: Tag[];
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsTemplateCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateUpdated
+    {
+        public templateId: TemplateId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<SmsMessageContent>[] = [];
+        public channel: CommunicationChannel;
+        public description?: string;
+        public tags?: Tag[];
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsTemplateUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateMirrored
+    {
+        public template: SmsTemplate;
+
+        public constructor(init?: Partial<SmsTemplateMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateDeleted
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsTemplateDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateArchived
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsTemplateArchived>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateArchived'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsTemplateUnArchived
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<SmsTemplateUnArchived>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsTemplateUnArchived'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsBatchRegistered
+    {
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public startingAfter?: string;
+
+        public constructor(init?: Partial<SmsBatchRegistered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsBatchRegistered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsNotificationRead
+    {
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public notificationId: NotificationId;
+
+        public constructor(init?: Partial<SmsNotificationRead>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsNotificationRead'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsNotificationClicked
+    {
+        public campaignId: CampaignId;
+        public campaignBatchId: CampaignBatchId;
+        public notificationId: NotificationId;
+        public sourceId?: string;
+
+        public constructor(init?: Partial<SmsNotificationClicked>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsNotificationClicked'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsCampaignStarted
+    {
+        public campaignId: CampaignId;
+
+        public constructor(init?: Partial<SmsCampaignStarted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsCampaignStarted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsCampaignStopped
+    {
+        public campaignId: CampaignId;
+
+        public constructor(init?: Partial<SmsCampaignStopped>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsCampaignStopped'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsCampaignCompleted
+    {
+        public campaignId: CampaignId;
+        public errors?: ErrorDto[];
+
+        public constructor(init?: Partial<SmsCampaignCompleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsCampaignCompleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsCampaignFailed
+    {
+        public campaignId: CampaignId;
+        public errors: ErrorDto[] = [];
+
+        public constructor(init?: Partial<SmsCampaignFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsCampaignFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SmsCampaignTriggered
+    {
+        public projectId: ProjectId;
+        public triggerId: TriggerId;
+        public triggerType: TriggerType;
+        public sourceEvent: string;
+        public tokenMappings?: IReadOnlyDictionary<string>;
+
+        public constructor(init?: Partial<SmsCampaignTriggered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SmsCampaignTriggered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/functions", "GET")
+    export class GetMarketplaceFunctionCatalog extends CodeMashRequestBase implements IReturn<GetMarketplaceFunctionCatalogResponse>
+    {
+        public integrationViewId: string;
+
+        public constructor(init?: Partial<GetMarketplaceFunctionCatalog>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetMarketplaceFunctionCatalog'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetMarketplaceFunctionCatalogResponse(); }
     }
 
     export class CodeIntegrationSaved
@@ -10593,6 +14501,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<CodeIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CodeIntegrationTested'; }
@@ -10615,6 +14524,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<CodeIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CodeIntegrationRenamed'; }
@@ -10635,6 +14545,7 @@ export module CodeMashHub2
     export class CodeIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<CodeIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CodeIntegrationDeleted'; }
@@ -10645,6 +14556,7 @@ export module CodeMashHub2
     export class CodeIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<CodeIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CodeIntegrationEnabled'; }
@@ -10655,6 +14567,7 @@ export module CodeMashHub2
     export class CodeIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<CodeIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CodeIntegrationDisabled'; }
@@ -10675,6 +14588,7 @@ export module CodeMashHub2
     export class MarketplaceIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MarketplaceIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceIntegrationDeleted'; }
@@ -10685,6 +14599,7 @@ export module CodeMashHub2
     export class MarketplaceIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MarketplaceIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceIntegrationEnabled'; }
@@ -10695,6 +14610,7 @@ export module CodeMashHub2
     export class MarketplaceIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MarketplaceIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceIntegrationDisabled'; }
@@ -10705,6 +14621,7 @@ export module CodeMashHub2
     export class MarketplaceIntegrationSecretsConfigured
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MarketplaceIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceIntegrationSecretsConfigured'; }
@@ -10715,6 +14632,7 @@ export module CodeMashHub2
     export class MarketplaceIntegrationSecretsConfigurationFailed
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<MarketplaceIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceIntegrationSecretsConfigurationFailed'; }
@@ -10761,6 +14679,24 @@ export module CodeMashHub2
 
         public constructor(init?: Partial<MarketplaceFunctionBindingDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'MarketplaceFunctionBindingDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ServerlessEnabled
+    {
+
+        public constructor(init?: Partial<ServerlessEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ServerlessEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ServerlessDisabled
+    {
+
+        public constructor(init?: Partial<ServerlessDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ServerlessDisabled'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -10862,6 +14798,19 @@ export module CodeMashHub2
         public createResponse() { return new GetPushMessageContentTokensResponse(); }
     }
 
+    // @Route("/{version}/notifications/push/templates/render", "POST")
+    export class RenderPush extends CodeMashRequestBase implements IReturn<RenderPushResponse>
+    {
+        public code: string;
+        public tokens?: TokenMappingDto[];
+        public isForPreview: boolean;
+
+        public constructor(init?: Partial<RenderPush>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RenderPush'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new RenderPushResponse(); }
+    }
+
     // @Route("/{version}/notifications/push/templates/{Id}/unarchive", "PUT")
     export class UnArchivePushTemplateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
@@ -10882,6 +14831,17 @@ export module CodeMashHub2
         public getTypeName() { return 'UpdatePushTemplateRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/settings", "GET")
+    export class GetPushSettings extends CodeMashRequestBase implements IReturn<GetPushSettingsResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<GetPushSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushSettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushSettingsResponse(); }
     }
 
     // @Route("/{version}/notifications/push/integrations/confirm-human-delivery", "POST")
@@ -10955,7 +14915,7 @@ export module CodeMashHub2
     // @DataContract
     export class SavePushIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: PushIntegrationRequest;
 
         public constructor(init?: Partial<SavePushIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -11025,10 +14985,160 @@ export module CodeMashHub2
         // @DataMember
         public accountId?: string;
 
+        // @DataMember
+        public databaseIntegrationId?: string;
+
         public constructor(init?: Partial<RegisterDevice>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'RegisterDevice'; }
         public getMethod() { return 'POST'; }
         public createResponse() { return new IdResponse(); }
+    }
+
+    /** @description Create push campaign */
+    // @Route("/{version}/notifications/push/campaigns", "POST")
+    // @Api(Description="Create push campaign")
+    // @DataContract
+    export class CreatePushCampaignRequest extends CodeMashRequestBase implements IReturn<IdResponse>
+    {
+        // @DataMember
+        public campaign: PushCampaignRequest;
+
+        // @DataMember
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<CreatePushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreatePushCampaignRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    /** @description Deletes push campaign from queue */
+    // @Route("/{version}/notifications/push/campaigns/{Id}", "DELETE")
+    // @Api(Description="Deletes push campaign from queue")
+    // @DataContract
+    export class DeletePushCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<DeletePushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeletePushCampaignRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{id}", "GET")
+    export class GetPushCampaign extends CodeMashRequestBase implements IReturn<GetPushCampaignResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaign>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaign'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns", "GET")
+    export class GetPushCampaigns extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignsResponse>
+    {
+        public databaseIntegrationId: string;
+        public templateId?: string;
+        public from?: number;
+        public to?: number;
+
+        public constructor(init?: Partial<GetPushCampaigns>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaigns'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{id}/batches", "GET")
+    export class GetPushCampaignBatches extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignBatchesResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+        public batchId?: string;
+
+        public constructor(init?: Partial<GetPushCampaignBatches>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignBatches'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignBatchesResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
+    export class GetPushCampaignBatchNotification extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignBatchNotificationResponse>
+    {
+        public id: string;
+        public batchId: string;
+        public notificationId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaignBatchNotification>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignBatchNotification'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignBatchNotificationResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}", "GET")
+    export class GetPushCampaignBatchNotifications extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignBatchNotificationsResponse>
+    {
+        public id: string;
+        public batchId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaignBatchNotifications>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignBatchNotifications'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignBatchNotificationsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{id}/stats", "GET")
+    export class GetPushCampaignStatistics extends CodeMashRequestBase implements IReturn<GetPushCampaignStatisticsResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaignStatistics>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignStatistics'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignStatisticsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/preview", "GET")
+    export class PreviewPushNotification extends RequestBase implements IReturn<PreviewPushNotificationResponse>
+    {
+        public hash: string;
+
+        public constructor(init?: Partial<PreviewPushNotification>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PreviewPushNotification'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PreviewPushNotificationResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages/{id}", "GET")
+    export class GetPushCampaignMessage extends CodeMashRequestBase implements IReturn<GetPushCampaignMessageResponse>
+    {
+        public campaignId: string;
+        public campaignBatchId: string;
+        public notificationId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaignMessage>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignMessage'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignMessageResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages", "GET")
+    export class GetPushCampaignMessagesRequest extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignMessagesResponse>
+    {
+        public campaignId: string;
+        public campaignBatchId: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<GetPushCampaignMessagesRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushCampaignMessagesRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetPushCampaignMessagesResponse(); }
     }
 
     export class PushIntegrationSaved
@@ -11047,6 +15157,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<PushIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushIntegrationTested'; }
@@ -11069,6 +15180,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<PushIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushIntegrationRenamed'; }
@@ -11078,6 +15190,7 @@ export module CodeMashHub2
 
     export class PushIntegrationSetAsDefault
     {
+        public env: Env;
         public id: IntegrationId;
 
         public constructor(init?: Partial<PushIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
@@ -11089,6 +15202,7 @@ export module CodeMashHub2
     export class PushIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushIntegrationDeleted'; }
@@ -11099,6 +15213,7 @@ export module CodeMashHub2
     export class PushIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushIntegrationEnabled'; }
@@ -11109,6 +15224,7 @@ export module CodeMashHub2
     export class PushIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushIntegrationDisabled'; }
@@ -11174,6 +15290,7 @@ export module CodeMashHub2
         public channel: CommunicationChannel;
         public description?: string;
         public tags?: Tag[];
+        public env?: Env;
 
         public constructor(init?: Partial<PushTemplateCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushTemplateCreated'; }
@@ -11189,6 +15306,7 @@ export module CodeMashHub2
         public channel: CommunicationChannel;
         public description?: string;
         public tags?: Tag[];
+        public env?: Env;
 
         public constructor(init?: Partial<PushTemplateUpdated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushTemplateUpdated'; }
@@ -11196,9 +15314,20 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class PushTemplateMirrored
+    {
+        public template: PushTemplate;
+
+        public constructor(init?: Partial<PushTemplateMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class PushTemplateDeleted
     {
         public templateId: TemplateId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushTemplateDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushTemplateDeleted'; }
@@ -11209,6 +15338,7 @@ export module CodeMashHub2
     export class PushTemplateArchived
     {
         public templateId: TemplateId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushTemplateArchived>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushTemplateArchived'; }
@@ -11219,6 +15349,7 @@ export module CodeMashHub2
     export class PushTemplateUnArchived
     {
         public templateId: TemplateId;
+        public env?: Env;
 
         public constructor(init?: Partial<PushTemplateUnArchived>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'PushTemplateUnArchived'; }
@@ -11247,7 +15378,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/payments/triggers/{triggerId}", "DELETE")
-    // @Route("/{version}/triggers", "DELETE")
     // @DataContract
     export class DeletePaymentsTrigger extends DeleteTrigger implements IReturn<EmptyResponse>
     {
@@ -11259,26 +15389,24 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/payments/triggers/{triggerId}/disable", "PATCH")
-    // @Route("/{version}/triggers/disable", "PUT")
     // @DataContract
     export class DisablePaymentsTrigger extends DisableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<DisablePaymentsTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DisablePaymentsTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/payments/triggers/{triggerId}/enable", "PATCH")
-    // @Route("/{version}/triggers/enable", "PUT")
     // @DataContract
     export class EnablePaymentsTrigger extends EnableTrigger implements IReturn<EmptyResponse>
     {
 
         public constructor(init?: Partial<EnablePaymentsTrigger>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnablePaymentsTrigger'; }
-        public getMethod() { return 'POST'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
@@ -11307,7 +15435,6 @@ export module CodeMashHub2
     }
 
     // @Route("/{version}/payments/triggers", "POST")
-    // @Route("/{version}/triggers", "POST")
     // @DataContract
     export class SavePaymentsTrigger extends SaveTrigger implements IReturn<IdResponse>
     {
@@ -11389,7 +15516,7 @@ export module CodeMashHub2
     // @DataContract
     export class SavePaymentsIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: PaymentIntegrationRequest;
 
         public constructor(init?: Partial<SavePaymentsIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -11409,6 +15536,163 @@ export module CodeMashHub2
         public createResponse() { return new TestPaymentsIntegrationResponse(); }
     }
 
+    export class PaymentsIntegrationSaved
+    {
+        public integration: PaymentIntegration;
+
+        public constructor(init?: Partial<PaymentsIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<PaymentsIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationHumanDeliveryConfirmed
+    {
+        public id: IntegrationId;
+        public confirmedAtUtc: string;
+
+        public constructor(init?: Partial<PaymentsIntegrationHumanDeliveryConfirmed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationHumanDeliveryConfirmed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationRenamed
+    {
+        public id: IntegrationId;
+        public name: DisplayName;
+        public env?: Env;
+
+        public constructor(init?: Partial<PaymentsIntegrationRenamed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationRenamed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PaymentsIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PaymentsIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PaymentsIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsEstablished
+    {
+
+        public constructor(init?: Partial<PaymentsEstablished>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsEstablished'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsEnabled
+    {
+
+        public constructor(init?: Partial<PaymentsEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsDisabled
+    {
+
+        public constructor(init?: Partial<PaymentsDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsTriggerSaved
+    {
+        public trigger: PaymentTrigger;
+
+        public constructor(init?: Partial<PaymentsTriggerSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsTriggerSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentTriggerMirrored
+    {
+        public trigger: Trigger;
+
+        public constructor(init?: Partial<PaymentTriggerMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentTriggerMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsTriggerEnabled extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<PaymentsTriggerEnabled>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsTriggerEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsTriggerDisabled extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<PaymentsTriggerDisabled>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsTriggerDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PaymentsTriggerDeleted extends TriggerByIdEventBase
+    {
+        public env: Env;
+
+        public constructor(init?: Partial<PaymentsTriggerDeleted>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PaymentsTriggerDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     // @Route("/{version}/logs/disable", "GET")
     export class DisableLogging extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
@@ -11422,6 +15706,9 @@ export module CodeMashHub2
     // @Route("/{version}/logs/enable", "GET")
     export class EnableLogging extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
+        /** @description Optional project database integration id to store logs in. */
+        // @ApiMember(DataType="string", Description="Optional project database integration id to store logs in.", Name="databaseIntegrationId", ParameterType="query")
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<EnableLogging>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnableLogging'; }
@@ -11433,6 +15720,7 @@ export module CodeMashHub2
     export class DeleteLoggingIntegrationRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public id: string;
+        public wipeLogs: boolean;
 
         public constructor(init?: Partial<DeleteLoggingIntegrationRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DeleteLoggingIntegrationRequest'; }
@@ -11487,7 +15775,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveLoggingIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: LoggingIntegrationRequest;
 
         public constructor(init?: Partial<SaveLoggingIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -11507,6 +15795,83 @@ export module CodeMashHub2
         public createResponse() { return new TestLoggingIntegrationResponse(); }
     }
 
+    // @Route("/{version}/logs/clean", "POST")
+    export class CleanLogs extends CodeMashRequestBase implements IReturn<CleanLogsResponse>
+    {
+
+        public constructor(init?: Partial<CleanLogs>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CleanLogs'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new CleanLogsResponse(); }
+    }
+
+    // @Route("/{version}/logs/audit", "GET")
+    export class GetLogsByCorrelationId extends CodeMashRequestBase implements IReturn<GetLogsByCorrelationIdResponse>
+    {
+        /** @description The correlation id whose full request trail you want. */
+        // @ApiMember(DataType="string", Description="The correlation id whose full request trail you want.", IsRequired=true, Name="correlationId", ParameterType="query")
+        public targetCorrelationId: string;
+
+        public constructor(init?: Partial<GetLogsByCorrelationId>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetLogsByCorrelationId'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetLogsByCorrelationIdResponse(); }
+    }
+
+    // @Route("/{version}/logs", "GET")
+    export class GetLogs extends CodeMashListPaginationRequestBase implements IReturn<GetLogsResponse>
+    {
+        /** @description Severity filter: Information, Warning or Error. */
+        // @ApiMember(DataType="string", Description="Severity filter: Information, Warning or Error.", Name="level", ParameterType="query")
+        public level?: string;
+
+        /** @description Module filter: Database, Email, Membership, etc. */
+        // @ApiMember(DataType="string", Description="Module filter: Database, Email, Membership, etc.", Name="module", ParameterType="query")
+        public module?: string;
+
+        /** @description Correlation id filter. Empty = no filter (show all). */
+        // @ApiMember(DataType="string", Description="Correlation id filter. Empty = no filter (show all).", Name="logCorrelationId", ParameterType="query")
+        public logCorrelationId?: string;
+
+        /** @description Exact event code filter (e.g. db:record:insert). */
+        // @ApiMember(DataType="string", Description="Exact event code filter (e.g. db:record:insert).", Name="eventCode", ParameterType="query")
+        public eventCode?: string;
+
+        /** @description Free-text search over title and message. */
+        // @ApiMember(DataType="string", Description="Free-text search over title and message.", Name="search", ParameterType="query")
+        public search?: string;
+
+        public fromUtc?: string;
+        public toUtc?: string;
+
+        public constructor(init?: Partial<GetLogs>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetLogs'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetLogsResponse(); }
+    }
+
+    // @Route("/{version}/logs/settings", "GET")
+    export class GetLogSettings extends CodeMashRequestBase implements IReturn<GetLogSettingsResponse>
+    {
+
+        public constructor(init?: Partial<GetLogSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetLogSettings'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetLogSettingsResponse(); }
+    }
+
+    // @Route("/{version}/logs/settings", "POST")
+    export class SaveLogSettings extends CodeMashRequestBase implements IReturn<SaveLogSettingsResponse>
+    {
+        public skipCloudDashboardLogs: boolean;
+        public skipHttpBodyMeta: boolean;
+
+        public constructor(init?: Partial<SaveLogSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SaveLogSettings'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new SaveLogSettingsResponse(); }
+    }
+
     export class LoggingIntegrationSaved
     {
         public integration: LoggingIntegration;
@@ -11523,6 +15888,7 @@ export module CodeMashHub2
         public succeeded: boolean;
         public errorMessages: IReadOnlyList<string>;
         public testedAtUtc: string;
+        public env?: Env;
 
         public constructor(init?: Partial<LoggingIntegrationTested>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'LoggingIntegrationTested'; }
@@ -11534,6 +15900,7 @@ export module CodeMashHub2
     {
         public id: IntegrationId;
         public name: DisplayName;
+        public env?: Env;
 
         public constructor(init?: Partial<LoggingIntegrationRenamed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'LoggingIntegrationRenamed'; }
@@ -11544,6 +15911,7 @@ export module CodeMashHub2
     export class LoggingIntegrationDeleted
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<LoggingIntegrationDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'LoggingIntegrationDeleted'; }
@@ -11554,6 +15922,7 @@ export module CodeMashHub2
     export class LoggingIntegrationEnabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<LoggingIntegrationEnabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'LoggingIntegrationEnabled'; }
@@ -11564,9 +15933,75 @@ export module CodeMashHub2
     export class LoggingIntegrationDisabled
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<LoggingIntegrationDisabled>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'LoggingIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LoggingIntegrationSecretsConfigured
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LoggingIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LoggingIntegrationSecretsConfigured'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LoggingIntegrationSecretsConfigurationFailed
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LoggingIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LoggingIntegrationSecretsConfigurationFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LoggingIntegrationSecretsCleared
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LoggingIntegrationSecretsCleared>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LoggingIntegrationSecretsCleared'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LoggingIntegrationSecretsClearingFailed
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LoggingIntegrationSecretsClearingFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LoggingIntegrationSecretsClearingFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LoggingIntegrationSetAsDefault
+    {
+        public id: IntegrationId;
+
+        public constructor(init?: Partial<LoggingIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LoggingIntegrationSetAsDefault'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class NorbixLoggingLogsWipeRequested
+    {
+        public deletedIntegrationId: IntegrationId;
+        public databaseIntegrationId: IntegrationId;
+
+        public constructor(init?: Partial<NorbixLoggingLogsWipeRequested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'NorbixLoggingLogsWipeRequested'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -11669,7 +16104,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveLlmIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: LlmIntegrationRequest;
 
         public constructor(init?: Partial<SaveLlmIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -11747,7 +16182,7 @@ export module CodeMashHub2
     // @DataContract
     export class SaveMcpIntegration extends CodeMashRequestBase implements IReturn<IdResponse>
     {
-        // @DataMember
+        // @DataMember(Name="integration")
         public integration: McpIntegrationRequest;
 
         public constructor(init?: Partial<SaveMcpIntegration>) { super(init); (Object as any).assign(this, init); }
@@ -11767,6 +16202,164 @@ export module CodeMashHub2
         public createResponse() { return new TestLlmIntegrationResponse(); }
     }
 
+    export class LlmIntegrationSaved
+    {
+        public llmIntegration: LlmIntegration;
+
+        public constructor(init?: Partial<LlmIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationSecretsConfigured
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationSecretsConfigured'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationSecretsConfigurationFailed
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationSecretsConfigurationFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class LlmIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<LlmIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'LlmIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationSaved
+    {
+        public mcpIntegration: McpIntegration;
+
+        public constructor(init?: Partial<McpIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationSecretsConfigured
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationSecretsConfigured'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationSecretsConfigurationFailed
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationSecretsConfigurationFailed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class McpIntegrationTested
+    {
+        public id: IntegrationId;
+        public succeeded: boolean;
+        public errorMessages: IReadOnlyList<string>;
+        public testedAtUtc: string;
+        public env?: Env;
+
+        public constructor(init?: Partial<McpIntegrationTested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'McpIntegrationTested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class WebhookIntegrationSaved
     {
         public integration: WebhookIntegration;
@@ -11780,7 +16373,7 @@ export module CodeMashHub2
     export class WebhookIntegrationExtraHeadersChanged
     {
         public id: IntegrationId;
-        public extraHeaders?: IReadOnlyDictionary<string, string>;
+        public extraHeaders?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<WebhookIntegrationExtraHeadersChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'WebhookIntegrationExtraHeadersChanged'; }
@@ -11791,6 +16384,7 @@ export module CodeMashHub2
     export class WebhookIntegrationSecretsConfigured
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<WebhookIntegrationSecretsConfigured>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'WebhookIntegrationSecretsConfigured'; }
@@ -11801,6 +16395,7 @@ export module CodeMashHub2
     export class WebhookIntegrationSecretsConfigurationFailed
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<WebhookIntegrationSecretsConfigurationFailed>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'WebhookIntegrationSecretsConfigurationFailed'; }
@@ -11811,6 +16406,7 @@ export module CodeMashHub2
     export class WebhookIntegrationSecretsCleared
     {
         public id: IntegrationId;
+        public env?: Env;
 
         public constructor(init?: Partial<WebhookIntegrationSecretsCleared>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'WebhookIntegrationSecretsCleared'; }
@@ -11901,6 +16497,19 @@ export module CodeMashHub2
         public getTypeName() { return 'UpdateWebhookIntegrationExtraHeadersRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/webhooks/{source}/{integrationInstanceId}", "POST")
+    export class ReceiveWebhook implements IReturn<HttpResult>
+    {
+        public source: string;
+        public integrationInstanceId: string;
+        public requestStream: string;
+
+        public constructor(init?: Partial<ReceiveWebhook>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ReceiveWebhook'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new HttpResult(); }
     }
 
     // @Route("/{version}/webhooks/destinations/{DestinationId}/disable", "PUT")
@@ -12120,6 +16729,145 @@ export module CodeMashHub2
         public getTypeName() { return 'SchedulerTaskDeleted'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
+    }
+
+    // @Route("/{version}/resources/resolve", "POST")
+    export class ResolveResources extends CodeMashRequestBase implements IReturn<ResolveResourcesResponse>
+    {
+        public refs: IReadOnlyList<ResourceRefDto>;
+
+        public constructor(init?: Partial<ResolveResources>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ResolveResources'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new ResolveResourcesResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts", "POST")
+    export class CreateContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public primaryEmail?: string;
+        public primaryPhone?: string;
+        public displayName?: string;
+        public firstName?: string;
+        public lastName?: string;
+
+        public constructor(init?: Partial<CreateContactRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateContactRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}", "DELETE")
+    export class DeleteContact extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+
+        public constructor(init?: Partial<DeleteContact>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteContact'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}", "GET")
+    export class GetContact extends CodeMashRequestBase implements IReturn<GetContactResponse>
+    {
+        public contactId: string;
+
+        public constructor(init?: Partial<GetContact>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetContact'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetContactResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts", "GET")
+    export class GetAllContacts extends CodeMashRequestBase implements IReturn<GetAllContactsResponse>
+    {
+        public startingAfter?: string;
+        public pageSize?: number;
+
+        public constructor(init?: Partial<GetAllContacts>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAllContacts'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAllContactsResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/merge", "POST")
+    export class MergeContactsRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public survivorId: string;
+        public mergedIds: string[] = [];
+
+        public constructor(init?: Partial<MergeContactsRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'MergeContactsRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
+    export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public lawfulBasis: string;
+        declare source: string;
+        public evidenceRef?: string;
+
+        public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GrantContactConsentRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
+    export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public reason?: string;
+
+        public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UnsubscribeContactRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}/identities", "POST")
+    export class AddContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        declare type: string;
+        public value: string;
+        public isPrimary: boolean;
+        public isVerified: boolean;
+
+        public constructor(init?: Partial<AddContactIdentityRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'AddContactIdentityRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}/identities/{identityId}/promote", "POST")
+    export class PromoteContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public identityId: string;
+
+        public constructor(init?: Partial<PromoteContactIdentityRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PromoteContactIdentityRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/contacts/{contactId}/identities/{identityId}", "DELETE")
+    export class RemoveContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public identityId: string;
+
+        public constructor(init?: Partial<RemoveContactIdentityRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RemoveContactIdentityRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
     }
 
     /** @description Sign In */

@@ -6,11 +6,12 @@ import { AuthModule } from './auth.js';
 import { ChatModule } from './chat.js';
 import { DatabaseModule } from './database.js';
 import { EchoModule } from './echo.js';
+import { FilesModule } from './files.js';
 import { MembershipModule } from './membership.js';
 
 /**
  * Auto-generated namespace exposing every api endpoint group.
- * Refreshed by `internal maintenance workflow`.
+ * Refreshed by `npm run generate-endpoints`.
  */
 export class ApiNamespace {
   public readonly accessToken: AccessTokenModule;
@@ -19,6 +20,7 @@ export class ApiNamespace {
   public readonly chat: ChatModule;
   public readonly database: DatabaseModule;
   public readonly echo: EchoModule;
+  public readonly files: FilesModule;
   public readonly membership: MembershipModule;
 
   constructor(transport: Transport) {
@@ -28,6 +30,7 @@ export class ApiNamespace {
     this.chat = new ChatModule(transport);
     this.database = new DatabaseModule(transport);
     this.echo = new EchoModule(transport);
+    this.files = new FilesModule(transport);
     this.membership = new MembershipModule(transport);
   }
 }

@@ -17,6 +17,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`createStripeCheckoutSession`](#createstripecheckoutsession) | `POST` | `/{version}/account/stripe/create-checkout-session` | `project` |
 | [`getStripeBillingPortalUrl`](#getstripebillingportalurl) | `POST` | `/{version}/account/stripe/get-portal-url` | `project` |
 | [`createTeamMemberFromInvitation`](#createteammemberfrominvitation) | `POST` | `/{version}/account/team/member` | `project` |
+| [`getAccountUsageBilling`](#getaccountusagebilling) | `GET` | `/{version}/account/usage-billing` | `project` |
 | [`verifyAccount`](#verifyaccount) | `GET` | `/{version}/account/verify` | `account` |
 | [`deleteNotificationsGroup`](#deletenotificationsgroup) | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/group` | `project` |
 | [`deleteNotificationsTag`](#deletenotificationstag) | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/tag` | `project` |
@@ -25,6 +26,12 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`saveNotificationsTag`](#savenotificationstag) | `POST` | `/{version}/account/projects/{projectId}/notifications/settings/tag` | `project` |
 | [`createProject`](#createproject) | `POST` | `/{version}/account/projects` | `project` |
 | [`deleteProject`](#deleteproject) | `DELETE` | `/{version}/account/projects/{projectId}` | `project` |
+| [`createProjectEnvironment`](#createprojectenvironment) | `POST` | `/{version}/account/projects/environments` | `project` |
+| [`deleteProjectEnvironment`](#deleteprojectenvironment) | `DELETE` | `/{version}/account/projects/environments/{environmentName}` | `project` |
+| [`setEnvironmentRank`](#setenvironmentrank) | `PATCH` | `/{version}/account/projects/environments/{environmentName}/rank` | `project` |
+| [`promoteEnvironment`](#promoteenvironment) | `POST` | `/{version}/account/projects/environments/promote` | `project` |
+| [`rollbackPromotion`](#rollbackpromotion) | `POST` | `/{version}/account/projects/environments/promote/rollback` | `project` |
+| [`getProjectEnvironments`](#getprojectenvironments) | `GET` | `/{version}/account/projects/environments` | `project` |
 | [`getProject`](#getproject) | `GET` | `/{version}/account/projects/{projectId}` | `project` |
 | [`getProjects`](#getprojects) | `GET` | `/{version}/account/projects` | `project` |
 | [`getAccountRegions`](#getaccountregions) | `GET` | `/{version}/account/regions` | `project` |
@@ -43,7 +50,18 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`updateProjectName`](#updateprojectname) | `PATCH` | `/{version}/account/projects/{projectId}/settings/name` | `project` |
 | [`updateProjectRegions`](#updateprojectregions) | `PATCH` | `/{version}/account/projects/{projectId}/settings/regions` | `project` |
 | [`createAccount`](#createaccount) | `POST` | `/{version}/account` | `project` |
+| [`changeTeamMemberPassword`](#changeteammemberpassword) | `POST` | `/{version}/account/team/member/password` | `project` |
+| [`createTeamMember`](#createteammember) | `POST` | `/{version}/account/team/member/create` | `project` |
 | [`getAccountCollaborators`](#getaccountcollaborators) | `GET` | `/{version}/account/collaborators` | `project` |
+| [`getAccountPasswordPolicy`](#getaccountpasswordpolicy) | `GET` | `/{version}/account/team/password-policy` | `project` |
+| [`getAccountTeamRoles`](#getaccountteamroles) | `GET` | `/{version}/account/team/roles` | `project` |
+| [`getAccountTeamPolicies`](#getaccountteampolicies) | `GET` | `/{version}/account/team/policies` | `project` |
+| [`createAccountRole`](#createaccountrole) | `POST` | `/{version}/account/team/roles` | `project` |
+| [`updateAccountRole`](#updateaccountrole) | `PUT` | `/{version}/account/team/roles` | `project` |
+| [`deleteAccountRole`](#deleteaccountrole) | `DELETE` | `/{version}/account/team/roles/{Id}` | `project` |
+| [`createAccountPolicy`](#createaccountpolicy) | `POST` | `/{version}/account/team/policies` | `project` |
+| [`updateAccountPolicy`](#updateaccountpolicy) | `PUT` | `/{version}/account/team/policies` | `project` |
+| [`deleteAccountPolicy`](#deleteaccountpolicy) | `DELETE` | `/{version}/account/team/policies/{Id}` | `project` |
 | [`sendInviteToTeamMember`](#sendinvitetoteammember) | `POST` | `/{version}/account/team/member/invite` | `project` |
 | [`getLicenses`](#getlicenses) | `GET` | `/{version}/account/licenses` | `project` |
 | [`askChat`](#askchat) | `POST` | `/{version}/account/chat/complete` | `project` |
@@ -200,6 +218,28 @@ const result = await norbix.hub.account.createTeamMemberFromInvitation({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.CreateTeamMemberFromInvitationResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAccountUsageBilling
+
+`GET` `/{version}/account/usage-billing`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAccountUsageBilling`
+**Response**: `CodeMashHub2.GetAccountUsageBillingResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAccountUsageBilling({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAccountUsageBillingResponse
 ```
 
 [↑ Top](#endpoints)
@@ -384,6 +424,140 @@ const result = await norbix.hub.account.deleteProject({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### createProjectEnvironment
+
+`POST` `/{version}/account/projects/environments`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateProjectEnvironmentRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createProjectEnvironment({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteProjectEnvironment
+
+`DELETE` `/{version}/account/projects/environments/{environmentName}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteProjectEnvironmentRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteProjectEnvironment({
+  environmentName: 'environmentName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### setEnvironmentRank
+
+`PATCH` `/{version}/account/projects/environments/{environmentName}/rank`
+
+
+
+**Request DTO**: `CodeMashHub2.SetEnvironmentRankRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.setEnvironmentRank({
+  environmentName: 'environmentName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### promoteEnvironment
+
+`POST` `/{version}/account/projects/environments/promote`
+
+
+
+**Request DTO**: `CodeMashHub2.PromoteEnvironmentRequest`
+**Response**: `CodeMashHub2.PromoteEnvironmentResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.promoteEnvironment({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.PromoteEnvironmentResponse
+```
+
+[↑ Top](#endpoints)
+
+### rollbackPromotion
+
+`POST` `/{version}/account/projects/environments/promote/rollback`
+
+
+
+**Request DTO**: `CodeMashHub2.RollbackPromotionRequest`
+**Response**: `CodeMashHub2.PromoteEnvironmentResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.rollbackPromotion({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.PromoteEnvironmentResponse
+```
+
+[↑ Top](#endpoints)
+
+### getProjectEnvironments
+
+`GET` `/{version}/account/projects/environments`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetProjectEnvironments`
+**Response**: `CodeMashHub2.GetProjectEnvironmentsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getProjectEnvironments({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetProjectEnvironmentsResponse
 ```
 
 [↑ Top](#endpoints)
@@ -799,6 +973,50 @@ const result = await norbix.hub.account.createAccount({
 
 [↑ Top](#endpoints)
 
+### changeTeamMemberPassword
+
+`POST` `/{version}/account/team/member/password`
+
+
+
+**Request DTO**: `CodeMashHub2.ChangeTeamMemberPassword`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.changeTeamMemberPassword({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### createTeamMember
+
+`POST` `/{version}/account/team/member/create`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateTeamMember`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createTeamMember({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getAccountCollaborators
 
 `GET` `/{version}/account/collaborators`
@@ -817,6 +1035,206 @@ const result = await norbix.hub.account.getAccountCollaborators({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetAccountCollaboratorsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAccountPasswordPolicy
+
+`GET` `/{version}/account/team/password-policy`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAccountPasswordPolicy`
+**Response**: `CodeMashHub2.GetAccountPasswordPolicyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAccountPasswordPolicy({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAccountPasswordPolicyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAccountTeamRoles
+
+`GET` `/{version}/account/team/roles`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAccountTeamRoles`
+**Response**: `CodeMashHub2.GetAccountTeamRolesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAccountTeamRoles({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAccountTeamRolesResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAccountTeamPolicies
+
+`GET` `/{version}/account/team/policies`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAccountTeamPolicies`
+**Response**: `CodeMashHub2.GetAccountTeamPoliciesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAccountTeamPolicies({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAccountTeamPoliciesResponse
+```
+
+[↑ Top](#endpoints)
+
+### createAccountRole
+
+`POST` `/{version}/account/team/roles`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateAccountRole`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createAccountRole({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateAccountRole
+
+`PUT` `/{version}/account/team/roles`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateAccountRole`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateAccountRole({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAccountRole
+
+`DELETE` `/{version}/account/team/roles/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAccountRole`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteAccountRole({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### createAccountPolicy
+
+`POST` `/{version}/account/team/policies`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateAccountPolicy`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createAccountPolicy({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateAccountPolicy
+
+`PUT` `/{version}/account/team/policies`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateAccountPolicy`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateAccountPolicy({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAccountPolicy
+
+`DELETE` `/{version}/account/team/policies/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAccountPolicy`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteAccountPolicy({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 25
+ * Endpoints: 30
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -51,8 +51,6 @@ export class MembershipModule {
 
   /**
    * DELETE /{version}/membership/triggers/{triggerId}
-   * Aliases:
-   *   - DELETE /{version}/triggers
    * Request DTO: DeleteMembershipTrigger
    */
   deleteMembershipTrigger = (
@@ -72,8 +70,6 @@ export class MembershipModule {
 
   /**
    * PATCH /{version}/membership/triggers/{triggerId}/disable
-   * Aliases:
-   *   - PUT /{version}/triggers/disable
    * Request DTO: DisableMembershipTrigger
    */
   disableMembershipTrigger = (
@@ -93,8 +89,6 @@ export class MembershipModule {
 
   /**
    * PATCH /{version}/membership/triggers/{triggerId}/enable
-   * Aliases:
-   *   - PUT /{version}/triggers/enable
    * Request DTO: EnableMembershipTrigger
    */
   enableMembershipTrigger = (
@@ -152,8 +146,6 @@ export class MembershipModule {
 
   /**
    * POST /{version}/membership/triggers
-   * Aliases:
-   *   - POST /{version}/triggers
    * Request DTO: SaveMembershipTrigger
    */
   saveMembershipTrigger = (
@@ -362,6 +354,44 @@ export class MembershipModule {
   };
 
   /**
+   * GET /{version}/membership/passkey/settings
+   * Request DTO: GetPasskeySettings
+   */
+  getPasskeySettings = (
+    request: Partial<CodeMashHub2.GetPasskeySettings> = {} as Partial<CodeMashHub2.GetPasskeySettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPasskeySettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetPasskeySettingsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/passkey/settings',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/passkey/settings
+   * Request DTO: SavePasskeySettings
+   */
+  savePasskeySettings = (
+    request: Partial<CodeMashHub2.SavePasskeySettings> = {} as Partial<CodeMashHub2.SavePasskeySettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/passkey/settings',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * DELETE /{version}/membership/integrations/{Id}
    * Request DTO: DeleteMembershipIntegrationRequest
    */
@@ -489,6 +519,63 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/authorization
+   * Request DTO: GetAuthorizationSettings
+   */
+  getAuthorizationSettings = (
+    request: Partial<CodeMashHub2.GetAuthorizationSettings> = {} as Partial<CodeMashHub2.GetAuthorizationSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAuthorizationSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetAuthorizationSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/authorization',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/authorization
+   * Request DTO: UpdateAuthorizationSettings
+   */
+  updateAuthorizationSettings = (
+    request: Partial<CodeMashHub2.UpdateAuthorizationSettings> = {} as Partial<CodeMashHub2.UpdateAuthorizationSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/authorization',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/authentication
+   * Request DTO: GetAuthenticationSettings
+   */
+  getAuthenticationSettings = (
+    request: Partial<CodeMashHub2.GetAuthenticationSettings> = {} as Partial<CodeMashHub2.GetAuthenticationSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAuthenticationSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetAuthenticationSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/authentication',
+      method: 'GET',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

@@ -1,5 +1,5 @@
 /* Options:
-Date: 2026-04-27 16:28:49
+Date: 2026-06-12 16:20:54
 Version: 10.06
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -15,10 +15,11 @@ AddDescriptionAsComments: True
 //DefaultImports: 
 */
 
+// @ts-nocheck
+
 
 export module CodeMashApi2
 {
-    // @ts-nocheck
 
     export interface IReturn<T>
     {
@@ -48,10 +49,14 @@ export module CodeMashApi2
     {
     }
 
-    export type IReadOnlySet<T> = ReadonlyArray<T>;
-    export type IReadOnlyList<T> = ReadonlyArray<T>;
+    export type IReadOnlySet<T> = T[];
+    export type IReadOnlyList<T> = T[];
     export type IList<T> = T[];
-    export type IReadOnlyDictionary<TKey extends string | number | symbol, TValue> = Record<TKey, TValue>;
+    export type IReadOnlyDictionary<TValue> = Record<string, TValue>;
+    export type Dictionary<TValue> = Record<string, TValue>;
+    export type HashSet<T> = T[];
+    export type Blob = globalThis.Blob;
+
 
     // @DataContract(Namespace="http://codemash.io/types/")
     export class RequestBase implements ICultureBasedRequest, IVersionBasedRequest, IHasCorrelationIdRequest
@@ -112,6 +117,7 @@ export module CodeMashApi2
     {
         public value: string;
         public get viewId(): string { return this.value; }
+        public viewId?: string;
 
         public constructor(init?: Partial<AggregateId>) { (Object as any).assign(this, init); }
     }
@@ -152,11 +158,53 @@ export module CodeMashApi2
         public constructor(init?: Partial<CodeMashSubscriptionId>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class ExternalCustomerId
+    export class ProjectId extends AggregateId implements IHasDomainEntityId
     {
-        public id: string;
 
-        public constructor(init?: Partial<ExternalCustomerId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<ProjectId>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class IntegrationId extends AggregateId implements IHasDomainEntityId
+    {
+
+        public constructor(init?: Partial<IntegrationId>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export enum ResourceRefKind
+    {
+        Contact = 'Contact',
+        Document = 'Document',
+        File = 'File',
+        PaymentCustomer = 'PaymentCustomer',
+        Order = 'Order',
+        Payment = 'Payment',
+        Product = 'Product',
+        Integration = 'Integration',
+    }
+
+    export class ResourceRef
+    {
+        public projectId: ProjectId;
+        public integrationId?: IntegrationId;
+        public kind: ResourceRefKind;
+
+        public constructor(init?: Partial<ResourceRef>) { (Object as any).assign(this, init); }
+    }
+
+    export enum ResourceSource
+    {
+        Norbix = 'Norbix',
+        Stripe = 'Stripe',
+        Shopify = 'Shopify',
+    }
+
+    export class PaymentCustomerRef extends ResourceRef
+    {
+        declare kind: ResourceRefKind;
+        declare source: ResourceSource;
+        public externalId: string;
+
+        public constructor(init?: Partial<PaymentCustomerRef>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class Quantity
@@ -169,7 +217,7 @@ export module CodeMashApi2
     export class CodeMashManagedServiceSubscription
     {
         public subscriptionId: CodeMashSubscriptionId;
-        public refCustomerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
         public refSubscriptionId: string;
         public issuedOn: UtcDateTime;
         public willExpireOn: UtcDateTime;
@@ -261,12 +309,6 @@ export module CodeMashApi2
         public constructor(init?: Partial<TagDefinition>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class ProjectId extends AggregateId implements IHasDomainEntityId
-    {
-
-        public constructor(init?: Partial<ProjectId>) { super(init); (Object as any).assign(this, init); }
-    }
-
     // @DataContract
     export class ProjectName
     {
@@ -279,17 +321,11 @@ export module CodeMashApi2
         public constructor(init?: Partial<ProjectName>) { (Object as any).assign(this, init); }
     }
 
-    export class IntegrationId extends AggregateId implements IHasDomainEntityId
+    export class NorbixRegion
     {
+        public code: string;
 
-        public constructor(init?: Partial<IntegrationId>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class ProjectRegionId
-    {
-        public value: string;
-
-        public constructor(init?: Partial<ProjectRegionId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<NorbixRegion>) { (Object as any).assign(this, init); }
     }
 
     export enum Continent
@@ -307,7 +343,7 @@ export module CodeMashApi2
     export class ProjectRegion
     {
         // @DataMember
-        public id: ProjectRegionId;
+        public region: NorbixRegion;
 
         // @DataMember
         public name?: string;
@@ -365,18 +401,48 @@ export module CodeMashApi2
         public constructor(init?: Partial<FileResource>) { (Object as any).assign(this, init); }
     }
 
+    export enum FileProvider
+    {
+        Local = 'Local',
+        AwsS3 = 'AwsS3',
+        AzureBlobStorage = 'AzureBlobStorage',
+        GoogleCloudStorage = 'GoogleCloudStorage',
+        Ftp = 'Ftp',
+        AppleICloud = 'AppleICloud',
+        DropBox = 'DropBox',
+        GoogleDrive = 'GoogleDrive',
+    }
+
+    // @DataContract
+    export class FileResourceRef
+    {
+        // @DataMember(Order=1)
+        public resource: FileResource;
+
+        // @DataMember(Order=2)
+        public integrationId: IntegrationId;
+
+        // @DataMember(Order=3)
+        public provider: FileProvider;
+
+        // @DataMember(Order=4)
+        public path: string;
+
+        public constructor(init?: Partial<FileResourceRef>) { (Object as any).assign(this, init); }
+    }
+
     export class ProjectLogo
     {
-        public fileResource: FileResource;
-        public publicUrl?: string;
+        public fileResource: FileResourceRef;
+        public publicUrl: string;
 
         public constructor(init?: Partial<ProjectLogo>) { (Object as any).assign(this, init); }
     }
 
     export class ProjectIcon
     {
-        public fileResource: FileResource;
-        public publicUrl?: string;
+        public fileResource: FileResourceRef;
+        public publicUrl: string;
 
         public constructor(init?: Partial<ProjectIcon>) { (Object as any).assign(this, init); }
     }
@@ -440,8 +506,8 @@ export module CodeMashApi2
 
     export class UserId implements IHasDomainEntityId
     {
+        public viewId?: string;
         public value: string;
-        public get viewId(): string { return this.value; }
 
         public constructor(init?: Partial<UserId>) { (Object as any).assign(this, init); }
     }
@@ -526,11 +592,18 @@ export module CodeMashApi2
         public constructor(init?: Partial<PushDevice>) { (Object as any).assign(this, init); }
     }
 
-    export class CodeMashRequestBase extends RequestBase implements IHasProjectId
+    // @DataContract(Namespace="http://codemash.io/types/")
+    export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
+        // @DataMember
         // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
         public projectId: string;
+
+        /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
+        public env?: string;
 
         public constructor(init?: Partial<CodeMashRequestBase>) { super(init); (Object as any).assign(this, init); }
     }
@@ -540,11 +613,26 @@ export module CodeMashApi2
         projectId: string;
     }
 
+    export interface IHasEnv
+    {
+        env?: string;
+    }
+
     export enum Gender
     {
         Male = 'Male',
         Female = 'Female',
         Other = 'Other',
+    }
+
+    export enum MarketingBlockReason
+    {
+        Unspecified = 'Unspecified',
+        Unsubscribed = 'Unsubscribed',
+        Complaint = 'Complaint',
+        HardBounce = 'HardBounce',
+        InvalidEmail = 'InvalidEmail',
+        AdminBlock = 'AdminBlock',
     }
 
     export class UserGeneralInfoDto
@@ -567,7 +655,8 @@ export module CodeMashApi2
         public timeZone?: string;
         public language?: string;
         public blockAllMarketingMessages: boolean;
-        public blockedTags?: { [index:string]: IReadOnlySet<string>; };
+        public blockedTags?: { [index:string]: HashSet<string>; };
+        public blockReasons?: MarketingBlockReason[];
         public extraMetadata?: string;
         public notes?: string;
 
@@ -577,10 +666,10 @@ export module CodeMashApi2
     // @DataContract
     export class SaveUser extends CodeMashRequestBase
     {
-        /** @description Database integration id */
+        /** @description Database integration id. Optional — defaults to the request environment's default integration. */
         // @DataMember
-        // @ApiMember(Description="Database integration id", IsRequired=true)
-        public databaseIntegrationId: string;
+        // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+        public databaseIntegrationId?: string;
 
         /** @description User Info */
         // @DataMember
@@ -604,6 +693,14 @@ export module CodeMashApi2
         public constructor(init?: Partial<SaveUserWithRolesBase>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class Env
+    {
+        public value: string;
+        public isProd: boolean;
+
+        public constructor(init?: Partial<Env>) { (Object as any).assign(this, init); }
+    }
+
     export class CursorArgs implements ICursorArgs
     {
         public field: string;
@@ -622,19 +719,175 @@ export module CodeMashApi2
         public constructor(init?: Partial<PagingArgs>) { (Object as any).assign(this, init); }
     }
 
-    export class CodeMashListPaginationRequestBase extends RequestBase implements IHasProjectId
+    export class CodeMashListPaginationRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
         // @DataMember
         // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
         public projectId: string;
 
-        /** @description Paging */
+        /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
         // @DataMember
-        // @ApiMember(DataType="object", Description="Paging", IsRequired=true, Name="paging", ParameterType="body")
-        public paging: PagingArgs;
+        // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
+        public env?: string;
+
+        public resolvedEnv: Env;
+        /** @description Cursor token — fetch the page AFTER this item. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Cursor token — fetch the page AFTER this item.", Name="startingAfter", ParameterType="query")
+        public startingAfter?: string;
+
+        /** @description Cursor token — fetch the page BEFORE this item. */
+        // @DataMember
+        // @ApiMember(DataType="string", Description="Cursor token — fetch the page BEFORE this item.", Name="endingBefore", ParameterType="query")
+        public endingBefore?: string;
+
+        /** @description Amount of records to return. */
+        // @DataMember
+        // @ApiMember(DataType="integer", Description="Amount of records to return.", Format="int32", Name="pageSize", ParameterType="query")
+        public pageSize?: number;
+
+        /** @description Paging */
+        // @ApiMember(DataType="object", Description="Paging", Name="paging", ParameterType="body")
+        public paging?: PagingArgs;
 
         public constructor(init?: Partial<CodeMashListPaginationRequestBase>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export interface IPasskeyCeremonyRequest
+    {
+    }
+
+    export class Integration implements IIntegrationIdentification, IHasDomainEntityId
+    {
+        public viewId?: string;
+        public integrationId: IntegrationId;
+        public env: Env;
+        public capability: string;
+        public isSystemOwned: boolean;
+        public integrationName: DisplayName;
+        public isEnabled: boolean;
+        public isConfigured: boolean;
+        public lastIntegrationTestAtUtc?: string;
+        public lastIntegrationTestSucceeded?: boolean;
+        public lastIntegrationTestErrorMessages: IReadOnlyList<string>;
+        public humanDeliveryConfirmedAtUtc?: string;
+        public isApprovedThatItWorks: boolean;
+
+        public constructor(init?: Partial<Integration>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export enum PushProvider
+    {
+        AppleApns = 'AppleApns',
+        SafariWeb = 'SafariWeb',
+        SafariPush = 'SafariPush',
+        AndroidFirebase = 'AndroidFirebase',
+        ChromeWeb = 'ChromeWeb',
+        FirefoxWeb = 'FirefoxWeb',
+        EdgeWeb = 'EdgeWeb',
+        ChromePush = 'ChromePush',
+        CodeMashIosApp = 'CodeMashIosApp',
+        CodeMashAndroidApp = 'CodeMashAndroidApp',
+        CodeMashSafariPlugin = 'CodeMashSafariPlugin',
+        CodeMashSafariWeb = 'CodeMashSafariWeb',
+        CodeMashChromePlugin = 'CodeMashChromePlugin',
+        CodeMashChromeWeb = 'CodeMashChromeWeb',
+        Expo = 'Expo',
+        Fake = 'Fake',
+    }
+
+    export class PushIntegration extends Integration
+    {
+        declare provider: PushProvider;
+
+        public constructor(init?: Partial<PushIntegration>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class TemplateId
+    {
+        public value: string;
+
+        public constructor(init?: Partial<TemplateId>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class Template<TMessageContent> implements IBindableContract
+    {
+        // @DataMember
+        public templateId: TemplateId;
+
+        // @DataMember
+        public templateName: DisplayName;
+
+        // @DataMember
+        public translations: MessageTranslation<TMessageContent>[] = [];
+
+        // @DataMember
+        public communicationChannel: CommunicationChannel;
+
+        // @DataMember
+        public isActive: boolean;
+
+        // @DataMember
+        public description?: string;
+
+        // @DataMember
+        public tags?: Tag[];
+
+        // @DataMember
+        public fileIntegrationId?: IntegrationId;
+
+        // @DataMember
+        public env: Env;
+
+        public constructor(init?: Partial<Template<TMessageContent>>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class TemplateCode
+    {
+
+        public constructor(init?: Partial<TemplateCode>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushTitle
+    {
+        // @DataMember
+        public value: TemplateCode;
+
+        public constructor(init?: Partial<PushTitle>) { (Object as any).assign(this, init); }
+    }
+
+    export class PushBody
+    {
+        public value: TemplateCode;
+
+        public constructor(init?: Partial<PushBody>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushMessageContent
+    {
+        // @DataMember(Order=1)
+        public title: PushTitle;
+
+        // @DataMember(Order=1)
+        public subTitle?: PushTitle;
+
+        // @DataMember(Order=2)
+        public body: PushBody;
+
+        public constructor(init?: Partial<PushMessageContent>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushTemplate extends Template<PushMessageContent>
+    {
+
+        public constructor(init?: Partial<PushTemplate>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -686,12 +939,22 @@ export module CodeMashApi2
         public constructor(init?: Partial<CodeMashLicenseFromEndpointDto>) { (Object as any).assign(this, init); }
     }
 
+    export class EchoRegionDto
+    {
+        public code: string;
+        public displayName: string;
+        public apiUrl: string;
+        public hubUrl: string;
+
+        public constructor(init?: Partial<EchoRegionDto>) { (Object as any).assign(this, init); }
+    }
+
     export class ErrorDto
     {
         public message: string;
         public errorCode?: string;
         public context?: { [index:string]: string; };
-        public stackTrace?: IReadOnlySet<ErrorDto>;
+        public stackTrace?: ErrorDto[];
 
         public constructor(init?: Partial<ErrorDto>) { (Object as any).assign(this, init); }
     }
@@ -704,8 +967,10 @@ export module CodeMashApi2
         public constructor(init?: Partial<CodeMashResponseStatus>) { (Object as any).assign(this, init); }
     }
 
+    // @DataContract
     export class ResponseBase
     {
+        // @DataMember
         public responseStatus: CodeMashResponseStatus;
 
         public constructor(init?: Partial<ResponseBase>) { (Object as any).assign(this, init); }
@@ -765,9 +1030,9 @@ export module CodeMashApi2
         public registration?: RegistrationDto;
         public login?: LoginDto;
         public generalInfo?: UserGeneralInfoDto;
-        public roles?: IReadOnlySet<string>;
-        public pushDevices?: IReadOnlySet<string>;
-        public tags?: IReadOnlySet<string>;
+        public roles?: string[];
+        public pushDevices?: string[];
+        public tags?: string[];
         public status: UserStatus;
         public createdOn: string;
         public modifiedOn: string;
@@ -789,9 +1054,21 @@ export module CodeMashApi2
     export class UserMarketingPreferencesDto
     {
         public blockAllMarketingMessages: boolean;
-        public blockedTags?: { [index:string]: IReadOnlySet<string>; };
+        public blockedTags?: { [index:string]: HashSet<string>; };
+        public blockReasons?: MarketingBlockReason[];
 
         public constructor(init?: Partial<UserMarketingPreferencesDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyListItemDto
+    {
+        public credentialId: string;
+        public friendlyName: string;
+        public registeredOnUtc: string;
+        public lastUsedOnUtc: string;
+        public isRevoked: boolean;
+
+        public constructor(init?: Partial<PasskeyListItemDto>) { (Object as any).assign(this, init); }
     }
 
     export class TermMultiParentDto
@@ -880,6 +1157,9 @@ export module CodeMashApi2
     {
         // @DataMember
         public softDelete: boolean;
+
+        // @DataMember
+        public hasRecordOwner: boolean;
 
         public constructor(init?: Partial<SchemaSettingsDto>) { (Object as any).assign(this, init); }
     }
@@ -999,6 +1279,60 @@ export module CodeMashApi2
     }
 
     // @DataContract
+    export class FileChecksumDto
+    {
+        // @DataMember(Order=1)
+        public algorithm: string;
+
+        // @DataMember(Order=2)
+        public hash: string;
+
+        public constructor(init?: Partial<FileChecksumDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class FileResourceDto
+    {
+        // @DataMember(Order=1)
+        public id: string;
+
+        // @DataMember(Order=2)
+        public originalFileName: string;
+
+        // @DataMember(Order=3)
+        public extension: string;
+
+        // @DataMember(Order=4)
+        public storedFileName: string;
+
+        // @DataMember(Order=5)
+        public sizeBytes?: number;
+
+        // @DataMember(Order=6)
+        public checksum?: FileChecksumDto;
+
+        public constructor(init?: Partial<FileResourceDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class FileResourceRefDto
+    {
+        // @DataMember(Order=1)
+        public resource: FileResourceDto;
+
+        // @DataMember(Order=2)
+        public integrationId: string;
+
+        // @DataMember(Order=3)
+        public provider: FileProvider;
+
+        // @DataMember(Order=4)
+        public path: string;
+
+        public constructor(init?: Partial<FileResourceRefDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
     export class ResponseError
     {
         // @DataMember(Order=1)
@@ -1057,7 +1391,14 @@ export module CodeMashApi2
 
     export interface IHasDomainEntityId
     {
-        viewId: string;
+        viewId?: string;
+    }
+
+    export interface IIntegrationIdentification
+    {
+        integrationId: IntegrationId;
+        capability: string;
+        isSystemOwned: boolean;
     }
 
     export interface IBindableContract
@@ -1090,7 +1431,7 @@ export module CodeMashApi2
         public maxLength?: number;
 
         // @DataMember
-        public translateOptions?: IReadOnlyDictionary<string, string>;
+        public translateOptions?: IReadOnlyDictionary<string>;
 
         public constructor(init?: Partial<StringFieldDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1234,6 +1575,7 @@ export module CodeMashApi2
         public mjmlUrl: string;
         public license?: CodeMashLicenseFromEndpointDto;
         public askForEnterpriseLicenseEmail?: string;
+        public regions?: EchoRegionDto[];
 
         public constructor(init?: Partial<EchoResponse>) { (Object as any).assign(this, init); }
     }
@@ -1279,6 +1621,54 @@ export module CodeMashApi2
         public preferences?: UserMarketingPreferencesDto;
 
         public constructor(init?: Partial<GetUserPreferencesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyCeremonyOptionsResponse extends ResponseBase
+    {
+        public ceremonyId: string;
+        public optionsJson: string;
+
+        public constructor(init?: Partial<PasskeyCeremonyOptionsResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyAuthTokensResponse extends ResponseBase
+    {
+        public accessToken: string;
+        public refreshToken: string;
+        public expiresInSeconds: number;
+        public recoveryCodes?: string[];
+
+        public constructor(init?: Partial<PasskeyAuthTokensResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyListResponse extends ResponseBase
+    {
+        public passkeys: PasskeyListItemDto[] = [];
+
+        public constructor(init?: Partial<PasskeyListResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyOkResponse extends ResponseBase
+    {
+
+        public constructor(init?: Partial<PasskeyOkResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyRecoveryResponse extends ResponseBase
+    {
+        public accessToken: string;
+        public refreshToken: string;
+        public expiresInSeconds: number;
+        public remainingCodes: number;
+
+        public constructor(init?: Partial<PasskeyRecoveryResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class PasskeyVerificationTokenResponse extends ResponseBase
+    {
+        public verificationToken: string;
+
+        public constructor(init?: Partial<PasskeyVerificationTokenResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class FindTermsResponse extends ResponseBase
@@ -1349,6 +1739,37 @@ export module CodeMashApi2
         public result?: Object;
 
         public constructor(init?: Partial<FindOneResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetFileInfoResponse extends ResponseBase
+    {
+        public file?: FileResourceRefDto;
+        public isPublic?: boolean;
+        public publicUrl?: string;
+
+        public constructor(init?: Partial<GetFileInfoResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetSignedUrlResponse extends ResponseBase
+    {
+        public url?: string;
+
+        public constructor(init?: Partial<GetSignedUrlResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class ListFilesResponse extends ResponseBase
+    {
+        public list?: PaginatedResponse<FileResourceRefDto>;
+        public folders?: string[];
+
+        public constructor(init?: Partial<ListFilesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class RequestUploadUrlResponse extends ResponseBase
+    {
+        public url?: string;
+
+        public constructor(init?: Partial<RequestUploadUrlResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -1547,7 +1968,7 @@ export module CodeMashApi2
 
     export class CustomerCreated
     {
-        public customerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
 
         public constructor(init?: Partial<CustomerCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'CustomerCreated'; }
@@ -1567,7 +1988,7 @@ export module CodeMashApi2
 
     export class SubscriptionCanceled
     {
-        public customerId: ExternalCustomerId;
+        public paymentCustomerRef: PaymentCustomerRef;
         public subscriptionId: string;
 
         public constructor(init?: Partial<SubscriptionCanceled>) { (Object as any).assign(this, init); }
@@ -1636,8 +2057,10 @@ export module CodeMashApi2
         public id: ProjectId;
         public name: ProjectName;
         public databaseIntegrationId: IntegrationId;
-        public regions?: ProjectRegion[];
+        public primaryRegion?: ProjectRegion;
+        public additionalRegions?: ProjectRegion[];
         public description?: string;
+        public isProvisioning: boolean;
 
         public constructor(init?: Partial<ProjectCreated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectCreated'; }
@@ -1659,15 +2082,6 @@ export module CodeMashApi2
 
         public constructor(init?: Partial<ProjectActivated>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectActivated'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() {}
-    }
-
-    export class ProjectEnabled
-    {
-
-        public constructor(init?: Partial<ProjectEnabled>) { (Object as any).assign(this, init); }
-        public getTypeName() { return 'ProjectEnabled'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -1783,7 +2197,8 @@ export module CodeMashApi2
 
     export class ProjectRegionsChanged
     {
-        public regions?: ProjectRegion[];
+        public primaryRegion?: ProjectRegion;
+        public additionalRegions?: ProjectRegion[];
 
         public constructor(init?: Partial<ProjectRegionsChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectRegionsChanged'; }
@@ -1857,7 +2272,7 @@ export module CodeMashApi2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<BlockUserRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'BlockUserRequest'; }
@@ -2003,7 +2418,7 @@ export module CodeMashApi2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<DeleteUserRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DeleteUserRequest'; }
@@ -2021,7 +2436,7 @@ export module CodeMashApi2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetUserRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetUserRequest'; }
@@ -2036,7 +2451,7 @@ export module CodeMashApi2
     export class GetUsersRequest extends CodeMashListPaginationRequestBase implements IReturn<GetUsersResponse>
     {
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public includePermissions: boolean;
@@ -2090,10 +2505,37 @@ export module CodeMashApi2
         public email: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<InviteUserRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'InviteUserRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Membership */
+    // @Route("/{version}/membership/users/{userId}/link-identity", "POST")
+    // @Api(Description="Membership")
+    // @DataContract
+    export class LinkIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public userId: string;
+
+        // @DataMember
+        declare provider: string;
+
+        // @DataMember
+        public providerToken: string;
+
+        // @DataMember
+        public emailToVerify?: string;
+
+        // @DataMember
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<LinkIdentityRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'LinkIdentityRequest'; }
         public getMethod() { return 'POST'; }
         public createResponse() { return new EmptyResponse(); }
     }
@@ -2107,10 +2549,10 @@ export module CodeMashApi2
         // @DataMember
         public id: string;
 
-        /** @description Database integration id */
+        /** @description Database integration id. Optional — defaults to the request environment's default integration. */
         // @DataMember
-        // @ApiMember(Description="Database integration id", IsRequired=true)
-        public databaseIntegrationId: string;
+        // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public roles?: string[];
@@ -2131,7 +2573,7 @@ export module CodeMashApi2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<UnblockUserRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'UnblockUserRequest'; }
@@ -2167,7 +2609,7 @@ export module CodeMashApi2
         public blockAllMarketingMessages: boolean;
 
         // @DataMember
-        public blockedTags?: { [index:string]: IReadOnlySet<string>; };
+        public blockedTags?: { [index:string]: HashSet<string>; };
 
         // @DataMember
         public databaseIntegrationId?: string;
@@ -2176,6 +2618,250 @@ export module CodeMashApi2
         public getTypeName() { return 'UpdateUserPreferencesRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkey/authentication-options", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class PasskeyAuthenticationOptionsRequest extends CodeMashRequestBase implements IReturn<PasskeyCeremonyOptionsResponse>, IPasskeyCeremonyRequest
+    {
+        // @DataMember
+        public email: string;
+
+        public constructor(init?: Partial<PasskeyAuthenticationOptionsRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PasskeyAuthenticationOptionsRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyCeremonyOptionsResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkey/verify-authentication", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class VerifyPasskeyAuthenticationRequest extends CodeMashRequestBase implements IReturn<PasskeyAuthTokensResponse>, IPasskeyCeremonyRequest
+    {
+        // @DataMember
+        public ceremonyId: string;
+
+        // @DataMember
+        public assertionResponse: string;
+
+        public constructor(init?: Partial<VerifyPasskeyAuthenticationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'VerifyPasskeyAuthenticationRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyAuthTokensResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkeys", "GET")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class ListPasskeysRequest extends CodeMashRequestBase implements IReturn<PasskeyListResponse>
+    {
+
+        public constructor(init?: Partial<ListPasskeysRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ListPasskeysRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PasskeyListResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkeys/{CredentialId}/rename", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class RenamePasskeyRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public credentialId: string;
+
+        // @DataMember
+        public friendlyName: string;
+
+        public constructor(init?: Partial<RenamePasskeyRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RenamePasskeyRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkeys/{CredentialId}/revoke", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class RevokePasskeyRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public credentialId: string;
+
+        public constructor(init?: Partial<RevokePasskeyRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RevokePasskeyRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/recovery/use-code", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class UseRecoveryCodeRequest extends CodeMashRequestBase implements IReturn<PasskeyRecoveryResponse>
+    {
+        // @DataMember
+        public email: string;
+
+        // @DataMember
+        public recoveryCode: string;
+
+        public constructor(init?: Partial<UseRecoveryCodeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UseRecoveryCodeRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyRecoveryResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/recovery/magic-link/request", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class RequestMagicLinkRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public email: string;
+
+        public constructor(init?: Partial<RequestMagicLinkRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RequestMagicLinkRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/recovery/magic-link/consume", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class ConsumeMagicLinkRequest extends CodeMashRequestBase implements IReturn<PasskeyRecoveryResponse>
+    {
+        // @DataMember
+        public token: string;
+
+        public constructor(init?: Partial<ConsumeMagicLinkRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ConsumeMagicLinkRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyRecoveryResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/has-passkey", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class HasPasskeyRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public email: string;
+
+        public constructor(init?: Partial<HasPasskeyRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'HasPasskeyRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/email/start-verification", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class StartEmailVerificationRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public email: string;
+
+        public constructor(init?: Partial<StartEmailVerificationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'StartEmailVerificationRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/email/confirm-verification", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class ConfirmEmailVerificationRequest extends CodeMashRequestBase implements IReturn<PasskeyVerificationTokenResponse>
+    {
+        // @DataMember
+        public email: string;
+
+        // @DataMember
+        public code: string;
+
+        public constructor(init?: Partial<ConfirmEmailVerificationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ConfirmEmailVerificationRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyVerificationTokenResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkey/registration-options", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class PasskeyRegistrationOptionsRequest extends CodeMashRequestBase implements IReturn<PasskeyCeremonyOptionsResponse>, IPasskeyCeremonyRequest
+    {
+        // @DataMember
+        public verificationToken: string;
+
+        public constructor(init?: Partial<PasskeyRegistrationOptionsRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PasskeyRegistrationOptionsRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyCeremonyOptionsResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/passkey/verify-registration", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class VerifyPasskeyRegistrationRequest extends CodeMashRequestBase implements IReturn<PasskeyAuthTokensResponse>, IPasskeyCeremonyRequest
+    {
+        // @DataMember
+        public verificationToken: string;
+
+        // @DataMember
+        public ceremonyId: string;
+
+        // @DataMember
+        public attestationResponse: string;
+
+        // @DataMember
+        public friendlyName?: string;
+
+        public constructor(init?: Partial<VerifyPasskeyRegistrationRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'VerifyPasskeyRegistrationRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyAuthTokensResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/token/refresh", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class RefreshPasskeyTokenRequest extends CodeMashRequestBase implements IReturn<PasskeyAuthTokensResponse>
+    {
+        // @DataMember
+        public refreshToken?: string;
+
+        public constructor(init?: Partial<RefreshPasskeyTokenRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RefreshPasskeyTokenRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyAuthTokensResponse(); }
+    }
+
+    /** @description Membership · Passkey */
+    // @Route("/{version}/membership/userauth/logout", "POST")
+    // @Api(Description="Membership · Passkey")
+    // @DataContract
+    export class PasskeyLogoutRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        // @DataMember
+        public refreshToken?: string;
+
+        public constructor(init?: Partial<PasskeyLogoutRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'PasskeyLogoutRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
     }
 
     /** @description Database */
@@ -2470,6 +3156,33 @@ export module CodeMashApi2
     }
 
     /** @description Database */
+    // @Route("/{version}/database/collections/{collectionName}/own", "GET")
+    // @Api(Description="Database")
+    // @DataContract
+    export class FindOwnRequest extends CodeMashListPaginationRequestBase implements IReturn<FindResponse>
+    {
+        // @DataMember
+        public collectionName: string;
+
+        // @DataMember
+        public databaseIntegrationId: string;
+
+        // @DataMember
+        public filter?: string;
+
+        // @DataMember
+        public schemaVersion?: number;
+
+        // @DataMember
+        public pagingArgs?: PagingArgs;
+
+        public constructor(init?: Partial<FindOwnRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FindOwnRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new FindResponse(); }
+    }
+
+    /** @description Database */
     // @Route("/{version}/database/collections/{collectionName}/many", "POST")
     // @Api(Description="Database")
     // @DataContract
@@ -2581,6 +3294,337 @@ export module CodeMashApi2
         public getTypeName() { return 'UpdateOneRequest'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/commit", "POST")
+    // @Api(Description="Files")
+    // @DataContract
+    export class CommitUploadRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        // @DataMember
+        public contentType?: string;
+
+        // @DataMember
+        public sizeBytes?: number;
+
+        // @DataMember
+        public fileName?: string;
+
+        public constructor(init?: Partial<CommitUploadRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CommitUploadRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}", "DELETE")
+    // @Api(Description="Files")
+    // @DataContract
+    export class DeleteFileApiRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        public constructor(init?: Partial<DeleteFileApiRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteFileApiRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/bulk", "DELETE")
+    // @Api(Description="Files")
+    // @DataContract
+    export class DeleteManyFilesApiRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember(Name="paths[]")
+        public paths__: string[] = [];
+
+        public constructor(init?: Partial<DeleteManyFilesApiRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteManyFilesApiRequest'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/download", "GET")
+    // @Api(Description="Files")
+    // @DataContract
+    export class DownloadFileApiRequest extends CodeMashRequestBase implements IReturn<Blob>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        public constructor(init?: Partial<DownloadFileApiRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DownloadFileApiRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new Blob(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/info", "GET")
+    // @Api(Description="Files")
+    // @DataContract
+    export class GetFileInfoRequest extends CodeMashRequestBase implements IReturn<GetFileInfoResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        public constructor(init?: Partial<GetFileInfoRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetFileInfoRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetFileInfoResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/sign", "GET")
+    // @Api(Description="Files")
+    // @DataContract
+    export class GetSignedUrlRequest extends CodeMashRequestBase implements IReturn<GetSignedUrlResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        // @DataMember
+        public expirationSeconds?: number;
+
+        public constructor(init?: Partial<GetSignedUrlRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSignedUrlRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetSignedUrlResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}", "GET")
+    // @Api(Description="Files")
+    // @DataContract
+    export class ListFilesRequest extends CodeMashListPaginationRequestBase implements IReturn<ListFilesResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path?: string;
+
+        public constructor(init?: Partial<ListFilesRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ListFilesRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new ListFilesResponse(); }
+    }
+
+    /** @description Files */
+    // @Route("/{version}/files/{filesIntegrationId}/upload-url", "POST")
+    // @Api(Description="Files")
+    // @DataContract
+    export class RequestUploadUrlRequest extends CodeMashRequestBase implements IReturn<RequestUploadUrlResponse>
+    {
+        // @DataMember
+        public filesIntegrationId: string;
+
+        // @DataMember
+        public path: string;
+
+        // @DataMember
+        public contentType: string;
+
+        // @DataMember
+        public expirationSeconds?: number;
+
+        public constructor(init?: Partial<RequestUploadUrlRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RequestUploadUrlRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new RequestUploadUrlResponse(); }
+    }
+
+    export class PushIntegrationSaved
+    {
+        public integration: PushIntegration;
+
+        public constructor(init?: Partial<PushIntegrationSaved>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationSaved'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushIntegrationRenamed
+    {
+        public id: IntegrationId;
+        public name: DisplayName;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushIntegrationRenamed>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationRenamed'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushIntegrationSetAsDefault
+    {
+        public env: Env;
+        public id: IntegrationId;
+
+        public constructor(init?: Partial<PushIntegrationSetAsDefault>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationSetAsDefault'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushIntegrationDeleted
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushIntegrationDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushIntegrationEnabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushIntegrationEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushIntegrationDisabled
+    {
+        public id: IntegrationId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushIntegrationDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushIntegrationDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushServiceEstablished
+    {
+        public defaultTemplates?: PushTemplate[];
+
+        public constructor(init?: Partial<PushServiceEstablished>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushServiceEstablished'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushServiceEnabled
+    {
+
+        public constructor(init?: Partial<PushServiceEnabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushServiceEnabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushServiceDisabled
+    {
+
+        public constructor(init?: Partial<PushServiceDisabled>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushServiceDisabled'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateCreated
+    {
+        public templateId: TemplateId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<PushMessageContent>[] = [];
+        public channel: CommunicationChannel;
+        public description?: string;
+        public tags?: Tag[];
+        public env?: Env;
+
+        public constructor(init?: Partial<PushTemplateCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateUpdated
+    {
+        public templateId: TemplateId;
+        public displayName: DisplayName;
+        public translations: MessageTranslation<PushMessageContent>[] = [];
+        public channel: CommunicationChannel;
+        public description?: string;
+        public tags?: Tag[];
+        public env?: Env;
+
+        public constructor(init?: Partial<PushTemplateUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateDeleted
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushTemplateDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateArchived
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushTemplateArchived>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateArchived'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateUnArchived
+    {
+        public templateId: TemplateId;
+        public env?: Env;
+
+        public constructor(init?: Partial<PushTemplateUnArchived>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateUnArchived'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PushTemplateMirrored
+    {
+        public template: PushTemplate;
+
+        public constructor(init?: Partial<PushTemplateMirrored>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PushTemplateMirrored'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
     }
 
     /** @description Sign In */

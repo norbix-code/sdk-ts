@@ -1,4 +1,4 @@
-# Using `@norbix/ts` with React
+# Using `norbix` with React
 
 [← Back to docs index](../README.md) · [↑ Back to project README](../../README.md)
 
@@ -16,7 +16,7 @@ The SDK does **not** know about React. It just stores the JWT in memory inside t
 
 ```ts
 // src/lib/norbix.ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from 'norbix';
 
 export const norbix = new Norbix({
   // Anything not passed here falls back to NORBIX_* env vars.
@@ -32,7 +32,7 @@ Why a singleton: the SDK keeps the JWT on the instance. If you call `new Norbix(
 ```tsx
 // src/lib/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { LoginCredentials, LoginResponse } from '@norbix/ts';
+import type { LoginCredentials, LoginResponse } from 'norbix';
 
 import { norbix } from './norbix';
 

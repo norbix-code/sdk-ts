@@ -28,6 +28,8 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`getPolicy`](#getpolicy) | `GET` | `/{version}/membership/policies/{Id}` | `project` |
 | [`getPolicies`](#getpolicies) | `GET` | `/{version}/membership/policies` | `project` |
 | [`updatePolicy`](#updatepolicy) | `PUT` | `/{version}/membership/policies` | `project` |
+| [`getPasskeySettings`](#getpasskeysettings) | `GET` | `/{version}/membership/passkey/settings` | `project` |
+| [`savePasskeySettings`](#savepasskeysettings) | `POST` | `/{version}/membership/passkey/settings` | `project` |
 | [`deleteMembershipIntegration`](#deletemembershipintegration) | `DELETE` | `/{version}/membership/integrations/{Id}` | `project` |
 | [`disableMembershipIntegration`](#disablemembershipintegration) | `PUT` | `/{version}/membership/integrations/{Id}/disable` | `project` |
 | [`enableMembershipIntegration`](#enablemembershipintegration) | `PUT` | `/{version}/membership/integrations/{Id}/enable` | `project` |
@@ -35,6 +37,9 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`getMembershipIntegrations`](#getmembershipintegrations) | `GET` | `/{version}/membership/integrations` | `project` |
 | [`saveMembershipIntegration`](#savemembershipintegration) | `POST` | `/{version}/membership/integrations` | `project` |
 | [`setMembershipIntegrationAsDefault`](#setmembershipintegrationasdefault) | `PUT` | `/{version}/membership/integrations/{Id}/default` | `project` |
+| [`getAuthorizationSettings`](#getauthorizationsettings) | `GET` | `/{version}/membership/authorization` | `project` |
+| [`updateAuthorizationSettings`](#updateauthorizationsettings) | `PUT` | `/{version}/membership/authorization` | `project` |
+| [`getAuthenticationSettings`](#getauthenticationsettings) | `GET` | `/{version}/membership/authentication` | `project` |
 
 ## Reference
 
@@ -440,6 +445,50 @@ const result = await norbix.hub.membership.updatePolicy({
 
 [↑ Top](#endpoints)
 
+### getPasskeySettings
+
+`GET` `/{version}/membership/passkey/settings`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPasskeySettings`
+**Response**: `CodeMashHub2.GetPasskeySettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.getPasskeySettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPasskeySettingsResponse
+```
+
+[↑ Top](#endpoints)
+
+### savePasskeySettings
+
+`POST` `/{version}/membership/passkey/settings`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SavePasskeySettings`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.savePasskeySettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### deleteMembershipIntegration
 
 `DELETE` `/{version}/membership/integrations/{Id}`
@@ -595,6 +644,72 @@ const result = await norbix.hub.membership.setMembershipIntegrationAsDefault({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAuthorizationSettings
+
+`GET` `/{version}/membership/authorization`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAuthorizationSettings`
+**Response**: `CodeMashHub2.GetAuthorizationSettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.getAuthorizationSettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAuthorizationSettingsResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateAuthorizationSettings
+
+`PUT` `/{version}/membership/authorization`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateAuthorizationSettings`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.updateAuthorizationSettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAuthenticationSettings
+
+`GET` `/{version}/membership/authentication`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAuthenticationSettings`
+**Response**: `CodeMashHub2.GetAuthenticationSettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.getAuthenticationSettings({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAuthenticationSettingsResponse
 ```
 
 [↑ Top](#endpoints)

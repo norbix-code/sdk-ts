@@ -2,11 +2,11 @@ import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
- * Auto-generated. Do not edit by hand — follow the internal maintenance workflow
+ * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 18
+ * Endpoints: 34
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -278,6 +278,25 @@ export class MembershipModule {
   };
 
   /**
+   * POST /{version}/membership/users/{userId}/link-identity
+   * Request DTO: LinkIdentityRequest
+   */
+  linkIdentity = (
+    request: Partial<CodeMashApi2.LinkIdentityRequest> = {} as Partial<CodeMashApi2.LinkIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{userId}/link-identity',
+      method: 'POST',
+      request,
+      pathParams: ['userId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/membership/users/assign-roles
    * Request DTO: AssignRolePermissionsRequest
    */
@@ -348,6 +367,291 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkey/authentication-options
+   * Request DTO: PasskeyAuthenticationOptionsRequest
+   */
+  passkeyAuthenticationOptions = (
+    request: Partial<CodeMashApi2.PasskeyAuthenticationOptionsRequest> = {} as Partial<CodeMashApi2.PasskeyAuthenticationOptionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyCeremonyOptionsResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyCeremonyOptionsResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkey/authentication-options',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkey/verify-authentication
+   * Request DTO: VerifyPasskeyAuthenticationRequest
+   */
+  verifyPasskeyAuthentication = (
+    request: Partial<CodeMashApi2.VerifyPasskeyAuthenticationRequest> = {} as Partial<CodeMashApi2.VerifyPasskeyAuthenticationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyAuthTokensResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyAuthTokensResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkey/verify-authentication',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/userauth/passkeys
+   * Request DTO: ListPasskeysRequest
+   */
+  listPasskeys = (
+    request: Partial<CodeMashApi2.ListPasskeysRequest> = {} as Partial<CodeMashApi2.ListPasskeysRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyListResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyListResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkeys',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkeys/{CredentialId}/rename
+   * Request DTO: RenamePasskeyRequest
+   */
+  renamePasskey = (
+    request: Partial<CodeMashApi2.RenamePasskeyRequest> = {} as Partial<CodeMashApi2.RenamePasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkeys/{CredentialId}/rename',
+      method: 'POST',
+      request,
+      pathParams: ['CredentialId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkeys/{CredentialId}/revoke
+   * Request DTO: RevokePasskeyRequest
+   */
+  revokePasskey = (
+    request: Partial<CodeMashApi2.RevokePasskeyRequest> = {} as Partial<CodeMashApi2.RevokePasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkeys/{CredentialId}/revoke',
+      method: 'POST',
+      request,
+      pathParams: ['CredentialId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/recovery/use-code
+   * Request DTO: UseRecoveryCodeRequest
+   */
+  useRecoveryCode = (
+    request: Partial<CodeMashApi2.UseRecoveryCodeRequest> = {} as Partial<CodeMashApi2.UseRecoveryCodeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyRecoveryResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyRecoveryResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/recovery/use-code',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/recovery/magic-link/request
+   * Request DTO: RequestMagicLinkRequest
+   */
+  requestMagicLink = (
+    request: Partial<CodeMashApi2.RequestMagicLinkRequest> = {} as Partial<CodeMashApi2.RequestMagicLinkRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/recovery/magic-link/request',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/recovery/magic-link/consume
+   * Request DTO: ConsumeMagicLinkRequest
+   */
+  consumeMagicLink = (
+    request: Partial<CodeMashApi2.ConsumeMagicLinkRequest> = {} as Partial<CodeMashApi2.ConsumeMagicLinkRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyRecoveryResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyRecoveryResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/recovery/magic-link/consume',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/has-passkey
+   * Request DTO: HasPasskeyRequest
+   */
+  hasPasskey = (
+    request: Partial<CodeMashApi2.HasPasskeyRequest> = {} as Partial<CodeMashApi2.HasPasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/has-passkey',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/email/start-verification
+   * Request DTO: StartEmailVerificationRequest
+   */
+  startEmailVerification = (
+    request: Partial<CodeMashApi2.StartEmailVerificationRequest> = {} as Partial<CodeMashApi2.StartEmailVerificationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/email/start-verification',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/email/confirm-verification
+   * Request DTO: ConfirmEmailVerificationRequest
+   */
+  confirmEmailVerification = (
+    request: Partial<CodeMashApi2.ConfirmEmailVerificationRequest> = {} as Partial<CodeMashApi2.ConfirmEmailVerificationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyVerificationTokenResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyVerificationTokenResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/email/confirm-verification',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkey/registration-options
+   * Request DTO: PasskeyRegistrationOptionsRequest
+   */
+  passkeyRegistrationOptions = (
+    request: Partial<CodeMashApi2.PasskeyRegistrationOptionsRequest> = {} as Partial<CodeMashApi2.PasskeyRegistrationOptionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyCeremonyOptionsResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyCeremonyOptionsResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkey/registration-options',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/passkey/verify-registration
+   * Request DTO: VerifyPasskeyRegistrationRequest
+   */
+  verifyPasskeyRegistration = (
+    request: Partial<CodeMashApi2.VerifyPasskeyRegistrationRequest> = {} as Partial<CodeMashApi2.VerifyPasskeyRegistrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyAuthTokensResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyAuthTokensResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/passkey/verify-registration',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/token/refresh
+   * Request DTO: RefreshPasskeyTokenRequest
+   */
+  refreshPasskeyToken = (
+    request: Partial<CodeMashApi2.RefreshPasskeyTokenRequest> = {} as Partial<CodeMashApi2.RefreshPasskeyTokenRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyAuthTokensResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyAuthTokensResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/token/refresh',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/logout
+   * Request DTO: PasskeyLogoutRequest
+   */
+  passkeyLogout = (
+    request: Partial<CodeMashApi2.PasskeyLogoutRequest> = {} as Partial<CodeMashApi2.PasskeyLogoutRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/logout',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

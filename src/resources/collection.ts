@@ -105,7 +105,9 @@ export class CollectionResource<TItem = unknown> {
     request: Omit<Partial<CodeMashApi2.ExecuteAggregateRequest>, 'collectionName'>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashApi2.ExecuteAggregateResponse> {
-    return this.database.executeAggregate({ ...request, collectionName: this.collectionName }, options);
+    return this.database.executeAggregate(
+      { ...request, collectionName: this.collectionName },
+      options,
+    );
   }
 }
-
