@@ -1,4 +1,5 @@
 {
+  "repositoryUrl": "https://github.com/norbix-code/sdk-ts.git",
   "branches": ["main", { "name": "next", "prerelease": true }, { "name": "beta", "prerelease": true }],
   "plugins": [
     [

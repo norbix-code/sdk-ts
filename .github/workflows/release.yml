@@ -54,7 +54,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install deps
         run: npm ci --no-audit --no-fund
@@ -102,8 +101,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
-        run: npx semantic-release
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "::error::NPM_TOKEN secret is empty. Add an npm Automation token in repo Settings → Secrets → Actions."
+            exit 1
+          fi
+          npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm whoami
+          npx semantic-release
 
       - name: Summary
         if: always()
