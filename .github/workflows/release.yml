@@ -79,8 +79,13 @@ jobs:
             console.log('Package size:', (p.size / 1024).toFixed(1), 'KB');
             console.log('Unpacked size:', (p.unpackedSize / 1024).toFixed(1), 'KB');
             console.log('File count:', p.files.length);
-            const MAX_KB = 500;
-            if (p.size / 1024 > MAX_KB) { console.error('Tarball too large'); process.exit(1); }
+            // Generated hub2/api2 DTO bundles + sourcemaps legitimately exceed 500 KB.
+            // Guard against accidental src/tests inclusion, not DTO growth.
+            const MAX_KB = 750;
+            if (p.size / 1024 > MAX_KB) {
+              console.error('::error::Tarball exceeds ' + MAX_KB + ' KB. Check files/.npmignore for accidentally included paths.');
+              process.exit(1);
+            }
             const forbidden = p.files.filter(f => /^(src|tests|scripts|docs|\\.github|node_modules)\\//.test(f.path));
             if (forbidden.length) { console.error('Forbidden files:', forbidden); process.exit(1); }
           "
