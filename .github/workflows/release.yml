@@ -103,6 +103,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
+          HUSKY: '0'
         run: |
           if [ -z "$NPM_TOKEN" ]; then
             echo "::error::NPM_TOKEN secret is empty. Add an npm Automation token in repo Settings → Secrets → Actions."
