@@ -1,12 +1,10 @@
 name: Release
 
-# Publishes `norbix` to npm via semantic-release.
+# Publishes `@norbix.ai/ts` to npm via semantic-release.
 # Triggers ONLY on push to `main` (and the prerelease branches `next` / `beta`).
 #
 # Required secrets:
-#   - NPM_TOKEN     — npm automation token with publish access to the `norbix` package.
-#                     Must be an "Automation" (not "Publish") token so npm
-#                     accepts it from CI without 2FA prompts.
+#   - NPM_TOKEN     — npm Automation token with read/write on the `@norbix.ai` org.
 #   - GITHUB_TOKEN  — provided by Actions automatically; used to tag, write
 #                     CHANGELOG.md, and create the GH release.
 #

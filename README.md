@@ -12,7 +12,7 @@
   <p>
     <a href="https://github.com/norbix-code/sdk-ts/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
     <a href="https://github.com/norbix-code/sdk-ts/actions"><img alt="CI" src="https://github.com/norbix-code/sdk-ts/actions/workflows/ci.yml/badge.svg" /></a>
-    <a href="https://www.npmjs.com/package/norbix"><img alt="norbix" src="https://img.shields.io/npm/v/norbix.svg?label=norbix&logo=npm" /></a>
+    <a href="https://www.npmjs.com/package/@norbix.ai/ts"><img alt="@norbix.ai/ts" src="https://img.shields.io/npm/v/@norbix.ai/ts.svg?label=@norbix.ai/ts&logo=npm" /></a>
     <a href="https://nodejs.org"><img alt="node" src="https://img.shields.io/badge/node-%3E=18-success?logo=node.js" /></a>
   </p>
 
@@ -53,7 +53,7 @@ Norbix is a **Backend-as-a-Service** built for the agentic era. One platform exp
 
 It runs three ways: as a fully **managed cloud** at [`cloud.norbix.ai`](https://cloud.norbix.ai) (zero DevOps), **self-hosted** on your own machine or server, or as **enterprise** in your VPC. Same modules, same APIs, same SDKs — pick the runway, not the runtime.
 
-This repo is the **TypeScript SDK** — one package on npm (`norbix`) that exposes both the runtime **API** and the configuration **Hub** as separate import paths so you only ship the surface you actually use. Plus a third surface, the [Norbix MCP server](#norbix-mcp--same-modules-agent-native), that exposes the same modules to your IDE. Works in Node 18+ and modern browsers.
+This repo is the **TypeScript SDK** — one package on npm (`@norbix.ai/ts`) that exposes both the runtime **API** and the configuration **Hub** as separate import paths so you only ship the surface you actually use. Plus a third surface, the [Norbix MCP server](#norbix-mcp--same-modules-agent-native), that exposes the same modules to your IDE. Works in Node 18+ and modern browsers.
 
 <!-- END: WHAT_IS_NORBIX -->
 
@@ -61,9 +61,9 @@ This repo is the **TypeScript SDK** — one package on npm (`norbix`) that expos
 
 ## Two surfaces in one package — API or Hub?
 
-Norbix has two surfaces, and each is its own import path. The npm package is one (`norbix`), but tree-shaking is per-subpath — pick the one that matches what your code is doing. Most apps need only the API in production code; the Hub is for admin tooling, internal dashboards, and infrastructure-as-code.
+Norbix has two surfaces, and each is its own import path. The npm package is one (`@norbix.ai/ts`), but tree-shaking is per-subpath — pick the one that matches what your code is doing. Most apps need only the API in production code; the Hub is for admin tooling, internal dashboards, and infrastructure-as-code.
 
-|                      | **`norbix/api`**                                                                                                  | **`norbix/hub`**                                                                                           |
+|                      | **`@norbix.ai/ts/api`**                                                                                          | **`@norbix.ai/ts/hub`**                                                                                           |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Surface**          | Runtime — what your app does at request time                                                                      | Control plane — how Norbix is configured                                                                   |
 | **Scope**            | Project-scoped data                                                                                               | Project & account configuration                                                                            |
@@ -73,12 +73,12 @@ Norbix has two surfaces, and each is its own import path. The npm package is one
 
 ```sh
 # One install — pick the import path you need
-npm install norbix
+npm install @norbix.ai/ts
 ```
 
 ```ts
 // App / runtime code
-import { Norbix } from 'norbix';
+import { Norbix } from '@norbix.ai/ts';
 
 // Both surfaces are reachable from one client:
 norbix.api.database.find({ collectionName: 'orders' });
@@ -98,7 +98,7 @@ The Getting Started examples below use the **API** surface because that's what m
 ### Install
 
 ```sh
-npm install norbix
+npm install @norbix.ai/ts
 ```
 
 ### Three real things in 30 lines
@@ -108,7 +108,7 @@ The examples below assume an API key from the [Norbix Cloud Dashboard](https://c
 #### 1. Register a user
 
 ```ts
-import { Norbix } from 'norbix';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix({
   apiKey: process.env.NORBIX_API_KEY,
@@ -371,7 +371,7 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 The Hub surface follows the same shape as the API surface — same constructor, same auth, same client. Use it from admin tooling, internal dashboards, or IaC scripts.
 
 ```ts
-import { Norbix } from 'norbix';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix({
   apiKey: process.env.NORBIX_API_KEY,
@@ -435,7 +435,7 @@ Same modules, same method shapes, every language. Each row links to the repo for
 
 | Language          | Package                                   | Repo                                                                    | Status         |
 | ----------------- | ----------------------------------------- | ----------------------------------------------------------------------- | -------------- |
-| TypeScript / Node | `norbix`                                  | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)         | ✅ Stable      |
+| TypeScript / Node | `@norbix.ai/ts`                          | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)         | ✅ Stable      |
 | .NET              | `Norbix.Api` + `Norbix.Hub`               | [norbix-dev/norbix-net](https://github.com/norbix-dev/norbix-net)       | ✅ Stable      |
 | Python            | `norbix`                                  | [norbix-dev/norbix-python](https://github.com/norbix-dev/norbix-python) | 🚧 In progress |
 | Dart / Flutter    | `norbix`                                  | [norbix-dev/norbix-dart](https://github.com/norbix-dev/norbix-dart)     | 🚧 In progress |
@@ -522,7 +522,7 @@ Run Norbix in your VPC or dedicated infrastructure. SOC2-ready, GDPR/HIPAA-compa
 ## Error handling
 
 ```ts
-import { NorbixError } from 'norbix';
+import { NorbixError } from '@norbix.ai/ts';
 
 try {
   await norbix.api.database.find({ collectionName: 'orders' });
