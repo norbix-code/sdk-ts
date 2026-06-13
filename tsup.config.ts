@@ -5,6 +5,7 @@ export default defineConfig({
     index: 'src/index.ts',
     'api/index': 'src/api/index.ts',
     'hub/index': 'src/hub/index.ts',
+    'webhooks/index': 'src/webhooks/index.ts',
     'types/api2.dtos': 'src/types/api2.dtos.ts',
     'types/hub2.dtos': 'src/types/hub2.dtos.ts',
   },

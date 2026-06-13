@@ -18,10 +18,18 @@ on:
   push:
     branches: [main, next, beta]
   workflow_dispatch:
+    inputs:
+      republish:
+        description: >-
+          Recovery mode — skip semantic-release and publish the current
+          package.json version to npm (use when a git tag exists but npm
+          publish failed or a re-run was skipped as "behind remote").
+        type: boolean
+        default: false
 
 concurrency:
   group: release-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -46,6 +54,15 @@ jobs:
           # from conventional commits.
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Sync branch tip
+        # Re-runs and concurrent workflows check out the event SHA, which can be
+        # behind origin after semantic-release pushes a release commit. Build and
+        # release from the remote tip so we never skip publish with a stale tree.
+        run: |
+          git fetch origin "${GITHUB_REF_NAME}"
+          git checkout "${GITHUB_REF_NAME}"
+          git reset --hard "origin/${GITHUB_REF_NAME}"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -95,13 +112,9 @@ jobs:
       - name: npm audit signatures
         run: npm audit signatures
 
-      - name: Release
+      - name: Configure npm auth
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'
-          HUSKY: '0'
         run: |
           if [ -z "$NPM_TOKEN" ]; then
             echo "::error::NPM_TOKEN secret is empty. Add an npm Automation token in repo Settings → Secrets → Actions."
@@ -109,7 +122,45 @@ jobs:
           fi
           npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
           npm whoami
-          npx semantic-release
+
+      - name: Republish to npm (recovery)
+        if: github.event_name == 'workflow_dispatch' && inputs.republish == true
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+          HUSKY: '0'
+        run: |
+          NAME=$(node -pe "require('./package.json').name")
+          VERSION=$(node -pe "require('./package.json').version")
+          echo "Recovery publish: ${NAME}@${VERSION}"
+          if npm view "${NAME}@${VERSION}" version 2>/dev/null; then
+            echo "Already published on npm — nothing to do."
+            exit 0
+          fi
+          npm publish --access public
+          npm view "${NAME}@${VERSION}" version
+
+      - name: Release
+        if: github.event_name != 'workflow_dispatch' || inputs.republish != true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+          HUSKY: '0'
+        run: |
+          set -o pipefail
+          output="$(npx semantic-release 2>&1 | tee /dev/stderr)"
+          if echo "$output" | grep -Fq "is behind the remote one"; then
+            echo "::error::Branch is behind origin/${GITHUB_REF_NAME}. A release commit may already exist on the remote — check git tags and npm. To recover, run this workflow manually with republish=true."
+            exit 1
+          fi
+          if echo "$output" | grep -Fq "Published release"; then
+            NAME=$(node -pe "require('./package.json').name")
+            VERSION=$(node -pe "require('./package.json').version")
+            npm view "${NAME}@${VERSION}" version
+          fi
 
       - name: Summary
         if: always()

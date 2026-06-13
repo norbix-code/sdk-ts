@@ -353,6 +353,7 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 | 👥 `membership`    | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
 | ⏰ `scheduler`     | Scheduler module and task management                                    | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
 | 🪝 `webhooks`      | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
+| 📥 `webhooks` (receiver) | Verify & handle inbound Norbix webhook POSTs at your endpoint       | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
 | 🔐 `auth`          | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
 | 🔑 `apikeys`       | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
 | 🪪 `accessToken`   | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
