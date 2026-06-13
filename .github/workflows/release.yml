@@ -139,7 +139,15 @@ jobs:
             exit 0
           fi
           npm publish --access public
-          npm view "${NAME}@${VERSION}" version
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if npm view "${NAME}@${VERSION}" version 2>/dev/null; then
+              exit 0
+            fi
+            echo "Waiting for npm registry (${i}/10)…"
+            sleep 5
+          done
+          echo "::warning::Published but npm view still empty — registry may still be propagating."
+          exit 0
 
       - name: Release
         if: github.event_name != 'workflow_dispatch' || inputs.republish != true
@@ -159,7 +167,16 @@ jobs:
           if echo "$output" | grep -Fq "Published release"; then
             NAME=$(node -pe "require('./package.json').name")
             VERSION=$(node -pe "require('./package.json').version")
-            npm view "${NAME}@${VERSION}" version
+            echo "Verifying ${NAME}@${VERSION} on npm (registry propagation can lag)…"
+            for i in 1 2 3 4 5 6 7 8 9 10; do
+              if npm view "${NAME}@${VERSION}" version 2>/dev/null; then
+                echo "npm registry confirmed."
+                exit 0
+              fi
+              echo "Waiting for npm registry (${i}/10)…"
+              sleep 5
+            done
+            echo "::warning::semantic-release reported Published release but npm view is still empty after 50s — check registry manually; publish likely succeeded."
           fi
 
       - name: Summary
