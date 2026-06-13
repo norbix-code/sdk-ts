@@ -139,4 +139,4 @@ eslint.config.js           flat ESLint config
 
 ## Questions
 
-Open a [GitHub Discussion](https://github.com/norbix-dev/norbix-js/discussions) or an issue. PRs welcome.
+Open a [GitHub Discussion](https://github.com/norbix-code/sdk-ts/discussions) or an issue. PRs welcome.

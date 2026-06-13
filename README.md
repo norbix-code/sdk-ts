@@ -10,8 +10,8 @@
   <p><strong>The MCP-native Backend-as-a-Service for the agentic era.</strong></p>
 
   <p>
-    <a href="https://github.com/norbix-dev/norbix-js/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
-    <a href="https://github.com/norbix-dev/norbix-js/actions"><img alt="CI" src="https://github.com/norbix-dev/norbix-js/actions/workflows/ci.yml/badge.svg" /></a>
+    <a href="https://github.com/norbix-code/sdk-ts/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+    <a href="https://github.com/norbix-code/sdk-ts/actions"><img alt="CI" src="https://github.com/norbix-code/sdk-ts/actions/workflows/ci.yml/badge.svg" /></a>
     <a href="https://www.npmjs.com/package/norbix"><img alt="norbix" src="https://img.shields.io/npm/v/norbix.svg?label=norbix&logo=npm" /></a>
     <a href="https://nodejs.org"><img alt="node" src="https://img.shields.io/badge/node-%3E=18-success?logo=node.js" /></a>
   </p>
@@ -435,7 +435,7 @@ Same modules, same method shapes, every language. Each row links to the repo for
 
 | Language          | Package                                   | Repo                                                                    | Status         |
 | ----------------- | ----------------------------------------- | ----------------------------------------------------------------------- | -------------- |
-| TypeScript / Node | `norbix`                                  | [norbix-dev/norbix-js](https://github.com/norbix-dev/norbix-js)         | ✅ Stable      |
+| TypeScript / Node | `norbix`                                  | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)         | ✅ Stable      |
 | .NET              | `Norbix.Api` + `Norbix.Hub`               | [norbix-dev/norbix-net](https://github.com/norbix-dev/norbix-net)       | ✅ Stable      |
 | Python            | `norbix`                                  | [norbix-dev/norbix-python](https://github.com/norbix-dev/norbix-python) | 🚧 In progress |
 | Dart / Flutter    | `norbix`                                  | [norbix-dev/norbix-dart](https://github.com/norbix-dev/norbix-dart)     | 🚧 In progress |
@@ -548,8 +548,8 @@ try {
 ## Community & support
 
 - [**Documentation**](https://docs.norbix.ai). Best for: building, integrating, and reference.
-- [**GitHub Discussions**](https://github.com/norbix-dev/norbix-js/discussions). Best for: technical Q&A, feature requests, sharing what you built.
-- [**GitHub Issues**](https://github.com/norbix-dev/norbix-js/issues). Best for: bugs and reproducible errors in this SDK.
+- [**GitHub Discussions**](https://github.com/norbix-code/sdk-ts/discussions). Best for: technical Q&A, feature requests, sharing what you built.
+- [**GitHub Issues**](https://github.com/norbix-code/sdk-ts/issues). Best for: bugs and reproducible errors in this SDK.
 - [**Discord**](https://norbix.ai/discord). Best for: real-time chat with the team and the community.
 - [**Email support**](mailto:support@norbix.ai). Best for: account, billing, and infrastructure issues that aren't public.
 <!-- END: COMMUNITY_AND_SUPPORT -->
@@ -592,7 +592,7 @@ Found something? Don't open a public issue. See [`SECURITY.md`](./SECURITY.md) a
 
 ## Contributing
 
-Issues, PRs, and design partners welcome. Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md) for branching, local dev, and how to add a module. Bigger ideas land in [Discussions](https://github.com/norbix-dev/norbix-js/discussions) before they land in code.
+Issues, PRs, and design partners welcome. Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md) for branching, local dev, and how to add a module. Bigger ideas land in [Discussions](https://github.com/norbix-code/sdk-ts/discussions) before they land in code.
 
 <!-- END: CONTRIBUTING -->
 
@@ -621,8 +621,8 @@ Issues, PRs, and design partners welcome. Start with [`CONTRIBUTING.md`](./CONTR
 </p>
 
 <p align="center">
-  <a href="https://github.com/norbix-dev/norbix-js/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=norbix-dev/norbix-js" alt="Contributors" width="600" />
+  <a href="https://github.com/norbix-code/sdk-ts/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=norbix-code/sdk-ts" alt="Contributors" width="600" />
   </a>
 </p>
 <!-- END: FOOTER -->

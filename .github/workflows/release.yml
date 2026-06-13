@@ -1,10 +1,10 @@
 name: Release
 
-# Publishes @norbix/ts to npm via semantic-release.
+# Publishes `norbix` to npm via semantic-release.
 # Triggers ONLY on push to `main` (and the prerelease branches `next` / `beta`).
 #
 # Required secrets:
-#   - NPM_TOKEN     — npm automation token, granular publish scope on @norbix/ts.
+#   - NPM_TOKEN     — npm automation token with publish access to the `norbix` package.
 #                     Must be an "Automation" (not "Publish") token so npm
 #                     accepts it from CI without 2FA prompts.
 #   - GITHUB_TOKEN  — provided by Actions automatically; used to tag, write

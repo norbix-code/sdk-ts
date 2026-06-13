@@ -7,10 +7,10 @@
   "homepage": "https://norbix.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/norbix-dev/norbix-js.git"
+    "url": "git+https://github.com/norbix-code/sdk-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/norbix-dev/norbix-js/issues"
+    "url": "https://github.com/norbix-code/sdk-ts/issues"
   },
   "keywords": [
     "norbix",
