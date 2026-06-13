@@ -1,3 +1,7 @@
+## 1.1.0 (2026-06-13)
+
+* feat(webhooks): add inbound webhook receiver module ([9a4b5f6](https://github.com/norbix-code/sdk-ts/commit/9a4b5f6))
+
 ## <small>1.0.1 (2026-06-13)</small>
 
 * fix(release): publish as @norbix.ai/ts under npm org ([cad7db8](https://github.com/norbix-code/sdk-ts/commit/cad7db8))
