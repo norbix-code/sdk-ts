@@ -1,3 +1,7 @@
+## <small>1.1.1 (2026-06-13)</small>
+
+* fix(release): retry npm view after registry propagation lag ([d639d66](https://github.com/norbix-code/sdk-ts/commit/d639d66))
+
 ## 1.1.0 (2026-06-13)
 
 * feat(webhooks): add inbound webhook receiver module ([9a4b5f6](https://github.com/norbix-code/sdk-ts/commit/9a4b5f6))
