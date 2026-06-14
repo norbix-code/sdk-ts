@@ -1,3 +1,8 @@
+## 1.2.0 (2026-06-14)
+
+* feat(webhooks): typed payloads, normalization, and onEachRaw handlers ([599bdb4](https://github.com/norbix-code/sdk-ts/commit/599bdb4))
+* fix(deps): resolve OSV findings in dev toolchain ([daee40f](https://github.com/norbix-code/sdk-ts/commit/daee40f))
+
 ## <small>1.1.1 (2026-06-13)</small>
 
 * fix(release): retry npm view after registry propagation lag ([d639d66](https://github.com/norbix-code/sdk-ts/commit/d639d66))
