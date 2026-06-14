@@ -24,6 +24,39 @@ export const NORBIX_WEBHOOK_EVENT_NAMES = [
 
 export type NorbixWebhookEventName = (typeof NORBIX_WEBHOOK_EVENT_NAMES)[number];
 
+/**
+ * Named event constants — use these instead of raw strings so app code gets
+ * autocomplete and is typo-safe.
+ *
+ * @example
+ * receiver.on(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {});
+ */
+export const NorbixWebhookEvents = {
+  Database: {
+    RecordInserted: 'database.record.inserted',
+    RecordUpdated: 'database.record.updated',
+    RecordDeleted: 'database.record.deleted',
+    RecordReplaced: 'database.record.replaced',
+    RecordResponsibilityChanged: 'database.record.responsibilityChanged',
+    RecordsInserted: 'database.records.inserted',
+    RecordsUpdated: 'database.records.updated',
+    RecordsDeleted: 'database.records.deleted',
+  },
+  Membership: {
+    UserRegistered: 'membership.user.registered',
+    UserInvited: 'membership.user.invited',
+    UserVerified: 'membership.user.verified',
+    UserUpdated: 'membership.user.updated',
+    UserDeleted: 'membership.user.deleted',
+    UserBlocked: 'membership.user.blocked',
+    UserReactivated: 'membership.user.reactivated',
+  },
+  Files: {
+    FileUploaded: 'files.file.uploaded',
+    FileDeleted: 'files.file.deleted',
+  },
+} as const satisfies Record<string, Record<string, NorbixWebhookEventName>>;
+
 export interface NorbixWebhookEventGroup {
   group: string;
   label: string;

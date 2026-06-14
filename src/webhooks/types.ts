@@ -1,4 +1,4 @@
-import type { NorbixWebhookEventName } from './events.js';
+import type { NorbixWebhookEventMetadata } from './event-data.js';
 
 /** JSON envelope POSTed to every webhook destination. */
 export interface NorbixWebhookEnvelope<TData = unknown> {
@@ -49,6 +49,33 @@ export interface NorbixWebhookHandleInput {
 
 export type NorbixWebhookHeaderBag = Record<string, string | string[] | undefined> | Headers;
 
+/**
+ * Metadata object passed as the 2nd arg to a typed handler. Carries the
+ * delivery facts at the top level and payload identifiers under `metadata`.
+ */
+export interface NorbixWebhookEvent {
+  /** Logical event name, e.g. "membership.user.registered". */
+  name: string;
+  /** Stable delivery id — dedupe retries on this. */
+  deliveryId: string;
+  /** ISO-8601 UTC emit time. */
+  createdOn: string;
+  triggerId: string | null;
+  /** Present once the gateway sends a correlation header/field; else null. */
+  correlationId: string | null;
+  accountId: string;
+  projectId: string;
+  integrationId: string | null;
+  destinationId: string | null;
+  /** true when signature verified; null when verification was skipped. */
+  verified: boolean | null;
+  /** Identifiers lifted off the wire payload (entity id, schema, record ids). */
+  metadata: NorbixWebhookEventMetadata;
+  /** Escape hatch: the raw envelope, if a handler needs an unmapped field. */
+  raw: NorbixWebhookEnvelope;
+}
+
+/** Context passed to raw (`onRaw`) handlers alongside the envelope. */
 export interface NorbixWebhookContext {
   path?: string;
   headers: NorbixWebhookDeliveryHeaders;
@@ -66,18 +93,37 @@ export interface NorbixWebhookHandleResult {
   triggerId?: string | null;
 }
 
-export type NorbixWebhookHandler<TData = unknown> = (
+/** Typed handler — first arg is the normalised payload, second is metadata. */
+export type NorbixWebhookHandler<TPayload = unknown> = (
+  payload: TPayload,
+  event: NorbixWebhookEvent,
+) => void | Promise<void>;
+
+/** Raw handler — first arg is the envelope, second is the delivery context. */
+export type NorbixWebhookRawHandler<TData = unknown> = (
   envelope: NorbixWebhookEnvelope<TData>,
   ctx: NorbixWebhookContext,
 ) => void | Promise<void>;
 
-export type NorbixWebhookHandlerMap = Partial<
-  Record<NorbixWebhookEventName | string, NorbixWebhookHandler>
->;
-
 export interface NorbixWebhookReceiverOptions {
-  /** When set, verification runs on every delivery. Omit to skip verify. */
+  /**
+   * Signing secret. When set, verification runs on every delivery.
+   * Defaults to `process.env.NORBIX_WEBHOOK_SIGNING_SECRET`. Omit to skip verify.
+   */
   secret?: string;
-  /** Reject timestamps outside this window (seconds). Default 300. */
+  /**
+   * Reject timestamps outside this window (seconds).
+   * Defaults to `process.env.NORBIX_WEBHOOK_TOLERANCE_SECONDS`, else 300.
+   */
   toleranceSeconds?: number;
+  /**
+   * Optional guard — when set, deliveries whose envelope projectId does not
+   * match are rejected. Defaults to `process.env.NORBIX_PROJECT_ID`.
+   */
+  projectId?: string;
+  /**
+   * Optional guard — when set, deliveries whose envelope accountId does not
+   * match are rejected. Defaults to `process.env.NORBIX_ACCOUNT_ID`.
+   */
+  accountId?: string;
 }
