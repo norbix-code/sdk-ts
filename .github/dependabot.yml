@@ -18,6 +18,12 @@ updates:
     labels:
       - dependencies
       - npm
+    ignore:
+      # eslint-plugin-import does not yet declare peer support for ESLint 10.
+      - dependency-name: eslint
+        versions: ['>=10']
+      - dependency-name: eslint-config-prettier
+        versions: ['>=10']
     groups:
       npm-minor-and-patch:
         update-types:
