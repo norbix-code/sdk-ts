@@ -14,7 +14,7 @@ updates:
       day: monday
       time: '06:00'
       timezone: Europe/Vilnius
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     labels:
       - dependencies
       - npm
@@ -24,6 +24,9 @@ updates:
         versions: ['>=10']
       - dependency-name: eslint-config-prettier
         versions: ['>=10']
+      # Stay on TS 5 until we explicitly adopt the TS 6 toolchain.
+      - dependency-name: typescript
+        versions: ['>=6']
     groups:
       npm-minor-and-patch:
         update-types:
@@ -41,7 +44,7 @@ updates:
       day: monday
       time: '06:00'
       timezone: Europe/Vilnius
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     labels:
       - dependencies
       - ci
