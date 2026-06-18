@@ -656,4 +656,64 @@ export class MembershipModule {
       ...options,
     });
   };
+
+  /**
+   * POST /{version}/membership/userauth/password/change
+   * Request DTO: ChangePasswordRequest
+   * Authenticated — changes the signed-in member's own password.
+   */
+  changePassword = (
+    request: Partial<CodeMashApi2.ChangePasswordRequest> = {} as Partial<CodeMashApi2.ChangePasswordRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/change',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/password/reset/request
+   * Request DTO: RequestPasswordResetRequest
+   * Anonymous — emits a reset link. Uniform OK whether or not the email exists.
+   */
+  requestPasswordReset = (
+    request: Partial<CodeMashApi2.RequestPasswordResetRequest> = {} as Partial<CodeMashApi2.RequestPasswordResetRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/reset/request',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'unauthenticated',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/password/reset/confirm
+   * Request DTO: ConfirmPasswordResetRequest
+   * Anonymous — sets a new password from the one-time reset token.
+   */
+  confirmPasswordReset = (
+    request: Partial<CodeMashApi2.ConfirmPasswordResetRequest> = {} as Partial<CodeMashApi2.ConfirmPasswordResetRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/reset/confirm',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'unauthenticated',
+      ...options,
+    });
+  };
 }

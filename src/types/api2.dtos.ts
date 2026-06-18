@@ -1573,6 +1573,7 @@ export module CodeMashApi2
         public apiVersion: string;
         public hubVersion: string;
         public mjmlUrl: string;
+        public adminUrlTemplate?: string;
         public license?: CodeMashLicenseFromEndpointDto;
         public askForEnterpriseLicenseEmail?: string;
         public regions?: EchoRegionDto[];
@@ -3718,6 +3719,198 @@ export module CodeMashApi2
         public getTypeName() { return 'RegenerateApiKeys'; }
         public getMethod() { return 'POST'; }
         public createResponse() { return new RegenerateApiKeysResponse(); }
+    }
+
+
+    // ---- Admin Portal public endpoints (synced from API /metadata) ----
+
+    export class PublicBrandDto
+    {
+        public displayName: string;
+        public mainColor?: string;
+        public accentColor?: string;
+        public logoUrl?: string;
+        public iconUrl?: string;
+
+        public constructor(init?: Partial<PublicBrandDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicPasswordPolicyDto
+    {
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public minUpper?: number;
+        public minLower?: number;
+        public minSpecial?: number;
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<PublicPasswordPolicyDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicAuthDto
+    {
+        public socialProviders: string[] = [];
+        public passkey: boolean;
+        public methods?: string[];
+        public passwordPolicy?: PublicPasswordPolicyDto;
+
+        public constructor(init?: Partial<PublicAuthDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicProjectConfigDto
+    {
+        public displayName: string = '';
+        public branding?: PublicBrandDto;
+        public auth: PublicAuthDto;
+
+        public constructor(init?: Partial<PublicProjectConfigDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicLegalDocumentDto
+    {
+        public kind: string;
+        public title?: string;
+        public body: string;
+        public available: boolean;
+
+        public constructor(init?: Partial<PublicLegalDocumentDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
+    export class GetPublicProjectConfig extends RequestBase implements IReturn<PublicProjectConfigDto>
+    {
+        public projectId?: string;
+
+        public constructor(init?: Partial<GetPublicProjectConfig>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectConfig'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicProjectConfigDto(); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/legal/{Kind}", "GET")
+    export class GetPublicProjectLegal extends RequestBase implements IReturn<PublicLegalDocumentDto>
+    {
+        public projectId?: string;
+        public kind?: string;
+
+        public constructor(init?: Partial<GetPublicProjectLegal>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectLegal'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicLegalDocumentDto(); }
+    }
+
+
+    // ---- Membership password endpoints (synced from API /metadata) ----
+
+    // @Route("/{version}/membership/userauth/password/change", "POST")
+    export class ChangePasswordRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        public currentPassword: string = '';
+        public newPassword: string = '';
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<ChangePasswordRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ChangePasswordRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    // @Route("/{version}/membership/userauth/password/reset/request", "POST")
+    export class RequestPasswordResetRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        public email: string = '';
+
+        public constructor(init?: Partial<RequestPasswordResetRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'RequestPasswordResetRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+    // @Route("/{version}/membership/userauth/password/reset/confirm", "POST")
+    export class ConfirmPasswordResetRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
+    {
+        public token: string = '';
+        public newPassword: string = '';
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<ConfirmPasswordResetRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ConfirmPasswordResetRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new PasskeyOkResponse(); }
+    }
+
+
+    // ---- Taxonomy/term tree DTOs (synced from API /metadata; used by api.database) ----
+
+    export class TermTreeDto
+    {
+        public id: string = '';
+        public taxonomyId?: string;
+        public taxonomyName?: string;
+        public parentId?: string;
+        public order?: number;
+        public name?: string;
+        public names?: { [index:string]: string; };
+        public description?: string;
+        public descriptions?: { [index:string]: string; };
+        public multiParents?: TermMultiParentDto[];
+        public meta?: Object;
+        public children?: TermTreeDto[];
+
+        public constructor(init?: Partial<TermTreeDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class TaxonomyTreeDto
+    {
+        public viewId: string = '';
+        public taxonomyName: string = '';
+        public taxonomySlug: string = '';
+        public parentId?: string;
+        public children?: TaxonomyTreeDto[];
+        public terms?: TermTreeDto[];
+
+        public constructor(init?: Partial<TaxonomyTreeDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class FindTaxonomyTreeResponse extends ResponseBase
+    {
+        public tree?: TaxonomyTreeDto[];
+
+        public constructor(init?: Partial<FindTaxonomyTreeResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class FindTermTreeResponse extends ResponseBase
+    {
+        public tree?: TermTreeDto[];
+
+        public constructor(init?: Partial<FindTermTreeResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @Route("/{version}/database/taxonomies/tree", "GET")
+    export class FindTaxonomyTreeRequest extends CodeMashRequestBase implements IReturn<FindTaxonomyTreeResponse>
+    {
+        public includeTerms: boolean = false;
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<FindTaxonomyTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FindTaxonomyTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new FindTaxonomyTreeResponse(); }
+    }
+
+    // @Route("/{version}/database/taxonomies/{taxonomyName}/terms/tree", "GET")
+    export class FindTermTreeRequest extends CodeMashRequestBase implements IReturn<FindTermTreeResponse>
+    {
+        public taxonomyName: string = '';
+        public rootTermId?: string;
+        public depth?: number;
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<FindTermTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FindTermTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new FindTermTreeResponse(); }
     }
 
 }

@@ -50,6 +50,11 @@
       "import": "./dist/webhooks/index.js",
       "require": "./dist/webhooks/index.cjs"
     },
+    "./sse": {
+      "types": "./dist/sse/index.d.ts",
+      "import": "./dist/sse/index.js",
+      "require": "./dist/sse/index.cjs"
+    },
     "./types/api": {
       "types": "./dist/types/api2.dtos.d.ts",
       "import": "./dist/types/api2.dtos.js",

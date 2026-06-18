@@ -200,10 +200,34 @@ describe('NorbixWebhookReceiver', () => {
     expect(event.metadata.record).toEqual({ id: 'rec_1' });
   });
 
-  it('onRaw receives the untouched envelope + ctx', async () => {
+  it('onAll runs alongside a typed handler for the same event', async () => {
+    const receiver = new NorbixWebhookReceiver();
+    const typed = vi.fn();
+    const onAll = vi.fn();
+    receiver.on('membership.user.registered', typed);
+    receiver.onAll(['membership.user.registered', 'files.file.uploaded'], onAll);
+
+    await receiver.handle({
+      rawBody: JSON.stringify({
+        id: 'dlv_all',
+        event: 'membership.user.registered',
+        createdOn: '2026-01-01T00:00:00Z',
+        accountId: 'acc_1',
+        projectId: 'pr_1',
+        data: { user: { id: 'usr_1', email: 'a@b.c' } },
+      }),
+      headers: {},
+    });
+
+    expect(typed).toHaveBeenCalledOnce();
+    expect(onAll).toHaveBeenCalledOnce();
+    expect(onAll.mock.calls[0]?.[0]?.id).toBe('dlv_all');
+  });
+
+  it('onAll receives the untouched envelope + ctx', async () => {
     const receiver = new NorbixWebhookReceiver();
     const handler = vi.fn();
-    receiver.onRaw('files.file.uploaded', handler);
+    receiver.onAll(['files.file.uploaded'], handler);
 
     await receiver.handle({
       rawBody: JSON.stringify({
@@ -254,7 +278,7 @@ describe('NorbixWebhookReceiver', () => {
   it('skips verify when no secret', async () => {
     const receiver = new NorbixWebhookReceiver();
     const handler = vi.fn();
-    receiver.onDefault(handler);
+    receiver.onAll(['files.file.uploaded'], handler);
 
     const result = await receiver.handle({
       rawBody: JSON.stringify({
@@ -269,7 +293,7 @@ describe('NorbixWebhookReceiver', () => {
     });
 
     expect(result.verified).toBe(null);
-    expect(result.handled).toBe(true);
+    expect(result.handled).toBe(false);
     expect(handler.mock.calls[0]?.[1]?.headers.accountId).toBe('acc_env');
     expect(handler.mock.calls[0]?.[1]?.headers.projectId).toBe('pr_env');
   });

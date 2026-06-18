@@ -400,6 +400,35 @@ await norbix.hub.account.sendInviteToTeamMember({
 
 <!-- END: HUB_EXAMPLE -->
 
+<!-- BEGIN: WEBHOOKS_RECEIVER -->
+
+## Inbound webhooks
+
+When Norbix POSTs signed events to your endpoint, use `@norbix.ai/ts/webhooks` — not
+`hub.webhooks` (that module configures destinations).
+
+```ts
+import {
+  NORBIX_WEBHOOK_EVENT_NAMES,
+  NorbixWebhookEvents,
+  NorbixWebhookReceiver,
+} from '@norbix.ai/ts/webhooks';
+
+const receiver = new NorbixWebhookReceiver(); // NORBIX_WEBHOOK_SIGNING_SECRET from env
+
+receiver.on(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {
+  console.log('registered', user.email ?? user.userName);
+});
+
+receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
+
+await receiver.handle({ rawBody: req.rawBody, headers: req.headers });
+```
+
+→ [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md)
+
+<!-- END: WEBHOOKS_RECEIVER -->
+
 <!-- BEGIN: MCP -->
 
 ## Norbix MCP — same modules, agent-native

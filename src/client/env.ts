@@ -27,10 +27,13 @@ export function readEnv(
 ): string | undefined {
   if (source) return source[key];
   // Browsers don't have `process`. Bundlers like Vite shim it, but we keep
-  // the access defensive so the SDK never crashes at import time.
-  if (typeof process === 'undefined') return undefined;
-  if (!process.env) return undefined;
-  return process.env[key];
+  // the access defensive so the SDK never crashes at import time. We read it
+  // off `globalThis` with a local type so the SDK type-checks in a browser
+  // app that has no `@types/node` (e.g. the Admin Portal) without pulling the
+  // Node typings in.
+  const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process;
+  if (!proc || !proc.env) return undefined;
+  return proc.env[key];
 }
 
 /**

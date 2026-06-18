@@ -75,7 +75,7 @@ export interface NorbixWebhookEvent {
   raw: NorbixWebhookEnvelope;
 }
 
-/** Context passed to raw (`onRaw`) handlers alongside the envelope. */
+/** Context passed to `onAll` handlers alongside the envelope. */
 export interface NorbixWebhookContext {
   path?: string;
   headers: NorbixWebhookDeliveryHeaders;

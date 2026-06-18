@@ -8,6 +8,7 @@ import { DatabaseModule } from './database.js';
 import { EchoModule } from './echo.js';
 import { FilesModule } from './files.js';
 import { MembershipModule } from './membership.js';
+import { PublicModule } from './public.js';
 
 /**
  * Auto-generated namespace exposing every api endpoint group.
@@ -22,6 +23,7 @@ export class ApiNamespace {
   public readonly echo: EchoModule;
   public readonly files: FilesModule;
   public readonly membership: MembershipModule;
+  public readonly public: PublicModule;
 
   constructor(transport: Transport) {
     this.accessToken = new AccessTokenModule(transport);
@@ -32,5 +34,6 @@ export class ApiNamespace {
     this.echo = new EchoModule(transport);
     this.files = new FilesModule(transport);
     this.membership = new MembershipModule(transport);
+    this.public = new PublicModule(transport);
   }
 }

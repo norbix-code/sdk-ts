@@ -61,9 +61,9 @@ describe('webhooks payload types', () => {
     });
   });
 
-  it('onRaw gives the raw envelope + ctx', () => {
+  it('onAll gives the raw envelope + ctx', () => {
     const receiver = new NorbixWebhookReceiver();
-    receiver.onRaw(NorbixWebhookEvents.Membership.UserRegistered, (envelope, ctx) => {
+    receiver.onAll([NorbixWebhookEvents.Membership.UserRegistered], (envelope, ctx) => {
       expectTypeOf(envelope.event).toEqualTypeOf<string>();
       expectTypeOf(ctx.verified).toEqualTypeOf<boolean | null>();
     });

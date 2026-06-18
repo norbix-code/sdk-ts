@@ -1,6 +1,9 @@
 import { ApiNamespace } from '../api/index.js';
 import { HubNamespace } from '../hub/index.js';
 import { CollectionResource } from '../resources/collection.js';
+import { NorbixSseClient } from '../sse/client.js';
+import { NorbixInboxClient } from '../sse/inbox.js';
+import type { NorbixSseClientOptions } from '../sse/types.js';
 
 import { loadEnvConfig } from './env.js';
 import { Transport } from './transport.js';
@@ -273,6 +276,40 @@ export class Norbix {
   collection<TItem = unknown>(collectionName: string): CollectionResource<TItem> {
     if (!collectionName) throw new Error('Norbix: collectionName must be a non-empty string');
     return new CollectionResource<TItem>(this.api.database, collectionName);
+  }
+
+  /**
+   * Open a realtime / InApp SSE client using this client's hub URL, auth
+   * token, and project. Pass `channels` for broadcast/project scope, or omit
+   * them and rely on the user token for user-scoped delivery.
+   *
+   * ```ts
+   * import { inAppChannel } from '@norbix.ai/ts/sse';
+   * const sse = norbix.sse({ channels: [inAppChannel(norbix.getConfig().projectId)] });
+   * sse.onInApp((env) => console.log(env.eventName, env.payload));
+   * await sse.connect();
+   * ```
+   */
+  sse(options: Partial<Omit<NorbixSseClientOptions, 'hubUrl'>> = {}): NorbixSseClient {
+    return new NorbixSseClient({
+      hubUrl: this.cfg.baseUrl.hub,
+      hubVersion: this.cfg.hubVersion,
+      token: this.cfg.bearerToken ?? this.cfg.apiKey,
+      projectId: this.cfg.projectId,
+      fetchImpl: this.cfg.fetch,
+      ...options,
+    });
+  }
+
+  /** Notification inbox (bell) client using this client's hub URL + auth. */
+  inbox(): NorbixInboxClient {
+    return new NorbixInboxClient({
+      hubUrl: this.cfg.baseUrl.hub,
+      hubVersion: this.cfg.hubVersion,
+      token: this.cfg.bearerToken ?? this.cfg.apiKey,
+      projectId: this.cfg.projectId,
+      fetchImpl: this.cfg.fetch,
+    });
   }
 
   /** Read-only snapshot of the current config (useful for tests/diagnostics). */

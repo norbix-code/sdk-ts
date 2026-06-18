@@ -50,6 +50,44 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/taxonomies/{taxonomyName}/terms/tree
+   * Request DTO: FindTermTreeRequest
+   */
+  findTermTree = (
+    request: Partial<CodeMashApi2.FindTermTreeRequest> = {} as Partial<CodeMashApi2.FindTermTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.FindTermTreeResponse> => {
+    return this.transport.send<CodeMashApi2.FindTermTreeResponse>({
+      target: 'api',
+      path: '/{version}/database/taxonomies/{taxonomyName}/terms/tree',
+      method: 'GET',
+      request,
+      pathParams: ['taxonomyName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/taxonomies/tree
+   * Request DTO: FindTaxonomyTreeRequest
+   */
+  findTaxonomyTree = (
+    request: Partial<CodeMashApi2.FindTaxonomyTreeRequest> = {} as Partial<CodeMashApi2.FindTaxonomyTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.FindTaxonomyTreeResponse> => {
+    return this.transport.send<CodeMashApi2.FindTaxonomyTreeResponse>({
+      target: 'api',
+      path: '/{version}/database/taxonomies/tree',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/database/schemas/{id}
    * Request DTO: GetDatabaseSchemaRequest
    */

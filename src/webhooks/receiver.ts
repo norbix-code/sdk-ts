@@ -48,11 +48,10 @@ function resolveConfig(options: NorbixWebhookReceiverOptions): ResolvedConfig {
   };
 }
 
-/** Internal record of a registered handler and how to invoke it. */
+/** Internal record of a registered typed handler. */
 interface Registration {
-  raw: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- holds either handler shape
-  fn: (...args: any[]) => void | Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- overloads pass narrower handlers
+  fn: NorbixWebhookHandler<any>;
 }
 
 /**
@@ -82,15 +81,16 @@ interface Registration {
  *   if (user.from.email !== user.to.email) { ... }
  * });
  *
- * // Raw escape hatch: (envelope, ctx).
- * receiver.onRaw(NorbixWebhookEvents.Files.FileUploaded, (envelope, ctx) => {});
+ * // Catch-all logger — runs for every listed event, even when `on` is set.
+ * receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
  *
  * await receiver.handle({ rawBody, headers: req.headers });
  * ```
  */
 export class NorbixWebhookReceiver {
   private readonly handlers = new Map<string, Registration>();
-  private defaultHandler?: Registration;
+  /** Raw handlers registered via onAll — always run after the primary handler. */
+  private readonly onAllHandlers = new Map<string, NorbixWebhookRawHandler[]>();
   private readonly config: ResolvedConfig;
 
   constructor(options: NorbixWebhookReceiverOptions = {}) {
@@ -142,37 +142,20 @@ export class NorbixWebhookReceiver {
   on(event: string, handler: NorbixWebhookHandler): this;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- overloads pass narrower handlers
   on(event: string, handler: NorbixWebhookHandler<any>): this {
-    this.handlers.set(event, { raw: false, fn: handler });
+    this.handlers.set(event, { fn: handler });
     return this;
   }
 
-  /** Register the typed handler for many events at once (skips already-registered). */
-  onEach(events: readonly string[], handler: NorbixWebhookHandler): this {
+  /**
+   * Raw handler for many events — always invoked after `on`, even when a typed
+   * handler is already registered for the same event. Receives `(envelope, ctx)`.
+   */
+  onAll(events: readonly string[], handler: NorbixWebhookRawHandler): this {
     for (const event of events) {
-      if (!this.handlers.has(event)) this.handlers.set(event, { raw: false, fn: handler });
+      const list = this.onAllHandlers.get(event) ?? [];
+      list.push(handler);
+      this.onAllHandlers.set(event, list);
     }
-    return this;
-  }
-
-  /* ---- Raw handlers: (envelope, ctx) ---- */
-
-  /** Raw handler for one event — receives the envelope and delivery context. */
-  onRaw<TData = unknown>(event: string, handler: NorbixWebhookRawHandler<TData>): this {
-    this.handlers.set(event, { raw: true, fn: handler as NorbixWebhookRawHandler });
-    return this;
-  }
-
-  /** Register a raw handler for many events at once (skips already-registered). */
-  onEachRaw(events: readonly string[], handler: NorbixWebhookRawHandler): this {
-    for (const event of events) {
-      if (!this.handlers.has(event)) this.handlers.set(event, { raw: true, fn: handler });
-    }
-    return this;
-  }
-
-  /** Fallback (raw) when no event-specific handler is registered. */
-  onDefault(handler: NorbixWebhookRawHandler): this {
-    this.defaultHandler = { raw: true, fn: handler };
     return this;
   }
 
@@ -225,31 +208,31 @@ export class NorbixWebhookReceiver {
       verified,
     };
 
-    const registration = this.handlers.get(envelope.event) ?? this.defaultHandler;
+    const registration = this.handlers.get(envelope.event);
     let handled = false;
 
     if (registration) {
-      if (registration.raw) {
-        await registration.fn(envelope, ctx);
-      } else {
-        const { payload, metadata } = normalizeNorbixWebhook(envelope);
-        const event: NorbixWebhookEvent = {
-          name: envelope.event,
-          deliveryId: envelope.id,
-          createdOn: envelope.createdOn,
-          triggerId: envelope.triggerId ?? null,
-          correlationId: null,
-          accountId: ctx.headers.accountId ?? envelope.accountId,
-          projectId: ctx.headers.projectId ?? envelope.projectId,
-          integrationId: ctx.headers.integrationId,
-          destinationId: ctx.headers.destinationId,
-          verified,
-          metadata,
-          raw: envelope,
-        };
-        await registration.fn(payload, event);
-      }
+      const { payload, metadata } = normalizeNorbixWebhook(envelope);
+      const event: NorbixWebhookEvent = {
+        name: envelope.event,
+        deliveryId: envelope.id,
+        createdOn: envelope.createdOn,
+        triggerId: envelope.triggerId ?? null,
+        correlationId: null,
+        accountId: ctx.headers.accountId ?? envelope.accountId,
+        projectId: ctx.headers.projectId ?? envelope.projectId,
+        integrationId: ctx.headers.integrationId,
+        destinationId: ctx.headers.destinationId,
+        verified,
+        metadata,
+        raw: envelope,
+      };
+      await registration.fn(payload, event);
       handled = true;
+    }
+
+    for (const fn of this.onAllHandlers.get(envelope.event) ?? []) {
+      await fn(envelope, ctx);
     }
 
     return {
