@@ -16,6 +16,7 @@ import { LogsModule } from './logs.js';
 import { MembershipModule } from './membership.js';
 import { NotificationsModule } from './notifications.js';
 import { PaymentsModule } from './payments.js';
+import { PublicModule } from './public.js';
 import { RegionsModule } from './regions.js';
 import { ResourcesModule } from './resources.js';
 import { SchedulerModule } from './scheduler.js';
@@ -42,6 +43,7 @@ export class HubNamespace {
   public readonly membership: MembershipModule;
   public readonly notifications: NotificationsModule;
   public readonly payments: PaymentsModule;
+  public readonly public: PublicModule;
   public readonly regions: RegionsModule;
   public readonly resources: ResourcesModule;
   public readonly scheduler: SchedulerModule;
@@ -64,6 +66,7 @@ export class HubNamespace {
     this.membership = new MembershipModule(transport);
     this.notifications = new NotificationsModule(transport);
     this.payments = new PaymentsModule(transport);
+    this.public = new PublicModule(transport);
     this.regions = new RegionsModule(transport);
     this.resources = new ResourcesModule(transport);
     this.scheduler = new SchedulerModule(transport);

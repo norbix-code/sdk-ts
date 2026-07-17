@@ -124,8 +124,18 @@ export class Transport {
       headers.set('Authorization', `Bearer ${token}`);
     }
 
-    if (this.cfg.projectId) headers.set('X-CM-ProjectId', this.cfg.projectId);
-    if (this.cfg.accountId) headers.set('X-CM-AccountId', this.cfg.accountId);
+    // Tenant scope headers. `norbix-project-id` / `norbix-account-id` are the
+    // canonical gateway contract (AuthStatics.ProjectIdHeaderKey) — the
+    // credentials auth provider ONLY reads these to pick the project scope.
+    // The legacy `X-CM-*` names are kept for older deployments.
+    if (this.cfg.projectId) {
+      headers.set('norbix-project-id', this.cfg.projectId);
+      headers.set('X-CM-ProjectId', this.cfg.projectId);
+    }
+    if (this.cfg.accountId) {
+      headers.set('norbix-account-id', this.cfg.accountId);
+      headers.set('X-CM-AccountId', this.cfg.accountId);
+    }
 
     // Environment selector. Per-call override wins over the client default.
     // `PROD` is the backend default, so we omit the header for it to keep

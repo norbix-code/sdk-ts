@@ -6,13 +6,13 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 34
+ * Endpoints: 41
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * PATCH /{version}/membership/users/block
+   * PATCH /{version}/membership/auth/block
    * Request DTO: BlockUserRequest
    */
   blockUser = (
@@ -21,7 +21,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/block',
+      path: '/{version}/membership/auth/block',
       method: 'PATCH',
       request,
       pathParams: [],
@@ -31,7 +31,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/service
+   * POST /{version}/membership/auth/register/service
    * Request DTO: SaveSystemUserWithPermissions
    */
   saveSystemUserWithPermissions = (
@@ -40,7 +40,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/service',
+      path: '/{version}/membership/auth/register/service',
       method: 'POST',
       request,
       pathParams: [],
@@ -50,7 +50,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/guest
+   * POST /{version}/membership/auth/register/guest
    * Request DTO: SaveGuestUser
    */
   saveGuestUser = (
@@ -59,7 +59,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/guest',
+      path: '/{version}/membership/auth/register/guest',
       method: 'POST',
       request,
       pathParams: [],
@@ -69,7 +69,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/user-name
+   * POST /{version}/membership/auth/register/user-name
    * Request DTO: SaveUserNameUser
    */
   saveUserNameUser = (
@@ -78,7 +78,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/user-name',
+      path: '/{version}/membership/auth/register/user-name',
       method: 'POST',
       request,
       pathParams: [],
@@ -88,7 +88,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/email
+   * POST /{version}/membership/auth/register/email
    * Request DTO: SaveEmailUser
    */
   saveEmailUser = (
@@ -97,7 +97,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/email',
+      path: '/{version}/membership/auth/register/email',
       method: 'POST',
       request,
       pathParams: [],
@@ -107,7 +107,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/phone
+   * POST /{version}/membership/auth/register/phone
    * Request DTO: SavePhoneUser
    */
   savePhoneUser = (
@@ -116,7 +116,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/phone',
+      path: '/{version}/membership/auth/register/phone',
       method: 'POST',
       request,
       pathParams: [],
@@ -126,7 +126,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/phone-with-permissions
+   * POST /{version}/membership/auth/register/phone-with-permissions
    * Request DTO: SavePhoneUserNameWithPermissions
    */
   savePhoneUserNameWithPermissions = (
@@ -135,7 +135,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/phone-with-permissions',
+      path: '/{version}/membership/auth/register/phone-with-permissions',
       method: 'POST',
       request,
       pathParams: [],
@@ -145,7 +145,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/email-with-permissions
+   * POST /{version}/membership/auth/register/email-with-permissions
    * Request DTO: SaveEmailUserNameWithPermissions
    */
   saveEmailUserNameWithPermissions = (
@@ -154,7 +154,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/email-with-permissions',
+      path: '/{version}/membership/auth/register/email-with-permissions',
       method: 'POST',
       request,
       pathParams: [],
@@ -164,7 +164,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/register/user-name-with-permissions
+   * POST /{version}/membership/auth/register/user-name-with-permissions
    * Request DTO: SaveUserNameWithPermissions
    */
   saveUserNameWithPermissions = (
@@ -173,7 +173,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users/register/user-name-with-permissions',
+      path: '/{version}/membership/auth/register/user-name-with-permissions',
       method: 'POST',
       request,
       pathParams: [],
@@ -183,7 +183,7 @@ export class MembershipModule {
   };
 
   /**
-   * DELETE /{version}/membership/users
+   * DELETE /{version}/membership/auth
    * Request DTO: DeleteUserRequest
    */
   deleteUser = (
@@ -192,7 +192,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       method: 'DELETE',
       request,
       pathParams: [],
@@ -202,7 +202,7 @@ export class MembershipModule {
   };
 
   /**
-   * GET /{version}/membership/users/{id}
+   * GET /{version}/membership/auth/{id}
    * Request DTO: GetUserRequest
    */
   getUser = (
@@ -211,7 +211,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.GetUserResponse> => {
     return this.transport.send<CodeMashApi2.GetUserResponse>({
       target: 'api',
-      path: '/{version}/membership/users/{id}',
+      path: '/{version}/membership/auth/{id}',
       method: 'GET',
       request,
       pathParams: ['id'],
@@ -221,7 +221,7 @@ export class MembershipModule {
   };
 
   /**
-   * GET /{version}/membership/users
+   * GET /{version}/membership/auth
    * Request DTO: GetUsersRequest
    */
   getUsers = (
@@ -230,7 +230,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.GetUsersResponse> => {
     return this.transport.send<CodeMashApi2.GetUsersResponse>({
       target: 'api',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       method: 'GET',
       request,
       pathParams: [],
@@ -240,7 +240,7 @@ export class MembershipModule {
   };
 
   /**
-   * GET /{version}/membership/users/{id}/preferences
+   * GET /{version}/membership/auth/{id}/preferences
    * Request DTO: GetUserPreferencesRequest
    */
   getUserPreferences = (
@@ -249,7 +249,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.GetUserPreferencesResponse> => {
     return this.transport.send<CodeMashApi2.GetUserPreferencesResponse>({
       target: 'api',
-      path: '/{version}/membership/users/{id}/preferences',
+      path: '/{version}/membership/auth/{id}/preferences',
       method: 'GET',
       request,
       pathParams: ['id'],
@@ -259,7 +259,26 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/invite
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent
+   * Request DTO: GrantContactConsentRequest
+   */
+  grantContactConsent = (
+    request: Partial<CodeMashApi2.GrantContactConsentRequest> = {} as Partial<CodeMashApi2.GrantContactConsentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'channel'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/auth/invite
    * Request DTO: InviteUserRequest
    */
   inviteUser = (
@@ -268,7 +287,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/invite',
+      path: '/{version}/membership/auth/invite',
       method: 'POST',
       request,
       pathParams: [],
@@ -278,7 +297,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/{userId}/link-identity
+   * POST /{version}/membership/auth/{userId}/link-identity
    * Request DTO: LinkIdentityRequest
    */
   linkIdentity = (
@@ -287,7 +306,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/{userId}/link-identity',
+      path: '/{version}/membership/auth/{userId}/link-identity',
       method: 'POST',
       request,
       pathParams: ['userId'],
@@ -297,7 +316,26 @@ export class MembershipModule {
   };
 
   /**
-   * PUT /{version}/membership/users/assign-roles
+   * POST /{version}/membership/users/{userId}/map-auth
+   * Request DTO: MapAuthToUserRequest
+   */
+  mapAuthToUser = (
+    request: Partial<CodeMashApi2.MapAuthToUserRequest> = {} as Partial<CodeMashApi2.MapAuthToUserRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{userId}/map-auth',
+      method: 'POST',
+      request,
+      pathParams: ['userId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/auth/assign-roles
    * Request DTO: AssignRolePermissionsRequest
    */
   assignRolePermissions = (
@@ -306,7 +344,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/assign-roles',
+      path: '/{version}/membership/auth/assign-roles',
       method: 'PUT',
       request,
       pathParams: [],
@@ -316,7 +354,26 @@ export class MembershipModule {
   };
 
   /**
-   * PATCH /{version}/membership/users/unblock
+   * PUT /{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}
+   * Request DTO: SetContactTagSubscriptionRequest
+   */
+  setContactTagSubscription = (
+    request: Partial<CodeMashApi2.SetContactTagSubscriptionRequest> = {} as Partial<CodeMashApi2.SetContactTagSubscriptionRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}',
+      method: 'PUT',
+      request,
+      pathParams: ['contactId', 'commChannel', 'channel', 'tag'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/membership/auth/unblock
    * Request DTO: UnblockUserRequest
    */
   unblockUser = (
@@ -325,7 +382,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/unblock',
+      path: '/{version}/membership/auth/unblock',
       method: 'PATCH',
       request,
       pathParams: [],
@@ -335,7 +392,26 @@ export class MembershipModule {
   };
 
   /**
-   * PUT /{version}/membership/users
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe
+   * Request DTO: UnsubscribeContactRequest
+   */
+  unsubscribeContact = (
+    request: Partial<CodeMashApi2.UnsubscribeContactRequest> = {} as Partial<CodeMashApi2.UnsubscribeContactRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'channel'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/auth
    * Request DTO: UpdateUserRequest
    */
   updateUser = (
@@ -344,7 +420,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.IdResponse> => {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       method: 'PUT',
       request,
       pathParams: [],
@@ -354,7 +430,7 @@ export class MembershipModule {
   };
 
   /**
-   * PUT /{version}/membership/users/{id}/preferences
+   * PUT /{version}/membership/auth/{id}/preferences
    * Request DTO: UpdateUserPreferencesRequest
    */
   updateUserPreferences = (
@@ -363,7 +439,7 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/users/{id}/preferences',
+      path: '/{version}/membership/auth/{id}/preferences',
       method: 'PUT',
       request,
       pathParams: ['id'],
@@ -660,7 +736,6 @@ export class MembershipModule {
   /**
    * POST /{version}/membership/userauth/password/change
    * Request DTO: ChangePasswordRequest
-   * Authenticated — changes the signed-in member's own password.
    */
   changePassword = (
     request: Partial<CodeMashApi2.ChangePasswordRequest> = {} as Partial<CodeMashApi2.ChangePasswordRequest>,
@@ -680,7 +755,6 @@ export class MembershipModule {
   /**
    * POST /{version}/membership/userauth/password/reset/request
    * Request DTO: RequestPasswordResetRequest
-   * Anonymous — emits a reset link. Uniform OK whether or not the email exists.
    */
   requestPasswordReset = (
     request: Partial<CodeMashApi2.RequestPasswordResetRequest> = {} as Partial<CodeMashApi2.RequestPasswordResetRequest>,
@@ -692,7 +766,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -700,7 +774,6 @@ export class MembershipModule {
   /**
    * POST /{version}/membership/userauth/password/reset/confirm
    * Request DTO: ConfirmPasswordResetRequest
-   * Anonymous — sets a new password from the one-time reset token.
    */
   confirmPasswordReset = (
     request: Partial<CodeMashApi2.ConfirmPasswordResetRequest> = {} as Partial<CodeMashApi2.ConfirmPasswordResetRequest>,
@@ -712,7 +785,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };

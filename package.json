@@ -78,6 +78,9 @@
   "scripts": {
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "npm run clean && tsup",
+    "sync-types": "node scripts/sync-types.mjs",
+    "sync-types:remote": "node scripts/sync-types.mjs --remote",
+    "generate-endpoints": "node scripts/generate-endpoints.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",

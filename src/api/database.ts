@@ -6,10 +6,29 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 19
+ * Endpoints: 21
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/database/taxonomies/tree
+   * Request DTO: FindTaxonomyTreeRequest
+   */
+  findTaxonomyTree = (
+    request: Partial<CodeMashApi2.FindTaxonomyTreeRequest> = {} as Partial<CodeMashApi2.FindTaxonomyTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.FindTaxonomyTreeResponse> => {
+    return this.transport.send<CodeMashApi2.FindTaxonomyTreeResponse>({
+      target: 'api',
+      path: '/{version}/database/taxonomies/tree',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/database/taxonomies/{taxonomyName}/terms
@@ -63,25 +82,6 @@ export class DatabaseModule {
       method: 'GET',
       request,
       pathParams: ['taxonomyName'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/database/taxonomies/tree
-   * Request DTO: FindTaxonomyTreeRequest
-   */
-  findTaxonomyTree = (
-    request: Partial<CodeMashApi2.FindTaxonomyTreeRequest> = {} as Partial<CodeMashApi2.FindTaxonomyTreeRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.FindTaxonomyTreeResponse> => {
-    return this.transport.send<CodeMashApi2.FindTaxonomyTreeResponse>({
-      target: 'api',
-      path: '/{version}/database/taxonomies/tree',
-      method: 'GET',
-      request,
-      pathParams: [],
       scope: 'project',
       ...options,
     });

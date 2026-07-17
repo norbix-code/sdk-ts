@@ -21,10 +21,12 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`deleteDatabaseTaxonomy`](#deletedatabasetaxonomy) | `DELETE` | `/{version}/database/taxonomies/{Id}` | `project` |
 | [`getDatabaseTaxonomy`](#getdatabasetaxonomy) | `GET` | `/{version}/database/taxonomies/{id}` | `project` |
 | [`getDatabaseTaxonomies`](#getdatabasetaxonomies) | `GET` | `/{version}/database/taxonomies` | `project` |
+| [`getDatabaseTaxonomyTree`](#getdatabasetaxonomytree) | `GET` | `/{version}/database/taxonomies/tree` | `project` |
 | [`saveDatabaseTaxonomy`](#savedatabasetaxonomy) | `POST` | `/{version}/database/taxonomies` | `project` |
 | [`deleteDatabaseTaxonomyTerm`](#deletedatabasetaxonomyterm) | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}` | `project` |
 | [`deleteManyDatabaseTaxonomyTerms`](#deletemanydatabasetaxonomyterms) | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/many` | `project` |
 | [`getDatabaseTaxonomyTerm`](#getdatabasetaxonomyterm) | `GET` | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}` | `project` |
+| [`getDatabaseTaxonomyTermTree`](#getdatabasetaxonomytermtree) | `GET` | `/{version}/database/taxonomies/{TaxonomyName}/terms/tree` | `project` |
 | [`saveDatabaseTaxonomyTerm`](#savedatabasetaxonomyterm) | `POST` | `/{version}/database/taxonomies/{TaxonomyId}/terms` | `project` |
 | [`updateDatabaseTaxonomyTerm`](#updatedatabasetaxonomyterm) | `PUT` | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}` | `project` |
 | [`deleteDatabaseSchema`](#deletedatabaseschema) | `DELETE` | `/{version}/database/schemas/{Id}` | `project` |
@@ -305,6 +307,28 @@ const result = await norbix.hub.database.getDatabaseTaxonomies({
 
 [↑ Top](#endpoints)
 
+### getDatabaseTaxonomyTree
+
+`GET` `/{version}/database/taxonomies/tree`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetDatabaseTaxonomyTreeRequest`
+**Response**: `CodeMashHub2.GetDatabaseTaxonomyTreeResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getDatabaseTaxonomyTree({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetDatabaseTaxonomyTreeResponse
+```
+
+[↑ Top](#endpoints)
+
 ### saveDatabaseTaxonomy
 
 `POST` `/{version}/database/taxonomies`
@@ -394,6 +418,29 @@ const result = await norbix.hub.database.getDatabaseTaxonomyTerm({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetDatabaseTaxonomyTermResponse
+```
+
+[↑ Top](#endpoints)
+
+### getDatabaseTaxonomyTermTree
+
+`GET` `/{version}/database/taxonomies/{TaxonomyName}/terms/tree`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetDatabaseTaxonomyTermTreeRequest`
+**Response**: `CodeMashHub2.GetDatabaseTaxonomyTermTreeResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getDatabaseTaxonomyTermTree({
+  TaxonomyName: 'TaxonomyName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetDatabaseTaxonomyTermTreeResponse
 ```
 
 [↑ Top](#endpoints)

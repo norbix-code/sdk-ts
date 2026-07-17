@@ -1,5 +1,5 @@
 /* Options:
-Date: 2026-06-12 16:20:54
+Date: 2026-06-30 13:57:57
 Version: 10.06
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -16,6 +16,7 @@ AddDescriptionAsComments: True
 */
 
 // @ts-nocheck
+
 
 
 export module CodeMashApi2
@@ -45,20 +46,16 @@ export module CodeMashApi2
     {
     }
 
-    export interface IGet
-    {
-    }
-
     export type IReadOnlySet<T> = T[];
     export type IReadOnlyList<T> = T[];
     export type IList<T> = T[];
-    export type IReadOnlyDictionary<TValue> = Record<string, TValue>;
-    export type Dictionary<TValue> = Record<string, TValue>;
     export type HashSet<T> = T[];
     export type Blob = globalThis.Blob;
+    export type IReadOnlyDictionary<TKey extends string | number | symbol, TValue> = Record<TKey, TValue>;
+    export type Dictionary<TValue> = Record<string, TValue>;
 
 
-    // @DataContract(Namespace="http://codemash.io/types/")
+    // @DataContract(Namespace="http://norbix.ai/types/")
     export class RequestBase implements ICultureBasedRequest, IVersionBasedRequest, IHasCorrelationIdRequest
     {
         /** @description Specify culture code when your response from the API should be localised. E.g.: en */
@@ -116,7 +113,6 @@ export module CodeMashApi2
     export class AggregateId
     {
         public value: string;
-        public get viewId(): string { return this.value; }
         public viewId?: string;
 
         public constructor(init?: Partial<AggregateId>) { (Object as any).assign(this, init); }
@@ -504,12 +500,12 @@ export module CodeMashApi2
         public constructor(init?: Partial<ProjectCommunication>) { (Object as any).assign(this, init); }
     }
 
-    export class UserId implements IHasDomainEntityId
+    export class AuthId implements IHasDomainEntityId
     {
-        public viewId?: string;
         public value: string;
+        public get viewId(): string { return this.value; }
 
-        public constructor(init?: Partial<UserId>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<AuthId>) { (Object as any).assign(this, init); }
     }
 
     export class DeviceId
@@ -592,7 +588,7 @@ export module CodeMashApi2
         public constructor(init?: Partial<PushDevice>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract(Namespace="http://codemash.io/types/")
+    // @DataContract(Namespace="http://norbix.ai/types/")
     export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
@@ -675,6 +671,11 @@ export module CodeMashApi2
         // @DataMember
         // @ApiMember(DataType="object", Description="User Info", Name="UserGeneralInfo", ParameterType="body")
         public userGeneralInfo?: UserGeneralInfoDto;
+
+        /** @description Attach this login to an existing user id. Optional. */
+        // @DataMember
+        // @ApiMember(Description="Attach this login to an existing user id. Optional.")
+        public userId?: string;
 
         /** @description Ignore UserRegistersAsRole from Membership Settings */
         // @DataMember
@@ -949,6 +950,40 @@ export module CodeMashApi2
         public constructor(init?: Partial<EchoRegionDto>) { (Object as any).assign(this, init); }
     }
 
+    export class PublicBrandDto
+    {
+        public displayName: string;
+        public mainColor?: string;
+        public accentColor?: string;
+        public logoUrl?: string;
+        public iconUrl?: string;
+
+        public constructor(init?: Partial<PublicBrandDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicPasswordPolicyDto
+    {
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public minUpper?: number;
+        public minLower?: number;
+        public minSpecial?: number;
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<PublicPasswordPolicyDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicAuthDto
+    {
+        public socialProviders: string[] = [];
+        public passkey: boolean;
+        public methods?: string[];
+        public passwordPolicy?: PublicPasswordPolicyDto;
+
+        public constructor(init?: Partial<PublicAuthDto>) { (Object as any).assign(this, init); }
+    }
+
     export class ErrorDto
     {
         public message: string;
@@ -976,7 +1011,7 @@ export module CodeMashApi2
         public constructor(init?: Partial<ResponseBase>) { (Object as any).assign(this, init); }
     }
 
-    export enum UserType
+    export enum AuthType
     {
         Service = 'Service',
         Email = 'Email',
@@ -1010,7 +1045,7 @@ export module CodeMashApi2
         public constructor(init?: Partial<LoginDto>) { (Object as any).assign(this, init); }
     }
 
-    export enum UserStatus
+    export enum AuthStatus
     {
         Registered = 0,
         PendingValidation = 2,
@@ -1021,10 +1056,10 @@ export module CodeMashApi2
         Blocked = 128,
     }
 
-    export class UserDto implements IBindableContract
+    export class AuthDto implements IBindableContract
     {
         public id: string;
-        public type: UserType;
+        public type: AuthType;
         public email?: string;
         public userName?: string;
         public registration?: RegistrationDto;
@@ -1033,11 +1068,11 @@ export module CodeMashApi2
         public roles?: string[];
         public pushDevices?: string[];
         public tags?: string[];
-        public status: UserStatus;
+        public status: AuthStatus;
         public createdOn: string;
         public modifiedOn: string;
 
-        public constructor(init?: Partial<UserDto>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<AuthDto>) { (Object as any).assign(this, init); }
     }
 
     export class PaginatedResponse<TViewModelProjection>
@@ -1086,6 +1121,70 @@ export module CodeMashApi2
         public names?: { [index:string]: string; };
 
         public constructor(init?: Partial<TermMultiParentDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class TermTreeDto
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public taxonomyId?: string;
+
+        // @DataMember
+        public taxonomyName?: string;
+
+        // @DataMember
+        public parentId?: string;
+
+        // @DataMember
+        public order?: number;
+
+        // @DataMember
+        public name?: string;
+
+        // @DataMember
+        public names?: { [index:string]: string; };
+
+        // @DataMember
+        public description?: string;
+
+        // @DataMember
+        public descriptions?: { [index:string]: string; };
+
+        // @DataMember
+        public multiParents?: TermMultiParentDto[];
+
+        // @DataMember
+        public meta?: Object;
+
+        // @DataMember
+        public children?: TermTreeDto[];
+
+        public constructor(init?: Partial<TermTreeDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class TaxonomyTreeDto
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public taxonomyName: string;
+
+        // @DataMember
+        public taxonomySlug: string;
+
+        // @DataMember
+        public parentId?: string;
+
+        // @DataMember
+        public children?: TaxonomyTreeDto[];
+
+        // @DataMember
+        public terms?: TermTreeDto[];
+
+        public constructor(init?: Partial<TaxonomyTreeDto>) { (Object as any).assign(this, init); }
     }
 
     export class TermDto
@@ -1179,6 +1278,7 @@ export module CodeMashApi2
         Sms = 'Sms',
         Email = 'Email',
         WebhookCall = 'WebhookCall',
+        SseCall = 'SseCall',
     }
 
     // @DataContract
@@ -1371,24 +1471,6 @@ export module CodeMashApi2
         public constructor(init?: Partial<ResponseStatus>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract
-    export class UserApiKey
-    {
-        // @DataMember(Order=1)
-        public key?: string;
-
-        // @DataMember(Order=2)
-        public keyType?: string;
-
-        // @DataMember(Order=3)
-        public expiryDate?: string;
-
-        // @DataMember(Order=4)
-        public meta?: { [index:string]: string; };
-
-        public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
-    }
-
     export interface IHasDomainEntityId
     {
         viewId?: string;
@@ -1431,7 +1513,7 @@ export module CodeMashApi2
         public maxLength?: number;
 
         // @DataMember
-        public translateOptions?: IReadOnlyDictionary<string>;
+        public translateOptions?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<StringFieldDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1581,6 +1663,26 @@ export module CodeMashApi2
         public constructor(init?: Partial<EchoResponse>) { (Object as any).assign(this, init); }
     }
 
+    export class PublicProjectConfigDto
+    {
+        public displayName: string;
+        public adminPortalEnabled: boolean;
+        public branding?: PublicBrandDto;
+        public auth: PublicAuthDto;
+
+        public constructor(init?: Partial<PublicProjectConfigDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicLegalDocumentDto
+    {
+        public kind: string;
+        public title?: string;
+        public body: string;
+        public available: boolean;
+
+        public constructor(init?: Partial<PublicLegalDocumentDto>) { (Object as any).assign(this, init); }
+    }
+
     export class AskChatResponse extends ResponseBase
     {
         public result?: string;
@@ -1605,14 +1707,14 @@ export module CodeMashApi2
 
     export class GetUserResponse extends ResponseBase
     {
-        public user?: UserDto;
+        public user?: AuthDto;
 
         public constructor(init?: Partial<GetUserResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetUsersResponse extends ResponseBase
     {
-        public list?: PaginatedResponse<UserDto>;
+        public list?: PaginatedResponse<AuthDto>;
 
         public constructor(init?: Partial<GetUsersResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -1672,6 +1774,13 @@ export module CodeMashApi2
         public constructor(init?: Partial<PasskeyVerificationTokenResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class FindTaxonomyTreeResponse extends ResponseBase
+    {
+        public tree?: TaxonomyTreeDto[];
+
+        public constructor(init?: Partial<FindTaxonomyTreeResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class FindTermsResponse extends ResponseBase
     {
         public list?: PaginatedResponse<TermDto>;
@@ -1684,6 +1793,13 @@ export module CodeMashApi2
         public list?: PaginatedResponse<TermDto>;
 
         public constructor(init?: Partial<FindTermsChildrenResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class FindTermTreeResponse extends ResponseBase
+    {
+        public tree?: TermTreeDto[];
+
+        public constructor(init?: Partial<FindTermTreeResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetDatabaseSchemaResponse extends ResponseBase
@@ -1836,36 +1952,6 @@ export module CodeMashApi2
         public constructor(init?: Partial<GetAccessTokenResponse>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract
-    export class GetApiKeysResponse
-    {
-        // @DataMember(Order=1)
-        public results?: UserApiKey[];
-
-        // @DataMember(Order=2)
-        public meta?: { [index:string]: string; };
-
-        // @DataMember(Order=3)
-        public responseStatus?: ResponseStatus;
-
-        public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class RegenerateApiKeysResponse
-    {
-        // @DataMember(Order=1)
-        public results?: UserApiKey[];
-
-        // @DataMember(Order=2)
-        public meta?: { [index:string]: string; };
-
-        // @DataMember(Order=3)
-        public responseStatus?: ResponseStatus;
-
-        public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
-    }
-
     // @Route("/{version}/echo", "GET")
     export class Echo extends RequestBase implements IReturn<EchoResponse>
     {
@@ -1874,6 +1960,29 @@ export module CodeMashApi2
         public getTypeName() { return 'Echo'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EchoResponse(); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
+    export class GetPublicProjectConfig extends RequestBase implements IReturn<PublicProjectConfigDto>
+    {
+        public projectId?: string;
+
+        public constructor(init?: Partial<GetPublicProjectConfig>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectConfig'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicProjectConfigDto(); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/legal/{Kind}", "GET")
+    export class GetPublicProjectLegal extends RequestBase implements IReturn<PublicLegalDocumentDto>
+    {
+        public projectId?: string;
+        public kind?: string;
+
+        public constructor(init?: Partial<GetPublicProjectLegal>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectLegal'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicLegalDocumentDto(); }
     }
 
     export class AccountCreated
@@ -2239,7 +2348,7 @@ export module CodeMashApi2
 
     export class AccountUserPushDeviceCreated
     {
-        public userId: UserId;
+        public authId: AuthId;
         public pushDevice: PushDevice;
 
         public constructor(init?: Partial<AccountUserPushDeviceCreated>) { (Object as any).assign(this, init); }
@@ -2264,7 +2373,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/block", "PATCH")
+    // @Route("/{version}/membership/auth/block", "PATCH")
     // @Api(Description="Membership")
     // @DataContract
     export class BlockUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2282,7 +2391,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/service", "POST")
+    // @Route("/{version}/membership/auth/register/service", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveSystemUserWithPermissions extends SaveUserWithRolesBase implements IReturn<IdResponse>
@@ -2295,7 +2404,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/guest", "POST")
+    // @Route("/{version}/membership/auth/register/guest", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveGuestUser extends SaveUser implements IReturn<IdResponse>
@@ -2308,7 +2417,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/user-name", "POST")
+    // @Route("/{version}/membership/auth/register/user-name", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveUserNameUser extends SaveUser implements IReturn<IdResponse>
@@ -2326,7 +2435,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/email", "POST")
+    // @Route("/{version}/membership/auth/register/email", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveEmailUser extends SaveUser implements IReturn<IdResponse>
@@ -2344,7 +2453,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/phone", "POST")
+    // @Route("/{version}/membership/auth/register/phone", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SavePhoneUser extends SaveUser implements IReturn<IdResponse>
@@ -2359,7 +2468,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/phone-with-permissions", "POST")
+    // @Route("/{version}/membership/auth/register/phone-with-permissions", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SavePhoneUserNameWithPermissions extends SaveUserWithRolesBase implements IReturn<IdResponse>
@@ -2374,7 +2483,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/email-with-permissions", "POST")
+    // @Route("/{version}/membership/auth/register/email-with-permissions", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveEmailUserNameWithPermissions extends SaveUserWithRolesBase implements IReturn<IdResponse>
@@ -2392,7 +2501,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/register/user-name-with-permissions", "POST")
+    // @Route("/{version}/membership/auth/register/user-name-with-permissions", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class SaveUserNameWithPermissions extends SaveUserWithRolesBase implements IReturn<IdResponse>
@@ -2410,7 +2519,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users", "DELETE")
+    // @Route("/{version}/membership/auth", "DELETE")
     // @Api(Description="Membership")
     // @DataContract
     export class DeleteUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2428,7 +2537,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/{id}", "GET")
+    // @Route("/{version}/membership/auth/{id}", "GET")
     // @Api(Description="Membership")
     // @DataContract
     export class GetUserRequest extends CodeMashRequestBase implements IReturn<GetUserResponse>
@@ -2446,7 +2555,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users", "GET")
+    // @Route("/{version}/membership/auth", "GET")
     // @Api(Description="Membership")
     // @DataContract
     export class GetUsersRequest extends CodeMashListPaginationRequestBase implements IReturn<GetUsersResponse>
@@ -2479,7 +2588,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/{id}/preferences", "GET")
+    // @Route("/{version}/membership/auth/{id}/preferences", "GET")
     // @Api(Description="Membership")
     // @DataContract
     export class GetUserPreferencesRequest extends CodeMashRequestBase implements IReturn<GetUserPreferencesResponse>
@@ -2496,8 +2605,23 @@ export module CodeMashApi2
         public createResponse() { return new GetUserPreferencesResponse(); }
     }
 
+    // @Route("/{version}/membership/users/{contactId}/marketing-state/{channel}/consent", "POST")
+    export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public lawfulBasis: string;
+        declare source: string;
+        public evidenceRef?: string;
+
+        public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GrantContactConsentRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     /** @description Membership */
-    // @Route("/{version}/membership/users/invite", "POST")
+    // @Route("/{version}/membership/auth/invite", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class InviteUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2515,7 +2639,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/{userId}/link-identity", "POST")
+    // @Route("/{version}/membership/auth/{userId}/link-identity", "POST")
     // @Api(Description="Membership")
     // @DataContract
     export class LinkIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2542,7 +2666,22 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/assign-roles", "PUT")
+    // @Route("/{version}/membership/users/{userId}/map-auth", "POST")
+    // @Api(Description="Membership")
+    export class MapAuthToUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public userId: string;
+        public authId: string;
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<MapAuthToUserRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'MapAuthToUserRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Membership */
+    // @Route("/{version}/membership/auth/assign-roles", "PUT")
     // @Api(Description="Membership")
     // @DataContract
     export class AssignRolePermissionsRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2564,8 +2703,23 @@ export module CodeMashApi2
         public createResponse() { return new EmptyResponse(); }
     }
 
+    // @Route("/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}", "PUT")
+    export class SetContactTagSubscriptionRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public commChannel: string;
+        public channel: string;
+        public tag: string;
+        public subscribed: boolean;
+
+        public constructor(init?: Partial<SetContactTagSubscriptionRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SetContactTagSubscriptionRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     /** @description Membership */
-    // @Route("/{version}/membership/users/unblock", "PATCH")
+    // @Route("/{version}/membership/auth/unblock", "PATCH")
     // @Api(Description="Membership")
     // @DataContract
     export class UnblockUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2582,8 +2736,21 @@ export module CodeMashApi2
         public createResponse() { return new EmptyResponse(); }
     }
 
+    // @Route("/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
+    export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public reason?: string;
+
+        public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UnsubscribeContactRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     /** @description Membership */
-    // @Route("/{version}/membership/users", "PUT")
+    // @Route("/{version}/membership/auth", "PUT")
     // @Api(Description="Membership")
     // @DataContract
     export class UpdateUserRequest extends SaveUser implements IReturn<IdResponse>
@@ -2598,7 +2765,7 @@ export module CodeMashApi2
     }
 
     /** @description Membership */
-    // @Route("/{version}/membership/users/{id}/preferences", "PUT")
+    // @Route("/{version}/membership/auth/{id}/preferences", "PUT")
     // @Api(Description="Membership")
     // @DataContract
     export class UpdateUserPreferencesRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
@@ -2866,6 +3033,24 @@ export module CodeMashApi2
     }
 
     /** @description Database */
+    // @Route("/{version}/database/taxonomies/tree", "GET")
+    // @Api(Description="Database")
+    // @DataContract
+    export class FindTaxonomyTreeRequest extends CodeMashRequestBase implements IReturn<FindTaxonomyTreeResponse>
+    {
+        // @DataMember
+        public includeTerms: boolean;
+
+        // @DataMember
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<FindTaxonomyTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FindTaxonomyTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new FindTaxonomyTreeResponse(); }
+    }
+
+    /** @description Database */
     // @Route("/{version}/database/taxonomies/{taxonomyName}/terms", "GET")
     // @Api(Description="Database")
     // @DataContract
@@ -2875,7 +3060,7 @@ export module CodeMashApi2
         public taxonomyName: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public filter?: string;
@@ -2902,7 +3087,7 @@ export module CodeMashApi2
         public parentId: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public filter?: string;
@@ -2914,6 +3099,30 @@ export module CodeMashApi2
         public getTypeName() { return 'FindTermsChildrenRequest'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new FindTermsChildrenResponse(); }
+    }
+
+    /** @description Database */
+    // @Route("/{version}/database/taxonomies/{taxonomyName}/terms/tree", "GET")
+    // @Api(Description="Database")
+    // @DataContract
+    export class FindTermTreeRequest extends CodeMashRequestBase implements IReturn<FindTermTreeResponse>
+    {
+        // @DataMember
+        public taxonomyName: string;
+
+        // @DataMember
+        public rootTermId?: string;
+
+        // @DataMember
+        public depth?: number;
+
+        // @DataMember
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<FindTermTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'FindTermTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new FindTermTreeResponse(); }
     }
 
     /** @description Database */
@@ -3118,7 +3327,7 @@ export module CodeMashApi2
         public collectionName: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public filter?: string;
@@ -3687,15 +3896,37 @@ export module CodeMashApi2
         public createResponse() { return new GetAccessTokenResponse(); }
     }
 
+    // @sdk-dto-patches (injected by sync-types.mjs)
+    export class UserApiKey
+    {
+        public key?: string;
+        public keyType?: string;
+        public expiryDate?: string;
+        public meta?: { [index:string]: string; };
+
+        public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
+    }
+    export class GetApiKeysResponse
+    {
+        public results?: UserApiKey[];
+        public meta?: { [index:string]: string; };
+        public responseStatus?: ResponseStatus;
+
+        public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
+    }
+    export class RegenerateApiKeysResponse
+    {
+        public results?: UserApiKey[];
+        public meta?: { [index:string]: string; };
+        public responseStatus?: ResponseStatus;
+
+        public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
+    }
     // @Route("/apikeys")
     // @Route("/apikeys/{Environment}")
-    // @DataContract
     export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet
     {
-        // @DataMember(Order=1)
         public environment?: string;
-
-        // @DataMember(Order=2)
         public meta?: { [index:string]: string; };
 
         public constructor(init?: Partial<GetApiKeys>) { (Object as any).assign(this, init); }
@@ -3703,16 +3934,11 @@ export module CodeMashApi2
         public getMethod() { return 'GET'; }
         public createResponse() { return new GetApiKeysResponse(); }
     }
-
     // @Route("/apikeys/regenerate")
     // @Route("/apikeys/regenerate/{Environment}")
-    // @DataContract
     export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost
     {
-        // @DataMember(Order=1)
         public environment?: string;
-
-        // @DataMember(Order=2)
         public meta?: { [index:string]: string; };
 
         public constructor(init?: Partial<RegenerateApiKeys>) { (Object as any).assign(this, init); }
@@ -3720,89 +3946,6 @@ export module CodeMashApi2
         public getMethod() { return 'POST'; }
         public createResponse() { return new RegenerateApiKeysResponse(); }
     }
-
-
-    // ---- Admin Portal public endpoints (synced from API /metadata) ----
-
-    export class PublicBrandDto
-    {
-        public displayName: string;
-        public mainColor?: string;
-        public accentColor?: string;
-        public logoUrl?: string;
-        public iconUrl?: string;
-
-        public constructor(init?: Partial<PublicBrandDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class PublicPasswordPolicyDto
-    {
-        public minLength: number;
-        public maxLength?: number;
-        public minNumbers?: number;
-        public minUpper?: number;
-        public minLower?: number;
-        public minSpecial?: number;
-        public allowedSpecial?: string;
-
-        public constructor(init?: Partial<PublicPasswordPolicyDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class PublicAuthDto
-    {
-        public socialProviders: string[] = [];
-        public passkey: boolean;
-        public methods?: string[];
-        public passwordPolicy?: PublicPasswordPolicyDto;
-
-        public constructor(init?: Partial<PublicAuthDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class PublicProjectConfigDto
-    {
-        public displayName: string = '';
-        public branding?: PublicBrandDto;
-        public auth: PublicAuthDto;
-
-        public constructor(init?: Partial<PublicProjectConfigDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class PublicLegalDocumentDto
-    {
-        public kind: string;
-        public title?: string;
-        public body: string;
-        public available: boolean;
-
-        public constructor(init?: Partial<PublicLegalDocumentDto>) { (Object as any).assign(this, init); }
-    }
-
-    // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
-    export class GetPublicProjectConfig extends RequestBase implements IReturn<PublicProjectConfigDto>
-    {
-        public projectId?: string;
-
-        public constructor(init?: Partial<GetPublicProjectConfig>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetPublicProjectConfig'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new PublicProjectConfigDto(); }
-    }
-
-    // @Route("/{version}/public/projects/{ProjectId}/legal/{Kind}", "GET")
-    export class GetPublicProjectLegal extends RequestBase implements IReturn<PublicLegalDocumentDto>
-    {
-        public projectId?: string;
-        public kind?: string;
-
-        public constructor(init?: Partial<GetPublicProjectLegal>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetPublicProjectLegal'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new PublicLegalDocumentDto(); }
-    }
-
-
-    // ---- Membership password endpoints (synced from API /metadata) ----
-
     // @Route("/{version}/membership/userauth/password/change", "POST")
     export class ChangePasswordRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
     {
@@ -3815,7 +3958,6 @@ export module CodeMashApi2
         public getMethod() { return 'POST'; }
         public createResponse() { return new PasskeyOkResponse(); }
     }
-
     // @Route("/{version}/membership/userauth/password/reset/request", "POST")
     export class RequestPasswordResetRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
     {
@@ -3826,7 +3968,6 @@ export module CodeMashApi2
         public getMethod() { return 'POST'; }
         public createResponse() { return new PasskeyOkResponse(); }
     }
-
     // @Route("/{version}/membership/userauth/password/reset/confirm", "POST")
     export class ConfirmPasswordResetRequest extends CodeMashRequestBase implements IReturn<PasskeyOkResponse>
     {
@@ -3840,78 +3981,4 @@ export module CodeMashApi2
         public createResponse() { return new PasskeyOkResponse(); }
     }
 
-
-    // ---- Taxonomy/term tree DTOs (synced from API /metadata; used by api.database) ----
-
-    export class TermTreeDto
-    {
-        public id: string = '';
-        public taxonomyId?: string;
-        public taxonomyName?: string;
-        public parentId?: string;
-        public order?: number;
-        public name?: string;
-        public names?: { [index:string]: string; };
-        public description?: string;
-        public descriptions?: { [index:string]: string; };
-        public multiParents?: TermMultiParentDto[];
-        public meta?: Object;
-        public children?: TermTreeDto[];
-
-        public constructor(init?: Partial<TermTreeDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class TaxonomyTreeDto
-    {
-        public viewId: string = '';
-        public taxonomyName: string = '';
-        public taxonomySlug: string = '';
-        public parentId?: string;
-        public children?: TaxonomyTreeDto[];
-        public terms?: TermTreeDto[];
-
-        public constructor(init?: Partial<TaxonomyTreeDto>) { (Object as any).assign(this, init); }
-    }
-
-    export class FindTaxonomyTreeResponse extends ResponseBase
-    {
-        public tree?: TaxonomyTreeDto[];
-
-        public constructor(init?: Partial<FindTaxonomyTreeResponse>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class FindTermTreeResponse extends ResponseBase
-    {
-        public tree?: TermTreeDto[];
-
-        public constructor(init?: Partial<FindTermTreeResponse>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    // @Route("/{version}/database/taxonomies/tree", "GET")
-    export class FindTaxonomyTreeRequest extends CodeMashRequestBase implements IReturn<FindTaxonomyTreeResponse>
-    {
-        public includeTerms: boolean = false;
-        public databaseIntegrationId?: string;
-
-        public constructor(init?: Partial<FindTaxonomyTreeRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'FindTaxonomyTreeRequest'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new FindTaxonomyTreeResponse(); }
-    }
-
-    // @Route("/{version}/database/taxonomies/{taxonomyName}/terms/tree", "GET")
-    export class FindTermTreeRequest extends CodeMashRequestBase implements IReturn<FindTermTreeResponse>
-    {
-        public taxonomyName: string = '';
-        public rootTermId?: string;
-        public depth?: number;
-        public databaseIntegrationId?: string;
-
-        public constructor(init?: Partial<FindTermTreeRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'FindTermTreeRequest'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new FindTermTreeResponse(); }
-    }
-
 }
-

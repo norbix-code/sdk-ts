@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for api.membership (34 endpoints).
+ * Tests for api.membership (41 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('api.membership', () => {
-  it('module exposes 34 method(s)', () => {
+  it('module exposes 41 method(s)', () => {
     const mock = createMockFetch();
     const mod = new MembershipModule({} as never);
     void mod; // silence unused — we only need the type
@@ -42,10 +42,14 @@ describe('api.membership', () => {
     expect(typeof ns['getUser']).toBe('function');
     expect(typeof ns['getUsers']).toBe('function');
     expect(typeof ns['getUserPreferences']).toBe('function');
+    expect(typeof ns['grantContactConsent']).toBe('function');
     expect(typeof ns['inviteUser']).toBe('function');
     expect(typeof ns['linkIdentity']).toBe('function');
+    expect(typeof ns['mapAuthToUser']).toBe('function');
     expect(typeof ns['assignRolePermissions']).toBe('function');
+    expect(typeof ns['setContactTagSubscription']).toBe('function');
     expect(typeof ns['unblockUser']).toBe('function');
+    expect(typeof ns['unsubscribeContact']).toBe('function');
     expect(typeof ns['updateUser']).toBe('function');
     expect(typeof ns['updateUserPreferences']).toBe('function');
     expect(typeof ns['passkeyAuthenticationOptions']).toBe('function');
@@ -63,13 +67,16 @@ describe('api.membership', () => {
     expect(typeof ns['verifyPasskeyRegistration']).toBe('function');
     expect(typeof ns['refreshPasskeyToken']).toBe('function');
     expect(typeof ns['passkeyLogout']).toBe('function');
+    expect(typeof ns['changePassword']).toBe('function');
+    expect(typeof ns['requestPasswordReset']).toBe('function');
+    expect(typeof ns['confirmPasswordReset']).toBe('function');
   });
 
-  it('blockUser: PATCH /{version}/membership/users/block', async () => {
+  it('blockUser: PATCH /{version}/membership/auth/block', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/block',
+      path: '/{version}/membership/auth/block',
       version: 'v2',
       stub,
     });
@@ -88,11 +95,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveSystemUserWithPermissions: POST /{version}/membership/users/register/service', async () => {
+  it('saveSystemUserWithPermissions: POST /{version}/membership/auth/register/service', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/service',
+      path: '/{version}/membership/auth/register/service',
       version: 'v2',
       stub,
     });
@@ -111,11 +118,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveGuestUser: POST /{version}/membership/users/register/guest', async () => {
+  it('saveGuestUser: POST /{version}/membership/auth/register/guest', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/guest',
+      path: '/{version}/membership/auth/register/guest',
       version: 'v2',
       stub,
     });
@@ -134,11 +141,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveUserNameUser: POST /{version}/membership/users/register/user-name', async () => {
+  it('saveUserNameUser: POST /{version}/membership/auth/register/user-name', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/user-name',
+      path: '/{version}/membership/auth/register/user-name',
       version: 'v2',
       stub,
     });
@@ -157,11 +164,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveEmailUser: POST /{version}/membership/users/register/email', async () => {
+  it('saveEmailUser: POST /{version}/membership/auth/register/email', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/email',
+      path: '/{version}/membership/auth/register/email',
       version: 'v2',
       stub,
     });
@@ -180,11 +187,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('savePhoneUser: POST /{version}/membership/users/register/phone', async () => {
+  it('savePhoneUser: POST /{version}/membership/auth/register/phone', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/phone',
+      path: '/{version}/membership/auth/register/phone',
       version: 'v2',
       stub,
     });
@@ -203,11 +210,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('savePhoneUserNameWithPermissions: POST /{version}/membership/users/register/phone-with-permissions', async () => {
+  it('savePhoneUserNameWithPermissions: POST /{version}/membership/auth/register/phone-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/phone-with-permissions',
+      path: '/{version}/membership/auth/register/phone-with-permissions',
       version: 'v2',
       stub,
     });
@@ -226,11 +233,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveEmailUserNameWithPermissions: POST /{version}/membership/users/register/email-with-permissions', async () => {
+  it('saveEmailUserNameWithPermissions: POST /{version}/membership/auth/register/email-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/email-with-permissions',
+      path: '/{version}/membership/auth/register/email-with-permissions',
       version: 'v2',
       stub,
     });
@@ -249,11 +256,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveUserNameWithPermissions: POST /{version}/membership/users/register/user-name-with-permissions', async () => {
+  it('saveUserNameWithPermissions: POST /{version}/membership/auth/register/user-name-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/register/user-name-with-permissions',
+      path: '/{version}/membership/auth/register/user-name-with-permissions',
       version: 'v2',
       stub,
     });
@@ -272,11 +279,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('deleteUser: DELETE /{version}/membership/users', async () => {
+  it('deleteUser: DELETE /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       version: 'v2',
       stub,
     });
@@ -295,11 +302,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getUser: GET /{version}/membership/users/{id}', async () => {
-    const stub = stubRequestForPath('/{version}/membership/users/{id}');
+  it('getUser: GET /{version}/membership/auth/{id}', async () => {
+    const stub = stubRequestForPath('/{version}/membership/auth/{id}');
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/{id}',
+      path: '/{version}/membership/auth/{id}',
       version: 'v2',
       stub,
     });
@@ -318,11 +325,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getUsers: GET /{version}/membership/users', async () => {
+  it('getUsers: GET /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       version: 'v2',
       stub,
     });
@@ -341,11 +348,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getUserPreferences: GET /{version}/membership/users/{id}/preferences', async () => {
-    const stub = stubRequestForPath('/{version}/membership/users/{id}/preferences');
+  it('getUserPreferences: GET /{version}/membership/auth/{id}/preferences', async () => {
+    const stub = stubRequestForPath('/{version}/membership/auth/{id}/preferences');
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/{id}/preferences',
+      path: '/{version}/membership/auth/{id}/preferences',
       version: 'v2',
       stub,
     });
@@ -364,11 +371,36 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('inviteUser: POST /{version}/membership/users/invite', async () => {
+  it('grantContactConsent: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['grantContactConsent']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('inviteUser: POST /{version}/membership/auth/invite', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/invite',
+      path: '/{version}/membership/auth/invite',
       version: 'v2',
       stub,
     });
@@ -387,11 +419,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('linkIdentity: POST /{version}/membership/users/{userId}/link-identity', async () => {
-    const stub = stubRequestForPath('/{version}/membership/users/{userId}/link-identity');
+  it('linkIdentity: POST /{version}/membership/auth/{userId}/link-identity', async () => {
+    const stub = stubRequestForPath('/{version}/membership/auth/{userId}/link-identity');
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/{userId}/link-identity',
+      path: '/{version}/membership/auth/{userId}/link-identity',
       version: 'v2',
       stub,
     });
@@ -410,11 +442,34 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('assignRolePermissions: PUT /{version}/membership/users/assign-roles', async () => {
+  it('mapAuthToUser: POST /{version}/membership/users/{userId}/map-auth', async () => {
+    const stub = stubRequestForPath('/{version}/membership/users/{userId}/map-auth');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/users/{userId}/map-auth',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['mapAuthToUser']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('assignRolePermissions: PUT /{version}/membership/auth/assign-roles', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/assign-roles',
+      path: '/{version}/membership/auth/assign-roles',
       version: 'v2',
       stub,
     });
@@ -433,11 +488,36 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('unblockUser: PATCH /{version}/membership/users/unblock', async () => {
+  it('setContactTagSubscription: PUT /{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['setContactTagSubscription']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('unblockUser: PATCH /{version}/membership/auth/unblock', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/unblock',
+      path: '/{version}/membership/auth/unblock',
       version: 'v2',
       stub,
     });
@@ -456,11 +536,36 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('updateUser: PUT /{version}/membership/users', async () => {
+  it('unsubscribeContact: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['unsubscribeContact']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('updateUser: PUT /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users',
+      path: '/{version}/membership/auth',
       version: 'v2',
       stub,
     });
@@ -479,11 +584,11 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('updateUserPreferences: PUT /{version}/membership/users/{id}/preferences', async () => {
-    const stub = stubRequestForPath('/{version}/membership/users/{id}/preferences');
+  it('updateUserPreferences: PUT /{version}/membership/auth/{id}/preferences', async () => {
+    const stub = stubRequestForPath('/{version}/membership/auth/{id}/preferences');
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.dev',
-      path: '/{version}/membership/users/{id}/preferences',
+      path: '/{version}/membership/auth/{id}/preferences',
       version: 'v2',
       stub,
     });
@@ -843,6 +948,75 @@ describe('api.membership', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['membership']!['passkeyLogout']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('changePassword: POST /{version}/membership/userauth/password/change', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/userauth/password/change',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['changePassword']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('requestPasswordReset: POST /{version}/membership/userauth/password/reset/request', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/userauth/password/reset/request',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['requestPasswordReset']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('confirmPasswordReset: POST /{version}/membership/userauth/password/reset/confirm', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/membership/userauth/password/reset/confirm',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['confirmPasswordReset']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

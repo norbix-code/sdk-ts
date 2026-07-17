@@ -10,9 +10,8 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 
 | Method | Verb | Path | Scope |
 | --- | --- | --- | --- |
-| [`getUserNotificationPreferences`](#getusernotificationpreferences) | `GET` | `/{version}/notifications/user/preferences` | `project` |
-| [`updateUserNotificationsPreferences`](#updateusernotificationspreferences) | `PUT` | `/{version}/notifications/user/preferences` | `project` |
 | [`disableEmail`](#disableemail) | `GET` | `/{version}/notifications/email/disable` | `project` |
+| [`getEmailDisableDependencies`](#getemaildisabledependencies) | `GET` | `/{version}/notifications/email/disable-dependencies` | `project` |
 | [`enableEmail`](#enableemail) | `GET` | `/{version}/notifications/email/enable` | `project` |
 | [`saveEmailValidationIntegration`](#saveemailvalidationintegration) | `POST` | `/{version}/notifications/email/validation/integrations` | `project` |
 | [`testEmailValidationIntegration`](#testemailvalidationintegration) | `POST` | `/{version}/notifications/email/validation/integrations/test` | `project` |
@@ -57,9 +56,11 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications) | `GET` | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}` | `project` |
 | [`getEmailCampaignStatistics`](#getemailcampaignstatistics) | `GET` | `/{version}/notifications/email/campaigns/{id}/stats` | `project` |
 | [`previewEmailNotification`](#previewemailnotification) | `GET` | `/{version}/notifications/email/preview` | `project` |
+| [`stopEmailCampaign`](#stopemailcampaign) | `POST` | `/{version}/notifications/email/campaigns/{Id}/stop` | `project` |
 | [`getEmailCampaignMessage`](#getemailcampaignmessage) | `GET` | `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}` | `project` |
 | [`getEmailCampaignMessages`](#getemailcampaignmessages) | `GET` | `/{version}/notifications/emails/campaigns/{campaignId}/messages` | `project` |
 | [`disableSms`](#disablesms) | `GET` | `/{version}/notifications/sms/disable` | `project` |
+| [`getSmsDisableDependencies`](#getsmsdisabledependencies) | `GET` | `/{version}/notifications/sms/disable-dependencies` | `project` |
 | [`enableSms`](#enablesms) | `GET` | `/{version}/notifications/sms/enable` | `project` |
 | [`archiveSmsTemplate`](#archivesmstemplate) | `PUT` | `/{version}/notifications/sms/templates/{Id}/archive` | `project` |
 | [`cloneSmsTemplate`](#clonesmstemplate) | `POST` | `/{version}/notifications/sms/templates/{Id}/clone` | `project` |
@@ -90,9 +91,11 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications) | `GET` | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}` | `project` |
 | [`getSmsCampaignStatistics`](#getsmscampaignstatistics) | `GET` | `/{version}/notifications/sms/campaigns/{id}/stats` | `project` |
 | [`previewSmsNotification`](#previewsmsnotification) | `GET` | `/{version}/notifications/sms/preview` | `project` |
+| [`stopSmsCampaign`](#stopsmscampaign) | `POST` | `/{version}/notifications/sms/campaigns/{Id}/stop` | `project` |
 | [`getSmsCampaignMessage`](#getsmscampaignmessage) | `GET` | `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}` | `project` |
 | [`getSmsCampaignMessages`](#getsmscampaignmessages) | `GET` | `/{version}/notifications/sms/campaigns/{campaignId}/messages` | `project` |
 | [`disablePush`](#disablepush) | `GET` | `/{version}/notifications/push/disable` | `project` |
+| [`getPushDisableDependencies`](#getpushdisabledependencies) | `GET` | `/{version}/notifications/push/disable-dependencies` | `project` |
 | [`enablePush`](#enablepush) | `GET` | `/{version}/notifications/push/enable` | `project` |
 | [`archivePushTemplate`](#archivepushtemplate) | `PUT` | `/{version}/notifications/push/templates/{Id}/archive` | `project` |
 | [`clonePushTemplate`](#clonepushtemplate) | `POST` | `/{version}/notifications/push/templates/{Id}/clone` | `project` |
@@ -125,64 +128,15 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getPushCampaignBatchNotifications`](#getpushcampaignbatchnotifications) | `GET` | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}` | `project` |
 | [`getPushCampaignStatistics`](#getpushcampaignstatistics) | `GET` | `/{version}/notifications/push/campaigns/{id}/stats` | `project` |
 | [`previewPushNotification`](#previewpushnotification) | `GET` | `/{version}/notifications/push/preview` | `project` |
+| [`stopPushCampaign`](#stoppushcampaign) | `POST` | `/{version}/notifications/push/campaigns/{Id}/stop` | `project` |
 | [`getPushCampaignMessage`](#getpushcampaignmessage) | `GET` | `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}` | `project` |
 | [`getPushCampaignMessages`](#getpushcampaignmessages) | `GET` | `/{version}/notifications/push/campaigns/{campaignId}/messages` | `project` |
-| [`createContact`](#createcontact) | `POST` | `/{version}/notifications/contacts` | `project` |
-| [`deleteContact`](#deletecontact) | `DELETE` | `/{version}/notifications/contacts/{contactId}` | `project` |
-| [`getContact`](#getcontact) | `GET` | `/{version}/notifications/contacts/{contactId}` | `project` |
-| [`getAllContacts`](#getallcontacts) | `GET` | `/{version}/notifications/contacts` | `project` |
-| [`mergeContacts`](#mergecontacts) | `POST` | `/{version}/notifications/contacts/merge` | `project` |
+| [`getUserNotificationPreferences`](#getusernotificationpreferences) | `GET` | `/{version}/notifications/user/preferences` | `project` |
+| [`updateUserNotificationsPreferences`](#updateusernotificationspreferences) | `PUT` | `/{version}/notifications/user/preferences` | `project` |
 | [`grantContactConsent`](#grantcontactconsent) | `POST` | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent` | `project` |
 | [`unsubscribeContact`](#unsubscribecontact) | `POST` | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe` | `project` |
-| [`addContactIdentity`](#addcontactidentity) | `POST` | `/{version}/notifications/contacts/{contactId}/identities` | `project` |
-| [`promoteContactIdentity`](#promotecontactidentity) | `POST` | `/{version}/notifications/contacts/{contactId}/identities/{identityId}/promote` | `project` |
-| [`removeContactIdentity`](#removecontactidentity) | `DELETE` | `/{version}/notifications/contacts/{contactId}/identities/{identityId}` | `project` |
 
 ## Reference
-
-### getUserNotificationPreferences
-
-`GET` `/{version}/notifications/user/preferences`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetUserNotificationPreferences`
-**Response**: `CodeMashHub2.GetUserEmailPreferencesResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getUserNotificationPreferences({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetUserEmailPreferencesResponse
-```
-
-[↑ Top](#endpoints)
-
-### updateUserNotificationsPreferences
-
-`PUT` `/{version}/notifications/user/preferences`
-
-Update an existing item.
-
-**Request DTO**: `CodeMashHub2.UpdateUserNotificationsPreferences`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.updateUserNotificationsPreferences({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
 
 ### disableEmail
 
@@ -202,6 +156,28 @@ const result = await norbix.hub.notifications.disableEmail({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailDisableDependencies
+
+`GET` `/{version}/notifications/email/disable-dependencies`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailDisableDependencies`
+**Response**: `CodeMashHub2.GetNotificationModuleDisableDependenciesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailDisableDependencies({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetNotificationModuleDisableDependenciesResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1199,6 +1175,29 @@ const result = await norbix.hub.notifications.previewEmailNotification({
 
 [↑ Top](#endpoints)
 
+### stopEmailCampaign
+
+`POST` `/{version}/notifications/email/campaigns/{Id}/stop`
+
+
+
+**Request DTO**: `CodeMashHub2.StopEmailCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.stopEmailCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getEmailCampaignMessage
 
 `GET` `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}`
@@ -1264,6 +1263,28 @@ const result = await norbix.hub.notifications.disableSms({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsDisableDependencies
+
+`GET` `/{version}/notifications/sms/disable-dependencies`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsDisableDependencies`
+**Response**: `CodeMashHub2.GetNotificationModuleDisableDependenciesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsDisableDependencies({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetNotificationModuleDisableDependenciesResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1948,6 +1969,29 @@ const result = await norbix.hub.notifications.previewSmsNotification({
 
 [↑ Top](#endpoints)
 
+### stopSmsCampaign
+
+`POST` `/{version}/notifications/sms/campaigns/{Id}/stop`
+
+
+
+**Request DTO**: `CodeMashHub2.StopSmsCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.stopSmsCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getSmsCampaignMessage
 
 `GET` `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}`
@@ -2013,6 +2057,28 @@ const result = await norbix.hub.notifications.disablePush({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getPushDisableDependencies
+
+`GET` `/{version}/notifications/push/disable-dependencies`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPushDisableDependencies`
+**Response**: `CodeMashHub2.GetNotificationModuleDisableDependenciesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getPushDisableDependencies({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetNotificationModuleDisableDependenciesResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2743,6 +2809,29 @@ const result = await norbix.hub.notifications.previewPushNotification({
 
 [↑ Top](#endpoints)
 
+### stopPushCampaign
+
+`POST` `/{version}/notifications/push/campaigns/{Id}/stop`
+
+
+
+**Request DTO**: `CodeMashHub2.StopPushCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.stopPushCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getPushCampaignMessage
 
 `GET` `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}`
@@ -2790,103 +2879,35 @@ const result = await norbix.hub.notifications.getPushCampaignMessages({
 
 [↑ Top](#endpoints)
 
-### createContact
+### getUserNotificationPreferences
 
-`POST` `/{version}/notifications/contacts`
-
-Create a new item.
-
-**Request DTO**: `CodeMashHub2.CreateContactRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.createContact({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### deleteContact
-
-`DELETE` `/{version}/notifications/contacts/{contactId}`
-
-Delete an item.
-
-**Request DTO**: `CodeMashHub2.DeleteContact`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.deleteContact({
-  contactId: 'contactId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getContact
-
-`GET` `/{version}/notifications/contacts/{contactId}`
+`GET` `/{version}/notifications/user/preferences`
 
 Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.GetContact`
-**Response**: `CodeMashHub2.GetContactResponse`
+**Request DTO**: `CodeMashHub2.GetUserNotificationPreferences`
+**Response**: `CodeMashHub2.GetUserEmailPreferencesResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.notifications.getContact({
-  contactId: 'contactId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetContactResponse
-```
-
-[↑ Top](#endpoints)
-
-### getAllContacts
-
-`GET` `/{version}/notifications/contacts`
-
-List all items.
-
-**Request DTO**: `CodeMashHub2.GetAllContacts`
-**Response**: `CodeMashHub2.GetAllContactsResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getAllContacts({
+const result = await norbix.hub.notifications.getUserNotificationPreferences({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.GetAllContactsResponse
+// → typed as CodeMashHub2.GetUserEmailPreferencesResponse
 ```
 
 [↑ Top](#endpoints)
 
-### mergeContacts
+### updateUserNotificationsPreferences
 
-`POST` `/{version}/notifications/contacts/merge`
+`PUT` `/{version}/notifications/user/preferences`
 
+Update an existing item.
 
-
-**Request DTO**: `CodeMashHub2.MergeContactsRequest`
+**Request DTO**: `CodeMashHub2.UpdateUserNotificationsPreferences`
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
@@ -2894,7 +2915,7 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.notifications.mergeContacts({
+const result = await norbix.hub.notifications.updateUserNotificationsPreferences({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
@@ -2943,77 +2964,6 @@ const norbix = new Norbix();
 const result = await norbix.hub.notifications.unsubscribeContact({
   contactId: 'contactId-here',
   channel: 'channel-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### addContactIdentity
-
-`POST` `/{version}/notifications/contacts/{contactId}/identities`
-
-
-
-**Request DTO**: `CodeMashHub2.AddContactIdentityRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.addContactIdentity({
-  contactId: 'contactId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### promoteContactIdentity
-
-`POST` `/{version}/notifications/contacts/{contactId}/identities/{identityId}/promote`
-
-
-
-**Request DTO**: `CodeMashHub2.PromoteContactIdentityRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.promoteContactIdentity({
-  contactId: 'contactId-here',
-  identityId: 'identityId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### removeContactIdentity
-
-`DELETE` `/{version}/notifications/contacts/{contactId}/identities/{identityId}`
-
-
-
-**Request DTO**: `CodeMashHub2.RemoveContactIdentityRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.removeContactIdentity({
-  contactId: 'contactId-here',
-  identityId: 'identityId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse

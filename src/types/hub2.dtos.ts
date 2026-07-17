@@ -1,5 +1,5 @@
 /* Options:
-Date: 2026-06-12 16:20:52
+Date: 2026-06-30 13:57:58
 Version: 10.06
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -16,6 +16,7 @@ AddDescriptionAsComments: True
 */
 
 // @ts-nocheck
+
 
 
 export module CodeMashHub2
@@ -45,17 +46,13 @@ export module CodeMashHub2
     {
     }
 
-    export interface IGet
-    {
-    }
-
     export type IReadOnlySet<T> = T[];
     export type IReadOnlyList<T> = T[];
     export type IList<T> = T[];
-    export type IReadOnlyDictionary<TValue> = Record<string, TValue>;
-    export type Dictionary<TValue> = Record<string, TValue>;
     export type HashSet<T> = T[];
     export type Blob = globalThis.Blob;
+    export type IReadOnlyDictionary<TKey extends string | number | symbol, TValue> = Record<TKey, TValue>;
+    export type Dictionary<TValue> = Record<string, TValue>;
 
 
     // @DataContract
@@ -281,6 +278,7 @@ export module CodeMashHub2
         Sms = 'Sms',
         Email = 'Email',
         WebhookCall = 'WebhookCall',
+        SseCall = 'SseCall',
     }
 
     // @DataContract
@@ -317,6 +315,7 @@ export module CodeMashHub2
         OnDeleted = 'OnDeleted',
         OnBlocked = 'OnBlocked',
         OnReactivated = 'OnReactivated',
+        OnUserCreated = 'OnUserCreated',
     }
 
     export class MembershipTriggerRequest extends SaveTriggerRequest
@@ -817,6 +816,12 @@ export module CodeMashHub2
 
         // @Ignore()
         public isCollaboratorRole: boolean;
+
+        // @Ignore()
+        public isProjectSystemRole: boolean;
+
+        // @Ignore()
+        public isAccountSystemRole: boolean;
 
         // @Ignore()
         public isSystemRole: boolean;
@@ -2706,12 +2711,6 @@ export module CodeMashHub2
         public constructor(init?: Partial<EmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class FakeEmailIntegrationDto extends EmailIntegrationDto
-    {
-
-        public constructor(init?: Partial<FakeEmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
-    }
-
     export class AwsSesEmailIntegrationDto extends EmailIntegrationDto
     {
         public region: string;
@@ -2773,7 +2772,7 @@ export module CodeMashHub2
         public selectedEvents: IReadOnlyList<string>;
 
         // @DataMember
-        public extraHeaders?: IReadOnlyDictionary<string>;
+        public extraHeaders?: IReadOnlyDictionary<string, string>;
 
         // @DataMember
         public isEnabled: boolean;
@@ -2785,7 +2784,7 @@ export module CodeMashHub2
     {
         public isConfigured: boolean;
         public destinations: IReadOnlyList<WebhookDestinationDto>;
-        public extraHeaders?: IReadOnlyDictionary<string>;
+        public extraHeaders?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<WebhookIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -2906,7 +2905,7 @@ export module CodeMashHub2
         public description?: string;
 
         // @DataMember
-        public config: IReadOnlyDictionary<string>;
+        public config: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<MarketplaceIntegrationDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -3028,7 +3027,16 @@ export module CodeMashHub2
         public constructor(init?: Partial<MarketplaceListingDto>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract(Namespace="http://codemash.io/types/")
+    export class AdminPortalModuleDto
+    {
+        public key: string;
+        public displayName: string;
+        public enabled: boolean;
+
+        public constructor(init?: Partial<AdminPortalModuleDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract(Namespace="http://norbix.ai/types/")
     export class RequestBase implements ICultureBasedRequest, IVersionBasedRequest, IHasCorrelationIdRequest
     {
         /** @description Specify culture code when your response from the API should be localised. E.g.: en */
@@ -3088,7 +3096,7 @@ export module CodeMashHub2
         public constructor(init?: Partial<Env>) { (Object as any).assign(this, init); }
     }
 
-    // @DataContract(Namespace="http://codemash.io/types/")
+    // @DataContract(Namespace="http://norbix.ai/types/")
     export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv
     {
         /** @description ID of your project. Can be passed in a header as norbix-project-id. */
@@ -3205,7 +3213,6 @@ export module CodeMashHub2
     export class AggregateId
     {
         public value: string;
-        public get viewId(): string { return this.value; }
         public viewId?: string;
 
         public constructor(init?: Partial<AggregateId>) { (Object as any).assign(this, init); }
@@ -3375,6 +3382,22 @@ export module CodeMashHub2
         public continent?: Continent;
 
         public constructor(init?: Partial<ProjectRegion>) { (Object as any).assign(this, init); }
+    }
+
+    export class ProjectLegalDocuments
+    {
+        public termsMarkdown?: string;
+        public privacyMarkdown?: string;
+
+        public constructor(init?: Partial<ProjectLegalDocuments>) { (Object as any).assign(this, init); }
+    }
+
+    export class AuthId implements IHasDomainEntityId
+    {
+        public value: string;
+        public get viewId(): string { return this.value; }
+
+        public constructor(init?: Partial<AuthId>) { (Object as any).assign(this, init); }
     }
 
     export class Language
@@ -3563,6 +3586,133 @@ export module CodeMashHub2
         public constructor(init?: Partial<TimeZone>) { (Object as any).assign(this, init); }
     }
 
+    export class PolicyId
+    {
+        public template: string;
+        public tenancyScopeViewId: string;
+        public viewId: string;
+        public isSystem: boolean;
+
+        public constructor(init?: Partial<PolicyId>) { (Object as any).assign(this, init); }
+    }
+
+    export enum PermissionEffect
+    {
+        Allow = 'Allow',
+        Deny = 'Deny',
+    }
+
+    // @Flags()
+    export enum ApplicationModule
+    {
+        Account = 0,
+        Membership = 1,
+        Database = 2,
+        Files = 4,
+        Code = 8,
+        Email = 16,
+        Push = 32,
+        Payment = 64,
+        Scheduler = 128,
+        Logging = 256,
+        ServerEvents = 512,
+        Ai = 1024,
+        Sms = 2048,
+        Project = 4096,
+        Compliance = 8192,
+        Contacts = 16384,
+        Marketplace = 32768,
+    }
+
+    export class PermissionAction
+    {
+        public module?: ApplicationModule;
+        public operation?: string;
+        public isModuleWildcard: boolean;
+        public isOperationWildcard: boolean;
+        public isConcrete: boolean;
+        public specificity: number;
+
+        public constructor(init?: Partial<PermissionAction>) { (Object as any).assign(this, init); }
+    }
+
+    export class ResourceKind
+    {
+        public name: string;
+
+        public constructor(init?: Partial<ResourceKind>) { (Object as any).assign(this, init); }
+    }
+
+    export class ResourceIdentifier
+    {
+        public value: string;
+
+        public constructor(init?: Partial<ResourceIdentifier>) { (Object as any).assign(this, init); }
+    }
+
+    export class ResourcePattern
+    {
+        public account?: AccountId;
+        public project?: ProjectId;
+        public module?: ApplicationModule;
+        public kind?: ResourceKind;
+        public id?: ResourceIdentifier;
+        public isAccountWildcard: boolean;
+        public isProjectWildcard: boolean;
+        public isModuleWildcard: boolean;
+        public isKindWildcard: boolean;
+        public isIdWildcard: boolean;
+        public isConcrete: boolean;
+        public isFullWildcard: boolean;
+        public specificity: number;
+
+        public constructor(init?: Partial<ResourcePattern>) { (Object as any).assign(this, init); }
+    }
+
+    export class Permission
+    {
+        public sid?: string;
+        public effect: PermissionEffect;
+        public actions: PermissionAction[] = [];
+        public resources: ResourcePattern[] = [];
+
+        public constructor(init?: Partial<Permission>) { (Object as any).assign(this, init); }
+    }
+
+    export class MembershipPolicy
+    {
+        public id: PolicyId;
+        public name: DisplayName;
+        public description?: string;
+        public permissions: Permission[] = [];
+        public disabled: boolean;
+        public isSystem: boolean;
+
+        public constructor(init?: Partial<MembershipPolicy>) { (Object as any).assign(this, init); }
+    }
+
+    export class RoleId
+    {
+        public template: string;
+        public tenancyScopeViewId: string;
+        public viewId: string;
+        public isSystem: boolean;
+
+        public constructor(init?: Partial<RoleId>) { (Object as any).assign(this, init); }
+    }
+
+    export class MembershipRole
+    {
+        public id: RoleId;
+        public name: DisplayName;
+        public description?: string;
+        public attachedPolicies: PolicyId[] = [];
+        public disabled: boolean;
+        public isSystem: boolean;
+
+        public constructor(init?: Partial<MembershipRole>) { (Object as any).assign(this, init); }
+    }
+
     export class BillingPeriod
     {
         public year: number;
@@ -3718,6 +3868,14 @@ export module CodeMashHub2
         public constructor(init?: Partial<SaveTrigger>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class CredentialsSettingsModeDto
+    {
+        public name?: string;
+        public logoutUrl?: string;
+
+        public constructor(init?: Partial<CredentialsSettingsModeDto>) { (Object as any).assign(this, init); }
+    }
+
     export class Integration implements IIntegrationIdentification, IHasDomainEntityId
     {
         public viewId?: string;
@@ -3742,133 +3900,6 @@ export module CodeMashHub2
         declare provider: MembershipProvider;
 
         public constructor(init?: Partial<MembershipIntegration>) { super(init); (Object as any).assign(this, init); }
-    }
-
-    export class PolicyId
-    {
-        public template: string;
-        public tenancyScopeViewId: string;
-        public viewId: string;
-        public isSystem: boolean;
-
-        public constructor(init?: Partial<PolicyId>) { (Object as any).assign(this, init); }
-    }
-
-    export enum PermissionEffect
-    {
-        Allow = 'Allow',
-        Deny = 'Deny',
-    }
-
-    // @Flags()
-    export enum ApplicationModule
-    {
-        Account = 0,
-        Membership = 1,
-        Database = 2,
-        Files = 4,
-        Code = 8,
-        Email = 16,
-        Push = 32,
-        Payment = 64,
-        Scheduler = 128,
-        Logging = 256,
-        ServerEvents = 512,
-        Ai = 1024,
-        Sms = 2048,
-        Project = 4096,
-        Compliance = 8192,
-        Contacts = 16384,
-        Marketplace = 32768,
-    }
-
-    export class PermissionAction
-    {
-        public module?: ApplicationModule;
-        public operation?: string;
-        public isModuleWildcard: boolean;
-        public isOperationWildcard: boolean;
-        public isConcrete: boolean;
-        public specificity: number;
-
-        public constructor(init?: Partial<PermissionAction>) { (Object as any).assign(this, init); }
-    }
-
-    export class ResourceKind
-    {
-        public name: string;
-
-        public constructor(init?: Partial<ResourceKind>) { (Object as any).assign(this, init); }
-    }
-
-    export class ResourceIdentifier
-    {
-        public value: string;
-
-        public constructor(init?: Partial<ResourceIdentifier>) { (Object as any).assign(this, init); }
-    }
-
-    export class ResourcePattern
-    {
-        public account?: AccountId;
-        public project?: ProjectId;
-        public module?: ApplicationModule;
-        public kind?: ResourceKind;
-        public id?: ResourceIdentifier;
-        public isAccountWildcard: boolean;
-        public isProjectWildcard: boolean;
-        public isModuleWildcard: boolean;
-        public isKindWildcard: boolean;
-        public isIdWildcard: boolean;
-        public isConcrete: boolean;
-        public isFullWildcard: boolean;
-        public specificity: number;
-
-        public constructor(init?: Partial<ResourcePattern>) { (Object as any).assign(this, init); }
-    }
-
-    export class PolicyStatement
-    {
-        public sid?: string;
-        public effect: PermissionEffect;
-        public actions: PermissionAction[] = [];
-        public resources: ResourcePattern[] = [];
-
-        public constructor(init?: Partial<PolicyStatement>) { (Object as any).assign(this, init); }
-    }
-
-    export class MembershipPolicy
-    {
-        public id: PolicyId;
-        public name: DisplayName;
-        public description?: string;
-        public statements: PolicyStatement[] = [];
-        public disabled: boolean;
-        public isSystem: boolean;
-
-        public constructor(init?: Partial<MembershipPolicy>) { (Object as any).assign(this, init); }
-    }
-
-    export class RoleId
-    {
-        public template: string;
-        public tenancyScopeViewId: string;
-        public viewId: string;
-        public isSystem: boolean;
-
-        public constructor(init?: Partial<RoleId>) { (Object as any).assign(this, init); }
-    }
-
-    export class MembershipRole
-    {
-        public id: RoleId;
-        public name: DisplayName;
-        public description?: string;
-        public attachedPolicies: PolicyId[] = [];
-        public disabled: boolean;
-        public isSystem: boolean;
-
-        public constructor(init?: Partial<MembershipRole>) { (Object as any).assign(this, init); }
     }
 
     export class TriggerId extends AggregateId implements IHasDomainEntityId
@@ -4140,12 +4171,326 @@ export module CodeMashHub2
         public constructor(init?: Partial<SchemaTrigger>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export interface IPasskeyMessage
+    {
+    }
+
+    export class AuthUserName
+    {
+        public value: string;
+
+        public constructor(init?: Partial<AuthUserName>) { (Object as any).assign(this, init); }
+    }
+
+    export enum AuthType
+    {
+        Service = 'Service',
+        Email = 'Email',
+        UserName = 'UserName',
+        Phone = 'Phone',
+        Guest = 'Guest',
+        Social = 'Social',
+    }
+
+    export class IpAddress
+    {
+        public ip: string;
+
+        public constructor(init?: Partial<IpAddress>) { (Object as any).assign(this, init); }
+    }
+
+    export class AccessInformation
+    {
+        public ip?: IpAddress;
+        public date?: UtcDateTime;
+        public zone?: TimeZone;
+
+        public constructor(init?: Partial<AccessInformation>) { (Object as any).assign(this, init); }
+    }
+
+    export class Registration
+    {
+        public registrationInformation: AccessInformation;
+
+        public constructor(init?: Partial<Registration>) { (Object as any).assign(this, init); }
+    }
+
+    export class Login
+    {
+        public needChangePasswordOnNextLogin: boolean;
+        public lastAccessInformation?: AccessInformation;
+
+        public constructor(init?: Partial<Login>) { (Object as any).assign(this, init); }
+    }
+
+    export class Phone
+    {
+        public value: string;
+
+        public constructor(init?: Partial<Phone>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class FirstName
+    {
+        // @DataMember
+        public value: string;
+
+        public constructor(init?: Partial<FirstName>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class LastName
+    {
+        // @DataMember
+        public value: string;
+
+        public constructor(init?: Partial<LastName>) { (Object as any).assign(this, init); }
+    }
+
+    export class MidName
+    {
+        public value: string;
+
+        public constructor(init?: Partial<MidName>) { (Object as any).assign(this, init); }
+    }
+
+    export class FullName
+    {
+        public firstName?: FirstName;
+        public midName?: MidName;
+        public lastName?: LastName;
+        public title?: string;
+
+        public constructor(init?: Partial<FullName>) { (Object as any).assign(this, init); }
+    }
+
+    export class City
+    {
+        public value: string;
+
+        public constructor(init?: Partial<City>) { (Object as any).assign(this, init); }
+    }
+
+    export class Country
+    {
+        public code: string;
+        public name: string;
+
+        public constructor(init?: Partial<Country>) { (Object as any).assign(this, init); }
+    }
+
+    export class AddressLine
+    {
+        public value: string;
+
+        public constructor(init?: Partial<AddressLine>) { (Object as any).assign(this, init); }
+    }
+
+    export class PostalCode
+    {
+        public value: string;
+
+        public constructor(init?: Partial<PostalCode>) { (Object as any).assign(this, init); }
+    }
+
+    export class CountryState
+    {
+        public value: string;
+
+        public constructor(init?: Partial<CountryState>) { (Object as any).assign(this, init); }
+    }
+
+    export class Address
+    {
+        public city?: City;
+        public country?: Country;
+        public addressLine1?: AddressLine;
+        public addressLine2?: AddressLine;
+        public postalCode?: PostalCode;
+        public state?: CountryState;
+
+        public constructor(init?: Partial<Address>) { (Object as any).assign(this, init); }
+    }
+
+    export enum Gender
+    {
+        Male = 'Male',
+        Female = 'Female',
+        Other = 'Other',
+    }
+
+    export enum MarketingBlockReason
+    {
+        Unspecified = 'Unspecified',
+        Unsubscribed = 'Unsubscribed',
+        Complaint = 'Complaint',
+        HardBounce = 'HardBounce',
+        InvalidEmail = 'InvalidEmail',
+        AdminBlock = 'AdminBlock',
+    }
+
+    export class UserMarketingPreferences
+    {
+        public blockAllMarketingMessages: boolean;
+        public blockedTags?: { [index:string]: HashSet<Tag>; };
+        public blockReasons?: MarketingBlockReason[];
+
+        public constructor(init?: Partial<UserMarketingPreferences>) { (Object as any).assign(this, init); }
+    }
+
+    export class UserGeneralInfo implements IBindableContract
+    {
+        public phone?: Phone;
+        public primaryEmail?: EmailAddress;
+        public displayName?: DisplayName;
+        public firstName?: FirstName;
+        public lastName?: LastName;
+        public fullName?: FullName;
+        public address?: Address;
+        public company?: string;
+        public gender?: Gender;
+        public birthDate?: UtcDateTime;
+        public timeZone?: TimeZone;
+        public language?: Language;
+        public marketingPreferences?: UserMarketingPreferences;
+        public notes?: string;
+        public extraMetadata?: string;
+
+        public constructor(init?: Partial<UserGeneralInfo>) { (Object as any).assign(this, init); }
+    }
+
+    export enum AuthStatus
+    {
+        Registered = 0,
+        PendingValidation = 2,
+        Active = 8,
+        Unregistered = 16,
+        Suspended = 32,
+        InActive = 64,
+        Blocked = 128,
+    }
+
+    export class DeviceId
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeviceId>) { (Object as any).assign(this, init); }
+    }
+
+    export enum DeviceType
+    {
+        Unknown = 'Unknown',
+        Phone = 'Phone',
+        Tablet = 'Tablet',
+        Desktop = 'Desktop',
+        Tv = 'Tv',
+    }
+
+    export class PushDeviceToken
+    {
+        public token: string;
+
+        public constructor(init?: Partial<PushDeviceToken>) { (Object as any).assign(this, init); }
+    }
+
+    export enum PushDeviceDeliveryFamily
+    {
+        Ios = 'Ios',
+        Android = 'Android',
+        Chrome = 'Chrome',
+        Safari = 'Safari',
+        Expo = 'Expo',
+    }
+
+    // @DataContract
+    export class PushDeviceDeliveryToken
+    {
+        // @DataMember
+        public pushDeviceToken: PushDeviceToken;
+
+        // @DataMember
+        public deliveryFamily: PushDeviceDeliveryFamily;
+
+        public constructor(init?: Partial<PushDeviceDeliveryToken>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PushDevice
+    {
+        // @DataMember
+        public id: DeviceId;
+
+        // @DataMember
+        public brand?: string;
+
+        // @DataMember
+        public manufacturer?: string;
+
+        // @DataMember
+        public modelName?: string;
+
+        // @DataMember
+        public deviceName?: string;
+
+        // @DataMember
+        public deviceType?: DeviceType;
+
+        // @DataMember
+        public osName?: string;
+
+        // @DataMember
+        public osVersion?: string;
+
+        // @DataMember
+        public platformApiLevel?: number;
+
+        // @DataMember
+        public token: PushDeviceDeliveryToken;
+
+        public constructor(init?: Partial<PushDevice>) { (Object as any).assign(this, init); }
+    }
+
+    export class PushDevices extends Array<PushDevice>
+    {
+
+        public constructor(init?: Partial<PushDevices>) { super(); (Object as any).assign(this, init); }
+    }
+
     export class UserId implements IHasDomainEntityId
     {
         public viewId?: string;
         public value: string;
 
         public constructor(init?: Partial<UserId>) { (Object as any).assign(this, init); }
+    }
+
+    export class UserRef extends ResourceRef
+    {
+        declare kind: ResourceRefKind;
+        public userId: UserId;
+
+        public constructor(init?: Partial<UserRef>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class Auth implements IBindableContract
+    {
+        public id: AuthId;
+        public roles?: RoleName[];
+        public email?: EmailAddress;
+        public userName?: AuthUserName;
+        public type: AuthType;
+        public registration: Registration;
+        public login?: Login;
+        public generalInfo?: UserGeneralInfo;
+        public status: AuthStatus;
+        public createdOn: UtcDateTime;
+        public modifiedOn: UtcDateTime;
+        public pushDevices?: PushDevices;
+        public tags?: Tag[];
+        public userRef?: UserRef;
+
+        public constructor(init?: Partial<Auth>) { (Object as any).assign(this, init); }
     }
 
     export class FileIntegration extends Integration
@@ -4364,6 +4709,12 @@ export module CodeMashHub2
         public constructor(init?: Partial<NotificationId>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export enum CampaignStopReason
+    {
+        UserRequested = 'UserRequested',
+        ModuleDisabled = 'ModuleDisabled',
+    }
+
     export class ErrorDto
     {
         public message: string;
@@ -4488,7 +4839,7 @@ export module CodeMashHub2
         public vendor: string;
         public category: MarketplaceIntegrationCategory;
         public description?: string;
-        public config: IReadOnlyDictionary<string>;
+        public config: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<MarketplaceIntegration>) { super(init); (Object as any).assign(this, init); }
     }
@@ -4546,15 +4897,6 @@ export module CodeMashHub2
     export interface IHasAccountId
     {
         accountId: string;
-    }
-
-    export enum DeviceType
-    {
-        Unknown = 'Unknown',
-        Phone = 'Phone',
-        Tablet = 'Tablet',
-        Desktop = 'Desktop',
-        Tv = 'Tv',
     }
 
     // @DataContract
@@ -4715,7 +5057,7 @@ export module CodeMashHub2
         public destinationName: DisplayName;
         public endpointUrl: DomainUrl;
         public selectedEvents: TriggerEventName[] = [];
-        public extraHeaders?: IReadOnlyDictionary<string>;
+        public extraHeaders?: IReadOnlyDictionary<string, string>;
         public isEnabled: boolean;
 
         public constructor(init?: Partial<WebhookDestination>) { (Object as any).assign(this, init); }
@@ -4725,7 +5067,7 @@ export module CodeMashHub2
     {
         declare capability: string;
         public destinations: WebhookDestination[] = [];
-        public extraHeaders?: IReadOnlyDictionary<string>;
+        public extraHeaders?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<WebhookIntegration>) { super(init); (Object as any).assign(this, init); }
     }
@@ -4760,7 +5102,7 @@ export module CodeMashHub2
         public description?: string;
         public cron: CronExpression;
         public payloadJson: string;
-        public initiatorId: UserId;
+        public initiatorId: AuthId;
         public isEnabled: boolean;
         public stopOnError: boolean;
 
@@ -4845,6 +5187,40 @@ export module CodeMashHub2
         public hubUrl: string;
 
         public constructor(init?: Partial<EchoRegionDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicBrandDto
+    {
+        public displayName: string;
+        public mainColor?: string;
+        public accentColor?: string;
+        public logoUrl?: string;
+        public iconUrl?: string;
+
+        public constructor(init?: Partial<PublicBrandDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicPasswordPolicyDto
+    {
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public minUpper?: number;
+        public minLower?: number;
+        public minSpecial?: number;
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<PublicPasswordPolicyDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicAuthDto
+    {
+        public socialProviders: string[] = [];
+        public passkey: boolean;
+        public methods?: string[];
+        public passwordPolicy?: PublicPasswordPolicyDto;
+
+        public constructor(init?: Partial<PublicAuthDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -5123,6 +5499,48 @@ export module CodeMashHub2
     }
 
     // @DataContract
+    export class AuthenticationFlowPasswordPolicyDto
+    {
+        // @DataMember
+        public minLength: number;
+
+        // @DataMember
+        public maxLength?: number;
+
+        // @DataMember
+        public minNumbers?: number;
+
+        // @DataMember
+        public minUpper?: number;
+
+        // @DataMember
+        public minLower?: number;
+
+        // @DataMember
+        public minSpecial?: number;
+
+        // @DataMember
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<AuthenticationFlowPasswordPolicyDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class AuthenticationFlowSummaryDto
+    {
+        // @DataMember
+        public type: string;
+
+        // @DataMember
+        public provider?: string;
+
+        // @DataMember
+        public passwordComplexity?: AuthenticationFlowPasswordPolicyDto;
+
+        public constructor(init?: Partial<AuthenticationFlowSummaryDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
     export class TriggerDto implements IHasViewId
     {
         // @DataMember
@@ -5224,14 +5642,14 @@ export module CodeMashHub2
         public constructor(init?: Partial<RoleItemDto>) { (Object as any).assign(this, init); }
     }
 
-    export class PolicyStatementDto
+    export class PermissionDto
     {
         public sid?: string;
         public effect: PermissionEffect;
         public actions: string[] = [];
         public resources: string[] = [];
 
-        public constructor(init?: Partial<PolicyStatementDto>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<PermissionDto>) { (Object as any).assign(this, init); }
     }
 
     export class PolicyItemDto
@@ -5240,7 +5658,7 @@ export module CodeMashHub2
         public name: string;
         public description?: string;
         public isSystem: boolean;
-        public statements?: PolicyStatementDto[];
+        public permissions?: PermissionDto[];
 
         public constructor(init?: Partial<PolicyItemDto>) { (Object as any).assign(this, init); }
     }
@@ -5432,6 +5850,15 @@ export module CodeMashHub2
         public marketingUrl?: string;
 
         // @DataMember
+        public canonicalAdminUrl?: string;
+
+        // @DataMember
+        public adminUrl?: string;
+
+        // @DataMember
+        public effectiveAdminUrl?: string;
+
+        // @DataMember
         public defaultLanguage: string;
 
         // @DataMember
@@ -5454,6 +5881,30 @@ export module CodeMashHub2
 
         // @DataMember
         public allowedOrigins?: string[];
+
+        // @DataMember
+        public exposeBrandToAdminPortal: boolean;
+
+        // @DataMember
+        public exposeAuthToAdminPortal: boolean;
+
+        // @DataMember
+        public adminPortalEnabled: boolean;
+
+        // @DataMember
+        public adminPortalServiceUserId?: string;
+
+        // @DataMember
+        public membershipAuthenticationFlows?: AuthenticationFlowSummaryDto[];
+
+        // @DataMember
+        public exposeLegalToAdminPortal: boolean;
+
+        // @DataMember
+        public legalTermsMarkdown?: string;
+
+        // @DataMember
+        public legalPrivacyMarkdown?: string;
 
         // @DataMember
         public environments: string[] = [];
@@ -5592,16 +6043,6 @@ export module CodeMashHub2
         public constructor(init?: Partial<PaginatedResponse<TViewModelProjection>>) { (Object as any).assign(this, init); }
     }
 
-    export enum UserType
-    {
-        Service = 'Service',
-        Email = 'Email',
-        UserName = 'UserName',
-        Phone = 'Phone',
-        Guest = 'Guest',
-        Social = 'Social',
-    }
-
     export class AccessInformationDto
     {
         public ip?: string;
@@ -5624,23 +6065,6 @@ export module CodeMashHub2
         public lastAccessInformation?: AccessInformationDto;
 
         public constructor(init?: Partial<LoginDto>) { (Object as any).assign(this, init); }
-    }
-
-    export enum Gender
-    {
-        Male = 'Male',
-        Female = 'Female',
-        Other = 'Other',
-    }
-
-    export enum MarketingBlockReason
-    {
-        Unspecified = 'Unspecified',
-        Unsubscribed = 'Unsubscribed',
-        Complaint = 'Complaint',
-        HardBounce = 'HardBounce',
-        InvalidEmail = 'InvalidEmail',
-        AdminBlock = 'AdminBlock',
     }
 
     export class UserGeneralInfoDto
@@ -5671,21 +6095,10 @@ export module CodeMashHub2
         public constructor(init?: Partial<UserGeneralInfoDto>) { (Object as any).assign(this, init); }
     }
 
-    export enum UserStatus
-    {
-        Registered = 0,
-        PendingValidation = 2,
-        Active = 8,
-        Unregistered = 16,
-        Suspended = 32,
-        InActive = 64,
-        Blocked = 128,
-    }
-
-    export class UserDto implements IBindableContract
+    export class AuthDto implements IBindableContract
     {
         public id: string;
-        public type: UserType;
+        public type: AuthType;
         public email?: string;
         public userName?: string;
         public registration?: RegistrationDto;
@@ -5694,11 +6107,11 @@ export module CodeMashHub2
         public roles?: string[];
         public pushDevices?: string[];
         public tags?: string[];
-        public status: UserStatus;
+        public status: AuthStatus;
         public createdOn: string;
         public modifiedOn: string;
 
-        public constructor(init?: Partial<UserDto>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<AuthDto>) { (Object as any).assign(this, init); }
     }
 
     export class AccountPasswordPolicyDto
@@ -5749,9 +6162,22 @@ export module CodeMashHub2
         public constructor(init?: Partial<LicenseDto>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class ServiceUserApiKeyDto
+    {
+        public id: number;
+        public name: string;
+        public visibleKey?: string;
+        public scopes: string[] = [];
+        public createdDate: string;
+        public expiryDate?: string;
+        public cancelledDate?: string;
+        public active: boolean;
+
+        public constructor(init?: Partial<ServiceUserApiKeyDto>) { (Object as any).assign(this, init); }
+    }
+
     export class GetTriggerResponse extends ResponseBase
     {
-        public trigger?: TriggerDto;
 
         public constructor(init?: Partial<GetTriggerResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5782,6 +6208,9 @@ export module CodeMashHub2
     {
         // @DataMember
         declare type: MembershipTriggerType;
+
+        // @DataMember
+        public destinationIds?: string[];
 
         public constructor(init?: Partial<MembershipTriggerProjectionList>) { super(init); (Object as any).assign(this, init); }
     }
@@ -5842,30 +6271,165 @@ export module CodeMashHub2
     }
 
     // @DataContract
-    export class AuthorizationSettingsDto
+    export class MembershipMessageTemplateDto
     {
         // @DataMember
-        public defaultRoles: string[] = [];
+        public id?: string;
 
-        // @DataMember
-        public allowedRegistrationRoles: string[] = [];
-
-        // @DataMember
-        public allowGuestUsers: boolean;
-
-        // @DataMember
-        public guestCleanupPeriodDays?: number;
-
-        public constructor(init?: Partial<AuthorizationSettingsDto>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<MembershipMessageTemplateDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
-    export class AuthenticationSettingsDto
+    export class MembershipEmailActionSettingsDto
     {
+        // @DataMember
+        public sendEmail: boolean;
+
+        // @DataMember
+        public template?: MembershipMessageTemplateDto;
+
+        // @DataMember
+        public callback?: string;
+
+        public constructor(init?: Partial<MembershipEmailActionSettingsDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MembershipEmailPreferencesDto
+    {
+        // @DataMember
+        public registrationViaEmail?: MembershipEmailActionSettingsDto;
+
+        // @DataMember
+        public verificationViaEmail?: MembershipEmailActionSettingsDto;
+
+        // @DataMember
+        public passwordResetViaEmail?: MembershipEmailActionSettingsDto;
+
+        // @DataMember
+        public invitationViaEmail?: MembershipEmailActionSettingsDto;
+
+        // @DataMember
+        public deactivationViaEmail?: MembershipEmailActionSettingsDto;
+
+        public constructor(init?: Partial<MembershipEmailPreferencesDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class PasswordComplexityDto
+    {
+        // @DataMember
+        public minLength: number;
+
+        // @DataMember
+        public maxLength?: number;
+
+        // @DataMember
+        public minNumbers?: number;
+
+        // @DataMember
+        public maxNumbers?: number;
+
+        // @DataMember
+        public minUpper?: number;
+
+        // @DataMember
+        public maxUpper?: number;
+
+        // @DataMember
+        public minLower?: number;
+
+        // @DataMember
+        public maxLower?: number;
+
+        // @DataMember
+        public minSpecial?: number;
+
+        // @DataMember
+        public maxSpecial?: number;
+
+        // @DataMember
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<PasswordComplexityDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MembershipAuthorizationViewDto
+    {
+        // @DataMember
+        public emailPreferences?: MembershipEmailPreferencesDto;
+
+        // @DataMember
+        public userRegistersAsRole?: string;
+
+        // @DataMember
+        public guestRegistersAsRole?: string;
+
+        // @DataMember
+        public allowedRegisterRoles?: string[];
+
+        // @DataMember
+        public allowedProviderRegisterRoles?: string[];
+
+        // @DataMember
+        public resetPasswordTokenExpiration?: number;
+
+        // @DataMember
+        public invitationExpiration?: number;
+
+        // @DataMember
+        public emailVerificationExpiration?: number;
+
+        // @DataMember
+        public deactivationExpiration?: number;
+
+        // @DataMember
+        public defaultSubscribeToNews: boolean;
+
+        // @DataMember
+        public passwordComplexity?: PasswordComplexityDto;
+
+        public constructor(init?: Partial<MembershipAuthorizationViewDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MembershipCredentialsSettingsModeDto
+    {
+        // @DataMember
+        public name?: string;
+
+        // @DataMember
+        public logoutUrl?: string;
+
+        public constructor(init?: Partial<MembershipCredentialsSettingsModeDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MembershipCredentialsSettingsDto
+    {
+        // @DataMember
+        public logoutUrl?: string;
+
+        // @DataMember
+        public allowUsernames: boolean;
+
+        // @DataMember
+        public modes?: MembershipCredentialsSettingsModeDto[];
+
+        public constructor(init?: Partial<MembershipCredentialsSettingsDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class MembershipAuthenticationViewDto
+    {
+        // @DataMember
+        public credentialsSettings?: MembershipCredentialsSettingsDto;
+
         // @DataMember
         public flows: string[] = [];
 
-        public constructor(init?: Partial<AuthenticationSettingsDto>) { (Object as any).assign(this, init); }
+        public constructor(init?: Partial<MembershipAuthenticationViewDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -5965,6 +6529,70 @@ export module CodeMashHub2
         public names?: { [index:string]: string; };
 
         public constructor(init?: Partial<TermMultiParentDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class TermTreeDto
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public taxonomyId?: string;
+
+        // @DataMember
+        public taxonomyName?: string;
+
+        // @DataMember
+        public parentId?: string;
+
+        // @DataMember
+        public order?: number;
+
+        // @DataMember
+        public name?: string;
+
+        // @DataMember
+        public names?: { [index:string]: string; };
+
+        // @DataMember
+        public description?: string;
+
+        // @DataMember
+        public descriptions?: { [index:string]: string; };
+
+        // @DataMember
+        public multiParents?: TermMultiParentDto[];
+
+        // @DataMember
+        public meta?: Object;
+
+        // @DataMember
+        public children?: TermTreeDto[];
+
+        public constructor(init?: Partial<TermTreeDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class TaxonomyTreeDto
+    {
+        // @DataMember
+        public viewId: string;
+
+        // @DataMember
+        public taxonomyName: string;
+
+        // @DataMember
+        public taxonomySlug: string;
+
+        // @DataMember
+        public parentId?: string;
+
+        // @DataMember
+        public children?: TaxonomyTreeDto[];
+
+        // @DataMember
+        public terms?: TermTreeDto[];
+
+        public constructor(init?: Partial<TaxonomyTreeDto>) { (Object as any).assign(this, init); }
     }
 
     export class TermDto
@@ -6181,6 +6809,39 @@ export module CodeMashHub2
         declare provider: FileProvider;
 
         public constructor(init?: Partial<FilesIntegrationListProjection>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class NotificationModuleDependencyItemDto
+    {
+        // @DataMember
+        public name: string;
+
+        // @DataMember
+        public viewId?: string;
+
+        // @DataMember
+        public category?: string;
+
+        public constructor(init?: Partial<NotificationModuleDependencyItemDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class NotificationModuleDisableDependenciesDto
+    {
+        // @DataMember
+        public triggers: NotificationModuleDependencyItemDto[] = [];
+
+        // @DataMember
+        public schedulerTasks: NotificationModuleDependencyItemDto[] = [];
+
+        // @DataMember
+        public inFlightCampaigns: NotificationModuleDependencyItemDto[] = [];
+
+        // @DataMember
+        public membershipSettings: NotificationModuleDependencyItemDto[] = [];
+
+        public constructor(init?: Partial<NotificationModuleDisableDependenciesDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -6982,7 +7643,7 @@ export module CodeMashHub2
         public spanId?: string;
 
         // @DataMember
-        public meta?: IReadOnlyDictionary<string>;
+        public meta?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<TenantLogEntryDto>) { (Object as any).assign(this, init); }
     }
@@ -7199,7 +7860,19 @@ export module CodeMashHub2
     }
 
     // @DataContract
-    export class ContactDto
+    export class ChannelSubscriptionStateDto
+    {
+        // @DataMember
+        public unsubscribed: boolean;
+
+        // @DataMember
+        public blockedTags: { [index:string]: string[]; } = {};
+
+        public constructor(init?: Partial<ChannelSubscriptionStateDto>) { (Object as any).assign(this, init); }
+    }
+
+    // @DataContract
+    export class UserDto
     {
         // @DataMember
         public id: string;
@@ -7223,6 +7896,9 @@ export module CodeMashHub2
         public lastName?: string;
 
         // @DataMember
+        public fullName?: string;
+
+        // @DataMember
         public company?: string;
 
         // @DataMember
@@ -7232,7 +7908,34 @@ export module CodeMashHub2
         public timeZone?: string;
 
         // @DataMember
+        public gender?: string;
+
+        // @DataMember
+        public birthDate?: number;
+
+        // @DataMember
+        public addressLine1?: string;
+
+        // @DataMember
+        public addressLine2?: string;
+
+        // @DataMember
+        public country?: string;
+
+        // @DataMember
+        public city?: string;
+
+        // @DataMember
+        public state?: string;
+
+        // @DataMember
+        public postalCode?: string;
+
+        // @DataMember
         public tags?: string[];
+
+        // @DataMember
+        public roles?: string[];
 
         // @DataMember
         public lifecycle: string;
@@ -7249,7 +7952,13 @@ export module CodeMashHub2
         // @DataMember
         public modifiedOn: string;
 
-        public constructor(init?: Partial<ContactDto>) { (Object as any).assign(this, init); }
+        // @DataMember
+        public auths?: AuthDto[];
+
+        // @DataMember
+        public marketingPreferences?: { [index:string]: ChannelSubscriptionStateDto; };
+
+        public constructor(init?: Partial<UserDto>) { (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -7289,24 +7998,6 @@ export module CodeMashHub2
         public meta?: { [index:string]: string; };
 
         public constructor(init?: Partial<ResponseStatus>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class UserApiKey
-    {
-        // @DataMember(Order=1)
-        public key?: string;
-
-        // @DataMember(Order=2)
-        public keyType?: string;
-
-        // @DataMember(Order=3)
-        public expiryDate?: string;
-
-        // @DataMember(Order=4)
-        public meta?: { [index:string]: string; };
-
-        public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
     }
 
     export interface ILlmApiKeyRequest
@@ -7361,7 +8052,7 @@ export module CodeMashHub2
         public pattern?: string;
         public minLength?: number;
         public maxLength?: number;
-        public translateOptions?: IReadOnlyDictionary<string>;
+        public translateOptions?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<StringField>) { super(init); (Object as any).assign(this, init); }
     }
@@ -7478,7 +8169,7 @@ export module CodeMashHub2
         public maxLength?: number;
 
         // @DataMember
-        public translateOptions?: IReadOnlyDictionary<string>;
+        public translateOptions?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<StringFieldDto>) { super(init); (Object as any).assign(this, init); }
     }
@@ -7620,11 +8311,32 @@ export module CodeMashHub2
         public apiVersion: string;
         public hubVersion: string;
         public mjmlUrl: string;
+        public adminUrlTemplate?: string;
         public license?: CodeMashLicenseFromEndpointDto;
         public askForEnterpriseLicenseEmail?: string;
         public regions?: EchoRegionDto[];
 
         public constructor(init?: Partial<EchoResponse>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicProjectConfigDto
+    {
+        public displayName: string;
+        public adminPortalEnabled: boolean;
+        public branding?: PublicBrandDto;
+        public auth: PublicAuthDto;
+
+        public constructor(init?: Partial<PublicProjectConfigDto>) { (Object as any).assign(this, init); }
+    }
+
+    export class PublicLegalDocumentDto
+    {
+        public kind: string;
+        public title?: string;
+        public body: string;
+        public available: boolean;
+
+        public constructor(init?: Partial<PublicLegalDocumentDto>) { (Object as any).assign(this, init); }
     }
 
     export class GetAccountProfileResponse extends ResponseBase
@@ -7728,6 +8440,16 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetProjectTokensResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class AdminPortalStructureDto
+    {
+        public projectId: string;
+        public adminPortalEnabled: boolean;
+        public displayName: string;
+        public modules: AdminPortalModuleDto[] = [];
+
+        public constructor(init?: Partial<AdminPortalStructureDto>) { (Object as any).assign(this, init); }
+    }
+
     // @DataContract
     export class CreateAccountResponse extends IdResponse
     {
@@ -7739,7 +8461,7 @@ export module CodeMashHub2
 
     export class GetAccountCollaboratorsResponse extends ResponseBase
     {
-        public list?: PaginatedResponse<UserDto>;
+        public list?: PaginatedResponse<AuthDto>;
 
         public constructor(init?: Partial<GetAccountCollaboratorsResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -7772,18 +8494,25 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetLicensesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
-    export class GetUserEmailPreferencesResponse extends ResponseBase
+    export class IssueServiceUserApiKeyResponse
     {
-        public defaultLanguage: string;
-        public projectLanguages: string[] = [];
-        public blockAllMarketingMessages: boolean;
-        public subscribedTags?: { [index:string]: HashSet<string>; };
+        public id: number;
+        public name: string;
+        public key: string;
 
-        public constructor(init?: Partial<GetUserEmailPreferencesResponse>) { super(init); (Object as any).assign(this, init); }
+        public constructor(init?: Partial<IssueServiceUserApiKeyResponse>) { (Object as any).assign(this, init); }
+    }
+
+    export class ListServiceUserApiKeysResponse
+    {
+        public keys: ServiceUserApiKeyDto[] = [];
+
+        public constructor(init?: Partial<ListServiceUserApiKeysResponse>) { (Object as any).assign(this, init); }
     }
 
     export class GetMembershipTriggerResponse extends GetTriggerResponse
     {
+        public trigger?: MembershipTriggerDto;
 
         public constructor(init?: Partial<GetMembershipTriggerResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -7848,20 +8577,28 @@ export module CodeMashHub2
 
     export class GetAuthorizationSettingsResponse extends ResponseBase
     {
-        public result?: AuthorizationSettingsDto;
+        public result?: MembershipAuthorizationViewDto;
 
         public constructor(init?: Partial<GetAuthorizationSettingsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class UpdatePasswordComplexityResponse extends ResponseBase
+    {
+        public result: boolean;
+
+        public constructor(init?: Partial<UpdatePasswordComplexityResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetAuthenticationSettingsResponse extends ResponseBase
     {
-        public result?: AuthenticationSettingsDto;
+        public result?: MembershipAuthenticationViewDto;
 
         public constructor(init?: Partial<GetAuthenticationSettingsResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetSchemaTriggerResponse extends GetTriggerResponse
     {
+        public trigger?: SchemaTriggerDto;
 
         public constructor(init?: Partial<GetSchemaTriggerResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -7887,11 +8624,25 @@ export module CodeMashHub2
         public constructor(init?: Partial<GetDatabaseTaxonomiesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
+    export class GetDatabaseTaxonomyTreeResponse extends ResponseBase
+    {
+        public tree?: TaxonomyTreeDto[];
+
+        public constructor(init?: Partial<GetDatabaseTaxonomyTreeResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
     export class GetDatabaseTaxonomyTermResponse extends ResponseBase
     {
         public item?: TermDto;
 
         public constructor(init?: Partial<GetDatabaseTaxonomyTermResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetDatabaseTaxonomyTermTreeResponse extends ResponseBase
+    {
+        public tree?: TermTreeDto[];
+
+        public constructor(init?: Partial<GetDatabaseTaxonomyTermTreeResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetDatabaseSchemaResponse extends ResponseBase
@@ -7990,6 +8741,7 @@ export module CodeMashHub2
 
     export class GetFilesTriggerResponse extends GetTriggerResponse
     {
+        public trigger?: FilesTriggerDto;
 
         public constructor(init?: Partial<GetFilesTriggerResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -8031,6 +8783,13 @@ export module CodeMashHub2
         public folders?: string[];
 
         public constructor(init?: Partial<GetFolderFilesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+
+    export class GetNotificationModuleDisableDependenciesResponse extends ResponseBase
+    {
+        public dependencies?: NotificationModuleDisableDependenciesDto;
+
+        public constructor(init?: Partial<GetNotificationModuleDisableDependenciesResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     // @DataContract
@@ -8548,6 +9307,7 @@ export module CodeMashHub2
 
     export class GetPaymentsTriggerResponse extends GetTriggerResponse
     {
+        public trigger?: PaymentTriggerDto;
 
         public constructor(init?: Partial<GetPaymentsTriggerResponse>) { super(init); (Object as any).assign(this, init); }
     }
@@ -8769,14 +9529,14 @@ export module CodeMashHub2
 
     export class GetContactResponse extends ResponseBase
     {
-        public item?: ContactDto;
+        public item?: UserDto;
 
         public constructor(init?: Partial<GetContactResponse>) { super(init); (Object as any).assign(this, init); }
     }
 
     export class GetAllContactsResponse extends ResponseBase
     {
-        public items?: IReadOnlyList<ContactDto>;
+        public items?: IReadOnlyList<UserDto>;
         public nextCursor?: string;
 
         public constructor(init?: Partial<GetAllContactsResponse>) { super(init); (Object as any).assign(this, init); }
@@ -8843,36 +9603,6 @@ export module CodeMashHub2
         public responseStatus?: ResponseStatus;
 
         public constructor(init?: Partial<GetAccessTokenResponse>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class GetApiKeysResponse
-    {
-        // @DataMember(Order=1)
-        public results?: UserApiKey[];
-
-        // @DataMember(Order=2)
-        public meta?: { [index:string]: string; };
-
-        // @DataMember(Order=3)
-        public responseStatus?: ResponseStatus;
-
-        public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
-    }
-
-    // @DataContract
-    export class RegenerateApiKeysResponse
-    {
-        // @DataMember(Order=1)
-        public results?: UserApiKey[];
-
-        // @DataMember(Order=2)
-        public meta?: { [index:string]: string; };
-
-        // @DataMember(Order=3)
-        public responseStatus?: ResponseStatus;
-
-        public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
     }
 
     // @Route("/{version}/code/enable", "GET")
@@ -9418,6 +10148,8 @@ export module CodeMashHub2
         public typegen_226_DisableMarketplaceFunctionBinding?: DisableMarketplaceFunctionBinding;
         public typegen_227_GetMarketplaceBindingTokens?: GetMarketplaceBindingTokens;
         public typegen_228_InvokeMarketplaceFunctionBinding?: InvokeMarketplaceFunctionBinding;
+        public typegen_230_AdminPortalStructureDto?: AdminPortalStructureDto;
+        public typegen_231_AdminPortalModuleDto?: AdminPortalModuleDto;
 
         public constructor(init?: Partial<InternalsTypeGen>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'InternalsTypeGen'; }
@@ -9433,6 +10165,29 @@ export module CodeMashHub2
         public getTypeName() { return 'Echo'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EchoResponse(); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
+    export class GetPublicProjectConfig extends RequestBase implements IReturn<PublicProjectConfigDto>
+    {
+        public projectId?: string;
+
+        public constructor(init?: Partial<GetPublicProjectConfig>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectConfig'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicProjectConfigDto(); }
+    }
+
+    // @Route("/{version}/public/projects/{ProjectId}/legal/{Kind}", "GET")
+    export class GetPublicProjectLegal extends RequestBase implements IReturn<PublicLegalDocumentDto>
+    {
+        public projectId?: string;
+        public kind?: string;
+
+        public constructor(init?: Partial<GetPublicProjectLegal>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPublicProjectLegal'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new PublicLegalDocumentDto(); }
     }
 
     // @Route("/{version}/account/profile", "GET")
@@ -9816,6 +10571,44 @@ export module CodeMashHub2
         public createResponse() { return new GetProjectTokensResponse(); }
     }
 
+    /** @description Assigns the project's Admin Portal service user */
+    // @Route("/{version}/account/projects/{projectId}/settings/admin-portal/service-user", "PUT")
+    // @Api(Description="Assigns the project's Admin Portal service user")
+    export class AssignAdminPortalServiceUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public serviceUserId: string;
+
+        public constructor(init?: Partial<AssignAdminPortalServiceUserRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'AssignAdminPortalServiceUserRequest'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Reads the Admin Portal layout/structure (service user only) */
+    // @Route("/{version}/account/projects/{projectId}/admin-portal/structure", "GET")
+    // @Api(Description="Reads the Admin Portal layout/structure (service user only)")
+    export class GetAdminPortalStructure extends CodeMashRequestBase implements IReturn<AdminPortalStructureDto>
+    {
+
+        public constructor(init?: Partial<GetAdminPortalStructure>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAdminPortalStructure'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new AdminPortalStructureDto(); }
+    }
+
+    /** @description Updates the project's admin-portal URL override */
+    // @Route("/{version}/account/projects/{projectId}/settings/admin-url", "PATCH")
+    // @Api(Description="Updates the project's admin-portal URL override")
+    export class UpdateProjectAdminUrl extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public url?: string;
+
+        public constructor(init?: Partial<UpdateProjectAdminUrl>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateProjectAdminUrl'; }
+        public getMethod() { return 'PATCH'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     /** @description Updates project accent color */
     // @Route("/{version}/account/projects/{projectId}/settings/accent-color", "PATCH")
     // @Api(Description="Updates project accent color")
@@ -9944,6 +10737,33 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
+    /** @description Updates the project's public legal documents (Terms & Conditions, Privacy Policy) */
+    // @Route("/{version}/account/projects/{projectId}/settings/legal", "PATCH")
+    // @Api(Description="Updates the project's public legal documents (Terms & Conditions, Privacy Policy)")
+    export class UpdateProjectLegalDocuments extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public termsMarkdown?: string;
+        public privacyMarkdown?: string;
+
+        public constructor(init?: Partial<UpdateProjectLegalDocuments>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateProjectLegalDocuments'; }
+        public getMethod() { return 'PATCH'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Sets whether the project's legal documents are publicly readable via the Admin Portal */
+    // @Route("/{version}/account/projects/{projectId}/settings/legal/expose", "PATCH")
+    // @Api(Description="Sets whether the project's legal documents are publicly readable via the Admin Portal")
+    export class UpdateProjectExposeLegal extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public exposed: boolean;
+
+        public constructor(init?: Partial<UpdateProjectExposeLegal>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateProjectExposeLegal'; }
+        public getMethod() { return 'PATCH'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     /** @description Updates project marketing url */
     // @Route("/{version}/account/projects/{projectId}/settings/url", "PATCH")
     // @Api(Description="Updates project marketing url")
@@ -10035,6 +10855,54 @@ export module CodeMashHub2
         public createResponse() { return new IdResponse(); }
     }
 
+    // @Route("/{version}/account/team/policies", "POST")
+    export class CreateAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    {
+        public policyName: string;
+        public description?: string;
+        public policyDocumentJson?: string;
+
+        public constructor(init?: Partial<CreateAccountPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateAccountPolicy'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles", "POST")
+    export class CreateAccountRole extends RequestBase implements IReturn<IdResponse>
+    {
+        public roleName: string;
+        public description?: string;
+        public policies?: string[];
+
+        public constructor(init?: Partial<CreateAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'CreateAccountRole'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/policies/{Id}", "DELETE")
+    export class DeleteAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteAccountPolicy>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteAccountPolicy'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
+    // @Route("/{version}/account/team/roles/{Id}", "DELETE")
+    export class DeleteAccountRole extends RequestBase implements IReturn<IdResponse>
+    {
+        public id: string;
+
+        public constructor(init?: Partial<DeleteAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteAccountRole'; }
+        public getMethod() { return 'DELETE'; }
+        public createResponse() { return new IdResponse(); }
+    }
+
     // @Route("/{version}/account/collaborators", "GET")
     export class GetAccountCollaborators extends RequestBase implements IReturn<GetAccountCollaboratorsResponse>
     {
@@ -10061,16 +10929,6 @@ export module CodeMashHub2
         public createResponse() { return new GetAccountPasswordPolicyResponse(); }
     }
 
-    // @Route("/{version}/account/team/roles", "GET")
-    export class GetAccountTeamRoles extends RequestBase implements IReturn<GetAccountTeamRolesResponse>
-    {
-
-        public constructor(init?: Partial<GetAccountTeamRoles>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetAccountTeamRoles'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new GetAccountTeamRolesResponse(); }
-    }
-
     // @Route("/{version}/account/team/policies", "GET")
     export class GetAccountTeamPolicies extends RequestBase implements IReturn<GetAccountTeamPoliciesResponse>
     {
@@ -10081,55 +10939,26 @@ export module CodeMashHub2
         public createResponse() { return new GetAccountTeamPoliciesResponse(); }
     }
 
-    // @Route("/{version}/account/team/roles", "POST")
-    export class CreateAccountRole extends RequestBase implements IReturn<IdResponse>
+    // @Route("/{version}/account/team/roles", "GET")
+    export class GetAccountTeamRoles extends RequestBase implements IReturn<GetAccountTeamRolesResponse>
     {
-        public roleName: string;
-        public description?: string;
-        public policies?: string[];
 
-        public constructor(init?: Partial<CreateAccountRole>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'CreateAccountRole'; }
+        public constructor(init?: Partial<GetAccountTeamRoles>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetAccountTeamRoles'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetAccountTeamRolesResponse(); }
+    }
+
+    // @Route("/{version}/account/team/member/invite", "POST")
+    export class SendInviteToTeamMember extends RequestBase implements IReturn<EmptyResponse>
+    {
+        public email: string;
+        public roles?: string[];
+
+        public constructor(init?: Partial<SendInviteToTeamMember>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'SendInviteToTeamMember'; }
         public getMethod() { return 'POST'; }
-        public createResponse() { return new IdResponse(); }
-    }
-
-    // @Route("/{version}/account/team/roles", "PUT")
-    export class UpdateAccountRole extends RequestBase implements IReturn<IdResponse>
-    {
-        public id: string;
-        public roleName: string;
-        public description?: string;
-        public policies?: string[];
-
-        public constructor(init?: Partial<UpdateAccountRole>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'UpdateAccountRole'; }
-        public getMethod() { return 'PUT'; }
-        public createResponse() { return new IdResponse(); }
-    }
-
-    // @Route("/{version}/account/team/roles/{Id}", "DELETE")
-    export class DeleteAccountRole extends RequestBase implements IReturn<IdResponse>
-    {
-        public id: string;
-
-        public constructor(init?: Partial<DeleteAccountRole>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'DeleteAccountRole'; }
-        public getMethod() { return 'DELETE'; }
-        public createResponse() { return new IdResponse(); }
-    }
-
-    // @Route("/{version}/account/team/policies", "POST")
-    export class CreateAccountPolicy extends RequestBase implements IReturn<IdResponse>
-    {
-        public policyName: string;
-        public description?: string;
-        public policyDocumentJson?: string;
-
-        public constructor(init?: Partial<CreateAccountPolicy>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'CreateAccountPolicy'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new IdResponse(); }
+        public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/account/team/policies", "PUT")
@@ -10146,27 +10975,18 @@ export module CodeMashHub2
         public createResponse() { return new IdResponse(); }
     }
 
-    // @Route("/{version}/account/team/policies/{Id}", "DELETE")
-    export class DeleteAccountPolicy extends RequestBase implements IReturn<IdResponse>
+    // @Route("/{version}/account/team/roles", "PUT")
+    export class UpdateAccountRole extends RequestBase implements IReturn<IdResponse>
     {
         public id: string;
+        public roleName: string;
+        public description?: string;
+        public policies?: string[];
 
-        public constructor(init?: Partial<DeleteAccountPolicy>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'DeleteAccountPolicy'; }
-        public getMethod() { return 'DELETE'; }
+        public constructor(init?: Partial<UpdateAccountRole>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateAccountRole'; }
+        public getMethod() { return 'PUT'; }
         public createResponse() { return new IdResponse(); }
-    }
-
-    // @Route("/{version}/account/team/member/invite", "POST")
-    export class SendInviteToTeamMember extends RequestBase implements IReturn<EmptyResponse>
-    {
-        public email: string;
-        public roles?: string[];
-
-        public constructor(init?: Partial<SendInviteToTeamMember>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'SendInviteToTeamMember'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new EmptyResponse(); }
     }
 
     // @Route("/{version}/account/licenses", "GET")
@@ -10339,6 +11159,46 @@ export module CodeMashHub2
 
         public constructor(init?: Partial<ProjectMarketingUrlChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'ProjectMarketingUrlChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectAdminUrlChanged
+    {
+        public url?: DomainUrl;
+
+        public constructor(init?: Partial<ProjectAdminUrlChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectAdminUrlChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectLegalDocumentsChanged
+    {
+        public documents: ProjectLegalDocuments;
+
+        public constructor(init?: Partial<ProjectLegalDocumentsChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectLegalDocumentsChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectExposeLegalToAdminPortalChanged
+    {
+        public exposed: boolean;
+
+        public constructor(init?: Partial<ProjectExposeLegalToAdminPortalChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectExposeLegalToAdminPortalChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class ProjectAdminPortalServiceUserAssigned
+    {
+        public serviceUserId: AuthId;
+
+        public constructor(init?: Partial<ProjectAdminPortalServiceUserAssigned>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'ProjectAdminPortalServiceUserAssigned'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -10572,6 +11432,66 @@ export module CodeMashHub2
         public createResponse() {}
     }
 
+    export class AccountTeamPolicyCreated
+    {
+        public policy: MembershipPolicy;
+
+        public constructor(init?: Partial<AccountTeamPolicyCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamPolicyCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AccountTeamPolicyUpdated
+    {
+        public policy: MembershipPolicy;
+
+        public constructor(init?: Partial<AccountTeamPolicyUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamPolicyUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AccountTeamPolicyDeleted
+    {
+        public policyId: PolicyId;
+
+        public constructor(init?: Partial<AccountTeamPolicyDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamPolicyDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AccountTeamRoleCreated
+    {
+        public role: MembershipRole;
+
+        public constructor(init?: Partial<AccountTeamRoleCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamRoleCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AccountTeamRoleUpdated
+    {
+        public role: MembershipRole;
+
+        public constructor(init?: Partial<AccountTeamRoleUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamRoleUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class AccountTeamRoleDeleted
+    {
+        public roleId: RoleId;
+
+        public constructor(init?: Partial<AccountTeamRoleDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'AccountTeamRoleDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
     export class AtlasUsageRecorded
     {
         public record: AtlasUsageRecord;
@@ -10612,27 +11532,66 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/user/preferences", "GET")
-    export class GetUserNotificationPreferences extends CodeMashRequestBase implements IReturn<GetUserEmailPreferencesResponse>
+    /** @description Membership */
+    // @Route("/{version}/membership/users/{Id}/api-keys", "POST")
+    // @Api(Description="Membership")
+    // @DataContract
+    export class IssueServiceUserApiKeyRequest extends CodeMashRequestBase implements IReturn<IssueServiceUserApiKeyResponse>
     {
-        public userId: string;
+        // @DataMember
+        public id: string;
 
-        public constructor(init?: Partial<GetUserNotificationPreferences>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetUserNotificationPreferences'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new GetUserEmailPreferencesResponse(); }
+        // @DataMember
+        public databaseIntegrationId?: string;
+
+        // @DataMember
+        public name: string;
+
+        // @DataMember
+        public scopes?: string[];
+
+        // @DataMember
+        public expiresInDays?: number;
+
+        // @DataMember
+        public notes?: string;
+
+        public constructor(init?: Partial<IssueServiceUserApiKeyRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'IssueServiceUserApiKeyRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new IssueServiceUserApiKeyResponse(); }
     }
 
-    // @Route("/{version}/notifications/user/preferences", "PUT")
-    export class UpdateUserNotificationsPreferences extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    /** @description Membership */
+    // @Route("/{version}/membership/users/{Id}/api-keys", "GET")
+    // @Api(Description="Membership")
+    // @DataContract
+    export class ListServiceUserApiKeysRequest extends CodeMashRequestBase implements IReturn<ListServiceUserApiKeysResponse>
     {
-        public userId: string;
-        public blockAllMarketingMessages: boolean;
-        public subscribedToTags?: { [index:string]: HashSet<string>; };
+        // @DataMember
+        public id: string;
 
-        public constructor(init?: Partial<UpdateUserNotificationsPreferences>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'UpdateUserNotificationsPreferences'; }
-        public getMethod() { return 'PUT'; }
+        public constructor(init?: Partial<ListServiceUserApiKeysRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'ListServiceUserApiKeysRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new ListServiceUserApiKeysResponse(); }
+    }
+
+    /** @description Membership */
+    // @Route("/{version}/membership/users/{Id}/api-keys/{KeyId}", "DELETE")
+    // @Api(Description="Membership")
+    // @DataContract
+    export class DeleteServiceUserApiKeyRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public keyId: number;
+
+        public constructor(init?: Partial<DeleteServiceUserApiKeyRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'DeleteServiceUserApiKeyRequest'; }
+        public getMethod() { return 'DELETE'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
@@ -10965,20 +11924,68 @@ export module CodeMashHub2
         public createResponse() { return new GetAuthorizationSettingsResponse(); }
     }
 
-    /** @description Updates the project's membership authorization (role-assignment) settings. */
+    /** @description Updates the project's membership authorization settings. */
     // @Route("/{version}/membership/authorization", "PUT")
-    // @Api(Description="Updates the project's membership authorization (role-assignment) settings.")
+    // @Api(Description="Updates the project's membership authorization settings.")
     export class UpdateAuthorizationSettings extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
+        public setting?: string;
         public defaultRoles?: string[];
         public allowedRegistrationRoles?: string[];
         public allowGuestUsers: boolean;
         public guestCleanupPeriodDays?: number;
+        public userRegistersAsRole?: string;
+        public guestRegistersAsRole?: string;
+        public allowedRegisterRoles?: string[];
+        public needVerification: boolean;
+        public verificationEmailTemplate?: string;
+        public deactivationEmailTemplate?: string;
+        public allowInviteUsers: boolean;
+        public allowDeactivateUsers: boolean;
+        public inviteUserEmailTemplate?: string;
+        public invitationExpiration?: number;
+        public emailVerificationExpiration?: number;
+        public deactivationExpiration?: number;
+        public defaultSubscribeToNews: boolean;
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public maxNumbers?: number;
+        public minUpper?: number;
+        public maxUpper?: number;
+        public minLower?: number;
+        public maxLower?: number;
+        public minSpecial?: number;
+        public maxSpecial?: number;
+        public allowedSpecial?: string;
 
         public constructor(init?: Partial<UpdateAuthorizationSettings>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'UpdateAuthorizationSettings'; }
         public getMethod() { return 'PUT'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    /** @description Updates the project's membership password complexity policy. */
+    // @Route("/{version}/membership/authorization/password-complexity", "PUT")
+    // @Api(Description="Updates the project's membership password complexity policy.")
+    export class UpdatePasswordComplexity extends CodeMashRequestBase implements IReturn<UpdatePasswordComplexityResponse>
+    {
+        public minLength: number;
+        public maxLength?: number;
+        public minNumbers?: number;
+        public maxNumbers?: number;
+        public minUpper?: number;
+        public maxUpper?: number;
+        public minLower?: number;
+        public maxLower?: number;
+        public minSpecial?: number;
+        public maxSpecial?: number;
+        public allowedSpecial?: string;
+
+        public constructor(init?: Partial<UpdatePasswordComplexity>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdatePasswordComplexity'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new UpdatePasswordComplexityResponse(); }
     }
 
     /** @description Gets the project's configured membership authentication sign-in flows. */
@@ -10991,6 +11998,21 @@ export module CodeMashHub2
         public getTypeName() { return 'GetAuthenticationSettings'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new GetAuthenticationSettingsResponse(); }
+    }
+
+    /** @description Updates the project's membership authentication preferences. */
+    // @Route("/{version}/membership/authentication", "PUT")
+    // @Api(Description="Updates the project's membership authentication preferences.")
+    export class UpdateAuthenticationSettings extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public logoutUrl?: string;
+        public allowUsernames: boolean;
+        public modes?: CredentialsSettingsModeDto[];
+
+        public constructor(init?: Partial<UpdateAuthenticationSettings>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateAuthenticationSettings'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
     }
 
     export class MembershipIntegrationSaved
@@ -11341,6 +12363,22 @@ export module CodeMashHub2
         public createResponse() { return new GetDatabaseTaxonomiesResponse(); }
     }
 
+    // @Route("/{version}/database/taxonomies/tree", "GET")
+    // @DataContract
+    export class GetDatabaseTaxonomyTreeRequest extends CodeMashRequestBase implements IReturn<GetDatabaseTaxonomyTreeResponse>
+    {
+        // @DataMember
+        public includeTerms: boolean;
+
+        // @DataMember
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<GetDatabaseTaxonomyTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetDatabaseTaxonomyTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetDatabaseTaxonomyTreeResponse(); }
+    }
+
     // @Route("/{version}/database/taxonomies", "POST")
     // @DataContract
     export class SaveDatabaseTaxonomyRequest extends CodeMashRequestBase implements IReturn<IdResponse>
@@ -11383,7 +12421,7 @@ export module CodeMashHub2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<DeleteDatabaseTaxonomyTermRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'DeleteDatabaseTaxonomyTermRequest'; }
@@ -11399,7 +12437,7 @@ export module CodeMashHub2
         public taxonomyId: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public filter: string;
@@ -11421,12 +12459,34 @@ export module CodeMashHub2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetDatabaseTaxonomyTermRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetDatabaseTaxonomyTermRequest'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new GetDatabaseTaxonomyTermResponse(); }
+    }
+
+    // @Route("/{version}/database/taxonomies/{TaxonomyName}/terms/tree", "GET")
+    // @DataContract
+    export class GetDatabaseTaxonomyTermTreeRequest extends CodeMashRequestBase implements IReturn<GetDatabaseTaxonomyTermTreeResponse>
+    {
+        // @DataMember
+        public taxonomyName: string;
+
+        // @DataMember
+        public rootTermId?: string;
+
+        // @DataMember
+        public depth?: number;
+
+        // @DataMember
+        public databaseIntegrationId?: string;
+
+        public constructor(init?: Partial<GetDatabaseTaxonomyTermTreeRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetDatabaseTaxonomyTermTreeRequest'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetDatabaseTaxonomyTermTreeResponse(); }
     }
 
     // @Route("/{version}/database/taxonomies/{TaxonomyId}/terms", "POST")
@@ -11437,7 +12497,7 @@ export module CodeMashHub2
         public taxonomyId: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public document: string;
@@ -11459,7 +12519,7 @@ export module CodeMashHub2
         public id: string;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public update: string;
@@ -11502,9 +12562,8 @@ export module CodeMashHub2
         public id: string;
 
         // @DataMember(Name="version")
-                // @ApiMember(DataType="integer", Name="version", ParameterType="query")
-                /** Schema version query param (shares name with API path `version`). */
-                declare version: any;
+        // @ApiMember(DataType="integer", Name="version", ParameterType="query")
+        public schemaVersion?: number;
 
         public constructor(init?: Partial<GetDatabaseSchema>) { super(init as any); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetDatabaseSchema'; }
@@ -11841,7 +12900,7 @@ export module CodeMashHub2
     export class TestDatabaseAggregateRequest extends CodeMashRequestBase implements IReturn<TestDatabaseAggregateResponse>
     {
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         // @DataMember
         public collectionName: string;
@@ -12315,8 +13374,8 @@ export module CodeMashHub2
         public databaseIntegrationId: IntegrationId;
         public schemaName: SchemaName;
         public id: string;
-        public fromOwner: UserId;
-        public toOwner: UserId;
+        public fromOwner: AuthId;
+        public toOwner: AuthId;
 
         public constructor(init?: Partial<RecordResponsibilityChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'RecordResponsibilityChanged'; }
@@ -12363,6 +13422,163 @@ export module CodeMashHub2
 
         public constructor(init?: Partial<RecordsDeleted>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'RecordsDeleted'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class EmailVerificationCodeRequested implements IPasskeyMessage
+    {
+        public email: string;
+        public projectId: string;
+        public code: string;
+        public expiresAtUtc: string;
+
+        public constructor(init?: Partial<EmailVerificationCodeRequested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'EmailVerificationCodeRequested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class MagicLinkRequested implements IPasskeyMessage
+    {
+        public email: string;
+        public projectId: string;
+        public token: string;
+        public expiresAtUtc: string;
+
+        public constructor(init?: Partial<MagicLinkRequested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'MagicLinkRequested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PasswordResetRequested implements IPasskeyMessage
+    {
+        public email: string;
+        public projectId: string;
+        public token: string;
+        public expiresAtUtc: string;
+
+        public constructor(init?: Partial<PasswordResetRequested>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PasswordResetRequested'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class PasswordChanged implements IPasskeyMessage
+    {
+        public email: string;
+        public projectId: string;
+
+        public constructor(init?: Partial<PasswordChanged>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'PasswordChanged'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class SseCallTriggered
+    {
+        public projectId: ProjectId;
+        public accountId: AccountId;
+        public triggerId: TriggerId;
+        public triggerType: TriggerType;
+        public sourceEvent: string;
+        public targetUserAuthId?: string;
+        public schemaId?: string;
+        public tokenMappings?: IReadOnlyDictionary<string, string>;
+        public correlationId?: string;
+
+        public constructor(init?: Partial<SseCallTriggered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'SseCallTriggered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserRegistered
+    {
+        public auth: Auth;
+        public linkToUser?: UserId;
+
+        public constructor(init?: Partial<UserRegistered>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserRegistered'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserCreated
+    {
+        public userId: UserId;
+        public projectId: ProjectId;
+        public authId?: AuthId;
+
+        public constructor(init?: Partial<UserCreated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserCreated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserUpdated
+    {
+        public authId: AuthId;
+        public from: UserGeneralInfo;
+        public to: UserGeneralInfo;
+
+        public constructor(init?: Partial<UserUpdated>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserUpdated'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserBlocked
+    {
+        public user?: UserGeneralInfo;
+        public authId: AuthId;
+
+        public constructor(init?: Partial<UserBlocked>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserBlocked'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserUnblocked
+    {
+        public user?: UserGeneralInfo;
+        public authId: AuthId;
+
+        public constructor(init?: Partial<UserUnblocked>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserUnblocked'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserInvited
+    {
+        public emailAddress: EmailAddress;
+
+        public constructor(init?: Partial<UserInvited>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserInvited'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserVerified
+    {
+        public authId: AuthId;
+        public user?: UserGeneralInfo;
+
+        public constructor(init?: Partial<UserVerified>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserVerified'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() {}
+    }
+
+    export class UserDeleted
+    {
+        public user?: UserGeneralInfo;
+        public authId: AuthId;
+
+        public constructor(init?: Partial<UserDeleted>) { (Object as any).assign(this, init); }
+        public getTypeName() { return 'UserDeleted'; }
         public getMethod() { return 'POST'; }
         public createResponse() {}
     }
@@ -12746,6 +13962,16 @@ export module CodeMashHub2
         public getTypeName() { return 'DisableEmail'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/email/disable-dependencies", "GET")
+    export class GetEmailDisableDependencies extends CodeMashRequestBase implements IReturn<GetNotificationModuleDisableDependenciesResponse>
+    {
+
+        public constructor(init?: Partial<GetEmailDisableDependencies>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetEmailDisableDependencies'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetNotificationModuleDisableDependenciesResponse(); }
     }
 
     // @Route("/{version}/notifications/email/enable", "GET")
@@ -13289,6 +14515,24 @@ export module CodeMashHub2
         public createResponse() { return new PreviewEmailNotificationResponse(); }
     }
 
+    /** @description Stops a running email campaign */
+    // @Route("/{version}/notifications/email/campaigns/{Id}/stop", "POST")
+    // @Api(Description="Stops a running email campaign")
+    // @DataContract
+    export class StopEmailCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        // @DataMember
+        public id: string;
+
+        // @DataMember
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<StopEmailCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'StopEmailCampaignRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     // @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}", "GET")
     export class GetEmailCampaignMessage extends CodeMashRequestBase implements IReturn<GetEmailCampaignMessageResponse>
     {
@@ -13714,6 +14958,7 @@ export module CodeMashHub2
     {
         public projectId: ProjectId;
         public campaignId: CampaignId;
+        public reason?: CampaignStopReason;
 
         public constructor(init?: Partial<EmailCampaignStopped>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailCampaignStopped'; }
@@ -13751,7 +14996,7 @@ export module CodeMashHub2
         public triggerId: TriggerId;
         public triggerType: TriggerType;
         public sourceEvent: string;
-        public tokenMappings?: IReadOnlyDictionary<string>;
+        public tokenMappings?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<EmailCampaignTriggered>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'EmailCampaignTriggered'; }
@@ -13783,6 +15028,16 @@ export module CodeMashHub2
         public getTypeName() { return 'DisableSms'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/sms/disable-dependencies", "GET")
+    export class GetSmsDisableDependencies extends CodeMashRequestBase implements IReturn<GetNotificationModuleDisableDependenciesResponse>
+    {
+
+        public constructor(init?: Partial<GetSmsDisableDependencies>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetSmsDisableDependencies'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetNotificationModuleDisableDependenciesResponse(); }
     }
 
     // @Route("/{version}/notifications/sms/enable", "GET")
@@ -14160,6 +15415,18 @@ export module CodeMashHub2
         public createResponse() { return new PreviewSmsNotificationResponse(); }
     }
 
+    // @Route("/{version}/notifications/sms/campaigns/{Id}/stop", "POST")
+    export class StopSmsCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public id: string;
+        public databaseIntegrationId: string;
+
+        public constructor(init?: Partial<StopSmsCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'StopSmsCampaignRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}", "GET")
     export class GetSmsCampaignMessage extends CodeMashRequestBase implements IReturn<GetSmsCampaignMessageResponse>
     {
@@ -14431,6 +15698,7 @@ export module CodeMashHub2
     export class SmsCampaignStopped
     {
         public campaignId: CampaignId;
+        public reason?: CampaignStopReason;
 
         public constructor(init?: Partial<SmsCampaignStopped>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SmsCampaignStopped'; }
@@ -14466,7 +15734,7 @@ export module CodeMashHub2
         public triggerId: TriggerId;
         public triggerType: TriggerType;
         public sourceEvent: string;
-        public tokenMappings?: IReadOnlyDictionary<string>;
+        public tokenMappings?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<SmsCampaignTriggered>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'SmsCampaignTriggered'; }
@@ -14709,6 +15977,16 @@ export module CodeMashHub2
         public getTypeName() { return 'DisablePush'; }
         public getMethod() { return 'GET'; }
         public createResponse() { return new EmptyResponse(); }
+    }
+
+    // @Route("/{version}/notifications/push/disable-dependencies", "GET")
+    export class GetPushDisableDependencies extends CodeMashRequestBase implements IReturn<GetNotificationModuleDisableDependenciesResponse>
+    {
+
+        public constructor(init?: Partial<GetPushDisableDependencies>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetPushDisableDependencies'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetNotificationModuleDisableDependenciesResponse(); }
     }
 
     // @Route("/{version}/notifications/push/enable", "GET")
@@ -15004,7 +16282,7 @@ export module CodeMashHub2
         public campaign: PushCampaignRequest;
 
         // @DataMember
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<CreatePushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'CreatePushCampaignRequest'; }
@@ -15029,7 +16307,7 @@ export module CodeMashHub2
     export class GetPushCampaign extends CodeMashRequestBase implements IReturn<GetPushCampaignResponse>
     {
         public id: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaign>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaign'; }
@@ -15040,7 +16318,7 @@ export module CodeMashHub2
     // @Route("/{version}/notifications/push/campaigns", "GET")
     export class GetPushCampaigns extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignsResponse>
     {
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
         public templateId?: string;
         public from?: number;
         public to?: number;
@@ -15055,7 +16333,7 @@ export module CodeMashHub2
     export class GetPushCampaignBatches extends CodeMashListPaginationRequestBase implements IReturn<GetPushCampaignBatchesResponse>
     {
         public id: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
         public batchId?: string;
 
         public constructor(init?: Partial<GetPushCampaignBatches>) { super(init); (Object as any).assign(this, init); }
@@ -15070,7 +16348,7 @@ export module CodeMashHub2
         public id: string;
         public batchId: string;
         public notificationId: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaignBatchNotification>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaignBatchNotification'; }
@@ -15083,7 +16361,7 @@ export module CodeMashHub2
     {
         public id: string;
         public batchId: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaignBatchNotifications>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaignBatchNotifications'; }
@@ -15095,7 +16373,7 @@ export module CodeMashHub2
     export class GetPushCampaignStatistics extends CodeMashRequestBase implements IReturn<GetPushCampaignStatisticsResponse>
     {
         public id: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaignStatistics>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaignStatistics'; }
@@ -15114,13 +16392,26 @@ export module CodeMashHub2
         public createResponse() { return new PreviewPushNotificationResponse(); }
     }
 
+    /** @description Stops a running push campaign */
+    // @Route("/{version}/notifications/push/campaigns/{Id}/stop", "POST")
+    // @Api(Description="Stops a running push campaign")
+    // @DataContract
+    export class StopPushCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+
+        public constructor(init?: Partial<StopPushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'StopPushCampaignRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+
     // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages/{id}", "GET")
     export class GetPushCampaignMessage extends CodeMashRequestBase implements IReturn<GetPushCampaignMessageResponse>
     {
         public campaignId: string;
         public campaignBatchId: string;
         public notificationId: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaignMessage>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaignMessage'; }
@@ -15133,7 +16424,7 @@ export module CodeMashHub2
     {
         public campaignId: string;
         public campaignBatchId: string;
-        public databaseIntegrationId: string;
+        public databaseIntegrationId?: string;
 
         public constructor(init?: Partial<GetPushCampaignMessagesRequest>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'GetPushCampaignMessagesRequest'; }
@@ -15706,9 +16997,9 @@ export module CodeMashHub2
     // @Route("/{version}/logs/enable", "GET")
     export class EnableLogging extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
-        /** @description Optional project database integration id to store logs in. */
-        // @ApiMember(DataType="string", Description="Optional project database integration id to store logs in.", Name="databaseIntegrationId", ParameterType="query")
-        public databaseIntegrationId?: string;
+        /** @description When true, also create a Norbix Logging integration backed by the project's default database. */
+        // @ApiMember(DataType="boolean", Description="When true, also create a Norbix Logging integration backed by the project's default database.", Name="createNorbixLogging", ParameterType="query")
+        public createNorbixLogging: boolean;
 
         public constructor(init?: Partial<EnableLogging>) { super(init); (Object as any).assign(this, init); }
         public getTypeName() { return 'EnableLogging'; }
@@ -16373,7 +17664,7 @@ export module CodeMashHub2
     export class WebhookIntegrationExtraHeadersChanged
     {
         public id: IntegrationId;
-        public extraHeaders?: IReadOnlyDictionary<string>;
+        public extraHeaders?: IReadOnlyDictionary<string, string>;
 
         public constructor(init?: Partial<WebhookIntegrationExtraHeadersChanged>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'WebhookIntegrationExtraHeadersChanged'; }
@@ -16742,7 +18033,7 @@ export module CodeMashHub2
         public createResponse() { return new ResolveResourcesResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts", "POST")
+    // @Route("/{version}/membership/users", "POST")
     export class CreateContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public primaryEmail?: string;
@@ -16757,7 +18048,7 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}", "DELETE")
+    // @Route("/{version}/membership/users/{contactId}", "DELETE")
     export class DeleteContact extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public contactId: string;
@@ -16768,7 +18059,7 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}", "GET")
+    // @Route("/{version}/membership/users/{contactId}", "GET")
     export class GetContact extends CodeMashRequestBase implements IReturn<GetContactResponse>
     {
         public contactId: string;
@@ -16779,7 +18070,7 @@ export module CodeMashHub2
         public createResponse() { return new GetContactResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts", "GET")
+    // @Route("/{version}/membership/users", "GET")
     export class GetAllContacts extends CodeMashRequestBase implements IReturn<GetAllContactsResponse>
     {
         public startingAfter?: string;
@@ -16791,7 +18082,7 @@ export module CodeMashHub2
         public createResponse() { return new GetAllContactsResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/merge", "POST")
+    // @Route("/{version}/membership/users/merge", "POST")
     export class MergeContactsRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public survivorId: string;
@@ -16803,35 +18094,34 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
-    export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    // @Route("/{version}/membership/users/{contactId}", "PATCH")
+    export class UpdateContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public contactId: string;
-        public channel: string;
-        public lawfulBasis: string;
-        declare source: string;
-        public evidenceRef?: string;
+        public displayName?: string;
+        public firstName?: string;
+        public lastName?: string;
+        public fullName?: string;
+        public company?: string;
+        public notes?: string;
+        public gender?: string;
+        public birthDate?: number;
+        public timeZone?: string;
+        public language?: string;
+        public addressLine1?: string;
+        public addressLine2?: string;
+        public country?: string;
+        public city?: string;
+        public state?: string;
+        public postalCode?: string;
 
-        public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GrantContactConsentRequest'; }
-        public getMethod() { return 'POST'; }
+        public constructor(init?: Partial<UpdateContactRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateContactRequest'; }
+        public getMethod() { return 'PATCH'; }
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
-    export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
-    {
-        public contactId: string;
-        public channel: string;
-        public reason?: string;
-
-        public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'UnsubscribeContactRequest'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new EmptyResponse(); }
-    }
-
-    // @Route("/{version}/notifications/contacts/{contactId}/identities", "POST")
+    // @Route("/{version}/membership/users/{contactId}/identities", "POST")
     export class AddContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public contactId: string;
@@ -16846,7 +18136,7 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}/identities/{identityId}/promote", "POST")
+    // @Route("/{version}/membership/users/{contactId}/identities/{identityId}/promote", "POST")
     export class PromoteContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public contactId: string;
@@ -16858,7 +18148,7 @@ export module CodeMashHub2
         public createResponse() { return new EmptyResponse(); }
     }
 
-    // @Route("/{version}/notifications/contacts/{contactId}/identities/{identityId}", "DELETE")
+    // @Route("/{version}/membership/users/{contactId}/identities/{identityId}", "DELETE")
     export class RemoveContactIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
     {
         public contactId: string;
@@ -16929,15 +18219,75 @@ export module CodeMashHub2
         public createResponse() { return new GetAccessTokenResponse(); }
     }
 
+  // @dto-patches (injected by fix-dto-types.mjs)
+  export class FakeEmailIntegrationDto extends EmailIntegrationDto
+  {
+
+      public constructor(init?: Partial<FakeEmailIntegrationDto>) { super(init); (Object as any).assign(this, init); }
+  }
+
+    // @sdk-dto-patches (injected by sync-types.mjs)
+    export class UserApiKey
+    {
+        public key?: string;
+        public keyType?: string;
+        public expiryDate?: string;
+        public meta?: { [index:string]: string; };
+
+        public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
+    }
+    export class GetUserEmailPreferencesResponse extends ResponseBase
+    {
+        public defaultLanguage: string;
+        public projectLanguages: string[] = [];
+        public blockAllMarketingMessages: boolean;
+        public subscribedTags?: { [index:string]: HashSet<string>; };
+
+        public constructor(init?: Partial<GetUserEmailPreferencesResponse>) { super(init); (Object as any).assign(this, init); }
+    }
+    export class GetApiKeysResponse
+    {
+        public results?: UserApiKey[];
+        public meta?: { [index:string]: string; };
+        public responseStatus?: ResponseStatus;
+
+        public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
+    }
+    export class RegenerateApiKeysResponse
+    {
+        public results?: UserApiKey[];
+        public meta?: { [index:string]: string; };
+        public responseStatus?: ResponseStatus;
+
+        public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
+    }
+    // @Route("/{version}/notifications/user/preferences", "GET")
+    export class GetUserNotificationPreferences extends CodeMashRequestBase implements IReturn<GetUserEmailPreferencesResponse>
+    {
+        public userId: string;
+
+        public constructor(init?: Partial<GetUserNotificationPreferences>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GetUserNotificationPreferences'; }
+        public getMethod() { return 'GET'; }
+        public createResponse() { return new GetUserEmailPreferencesResponse(); }
+    }
+    // @Route("/{version}/notifications/user/preferences", "PUT")
+    export class UpdateUserNotificationsPreferences extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public userId: string;
+        public blockAllMarketingMessages: boolean;
+        public subscribedToTags?: { [index:string]: HashSet<string>; };
+
+        public constructor(init?: Partial<UpdateUserNotificationsPreferences>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UpdateUserNotificationsPreferences'; }
+        public getMethod() { return 'PUT'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
     // @Route("/apikeys")
     // @Route("/apikeys/{Environment}")
-    // @DataContract
     export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet
     {
-        // @DataMember(Order=1)
         public environment?: string;
-
-        // @DataMember(Order=2)
         public meta?: { [index:string]: string; };
 
         public constructor(init?: Partial<GetApiKeys>) { (Object as any).assign(this, init); }
@@ -16945,16 +18295,11 @@ export module CodeMashHub2
         public getMethod() { return 'GET'; }
         public createResponse() { return new GetApiKeysResponse(); }
     }
-
     // @Route("/apikeys/regenerate")
     // @Route("/apikeys/regenerate/{Environment}")
-    // @DataContract
     export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost
     {
-        // @DataMember(Order=1)
         public environment?: string;
-
-        // @DataMember(Order=2)
         public meta?: { [index:string]: string; };
 
         public constructor(init?: Partial<RegenerateApiKeys>) { (Object as any).assign(this, init); }
@@ -16962,6 +18307,31 @@ export module CodeMashHub2
         public getMethod() { return 'POST'; }
         public createResponse() { return new RegenerateApiKeysResponse(); }
     }
+    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
+    export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public lawfulBasis: string;
+        declare source: string;
+        public evidenceRef?: string;
+
+        public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'GrantContactConsentRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
+    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
+    export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+    {
+        public contactId: string;
+        public channel: string;
+        public reason?: string;
+
+        public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
+        public getTypeName() { return 'UnsubscribeContactRequest'; }
+        public getMethod() { return 'POST'; }
+        public createResponse() { return new EmptyResponse(); }
+    }
 
 }
-

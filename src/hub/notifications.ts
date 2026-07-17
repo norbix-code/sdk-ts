@@ -6,48 +6,10 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 127
+ * Endpoints: 125
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
-
-  /**
-   * GET /{version}/notifications/user/preferences
-   * Request DTO: GetUserNotificationPreferences
-   */
-  getUserNotificationPreferences = (
-    request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetUserEmailPreferencesResponse> => {
-    return this.transport.send<CodeMashHub2.GetUserEmailPreferencesResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/user/preferences',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PUT /{version}/notifications/user/preferences
-   * Request DTO: UpdateUserNotificationsPreferences
-   */
-  updateUserNotificationsPreferences = (
-    request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/user/preferences',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
 
   /**
    * GET /{version}/notifications/email/disable
@@ -60,6 +22,25 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/email/disable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/email/disable-dependencies
+   * Request DTO: GetEmailDisableDependencies
+   */
+  getEmailDisableDependencies = (
+    request: Partial<CodeMashHub2.GetEmailDisableDependencies> = {} as Partial<CodeMashHub2.GetEmailDisableDependencies>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse> => {
+    return this.transport.send<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/disable-dependencies',
       method: 'GET',
       request,
       pathParams: [],
@@ -905,6 +886,25 @@ export class NotificationsModule {
   };
 
   /**
+   * POST /{version}/notifications/email/campaigns/{Id}/stop
+   * Request DTO: StopEmailCampaignRequest
+   */
+  stopEmailCampaign = (
+    request: Partial<CodeMashHub2.StopEmailCampaignRequest> = {} as Partial<CodeMashHub2.StopEmailCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{Id}/stop',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{id}
    * Request DTO: GetEmailCampaignMessage
    */
@@ -953,6 +953,25 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/sms/disable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/sms/disable-dependencies
+   * Request DTO: GetSmsDisableDependencies
+   */
+  getSmsDisableDependencies = (
+    request: Partial<CodeMashHub2.GetSmsDisableDependencies> = {} as Partial<CodeMashHub2.GetSmsDisableDependencies>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse> => {
+    return this.transport.send<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/sms/disable-dependencies',
       method: 'GET',
       request,
       pathParams: [],
@@ -1532,6 +1551,25 @@ export class NotificationsModule {
   };
 
   /**
+   * POST /{version}/notifications/sms/campaigns/{Id}/stop
+   * Request DTO: StopSmsCampaignRequest
+   */
+  stopSmsCampaign = (
+    request: Partial<CodeMashHub2.StopSmsCampaignRequest> = {} as Partial<CodeMashHub2.StopSmsCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/sms/campaigns/{Id}/stop',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{id}
    * Request DTO: GetSmsCampaignMessage
    */
@@ -1580,6 +1618,25 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/push/disable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/disable-dependencies
+   * Request DTO: GetPushDisableDependencies
+   */
+  getPushDisableDependencies = (
+    request: Partial<CodeMashHub2.GetPushDisableDependencies> = {} as Partial<CodeMashHub2.GetPushDisableDependencies>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse> => {
+    return this.transport.send<CodeMashHub2.GetNotificationModuleDisableDependenciesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/disable-dependencies',
       method: 'GET',
       request,
       pathParams: [],
@@ -2198,6 +2255,25 @@ export class NotificationsModule {
   };
 
   /**
+   * POST /{version}/notifications/push/campaigns/{Id}/stop
+   * Request DTO: StopPushCampaignRequest
+   */
+  stopPushCampaign = (
+    request: Partial<CodeMashHub2.StopPushCampaignRequest> = {} as Partial<CodeMashHub2.StopPushCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/campaigns/{Id}/stop',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/notifications/push/campaigns/{campaignId}/messages/{id}
    * Request DTO: GetPushCampaignMessage
    */
@@ -2236,73 +2312,16 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/contacts
-   * Request DTO: CreateContactRequest
+   * GET /{version}/notifications/user/preferences
+   * Request DTO: GetUserNotificationPreferences
    */
-  createContact = (
-    request: Partial<CodeMashHub2.CreateContactRequest> = {} as Partial<CodeMashHub2.CreateContactRequest>,
+  getUserNotificationPreferences = (
+    request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.GetUserEmailPreferencesResponse> => {
+    return this.transport.send<CodeMashHub2.GetUserEmailPreferencesResponse>({
       target: 'hub',
-      path: '/{version}/notifications/contacts',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * DELETE /{version}/notifications/contacts/{contactId}
-   * Request DTO: DeleteContact
-   */
-  deleteContact = (
-    request: Partial<CodeMashHub2.DeleteContact> = {} as Partial<CodeMashHub2.DeleteContact>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}',
-      method: 'DELETE',
-      request,
-      pathParams: ['contactId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/notifications/contacts/{contactId}
-   * Request DTO: GetContact
-   */
-  getContact = (
-    request: Partial<CodeMashHub2.GetContact> = {} as Partial<CodeMashHub2.GetContact>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetContactResponse> => {
-    return this.transport.send<CodeMashHub2.GetContactResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}',
-      method: 'GET',
-      request,
-      pathParams: ['contactId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/notifications/contacts
-   * Request DTO: GetAllContacts
-   */
-  getAllContacts = (
-    request: Partial<CodeMashHub2.GetAllContacts> = {} as Partial<CodeMashHub2.GetAllContacts>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetAllContactsResponse> => {
-    return this.transport.send<CodeMashHub2.GetAllContactsResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts',
+      path: '/{version}/notifications/user/preferences',
       method: 'GET',
       request,
       pathParams: [],
@@ -2312,17 +2331,17 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/contacts/merge
-   * Request DTO: MergeContactsRequest
+   * PUT /{version}/notifications/user/preferences
+   * Request DTO: UpdateUserNotificationsPreferences
    */
-  mergeContacts = (
-    request: Partial<CodeMashHub2.MergeContactsRequest> = {} as Partial<CodeMashHub2.MergeContactsRequest>,
+  updateUserNotificationsPreferences = (
+    request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.EmptyResponse> => {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
-      path: '/{version}/notifications/contacts/merge',
-      method: 'POST',
+      path: '/{version}/notifications/user/preferences',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -2363,63 +2382,6 @@ export class NotificationsModule {
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/notifications/contacts/{contactId}/identities
-   * Request DTO: AddContactIdentityRequest
-   */
-  addContactIdentity = (
-    request: Partial<CodeMashHub2.AddContactIdentityRequest> = {} as Partial<CodeMashHub2.AddContactIdentityRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/identities',
-      method: 'POST',
-      request,
-      pathParams: ['contactId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/notifications/contacts/{contactId}/identities/{identityId}/promote
-   * Request DTO: PromoteContactIdentityRequest
-   */
-  promoteContactIdentity = (
-    request: Partial<CodeMashHub2.PromoteContactIdentityRequest> = {} as Partial<CodeMashHub2.PromoteContactIdentityRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/identities/{identityId}/promote',
-      method: 'POST',
-      request,
-      pathParams: ['contactId', 'identityId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * DELETE /{version}/notifications/contacts/{contactId}/identities/{identityId}
-   * Request DTO: RemoveContactIdentityRequest
-   */
-  removeContactIdentity = (
-    request: Partial<CodeMashHub2.RemoveContactIdentityRequest> = {} as Partial<CodeMashHub2.RemoveContactIdentityRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/identities/{identityId}',
-      method: 'DELETE',
-      request,
-      pathParams: ['contactId', 'identityId'],
       scope: 'project',
       ...options,
     });

@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 44
+ * Endpoints: 46
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -221,6 +221,25 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/taxonomies/tree
+   * Request DTO: GetDatabaseTaxonomyTreeRequest
+   */
+  getDatabaseTaxonomyTree = (
+    request: Partial<CodeMashHub2.GetDatabaseTaxonomyTreeRequest> = {} as Partial<CodeMashHub2.GetDatabaseTaxonomyTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseTaxonomyTreeResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseTaxonomyTreeResponse>({
+      target: 'hub',
+      path: '/{version}/database/taxonomies/tree',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/database/taxonomies
    * Request DTO: SaveDatabaseTaxonomyRequest
    */
@@ -291,6 +310,25 @@ export class DatabaseModule {
       method: 'GET',
       request,
       pathParams: ['TaxonomyId', 'Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/taxonomies/{TaxonomyName}/terms/tree
+   * Request DTO: GetDatabaseTaxonomyTermTreeRequest
+   */
+  getDatabaseTaxonomyTermTree = (
+    request: Partial<CodeMashHub2.GetDatabaseTaxonomyTermTreeRequest> = {} as Partial<CodeMashHub2.GetDatabaseTaxonomyTermTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseTaxonomyTermTreeResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseTaxonomyTermTreeResponse>({
+      target: 'hub',
+      path: '/{version}/database/taxonomies/{TaxonomyName}/terms/tree',
+      method: 'GET',
+      request,
+      pathParams: ['TaxonomyName'],
       scope: 'project',
       ...options,
     });

@@ -1,5 +1,5 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
-import type { CodeMashApi2 } from '../types/api2.dtos.js';
+import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
@@ -16,11 +16,11 @@ export class PublicModule {
    * Request DTO: GetPublicProjectConfig
    */
   getPublicProjectConfig = (
-    request: Partial<CodeMashApi2.GetPublicProjectConfig> = {} as Partial<CodeMashApi2.GetPublicProjectConfig>,
+    request: Partial<CodeMashHub2.GetPublicProjectConfig> = {} as Partial<CodeMashHub2.GetPublicProjectConfig>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PublicProjectConfigDto> => {
-    return this.transport.send<CodeMashApi2.PublicProjectConfigDto>({
-      target: 'api',
+  ): Promise<CodeMashHub2.PublicProjectConfigDto> => {
+    return this.transport.send<CodeMashHub2.PublicProjectConfigDto>({
+      target: 'hub',
       path: '/{version}/public/projects/{ProjectId}/config',
       method: 'GET',
       request,
@@ -35,11 +35,11 @@ export class PublicModule {
    * Request DTO: GetPublicProjectLegal
    */
   getPublicProjectLegal = (
-    request: Partial<CodeMashApi2.GetPublicProjectLegal> = {} as Partial<CodeMashApi2.GetPublicProjectLegal>,
+    request: Partial<CodeMashHub2.GetPublicProjectLegal> = {} as Partial<CodeMashHub2.GetPublicProjectLegal>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PublicLegalDocumentDto> => {
-    return this.transport.send<CodeMashApi2.PublicLegalDocumentDto>({
-      target: 'api',
+  ): Promise<CodeMashHub2.PublicLegalDocumentDto> => {
+    return this.transport.send<CodeMashHub2.PublicLegalDocumentDto>({
+      target: 'hub',
       path: '/{version}/public/projects/{ProjectId}/legal/{Kind}',
       method: 'GET',
       request,

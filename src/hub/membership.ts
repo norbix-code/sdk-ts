@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 30
+ * Endpoints: 44
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -44,6 +44,63 @@ export class MembershipModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{Id}/api-keys
+   * Request DTO: IssueServiceUserApiKeyRequest
+   */
+  issueServiceUserApiKey = (
+    request: Partial<CodeMashHub2.IssueServiceUserApiKeyRequest> = {} as Partial<CodeMashHub2.IssueServiceUserApiKeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IssueServiceUserApiKeyResponse> => {
+    return this.transport.send<CodeMashHub2.IssueServiceUserApiKeyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{Id}/api-keys',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/users/{Id}/api-keys
+   * Request DTO: ListServiceUserApiKeysRequest
+   */
+  listServiceUserApiKeys = (
+    request: Partial<CodeMashHub2.ListServiceUserApiKeysRequest> = {} as Partial<CodeMashHub2.ListServiceUserApiKeysRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ListServiceUserApiKeysResponse> => {
+    return this.transport.send<CodeMashHub2.ListServiceUserApiKeysResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{Id}/api-keys',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/membership/users/{Id}/api-keys/{KeyId}
+   * Request DTO: DeleteServiceUserApiKeyRequest
+   */
+  deleteServiceUserApiKey = (
+    request: Partial<CodeMashHub2.DeleteServiceUserApiKeyRequest> = {} as Partial<CodeMashHub2.DeleteServiceUserApiKeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{Id}/api-keys/{KeyId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id', 'KeyId'],
       scope: 'project',
       ...options,
     });
@@ -563,6 +620,25 @@ export class MembershipModule {
   };
 
   /**
+   * PUT /{version}/membership/authorization/password-complexity
+   * Request DTO: UpdatePasswordComplexity
+   */
+  updatePasswordComplexity = (
+    request: Partial<CodeMashHub2.UpdatePasswordComplexity> = {} as Partial<CodeMashHub2.UpdatePasswordComplexity>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.UpdatePasswordComplexityResponse> => {
+    return this.transport.send<CodeMashHub2.UpdatePasswordComplexityResponse>({
+      target: 'hub',
+      path: '/{version}/membership/authorization/password-complexity',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/membership/authentication
    * Request DTO: GetAuthenticationSettings
    */
@@ -576,6 +652,196 @@ export class MembershipModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/authentication
+   * Request DTO: UpdateAuthenticationSettings
+   */
+  updateAuthenticationSettings = (
+    request: Partial<CodeMashHub2.UpdateAuthenticationSettings> = {} as Partial<CodeMashHub2.UpdateAuthenticationSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/authentication',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users
+   * Request DTO: CreateContactRequest
+   */
+  createContact = (
+    request: Partial<CodeMashHub2.CreateContactRequest> = {} as Partial<CodeMashHub2.CreateContactRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/membership/users/{contactId}
+   * Request DTO: DeleteContact
+   */
+  deleteContact = (
+    request: Partial<CodeMashHub2.DeleteContact> = {} as Partial<CodeMashHub2.DeleteContact>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/users/{contactId}
+   * Request DTO: GetContact
+   */
+  getContact = (
+    request: Partial<CodeMashHub2.GetContact> = {} as Partial<CodeMashHub2.GetContact>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetContactResponse> => {
+    return this.transport.send<CodeMashHub2.GetContactResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'GET',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/users
+   * Request DTO: GetAllContacts
+   */
+  getAllContacts = (
+    request: Partial<CodeMashHub2.GetAllContacts> = {} as Partial<CodeMashHub2.GetAllContacts>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAllContactsResponse> => {
+    return this.transport.send<CodeMashHub2.GetAllContactsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/merge
+   * Request DTO: MergeContactsRequest
+   */
+  mergeContacts = (
+    request: Partial<CodeMashHub2.MergeContactsRequest> = {} as Partial<CodeMashHub2.MergeContactsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/merge',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/membership/users/{contactId}
+   * Request DTO: UpdateContactRequest
+   */
+  updateContact = (
+    request: Partial<CodeMashHub2.UpdateContactRequest> = {} as Partial<CodeMashHub2.UpdateContactRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'PATCH',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/identities
+   * Request DTO: AddContactIdentityRequest
+   */
+  addContactIdentity = (
+    request: Partial<CodeMashHub2.AddContactIdentityRequest> = {} as Partial<CodeMashHub2.AddContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}/identities',
+      method: 'POST',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/identities/{identityId}/promote
+   * Request DTO: PromoteContactIdentityRequest
+   */
+  promoteContactIdentity = (
+    request: Partial<CodeMashHub2.PromoteContactIdentityRequest> = {} as Partial<CodeMashHub2.PromoteContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}/identities/{identityId}/promote',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'identityId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/membership/users/{contactId}/identities/{identityId}
+   * Request DTO: RemoveContactIdentityRequest
+   */
+  removeContactIdentity = (
+    request: Partial<CodeMashHub2.RemoveContactIdentityRequest> = {} as Partial<CodeMashHub2.RemoveContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}/identities/{identityId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['contactId', 'identityId'],
       scope: 'project',
       ...options,
     });

@@ -36,6 +36,9 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getProjects`](#getprojects) | `GET` | `/{version}/account/projects` | `project` |
 | [`getAccountRegions`](#getaccountregions) | `GET` | `/{version}/account/regions` | `project` |
 | [`getProjectTokens`](#getprojecttokens) | `GET` | `/{version}/account/projects/{projectId}/tokens` | `project` |
+| [`assignAdminPortalServiceUser`](#assignadminportalserviceuser) | `PUT` | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project` |
+| [`getAdminPortalStructure`](#getadminportalstructure) | `GET` | `/{version}/account/projects/{projectId}/admin-portal/structure` | `project` |
+| [`updateProjectAdminUrl`](#updateprojectadminurl) | `PATCH` | `/{version}/account/projects/{projectId}/settings/admin-url` | `project` |
 | [`updateProjectAccentColor`](#updateprojectaccentcolor) | `PATCH` | `/{version}/account/projects/{projectId}/settings/accent-color` | `project` |
 | [`updateProjectIcon`](#updateprojecticon) | `PATCH` | `/{version}/account/projects/{projectId}/settings/icon` | `project` |
 | [`updateProjectLogo`](#updateprojectlogo) | `PATCH` | `/{version}/account/projects/{projectId}/settings/logo` | `project` |
@@ -46,23 +49,25 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`disableProject`](#disableproject) | `PATCH` | `/{version}/account/projects/{projectId}/disable` | `project` |
 | [`enableProject`](#enableproject) | `PATCH` | `/{version}/account/projects/{projectId}/enable` | `project` |
 | [`updateProjectLanguages`](#updateprojectlanguages) | `PATCH` | `/{version}/account/projects/{projectId}/settings/languages` | `project` |
+| [`updateProjectLegalDocuments`](#updateprojectlegaldocuments) | `PATCH` | `/{version}/account/projects/{projectId}/settings/legal` | `project` |
+| [`updateProjectExposeLegal`](#updateprojectexposelegal) | `PATCH` | `/{version}/account/projects/{projectId}/settings/legal/expose` | `project` |
 | [`updateProjectUrl`](#updateprojecturl) | `PATCH` | `/{version}/account/projects/{projectId}/settings/url` | `project` |
 | [`updateProjectName`](#updateprojectname) | `PATCH` | `/{version}/account/projects/{projectId}/settings/name` | `project` |
 | [`updateProjectRegions`](#updateprojectregions) | `PATCH` | `/{version}/account/projects/{projectId}/settings/regions` | `project` |
 | [`createAccount`](#createaccount) | `POST` | `/{version}/account` | `project` |
 | [`changeTeamMemberPassword`](#changeteammemberpassword) | `POST` | `/{version}/account/team/member/password` | `project` |
 | [`createTeamMember`](#createteammember) | `POST` | `/{version}/account/team/member/create` | `project` |
+| [`createAccountPolicy`](#createaccountpolicy) | `POST` | `/{version}/account/team/policies` | `project` |
+| [`createAccountRole`](#createaccountrole) | `POST` | `/{version}/account/team/roles` | `project` |
+| [`deleteAccountPolicy`](#deleteaccountpolicy) | `DELETE` | `/{version}/account/team/policies/{Id}` | `project` |
+| [`deleteAccountRole`](#deleteaccountrole) | `DELETE` | `/{version}/account/team/roles/{Id}` | `project` |
 | [`getAccountCollaborators`](#getaccountcollaborators) | `GET` | `/{version}/account/collaborators` | `project` |
 | [`getAccountPasswordPolicy`](#getaccountpasswordpolicy) | `GET` | `/{version}/account/team/password-policy` | `project` |
-| [`getAccountTeamRoles`](#getaccountteamroles) | `GET` | `/{version}/account/team/roles` | `project` |
 | [`getAccountTeamPolicies`](#getaccountteampolicies) | `GET` | `/{version}/account/team/policies` | `project` |
-| [`createAccountRole`](#createaccountrole) | `POST` | `/{version}/account/team/roles` | `project` |
-| [`updateAccountRole`](#updateaccountrole) | `PUT` | `/{version}/account/team/roles` | `project` |
-| [`deleteAccountRole`](#deleteaccountrole) | `DELETE` | `/{version}/account/team/roles/{Id}` | `project` |
-| [`createAccountPolicy`](#createaccountpolicy) | `POST` | `/{version}/account/team/policies` | `project` |
-| [`updateAccountPolicy`](#updateaccountpolicy) | `PUT` | `/{version}/account/team/policies` | `project` |
-| [`deleteAccountPolicy`](#deleteaccountpolicy) | `DELETE` | `/{version}/account/team/policies/{Id}` | `project` |
+| [`getAccountTeamRoles`](#getaccountteamroles) | `GET` | `/{version}/account/team/roles` | `project` |
 | [`sendInviteToTeamMember`](#sendinvitetoteammember) | `POST` | `/{version}/account/team/member/invite` | `project` |
+| [`updateAccountPolicy`](#updateaccountpolicy) | `PUT` | `/{version}/account/team/policies` | `project` |
+| [`updateAccountRole`](#updateaccountrole) | `PUT` | `/{version}/account/team/roles` | `project` |
 | [`getLicenses`](#getlicenses) | `GET` | `/{version}/account/licenses` | `project` |
 | [`askChat`](#askchat) | `POST` | `/{version}/account/chat/complete` | `project` |
 
@@ -652,6 +657,75 @@ const result = await norbix.hub.account.getProjectTokens({
 
 [↑ Top](#endpoints)
 
+### assignAdminPortalServiceUser
+
+`PUT` `/{version}/account/projects/{projectId}/settings/admin-portal/service-user`
+
+Assign the resource to another entity.
+
+**Request DTO**: `CodeMashHub2.AssignAdminPortalServiceUserRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.assignAdminPortalServiceUser({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAdminPortalStructure
+
+`GET` `/{version}/account/projects/{projectId}/admin-portal/structure`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAdminPortalStructure`
+**Response**: `CodeMashHub2.AdminPortalStructureDto`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAdminPortalStructure({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.AdminPortalStructureDto
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectAdminUrl
+
+`PATCH` `/{version}/account/projects/{projectId}/settings/admin-url`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectAdminUrl`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectAdminUrl({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### updateProjectAccentColor
 
 `PATCH` `/{version}/account/projects/{projectId}/settings/accent-color`
@@ -882,6 +956,52 @@ const result = await norbix.hub.account.updateProjectLanguages({
 
 [↑ Top](#endpoints)
 
+### updateProjectLegalDocuments
+
+`PATCH` `/{version}/account/projects/{projectId}/settings/legal`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectLegalDocuments`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectLegalDocuments({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectExposeLegal
+
+`PATCH` `/{version}/account/projects/{projectId}/settings/legal/expose`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectExposeLegal`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectExposeLegal({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### updateProjectUrl
 
 `PATCH` `/{version}/account/projects/{projectId}/settings/url`
@@ -1017,6 +1137,96 @@ const result = await norbix.hub.account.createTeamMember({
 
 [↑ Top](#endpoints)
 
+### createAccountPolicy
+
+`POST` `/{version}/account/team/policies`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateAccountPolicy`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createAccountPolicy({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### createAccountRole
+
+`POST` `/{version}/account/team/roles`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateAccountRole`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createAccountRole({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAccountPolicy
+
+`DELETE` `/{version}/account/team/policies/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAccountPolicy`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteAccountPolicy({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAccountRole
+
+`DELETE` `/{version}/account/team/roles/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAccountRole`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteAccountRole({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getAccountCollaborators
 
 `GET` `/{version}/account/collaborators`
@@ -1061,28 +1271,6 @@ const result = await norbix.hub.account.getAccountPasswordPolicy({
 
 [↑ Top](#endpoints)
 
-### getAccountTeamRoles
-
-`GET` `/{version}/account/team/roles`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetAccountTeamRoles`
-**Response**: `CodeMashHub2.GetAccountTeamRolesResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getAccountTeamRoles({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetAccountTeamRolesResponse
-```
-
-[↑ Top](#endpoints)
-
 ### getAccountTeamPolicies
 
 `GET` `/{version}/account/team/policies`
@@ -1105,91 +1293,46 @@ const result = await norbix.hub.account.getAccountTeamPolicies({
 
 [↑ Top](#endpoints)
 
-### createAccountRole
+### getAccountTeamRoles
 
-`POST` `/{version}/account/team/roles`
+`GET` `/{version}/account/team/roles`
 
-Create a new item.
+Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.CreateAccountRole`
-**Response**: `CodeMashHub2.IdResponse`
+**Request DTO**: `CodeMashHub2.GetAccountTeamRoles`
+**Response**: `CodeMashHub2.GetAccountTeamRolesResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.account.createAccountRole({
+const result = await norbix.hub.account.getAccountTeamRoles({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.IdResponse
+// → typed as CodeMashHub2.GetAccountTeamRolesResponse
 ```
 
 [↑ Top](#endpoints)
 
-### updateAccountRole
+### sendInviteToTeamMember
 
-`PUT` `/{version}/account/team/roles`
+`POST` `/{version}/account/team/member/invite`
 
-Update an existing item.
+Send a message / invitation.
 
-**Request DTO**: `CodeMashHub2.UpdateAccountRole`
-**Response**: `CodeMashHub2.IdResponse`
+**Request DTO**: `CodeMashHub2.SendInviteToTeamMember`
+**Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.account.updateAccountRole({
+const result = await norbix.hub.account.sendInviteToTeamMember({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### deleteAccountRole
-
-`DELETE` `/{version}/account/team/roles/{Id}`
-
-Delete an item.
-
-**Request DTO**: `CodeMashHub2.DeleteAccountRole`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.deleteAccountRole({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### createAccountPolicy
-
-`POST` `/{version}/account/team/policies`
-
-Create a new item.
-
-**Request DTO**: `CodeMashHub2.CreateAccountPolicy`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.createAccountPolicy({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1216,13 +1359,13 @@ const result = await norbix.hub.account.updateAccountPolicy({
 
 [↑ Top](#endpoints)
 
-### deleteAccountPolicy
+### updateAccountRole
 
-`DELETE` `/{version}/account/team/policies/{Id}`
+`PUT` `/{version}/account/team/roles`
 
-Delete an item.
+Update an existing item.
 
-**Request DTO**: `CodeMashHub2.DeleteAccountPolicy`
+**Request DTO**: `CodeMashHub2.UpdateAccountRole`
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
@@ -1230,33 +1373,10 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.account.deleteAccountPolicy({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### sendInviteToTeamMember
-
-`POST` `/{version}/account/team/member/invite`
-
-Send a message / invitation.
-
-**Request DTO**: `CodeMashHub2.SendInviteToTeamMember`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.sendInviteToTeamMember({
+const result = await norbix.hub.account.updateAccountRole({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
