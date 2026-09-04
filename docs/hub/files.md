@@ -8,25 +8,26 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`disableFiles`](#disablefiles) | `GET` | `/{version}/files/disable` | `project` |
-| [`enableFiles`](#enablefiles) | `GET` | `/{version}/files/enable` | `project` |
-| [`deleteFilesTrigger`](#deletefilestrigger) | `DELETE` | `/{version}/files/triggers/{triggerId}` | `project` |
-| [`disableFilesTrigger`](#disablefilestrigger) | `PATCH` | `/{version}/files/triggers/{triggerId}/disable` | `project` |
-| [`enableFilesTrigger`](#enablefilestrigger) | `PATCH` | `/{version}/files/triggers/{triggerId}/enable` | `project` |
-| [`getFilesTrigger`](#getfilestrigger) | `GET` | `/{version}/files/triggers/{id}` | `project` |
-| [`getFilesTriggers`](#getfilestriggers) | `GET` | `/{version}/files/triggers` | `project` |
-| [`saveFilesTrigger`](#savefilestrigger) | `POST` | `/{version}/files/triggers` | `project` |
-| [`deleteFilesIntegration`](#deletefilesintegration) | `DELETE` | `/{version}/files/integrations/{Id}` | `project` |
-| [`disableFilesIntegration`](#disablefilesintegration) | `PUT` | `/{version}/files/integrations/{Id}/disable` | `project` |
-| [`enableFilesIntegration`](#enablefilesintegration) | `PUT` | `/{version}/files/integrations/{Id}/enable` | `project` |
-| [`getFilesIntegration`](#getfilesintegration) | `GET` | `/{version}/files/integrations/{id}` | `project` |
-| [`getFilesIntegrations`](#getfilesintegrations) | `GET` | `/{version}/files/integrations` | `project` |
-| [`saveFilesIntegration`](#savefilesintegration) | `POST` | `/{version}/files/integrations` | `project` |
-| [`setFilesIntegrationAsDefault`](#setfilesintegrationasdefault) | `PUT` | `/{version}/files/integrations/{Id}/default` | `project` |
-| [`getFile`](#getfile) | `GET` | `/{version}/files/item` | `project` |
-| [`getFolderFiles`](#getfolderfiles) | `GET` | `/{version}/files/folder` | `project` |
+| Method                                                          | Verb     | Path                                            | Scope     |
+| --------------------------------------------------------------- | -------- | ----------------------------------------------- | --------- |
+| [`disableFiles`](#disablefiles)                                 | `GET`    | `/{version}/files/disable`                      | `project` |
+| [`enableFiles`](#enablefiles)                                   | `GET`    | `/{version}/files/enable`                       | `project` |
+| [`deleteFilesTrigger`](#deletefilestrigger)                     | `DELETE` | `/{version}/files/triggers/{triggerId}`         | `project` |
+| [`disableFilesTrigger`](#disablefilestrigger)                   | `PATCH`  | `/{version}/files/triggers/{triggerId}/disable` | `project` |
+| [`enableFilesTrigger`](#enablefilestrigger)                     | `PATCH`  | `/{version}/files/triggers/{triggerId}/enable`  | `project` |
+| [`getFilesTrigger`](#getfilestrigger)                           | `GET`    | `/{version}/files/triggers/{id}`                | `project` |
+| [`getFilesTriggers`](#getfilestriggers)                         | `GET`    | `/{version}/files/triggers`                     | `project` |
+| [`saveFilesTrigger`](#savefilestrigger)                         | `POST`   | `/{version}/files/triggers`                     | `project` |
+| [`deleteFilesIntegration`](#deletefilesintegration)             | `DELETE` | `/{version}/files/integrations/{Id}`            | `project` |
+| [`disableFilesIntegration`](#disablefilesintegration)           | `PUT`    | `/{version}/files/integrations/{Id}/disable`    | `project` |
+| [`enableFilesIntegration`](#enablefilesintegration)             | `PUT`    | `/{version}/files/integrations/{Id}/enable`     | `project` |
+| [`getFilesIntegration`](#getfilesintegration)                   | `GET`    | `/{version}/files/integrations/{id}`            | `project` |
+| [`getFilesIntegrations`](#getfilesintegrations)                 | `GET`    | `/{version}/files/integrations`                 | `project` |
+| [`saveFilesIntegration`](#savefilesintegration)                 | `POST`   | `/{version}/files/integrations`                 | `project` |
+| [`setFilesIntegrationAsDefault`](#setfilesintegrationasdefault) | `PUT`    | `/{version}/files/integrations/{Id}/default`    | `project` |
+| [`testFilesIntegration`](#testfilesintegration)                 | `POST`   | `/{version}/files/integrations/test`            | `project` |
+| [`getFile`](#getfile)                                           | `GET`    | `/{version}/files/item`                         | `project` |
+| [`getFolderFiles`](#getfolderfiles)                             | `GET`    | `/{version}/files/folder`                       | `project` |
 
 ## Reference
 
@@ -350,8 +351,6 @@ const result = await norbix.hub.files.saveFilesIntegration({
 
 `PUT` `/{version}/files/integrations/{Id}/default`
 
-
-
 **Request DTO**: `CodeMashHub2.SetFilesIntegrationAsDefaultRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -365,6 +364,28 @@ const result = await norbix.hub.files.setFilesIntegrationAsDefault({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### testFilesIntegration
+
+`POST` `/{version}/files/integrations/test`
+
+Run a connection / delivery test against the integration.
+
+**Request DTO**: `CodeMashHub2.TestFilesIntegration`
+**Response**: `CodeMashHub2.TestFilesIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.testFilesIntegration({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.TestFilesIntegrationResponse
 ```
 
 [↑ Top](#endpoints)

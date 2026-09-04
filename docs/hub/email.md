@@ -2,14 +2,12 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.email` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method                                        | Verb   | Path                                     | Scope     |
+| --------------------------------------------- | ------ | ---------------------------------------- | --------- |
 | [`oneClickUnsubscribe`](#oneclickunsubscribe) | `POST` | `/{version}/email/one-click-unsubscribe` | `project` |
 
 ## Reference
@@ -17,8 +15,6 @@ Accessed as `norbix.hub.email` on the [`Norbix`](../../README.md#authentication)
 ### oneClickUnsubscribe
 
 `POST` `/{version}/email/one-click-unsubscribe`
-
-
 
 **Request DTO**: `CodeMashHub2.OneClickUnsubscribeRequest`
 **Response**: `CodeMashHub2.EmptyResponse`

@@ -80,8 +80,8 @@ Notes:
 export interface NorbixWebhookReceiverOptions {
   secret?: string;
   toleranceSeconds?: number;
-  projectId?: string;   // optional guard
-  accountId?: string;   // optional guard
+  projectId?: string; // optional guard
+  accountId?: string; // optional guard
 }
 
 interface ResolvedConfig {
@@ -92,8 +92,7 @@ interface ResolvedConfig {
 }
 
 function resolveConfig(opts: NorbixWebhookReceiverOptions): ResolvedConfig {
-  const env =
-    typeof process !== "undefined" && process.env ? process.env : {};
+  const env = typeof process !== 'undefined' && process.env ? process.env : {};
 
   const rawTol = opts.toleranceSeconds ?? num(env.NORBIX_WEBHOOK_TOLERANCE_SECONDS);
   return {
@@ -105,7 +104,7 @@ function resolveConfig(opts: NorbixWebhookReceiverOptions): ResolvedConfig {
 }
 
 function num(v: string | undefined): number | undefined {
-  if (v == null || v === "") return undefined;
+  if (v == null || v === '') return undefined;
   const n = Number(v);
   return Number.isFinite(n) ? n : undefined;
 }
@@ -139,52 +138,42 @@ both).
 The generic `T` you pass to `on<T>(...)` **names the payload type**, and the
 payload type differs by event kind:
 
-| Event kind | Generic you pass | First handler arg |
-| ---------- | ---------------- | ----------------- |
-| **Entity** (create / delete / state flip) | the entity, e.g. `CodeMashHub2.UserDto` | the entity directly |
-| **Mutation** (arbitrary edit) | the mutation type, e.g. `CodeMashHub2.UserUpdated` (= `{ from, to }`) | `{ from, to }` |
-| **Batch** | the entity; payload is `T[]` | array of entities |
+| Event kind                                | Generic you pass                                                      | First handler arg   |
+| ----------------------------------------- | --------------------------------------------------------------------- | ------------------- |
+| **Entity** (create / delete / state flip) | the entity, e.g. `CodeMashHub2.UserDto`                               | the entity directly |
+| **Mutation** (arbitrary edit)             | the mutation type, e.g. `CodeMashHub2.UserUpdated` (= `{ from, to }`) | `{ from, to }`      |
+| **Batch**                                 | the entity; payload is `T[]`                                          | array of entities   |
 
 ```ts
 // ENTITY — first arg IS the UserDto. The id/schema are on event.metadata.
-receiver.on<CodeMashHub2.UserDto>(
-  NorbixWebhookEvents.Membership.UserVerified,
-  (user, event) => {
-    user.status;                  // UserDto, directly
-    event.metadata.user.id;       // the wrapper id is metadata now
-  },
-);
+receiver.on<CodeMashHub2.UserDto>(NorbixWebhookEvents.Membership.UserVerified, (user, event) => {
+  user.status; // UserDto, directly
+  event.metadata.user.id; // the wrapper id is metadata now
+});
 
 // ENTITY — create
-receiver.on<CodeMashHub2.UserDto>(
-  NorbixWebhookEvents.Membership.UserRegistered,
-  (user, event) => {
-    user.email ?? user.userName;  // create → nothing to diff
-  },
-);
+receiver.on<CodeMashHub2.UserDto>(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {
+  user.email ?? user.userName; // create → nothing to diff
+});
 
 // ENTITY — db record. T is the document.
-receiver.on<CodeMashHub2.UserDto>(
-  NorbixWebhookEvents.Database.RecordInserted,
-  (record, event) => {
-    record.email;                 // the document, directly
-    event.metadata.schema.id;     // schema info nested under metadata
-  },
-);
+receiver.on<CodeMashHub2.UserDto>(NorbixWebhookEvents.Database.RecordInserted, (record, event) => {
+  record.email; // the document, directly
+  event.metadata.schema.id; // schema info nested under metadata
+});
 
 // MUTATION — first arg is { from, to }. Generic names the mutation type.
-receiver.on<CodeMashHub2.UserUpdated>(
-  NorbixWebhookEvents.Membership.UserUpdated,
-  (user, event) => {
-    if (user.from.birthDate > user.to.birthDate) { /* react to the diff */ }
-  },
-);
+receiver.on<CodeMashHub2.UserUpdated>(NorbixWebhookEvents.Membership.UserUpdated, (user, event) => {
+  if (user.from.birthDate > user.to.birthDate) {
+    /* react to the diff */
+  }
+});
 
 // BATCH — first arg is the array.
 receiver.on<CodeMashHub2.UserDto>(
   NorbixWebhookEvents.Database.RecordsInserted,
   (records, event) => {
-    records.length;               // UserDto[]
+    records.length; // UserDto[]
   },
 );
 ```
@@ -196,7 +185,7 @@ If you don't pass a generic, the SDK can't know the payload type, so you get the
 
 ```ts
 receiver.on(NorbixWebhookEvents.Membership.UserUpdated, (event, ctx) => {
-  event.data.from.birthDate;   // you dig it out, untyped
+  event.data.from.birthDate; // you dig it out, untyped
   ctx.verified;
 });
 ```
@@ -212,22 +201,22 @@ So there's exactly one decision for the app author:
 single-property state flips hand over the entity directly — the event name is
 already the diff.
 
-| Event                         | Kind     | Generic → first arg                 |
-| ----------------------------- | -------- | ----------------------------------- |
-| `membership.user.registered`  | entity   | `UserDto`                           |
-| `membership.user.invited`     | entity   | `{ email }`                         |
-| `membership.user.verified`    | entity   | `UserDto`                           |
-| `membership.user.blocked`     | entity   | `UserDto`                           |
-| `membership.user.reactivated` | entity   | `UserDto`                           |
-| `membership.user.deleted`     | entity   | `UserDto`                           |
-| `membership.user.updated`     | mutation | `UserUpdated` = `{ from, to }`      |
-| `database.record.inserted`    | entity   | `T` (document)                      |
-| `database.record.deleted`     | entity   | `T` (document)                      |
-| `database.record.updated`     | mutation | `{ from: T, to: T }`                |
-| `database.record.replaced`    | mutation | `{ from: T, to: T }`                |
-| `database.records.inserted`   | batch    | `T[]`                               |
-| `files.file.uploaded`         | entity   | `FileResourceRefDto`                |
-| `files.file.deleted`          | entity   | `{ path }`                          |
+| Event                         | Kind     | Generic → first arg            |
+| ----------------------------- | -------- | ------------------------------ |
+| `membership.user.registered`  | entity   | `UserDto`                      |
+| `membership.user.invited`     | entity   | `{ email }`                    |
+| `membership.user.verified`    | entity   | `UserDto`                      |
+| `membership.user.blocked`     | entity   | `UserDto`                      |
+| `membership.user.reactivated` | entity   | `UserDto`                      |
+| `membership.user.deleted`     | entity   | `UserDto`                      |
+| `membership.user.updated`     | mutation | `UserUpdated` = `{ from, to }` |
+| `database.record.inserted`    | entity   | `T` (document)                 |
+| `database.record.deleted`     | entity   | `T` (document)                 |
+| `database.record.updated`     | mutation | `{ from: T, to: T }`           |
+| `database.record.replaced`    | mutation | `{ from: T, to: T }`           |
+| `database.records.inserted`   | batch    | `T[]`                          |
+| `files.file.uploaded`         | entity   | `FileResourceRefDto`           |
+| `files.file.deleted`          | entity   | `{ path }`                     |
 
 So `verified` / `blocked` / `reactivated` give you the user directly — no
 redundant `{ from, to }`. Only `user.updated`, `record.updated`, and
@@ -241,7 +230,10 @@ types so you can write `on<CodeMashHub2.UserUpdated>` instead of an inline
 
 ```ts
 // in the hub types (generated or hand-added alongside UserDto)
-export interface UserUpdated { from: UserDto; to: UserDto; }
+export interface UserUpdated {
+  from: UserDto;
+  to: UserDto;
+}
 // db record mutations stay generic on the document:
 //   on<{ from: MyDoc; to: MyDoc }>(NorbixWebhookEvents.Database.RecordUpdated, ...)
 ```
@@ -285,16 +277,16 @@ ids that used to sit next to the payload):
 
 ```ts
 export interface NorbixWebhookEvent {
-  name: string;               // envelope.event
-  deliveryId: string;         // envelope.id — dedupe retries on this
-  createdOn: string;          // ISO-8601 UTC
+  name: string; // envelope.event
+  deliveryId: string; // envelope.id — dedupe retries on this
+  createdOn: string; // ISO-8601 UTC
   triggerId: string | null;
-  correlationId: string | null;   // see "gateway dependency" below
+  correlationId: string | null; // see "gateway dependency" below
   accountId: string;
   projectId: string;
   integrationId: string | null;
   destinationId: string | null;
-  verified: boolean | null;       // true verified, null when verify skipped
+  verified: boolean | null; // true verified, null when verify skipped
 
   /** Payload-specific identifiers lifted off the wire payload. */
   metadata: {
@@ -326,7 +318,7 @@ The payload itself stays pure (just the entity, or `{from,to}`, or the array).
 
 The existing `(envelope, ctx)` handlers are in use. Plan:
 
-- The **no-generic** form already *is* the legacy `(event, ctx)` shape, so old
+- The **no-generic** form already _is_ the legacy `(event, ctx)` shape, so old
   call sites that never passed a generic keep working unchanged.
 - The typed `(payload, event)` form is opt-in by adding a generic.
 - Ship as a **minor** (both forms available), document the mapping
@@ -341,8 +333,8 @@ The existing `(envelope, ctx)` handlers are in use. Plan:
 
 ```ts
 const TYPED_HANDLER_EVENTS = new Set<string>([
-  "database.record.inserted",
-  "membership.user.registered",
+  'database.record.inserted',
+  'membership.user.registered',
 ]);
 // ...then a loop over NORBIX_WEBHOOK_EVENT_NAMES skipping that set
 ```
@@ -355,27 +347,27 @@ iteration):
 ```ts
 export const NorbixWebhookEvents = {
   Database: {
-    RecordInserted: "database.record.inserted",
-    RecordUpdated: "database.record.updated",
-    RecordDeleted: "database.record.deleted",
-    RecordReplaced: "database.record.replaced",
-    RecordResponsibilityChanged: "database.record.responsibilityChanged",
-    RecordsInserted: "database.records.inserted",
-    RecordsUpdated: "database.records.updated",
-    RecordsDeleted: "database.records.deleted",
+    RecordInserted: 'database.record.inserted',
+    RecordUpdated: 'database.record.updated',
+    RecordDeleted: 'database.record.deleted',
+    RecordReplaced: 'database.record.replaced',
+    RecordResponsibilityChanged: 'database.record.responsibilityChanged',
+    RecordsInserted: 'database.records.inserted',
+    RecordsUpdated: 'database.records.updated',
+    RecordsDeleted: 'database.records.deleted',
   },
   Membership: {
-    UserRegistered: "membership.user.registered",
-    UserInvited: "membership.user.invited",
-    UserVerified: "membership.user.verified",
-    UserUpdated: "membership.user.updated",
-    UserDeleted: "membership.user.deleted",
-    UserBlocked: "membership.user.blocked",
-    UserReactivated: "membership.user.reactivated",
+    UserRegistered: 'membership.user.registered',
+    UserInvited: 'membership.user.invited',
+    UserVerified: 'membership.user.verified',
+    UserUpdated: 'membership.user.updated',
+    UserDeleted: 'membership.user.deleted',
+    UserBlocked: 'membership.user.blocked',
+    UserReactivated: 'membership.user.reactivated',
   },
   Files: {
-    FileUploaded: "files.file.uploaded",
-    FileDeleted: "files.file.deleted",
+    FileUploaded: 'files.file.uploaded',
+    FileDeleted: 'files.file.deleted',
   },
 } as const;
 ```
@@ -395,11 +387,8 @@ onEachRemaining(handler: NorbixWebhookHandler): this;
 ### Resulting app code
 
 ```ts
-import {
-  NorbixWebhookReceiver,
-  NorbixWebhookEvents,
-} from "@norbix.ai/ts/webhooks";
-import type { CodeMashHub2 } from "@norbix.ai/ts/types/hub";
+import { NorbixWebhookReceiver, NorbixWebhookEvents } from '@norbix.ai/ts/webhooks';
+import type { CodeMashHub2 } from '@norbix.ai/ts/types/hub';
 
 export function createWebhookReceiver() {
   const receiver = new NorbixWebhookReceiver(); // env-driven
@@ -407,16 +396,20 @@ export function createWebhookReceiver() {
   receiver.on<CodeMashHub2.UserDto>(
     NorbixWebhookEvents.Database.RecordInserted,
     (record, event) => {
-      console.log(`[webhook] inserted schema=${event.metadata.schema?.name} ` +
-        `email=${record.email ?? record.userName}`);
+      console.log(
+        `[webhook] inserted schema=${event.metadata.schema?.name} ` +
+          `email=${record.email ?? record.userName}`,
+      );
     },
   );
 
   receiver.on<CodeMashHub2.UserDto>(
     NorbixWebhookEvents.Membership.UserRegistered,
     (user, event) => {
-      console.log(`[webhook] registered id=${event.metadata.user?.id} ` +
-        `email=${user.email ?? user.userName}`);
+      console.log(
+        `[webhook] registered id=${event.metadata.user?.id} ` +
+          `email=${user.email ?? user.userName}`,
+      );
     },
   );
 
@@ -479,17 +472,17 @@ If you want correlation first-class, the gateway change is: add
 
 ## Summary of proposed changes (mostly in `src/webhooks/`)
 
-| Change | File(s) | Breaking? |
-| ------ | ------- | --------- |
-| Env-based config + browser guard | `receiver.ts`, `types.ts` | No (options optional) |
-| `NorbixWebhookEvents` constant object | `events.ts`, `index.ts` | No (additive) |
-| `on<T>` → typed `(payload, event)`; no generic → `(event, ctx)` | `receiver.ts`, `types.ts` | No (no-generic = current shape) |
+| Change                                                                 | File(s)                                       | Breaking?                                                     |
+| ---------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+| Env-based config + browser guard                                       | `receiver.ts`, `types.ts`                     | No (options optional)                                         |
+| `NorbixWebhookEvents` constant object                                  | `events.ts`, `index.ts`                       | No (additive)                                                 |
+| `on<T>` → typed `(payload, event)`; no generic → `(event, ctx)`        | `receiver.ts`, `types.ts`                     | No (no-generic = current shape)                               |
 | Payload = entity / `{from,to}` / `T[]`; wrapper ids → `event.metadata` | `receiver.ts`, `payloads.ts`, `event-data.ts` | Payload shape change — normalize in receiver or align gateway |
-| Mutation types (`UserUpdated = {from,to}`) | `hub2.dtos.ts` or webhook types | No (additive) |
-| `onEach` / `onEachRemaining` helpers | `receiver.ts` | No (additive) |
-| `event.metadata.schema` derived from payload | `receiver.ts` | No |
-| Docs: `email ?? userName`, optional email | `README.md` | No |
-| (Follow-up) gateway sends correlationId | gateway | Separate PR |
+| Mutation types (`UserUpdated = {from,to}`)                             | `hub2.dtos.ts` or webhook types               | No (additive)                                                 |
+| `onEach` / `onEachRemaining` helpers                                   | `receiver.ts`                                 | No (additive)                                                 |
+| `event.metadata.schema` derived from payload                           | `receiver.ts`                                 | No                                                            |
+| Docs: `email ?? userName`, optional email                              | `README.md`                                   | No                                                            |
+| (Follow-up) gateway sends correlationId                                | gateway                                       | Separate PR                                                   |
 
 ## Open decisions for you
 

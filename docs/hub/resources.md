@@ -2,14 +2,12 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.resources` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method                                  | Verb   | Path                           | Scope     |
+| --------------------------------------- | ------ | ------------------------------ | --------- |
 | [`resolveResources`](#resolveresources) | `POST` | `/{version}/resources/resolve` | `project` |
 
 ## Reference
@@ -17,8 +15,6 @@ Accessed as `norbix.hub.resources` on the [`Norbix`](../../README.md#authenticat
 ### resolveResources
 
 `POST` `/{version}/resources/resolve`
-
-
 
 **Request DTO**: `CodeMashHub2.ResolveResources`
 **Response**: `CodeMashHub2.ResolveResourcesResponse`

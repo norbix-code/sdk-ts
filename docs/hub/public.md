@@ -2,16 +2,14 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.public` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`getPublicProjectConfig`](#getpublicprojectconfig) | `GET` | `/{version}/public/projects/{ProjectId}/config` | `project` |
-| [`getPublicProjectLegal`](#getpublicprojectlegal) | `GET` | `/{version}/public/projects/{ProjectId}/legal/{Kind}` | `project` |
+| Method                                              | Verb  | Path                                                  | Scope     |
+| --------------------------------------------------- | ----- | ----------------------------------------------------- | --------- |
+| [`getPublicProjectConfig`](#getpublicprojectconfig) | `GET` | `/{version}/public/projects/{ProjectId}/config`       | `project` |
+| [`getPublicProjectLegal`](#getpublicprojectlegal)   | `GET` | `/{version}/public/projects/{ProjectId}/legal/{Kind}` | `project` |
 
 ## Reference
 

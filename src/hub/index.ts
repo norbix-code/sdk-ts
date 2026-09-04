@@ -6,20 +6,25 @@ import { AiModule } from './ai.js';
 import { ApikeysModule } from './apikeys.js';
 import { AuthModule } from './auth.js';
 import { CodeModule } from './code.js';
+import { ComplianceModule } from './compliance.js';
 import { DatabaseModule } from './database.js';
+import { DiagnosticsModule } from './diagnostics.js';
 import { EchoModule } from './echo.js';
 import { EmailModule } from './email.js';
 import { EnvironmentsModule } from './environments.js';
 import { FilesModule } from './files.js';
 import { InternalModule } from './internal.js';
+import { LicensingModule } from './licensing.js';
 import { LogsModule } from './logs.js';
 import { MembershipModule } from './membership.js';
 import { NotificationsModule } from './notifications.js';
 import { PaymentsModule } from './payments.js';
+import { ProjectsModule } from './projects.js';
 import { PublicModule } from './public.js';
 import { RegionsModule } from './regions.js';
 import { ResourcesModule } from './resources.js';
 import { SchedulerModule } from './scheduler.js';
+import { SupportModule } from './support.js';
 import { WebhooksModule } from './webhooks.js';
 
 /**
@@ -33,20 +38,25 @@ export class HubNamespace {
   public readonly apikeys: ApikeysModule;
   public readonly auth: AuthModule;
   public readonly code: CodeModule;
+  public readonly compliance: ComplianceModule;
   public readonly database: DatabaseModule;
+  public readonly diagnostics: DiagnosticsModule;
   public readonly echo: EchoModule;
   public readonly email: EmailModule;
   public readonly environments: EnvironmentsModule;
   public readonly files: FilesModule;
   public readonly internal: InternalModule;
+  public readonly licensing: LicensingModule;
   public readonly logs: LogsModule;
   public readonly membership: MembershipModule;
   public readonly notifications: NotificationsModule;
   public readonly payments: PaymentsModule;
+  public readonly projects: ProjectsModule;
   public readonly public: PublicModule;
   public readonly regions: RegionsModule;
   public readonly resources: ResourcesModule;
   public readonly scheduler: SchedulerModule;
+  public readonly support: SupportModule;
   public readonly webhooks: WebhooksModule;
 
   constructor(transport: Transport) {
@@ -56,20 +66,25 @@ export class HubNamespace {
     this.apikeys = new ApikeysModule(transport);
     this.auth = new AuthModule(transport);
     this.code = new CodeModule(transport);
+    this.compliance = new ComplianceModule(transport);
     this.database = new DatabaseModule(transport);
+    this.diagnostics = new DiagnosticsModule(transport);
     this.echo = new EchoModule(transport);
     this.email = new EmailModule(transport);
     this.environments = new EnvironmentsModule(transport);
     this.files = new FilesModule(transport);
     this.internal = new InternalModule(transport);
+    this.licensing = new LicensingModule(transport);
     this.logs = new LogsModule(transport);
     this.membership = new MembershipModule(transport);
     this.notifications = new NotificationsModule(transport);
     this.payments = new PaymentsModule(transport);
+    this.projects = new ProjectsModule(transport);
     this.public = new PublicModule(transport);
     this.regions = new RegionsModule(transport);
     this.resources = new ResourcesModule(transport);
     this.scheduler = new SchedulerModule(transport);
+    this.support = new SupportModule(transport);
     this.webhooks = new WebhooksModule(transport);
   }
 }

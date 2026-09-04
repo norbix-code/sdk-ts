@@ -2,42 +2,45 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`enableCode`](#enablecode) | `GET` | `/{version}/code/enable` | `project` |
-| [`disableCode`](#disablecode) | `GET` | `/{version}/code/disable` | `project` |
-| [`getCodeIntegrations`](#getcodeintegrations) | `GET` | `/{version}/code/integrations` | `project` |
-| [`getCodeIntegration`](#getcodeintegration) | `GET` | `/{version}/code/integrations/{id}` | `project` |
-| [`saveCodeIntegration`](#savecodeintegration) | `POST` | `/{version}/code/integrations` | `project` |
-| [`testCodeIntegration`](#testcodeintegration) | `POST` | `/{version}/code/integrations/test` | `project` |
-| [`confirmCodeIntegrationHumanDelivery`](#confirmcodeintegrationhumandelivery) | `POST` | `/{version}/code/integrations/confirm-human-delivery` | `project` |
-| [`setCodeIntegrationAsDefault`](#setcodeintegrationasdefault) | `PUT` | `/{version}/code/integrations/{Id}/default` | `project` |
-| [`deleteCodeIntegration`](#deletecodeintegration) | `DELETE` | `/{version}/code/integrations/{Id}` | `project` |
-| [`enableCodeIntegration`](#enablecodeintegration) | `PUT` | `/{version}/code/integrations/{Id}/enable` | `project` |
-| [`disableCodeIntegration`](#disablecodeintegration) | `PUT` | `/{version}/code/integrations/{Id}/disable` | `project` |
-| [`getMarketplaceListings`](#getmarketplacelistings) | `GET` | `/{version}/code/marketplace/listings` | `project` |
-| [`getMarketplaceListingFunctionTokens`](#getmarketplacelistingfunctiontokens) | `GET` | `/{version}/code/marketplace/listings/{ListingViewId}/functions/{FunctionKey}/tokens` | `project` |
-| [`getMarketplaceIntegrations`](#getmarketplaceintegrations) | `GET` | `/{version}/code/marketplace/integrations` | `project` |
-| [`getMarketplaceIntegration`](#getmarketplaceintegration) | `GET` | `/{version}/code/marketplace/integrations/{IntegrationViewId}` | `project` |
-| [`saveMarketplaceIntegration`](#savemarketplaceintegration) | `POST` | `/{version}/code/marketplace/integrations` | `project` |
-| [`deleteMarketplaceIntegration`](#deletemarketplaceintegration) | `DELETE` | `/{version}/code/marketplace/integrations/{IntegrationViewId}` | `project` |
-| [`enableMarketplaceIntegration`](#enablemarketplaceintegration) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/enable` | `project` |
-| [`disableMarketplaceIntegration`](#disablemarketplaceintegration) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/disable` | `project` |
-| [`getMarketplaceBindings`](#getmarketplacebindings) | `GET` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings` | `project` |
-| [`getMarketplaceBinding`](#getmarketplacebinding) | `GET` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}` | `project` |
-| [`saveMarketplaceFunctionBinding`](#savemarketplacefunctionbinding) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings` | `project` |
-| [`deleteMarketplaceFunctionBinding`](#deletemarketplacefunctionbinding) | `DELETE` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}` | `project` |
-| [`enableMarketplaceFunctionBinding`](#enablemarketplacefunctionbinding) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable` | `project` |
-| [`disableMarketplaceFunctionBinding`](#disablemarketplacefunctionbinding) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable` | `project` |
-| [`getMarketplaceBindingTokens`](#getmarketplacebindingtokens) | `GET` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens` | `project` |
-| [`invokeMarketplaceFunctionBinding`](#invokemarketplacefunctionbinding) | `POST` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke` | `project` |
-| [`getMarketplaceFunctionCatalog`](#getmarketplacefunctioncatalog) | `GET` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions` | `project` |
+| Method                                                                              | Verb     | Path                                                                                              | Scope     |
+| ----------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- | --------- |
+| [`enableCode`](#enablecode)                                                         | `GET`    | `/{version}/code/enable`                                                                          | `project` |
+| [`disableCode`](#disablecode)                                                       | `GET`    | `/{version}/code/disable`                                                                         | `project` |
+| [`getCodeIntegrations`](#getcodeintegrations)                                       | `GET`    | `/{version}/code/integrations`                                                                    | `project` |
+| [`getCodeIntegration`](#getcodeintegration)                                         | `GET`    | `/{version}/code/integrations/{id}`                                                               | `project` |
+| [`saveCodeIntegration`](#savecodeintegration)                                       | `POST`   | `/{version}/code/integrations`                                                                    | `project` |
+| [`testCodeIntegration`](#testcodeintegration)                                       | `POST`   | `/{version}/code/integrations/test`                                                               | `project` |
+| [`confirmCodeIntegrationHumanDelivery`](#confirmcodeintegrationhumandelivery)       | `POST`   | `/{version}/code/integrations/confirm-human-delivery`                                             | `project` |
+| [`setCodeIntegrationAsDefault`](#setcodeintegrationasdefault)                       | `PUT`    | `/{version}/code/integrations/{Id}/default`                                                       | `project` |
+| [`deleteCodeIntegration`](#deletecodeintegration)                                   | `DELETE` | `/{version}/code/integrations/{Id}`                                                               | `project` |
+| [`enableCodeIntegration`](#enablecodeintegration)                                   | `PUT`    | `/{version}/code/integrations/{Id}/enable`                                                        | `project` |
+| [`disableCodeIntegration`](#disablecodeintegration)                                 | `PUT`    | `/{version}/code/integrations/{Id}/disable`                                                       | `project` |
+| [`getMarketplaceListings`](#getmarketplacelistings)                                 | `GET`    | `/{version}/code/marketplace/listings`                                                            | `project` |
+| [`getMarketplaceListingFunctionTokens`](#getmarketplacelistingfunctiontokens)       | `GET`    | `/{version}/code/marketplace/listings/{ListingViewId}/functions/{FunctionKey}/tokens`             | `project` |
+| [`getMarketplaceIntegrations`](#getmarketplaceintegrations)                         | `GET`    | `/{version}/code/marketplace/integrations`                                                        | `project` |
+| [`getMarketplaceIntegration`](#getmarketplaceintegration)                           | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}`                                    | `project` |
+| [`saveMarketplaceIntegration`](#savemarketplaceintegration)                         | `POST`   | `/{version}/code/marketplace/integrations`                                                        | `project` |
+| [`deleteMarketplaceIntegration`](#deletemarketplaceintegration)                     | `DELETE` | `/{version}/code/marketplace/integrations/{IntegrationViewId}`                                    | `project` |
+| [`enableMarketplaceIntegration`](#enablemarketplaceintegration)                     | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/enable`                             | `project` |
+| [`disableMarketplaceIntegration`](#disablemarketplaceintegration)                   | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/disable`                            | `project` |
+| [`getMarketplaceFunctions`](#getmarketplacefunctions)                               | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions`                          | `project` |
+| [`getMarketplaceFunction`](#getmarketplacefunction)                                 | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}`         | `project` |
+| [`saveMarketplaceFunction`](#savemarketplacefunction)                               | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions`                          | `project` |
+| [`deleteMarketplaceFunction`](#deletemarketplacefunction)                           | `DELETE` | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}`         | `project` |
+| [`enableMarketplaceFunction`](#enablemarketplacefunction)                           | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable`  | `project` |
+| [`disableMarketplaceFunction`](#disablemarketplacefunction)                         | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable` | `project` |
+| [`getMarketplaceFunctionTokens`](#getmarketplacefunctiontokens)                     | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens`  | `project` |
+| [`invokeMarketplaceFunction`](#invokemarketplacefunction)                           | `POST`   | `/{version}/code/marketplace/functions/{FunctionViewId}/invoke`                                   | `project` |
+| [`getMarketplaceListing`](#getmarketplacelisting)                                   | `GET`    | `/{version}/code/marketplace/listings/{ListingViewId}`                                            | `project` |
+| [`testMarketplaceIntegration`](#testmarketplaceintegration)                         | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/test`                               | `project` |
+| [`replaceMarketplaceIntegrationSecrets`](#replacemarketplaceintegrationsecrets)     | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets`                            | `project` |
+| [`revealMarketplaceIntegrationSecrets`](#revealmarketplaceintegrationsecrets)       | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`                     | `project` |
+| [`setMarketplaceIntegrationTokenMappings`](#setmarketplaceintegrationtokenmappings) | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings`                     | `project` |
+| [`getMarketplaceFunctionCatalog`](#getmarketplacefunctioncatalog)                   | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog`                            | `project` |
 
 ## Reference
 
@@ -178,8 +181,6 @@ const result = await norbix.hub.code.testCodeIntegration({
 
 `POST` `/{version}/code/integrations/confirm-human-delivery`
 
-
-
 **Request DTO**: `CodeMashHub2.ConfirmCodeIntegrationHumanDeliveryRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -199,8 +200,6 @@ const result = await norbix.hub.code.confirmCodeIntegrationHumanDelivery({
 ### setCodeIntegrationAsDefault
 
 `PUT` `/{version}/code/integrations/{Id}/default`
-
-
 
 **Request DTO**: `CodeMashHub2.SetCodeIntegrationAsDefault`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -470,60 +469,60 @@ const result = await norbix.hub.code.disableMarketplaceIntegration({
 
 [↑ Top](#endpoints)
 
-### getMarketplaceBindings
+### getMarketplaceFunctions
 
-`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings`
+`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions`
 
 Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.GetMarketplaceBindings`
-**Response**: `CodeMashHub2.GetMarketplaceBindingsResponse`
+**Request DTO**: `CodeMashHub2.GetMarketplaceFunctions`
+**Response**: `CodeMashHub2.GetMarketplaceFunctionsResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.getMarketplaceBindings({
+const result = await norbix.hub.code.getMarketplaceFunctions({
   IntegrationViewId: 'IntegrationViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.GetMarketplaceBindingsResponse
+// → typed as CodeMashHub2.GetMarketplaceFunctionsResponse
 ```
 
 [↑ Top](#endpoints)
 
-### getMarketplaceBinding
+### getMarketplaceFunction
 
-`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}`
+`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}`
 
 Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.GetMarketplaceBinding`
-**Response**: `CodeMashHub2.GetMarketplaceBindingResponse`
+**Request DTO**: `CodeMashHub2.GetMarketplaceFunction`
+**Response**: `CodeMashHub2.GetMarketplaceFunctionResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.getMarketplaceBinding({
+const result = await norbix.hub.code.getMarketplaceFunction({
   IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.GetMarketplaceBindingResponse
+// → typed as CodeMashHub2.GetMarketplaceFunctionResponse
 ```
 
 [↑ Top](#endpoints)
 
-### saveMarketplaceFunctionBinding
+### saveMarketplaceFunction
 
-`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings`
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions`
 
 Upsert an item (create or update).
 
-**Request DTO**: `CodeMashHub2.SaveMarketplaceFunctionBinding`
+**Request DTO**: `CodeMashHub2.SaveMarketplaceFunction`
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
@@ -531,7 +530,7 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.saveMarketplaceFunctionBinding({
+const result = await norbix.hub.code.saveMarketplaceFunction({
   IntegrationViewId: 'IntegrationViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
@@ -540,13 +539,13 @@ const result = await norbix.hub.code.saveMarketplaceFunctionBinding({
 
 [↑ Top](#endpoints)
 
-### deleteMarketplaceFunctionBinding
+### deleteMarketplaceFunction
 
-`DELETE` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}`
+`DELETE` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}`
 
 Delete an item.
 
-**Request DTO**: `CodeMashHub2.DeleteMarketplaceFunctionBinding`
+**Request DTO**: `CodeMashHub2.DeleteMarketplaceFunction`
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
@@ -554,9 +553,9 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.deleteMarketplaceFunctionBinding({
+const result = await norbix.hub.code.deleteMarketplaceFunction({
   IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
@@ -564,13 +563,13 @@ const result = await norbix.hub.code.deleteMarketplaceFunctionBinding({
 
 [↑ Top](#endpoints)
 
-### enableMarketplaceFunctionBinding
+### enableMarketplaceFunction
 
-`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable`
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable`
 
 Enable the resource.
 
-**Request DTO**: `CodeMashHub2.EnableMarketplaceFunctionBinding`
+**Request DTO**: `CodeMashHub2.EnableMarketplaceFunction`
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
@@ -578,9 +577,9 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.enableMarketplaceFunctionBinding({
+const result = await norbix.hub.code.enableMarketplaceFunction({
   IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
@@ -588,13 +587,13 @@ const result = await norbix.hub.code.enableMarketplaceFunctionBinding({
 
 [↑ Top](#endpoints)
 
-### disableMarketplaceFunctionBinding
+### disableMarketplaceFunction
 
-`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable`
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable`
 
 Disable the resource.
 
-**Request DTO**: `CodeMashHub2.DisableMarketplaceFunctionBinding`
+**Request DTO**: `CodeMashHub2.DisableMarketplaceFunction`
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
@@ -602,9 +601,9 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.disableMarketplaceFunctionBinding({
+const result = await norbix.hub.code.disableMarketplaceFunction({
   IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
@@ -612,13 +611,13 @@ const result = await norbix.hub.code.disableMarketplaceFunctionBinding({
 
 [↑ Top](#endpoints)
 
-### getMarketplaceBindingTokens
+### getMarketplaceFunctionTokens
 
-`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens`
+`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens`
 
 Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.GetMarketplaceBindingTokens`
+**Request DTO**: `CodeMashHub2.GetMarketplaceFunctionTokens`
 **Response**: `CodeMashHub2.GetMarketplaceTokensResponse`
 
 ```ts
@@ -626,9 +625,9 @@ import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.getMarketplaceBindingTokens({
+const result = await norbix.hub.code.getMarketplaceFunctionTokens({
   IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetMarketplaceTokensResponse
@@ -636,33 +635,143 @@ const result = await norbix.hub.code.getMarketplaceBindingTokens({
 
 [↑ Top](#endpoints)
 
-### invokeMarketplaceFunctionBinding
+### invokeMarketplaceFunction
 
-`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke`
+`POST` `/{version}/code/marketplace/functions/{FunctionViewId}/invoke`
 
-
-
-**Request DTO**: `CodeMashHub2.InvokeMarketplaceFunctionBinding`
-**Response**: `CodeMashHub2.InvokeMarketplaceFunctionBindingResponse`
+**Request DTO**: `CodeMashHub2.InvokeMarketplaceFunction`
+**Response**: `CodeMashHub2.InvokeMarketplaceFunctionResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.code.invokeMarketplaceFunctionBinding({
-  IntegrationViewId: 'IntegrationViewId-here',
-  BindingViewId: 'BindingViewId-here',
+const result = await norbix.hub.code.invokeMarketplaceFunction({
+  FunctionViewId: 'FunctionViewId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.InvokeMarketplaceFunctionBindingResponse
+// → typed as CodeMashHub2.InvokeMarketplaceFunctionResponse
+```
+
+[↑ Top](#endpoints)
+
+### getMarketplaceListing
+
+`GET` `/{version}/code/marketplace/listings/{ListingViewId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetMarketplaceListing`
+**Response**: `CodeMashHub2.GetMarketplaceListingResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getMarketplaceListing({
+  ListingViewId: 'ListingViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetMarketplaceListingResponse
+```
+
+[↑ Top](#endpoints)
+
+### testMarketplaceIntegration
+
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/test`
+
+Run a connection / delivery test against the integration.
+
+**Request DTO**: `CodeMashHub2.TestMarketplaceIntegration`
+**Response**: `CodeMashHub2.TestMarketplaceIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.testMarketplaceIntegration({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.TestMarketplaceIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### replaceMarketplaceIntegrationSecrets
+
+`PUT` `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets`
+
+Replace an existing item wholesale.
+
+**Request DTO**: `CodeMashHub2.ReplaceMarketplaceIntegrationSecretsRequest`
+**Response**: `CodeMashHub2.EmptyMarketplaceSecretsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.replaceMarketplaceIntegrationSecrets({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyMarketplaceSecretsResponse
+```
+
+[↑ Top](#endpoints)
+
+### revealMarketplaceIntegrationSecrets
+
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`
+
+Reveal the masked value.
+
+**Request DTO**: `CodeMashHub2.RevealMarketplaceIntegrationSecretsRequest`
+**Response**: `CodeMashHub2.RevealMarketplaceIntegrationSecretsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.revealMarketplaceIntegrationSecrets({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RevealMarketplaceIntegrationSecretsResponse
+```
+
+[↑ Top](#endpoints)
+
+### setMarketplaceIntegrationTokenMappings
+
+`PUT` `/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings`
+
+**Request DTO**: `CodeMashHub2.SetMarketplaceIntegrationTokenMappingsRequest`
+**Response**: `CodeMashHub2.SetMarketplaceIntegrationTokenMappingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.setMarketplaceIntegrationTokenMappings({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.SetMarketplaceIntegrationTokenMappingsResponse
 ```
 
 [↑ Top](#endpoints)
 
 ### getMarketplaceFunctionCatalog
 
-`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/functions`
+`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog`
 
 Fetch a single item by ID.
 

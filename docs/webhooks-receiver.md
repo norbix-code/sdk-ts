@@ -27,12 +27,9 @@ import {
 const receiver = new NorbixWebhookReceiver(); // reads env — see Configuration
 
 // Typed handler for one event — first arg IS the payload.
-receiver.on<CodeMashHub2.UserDto>(
-  NorbixWebhookEvents.Membership.UserRegistered,
-  (user, event) => {
-    console.log('registered', user.email ?? user.userName, event.metadata.user?.id);
-  },
-);
+receiver.on<CodeMashHub2.UserDto>(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {
+  console.log('registered', user.email ?? user.userName, event.metadata.user?.id);
+});
 
 // Catch every catalog event — runs in addition to `on` above.
 receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
@@ -52,8 +49,12 @@ Use `NorbixWebhookEvents` for autocomplete instead of raw strings.
 import { NorbixWebhookEvents } from '@norbix.ai/ts/webhooks';
 
 // Membership — payload is UserDto (or { from, to } for UserUpdated)
-receiver.on(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => { /* … */ });
-receiver.on(NorbixWebhookEvents.Membership.UserUpdated, ({ from, to }, event) => { /* … */ });
+receiver.on(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {
+  /* … */
+});
+receiver.on(NorbixWebhookEvents.Membership.UserUpdated, ({ from, to }, event) => {
+  /* … */
+});
 
 // Database — pass your document type as the generic
 receiver.on<MyDoc>(NorbixWebhookEvents.Database.RecordInserted, (record, event) => {
@@ -62,7 +63,9 @@ receiver.on<MyDoc>(NorbixWebhookEvents.Database.RecordInserted, (record, event) 
 });
 
 // Files
-receiver.on(NorbixWebhookEvents.Files.FileUploaded, (file, event) => { /* … */ });
+receiver.on(NorbixWebhookEvents.Files.FileUploaded, (file, event) => {
+  /* … */
+});
 ```
 
 Handler signature: `(payload, event) => void | Promise<void>`.
@@ -99,11 +102,11 @@ receiver.onAll(
 
 ### Event name reference
 
-| Group | Constants (`NorbixWebhookEvents.*`) |
-|-------|-----------------------------------|
-| Database | `Database.RecordInserted`, `RecordUpdated`, `RecordDeleted`, `RecordReplaced`, `RecordResponsibilityChanged`, `RecordsInserted`, `RecordsUpdated`, `RecordsDeleted` |
-| Membership | `Membership.UserRegistered`, `UserInvited`, `UserVerified`, `UserUpdated`, `UserDeleted`, `UserBlocked`, `UserReactivated` |
-| Files | `Files.FileUploaded`, `FileDeleted` |
+| Group      | Constants (`NorbixWebhookEvents.*`)                                                                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Database   | `Database.RecordInserted`, `RecordUpdated`, `RecordDeleted`, `RecordReplaced`, `RecordResponsibilityChanged`, `RecordsInserted`, `RecordsUpdated`, `RecordsDeleted` |
+| Membership | `Membership.UserRegistered`, `UserInvited`, `UserVerified`, `UserUpdated`, `UserDeleted`, `UserBlocked`, `UserReactivated`                                          |
+| Files      | `Files.FileUploaded`, `FileDeleted`                                                                                                                                 |
 
 Full list: `NORBIX_WEBHOOK_EVENT_NAMES` · grouped: `NORBIX_WEBHOOK_EVENT_GROUPS`.
 
@@ -145,16 +148,13 @@ receiver.on<Task>(NorbixWebhookEvents.Database.RecordInserted, (task, event) => 
 
 // ── Membership: user registered ─────────────────────────────────────────────
 // Payload IS the UserDto.
-receiver.on<CodeMashHub2.UserDto>(
-  NorbixWebhookEvents.Membership.UserRegistered,
-  (user, event) => {
-    console.log('user registered', {
-      userId: event.metadata.user?.id ?? user.id,
-      email: user.email ?? user.userName,
-      roles: user.roles ?? [],
-    });
-  },
-);
+receiver.on<CodeMashHub2.UserDto>(NorbixWebhookEvents.Membership.UserRegistered, (user, event) => {
+  console.log('user registered', {
+    userId: event.metadata.user?.id ?? user.id,
+    email: user.email ?? user.userName,
+    roles: user.roles ?? [],
+  });
+});
 
 // ── Membership: user updated — compare roles before / after ───────────────
 // Payload is { from, to } — both sides are full UserDto snapshots.
@@ -200,12 +200,12 @@ await receiver.handle({ rawBody: req.rawBody, headers: req.headers });
 
 **Entity vs mutation recap**
 
-| Event | What you receive | Compare before / after |
-|-------|------------------|------------------------|
-| `Database.RecordInserted` | `task` (document) | — |
-| `Membership.UserRegistered` | `user` (UserDto) | — |
-| `Membership.UserUpdated` | `{ from, to }` (UserDto pair) | `from.roles` → `to.roles` |
-| `Database.RecordUpdated` | `{ from, to }` (document pair) | `from.status` → `to.status` |
+| Event                       | What you receive               | Compare before / after      |
+| --------------------------- | ------------------------------ | --------------------------- |
+| `Database.RecordInserted`   | `task` (document)              | —                           |
+| `Membership.UserRegistered` | `user` (UserDto)               | —                           |
+| `Membership.UserUpdated`    | `{ from, to }` (UserDto pair)  | `from.roles` → `to.roles`   |
+| `Database.RecordUpdated`    | `{ from, to }` (document pair) | `from.status` → `to.status` |
 
 State-flip events (`UserVerified`, `UserBlocked`, …) behave like **entity**
 events — you get the user directly, not `{ from, to }`. Use `UserUpdated` when
@@ -216,16 +216,16 @@ arbitrary fields (roles, profile, etc.) may change.
 The payload shape depends on the trigger kind. Create, delete, and state-flip
 events give the **entity directly**. Arbitrary mutations give `{ from, to }`.
 
-| Event | First arg (`payload`) |
-|-------|------------------------|
-| `membership.user.registered` | `UserDto` |
-| `membership.user.verified` / `blocked` / `reactivated` | `UserDto` |
-| `membership.user.deleted` | `UserDto` |
-| `membership.user.updated` | `{ from: UserDto; to: UserDto }` |
-| `database.record.inserted` / `deleted` | `T` (your document) |
-| `database.record.updated` / `replaced` | `{ from: T; to: T }` |
-| `database.records.inserted` | `T[]` |
-| `files.file.uploaded` | `FileResourceRefDto` |
+| Event                                                  | First arg (`payload`)            |
+| ------------------------------------------------------ | -------------------------------- |
+| `membership.user.registered`                           | `UserDto`                        |
+| `membership.user.verified` / `blocked` / `reactivated` | `UserDto`                        |
+| `membership.user.deleted`                              | `UserDto`                        |
+| `membership.user.updated`                              | `{ from: UserDto; to: UserDto }` |
+| `database.record.inserted` / `deleted`                 | `T` (your document)              |
+| `database.record.updated` / `replaced`                 | `{ from: T; to: T }`             |
+| `database.records.inserted`                            | `T[]`                            |
+| `files.file.uploaded`                                  | `FileResourceRefDto`             |
 
 Wrapper ids (user id, schema, record ids) live on `event.metadata`. For manual
 typing outside `receiver.on`, use `NorbixWebhookPayload<'event.name'>`.
@@ -235,12 +235,12 @@ typing outside `receiver.on`, use `NorbixWebhookPayload<'event.name'>`.
 `new NorbixWebhookReceiver(options?)` reads these env vars; any option you pass
 overrides the matching env var.
 
-| Env var | Option | Default |
-|---------|--------|---------|
-| `NORBIX_WEBHOOK_SIGNING_SECRET` | `secret` | — (verify skipped if unset) |
-| `NORBIX_WEBHOOK_TOLERANCE_SECONDS` | `toleranceSeconds` | `300` |
-| `NORBIX_PROJECT_ID` | `projectId` (guard) | — |
-| `NORBIX_ACCOUNT_ID` | `accountId` (guard) | — |
+| Env var                            | Option              | Default                     |
+| ---------------------------------- | ------------------- | --------------------------- |
+| `NORBIX_WEBHOOK_SIGNING_SECRET`    | `secret`            | — (verify skipped if unset) |
+| `NORBIX_WEBHOOK_TOLERANCE_SECONDS` | `toleranceSeconds`  | `300`                       |
+| `NORBIX_PROJECT_ID`                | `projectId` (guard) | —                           |
+| `NORBIX_ACCOUNT_ID`                | `accountId` (guard) | —                           |
 
 When `projectId` / `accountId` are set, a delivery whose envelope does not match
 is rejected with `NorbixWebhookSignatureError`. In the browser (no `process`),
@@ -259,7 +259,7 @@ POST a signed JSON envelope to subscribed destinations:
   "accountId": "acc_…",
   "projectId": "pr_…",
   "triggerId": "trg_…",
-  "data": { }
+  "data": {}
 }
 ```
 
@@ -270,17 +270,17 @@ Norbix sends these headers on every delivery (see gateway
 like `norbix-account-id` / `norbix-project-id` from `AuthStatics` (studio →
 gateway auth).
 
-| Header | Purpose |
-|--------|---------|
-| `X-Norbix-Event` | Logical event name (matches `envelope.event`) |
-| `X-Norbix-Delivery` | Stable delivery id (same as `envelope.id`) |
-| `Idempotency-Key` | Same value as `X-Norbix-Delivery` (IETF dedup hint) |
-| `X-Norbix-Account` | Account view id |
-| `X-Norbix-Project` | Project view id |
-| `X-Norbix-Integration` | Webhook integration view id |
-| `X-Norbix-Destination` | Destination view id that received this attempt |
-| `X-Norbix-Signature` | `sha256=<hex>` HMAC-SHA256 of `"<timestamp>.<rawBody>"` |
-| `X-Norbix-Timestamp` | Unix epoch seconds (replay window) |
+| Header                 | Purpose                                                 |
+| ---------------------- | ------------------------------------------------------- |
+| `X-Norbix-Event`       | Logical event name (matches `envelope.event`)           |
+| `X-Norbix-Delivery`    | Stable delivery id (same as `envelope.id`)              |
+| `Idempotency-Key`      | Same value as `X-Norbix-Delivery` (IETF dedup hint)     |
+| `X-Norbix-Account`     | Account view id                                         |
+| `X-Norbix-Project`     | Project view id                                         |
+| `X-Norbix-Integration` | Webhook integration view id                             |
+| `X-Norbix-Destination` | Destination view id that received this attempt          |
+| `X-Norbix-Signature`   | `sha256=<hex>` HMAC-SHA256 of `"<timestamp>.<rawBody>"` |
+| `X-Norbix-Timestamp`   | Unix epoch seconds (replay window)                      |
 
 Use the project signing secret (`hub.webhooks.revealWebhookIntegrationSecret()`),
 or set `NORBIX_WEBHOOK_SIGNING_SECRET`. When no secret is configured,
@@ -288,22 +288,22 @@ verification is skipped.
 
 ## API
 
-| Export | Description |
-|--------|-------------|
-| `NorbixWebhookReceiver` | Register handlers + `handle()`; reads env config |
-| `NorbixWebhookEvents` | Named event constants (use instead of raw strings) |
-| `NORBIX_WEBHOOK_EVENT_NAMES` | Full catalog — pass to `onAll` |
-| `NORBIX_WEBHOOK_EVENT_GROUPS` | Catalog grouped by module |
-| `receiver.on<T>(name, (payload, event))` | Typed handler for one event |
-| `receiver.onAll(events, (envelope, ctx))` | Catch-all — runs even when `on` is set |
-| `normalizeNorbixWebhook(envelope)` | Envelope → `{ payload, metadata }` |
-| `verifyNorbixWebhookSignature()` | Low-level verify |
-| `parseNorbixWebhookEnvelope()` | Parse JSON body |
-| `parseNorbixWebhookHeaders()` | Read delivery headers |
-| `NORBIX_WEBHOOK_HEADERS` | Header name constants |
-| `NorbixWebhookPayloadMap` | Event name → normalised payload type |
-| `NorbixWebhookPayload<E>` | Resolve payload type for event `E` |
-| `NorbixWebhookEvent` | Typed metadata object (2nd `on` arg) |
-| `NorbixWebhookEnvelope` | Raw delivery body (1st `onAll` arg) |
+| Export                                    | Description                                        |
+| ----------------------------------------- | -------------------------------------------------- |
+| `NorbixWebhookReceiver`                   | Register handlers + `handle()`; reads env config   |
+| `NorbixWebhookEvents`                     | Named event constants (use instead of raw strings) |
+| `NORBIX_WEBHOOK_EVENT_NAMES`              | Full catalog — pass to `onAll`                     |
+| `NORBIX_WEBHOOK_EVENT_GROUPS`             | Catalog grouped by module                          |
+| `receiver.on<T>(name, (payload, event))`  | Typed handler for one event                        |
+| `receiver.onAll(events, (envelope, ctx))` | Catch-all — runs even when `on` is set             |
+| `normalizeNorbixWebhook(envelope)`        | Envelope → `{ payload, metadata }`                 |
+| `verifyNorbixWebhookSignature()`          | Low-level verify                                   |
+| `parseNorbixWebhookEnvelope()`            | Parse JSON body                                    |
+| `parseNorbixWebhookHeaders()`             | Read delivery headers                              |
+| `NORBIX_WEBHOOK_HEADERS`                  | Header name constants                              |
+| `NorbixWebhookPayloadMap`                 | Event name → normalised payload type               |
+| `NorbixWebhookPayload<E>`                 | Resolve payload type for event `E`                 |
+| `NorbixWebhookEvent`                      | Typed metadata object (2nd `on` arg)               |
+| `NorbixWebhookEnvelope`                   | Raw delivery body (1st `onAll` arg)                |
 
 Errors: `NorbixWebhookSignatureError`, `NorbixWebhookParseError`.

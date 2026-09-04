@@ -8,24 +8,22 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`commitUpload`](#commitupload) | `POST` | `/{version}/files/{filesIntegrationId}/commit` | `project` |
-| [`deleteFileApi`](#deletefileapi) | `DELETE` | `/{version}/files/{filesIntegrationId}` | `project` |
-| [`deleteManyFilesApi`](#deletemanyfilesapi) | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk` | `project` |
-| [`downloadFileApi`](#downloadfileapi) | `GET` | `/{version}/files/{filesIntegrationId}/download` | `project` |
-| [`getFileInfo`](#getfileinfo) | `GET` | `/{version}/files/{filesIntegrationId}/info` | `project` |
-| [`getSignedUrl`](#getsignedurl) | `GET` | `/{version}/files/{filesIntegrationId}/sign` | `project` |
-| [`listFiles`](#listfiles) | `GET` | `/{version}/files/{filesIntegrationId}` | `project` |
-| [`requestUploadUrl`](#requestuploadurl) | `POST` | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
+| Method                                      | Verb     | Path                                               | Scope     |
+| ------------------------------------------- | -------- | -------------------------------------------------- | --------- |
+| [`commitUpload`](#commitupload)             | `POST`   | `/{version}/files/{filesIntegrationId}/commit`     | `project` |
+| [`deleteFileApi`](#deletefileapi)           | `DELETE` | `/{version}/files/{filesIntegrationId}`            | `project` |
+| [`deleteManyFilesApi`](#deletemanyfilesapi) | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk`       | `project` |
+| [`downloadFileApi`](#downloadfileapi)       | `GET`    | `/{version}/files/{filesIntegrationId}/download`   | `project` |
+| [`getFileInfo`](#getfileinfo)               | `GET`    | `/{version}/files/{filesIntegrationId}/info`       | `project` |
+| [`getSignedUrl`](#getsignedurl)             | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
+| [`listFiles`](#listfiles)                   | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
+| [`requestUploadUrl`](#requestuploadurl)     | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
 
 ## Reference
 
 ### commitUpload
 
 `POST` `/{version}/files/{filesIntegrationId}/commit`
-
-
 
 **Request DTO**: `CodeMashApi2.CommitUploadRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -94,8 +92,6 @@ const result = await norbix.api.files.deleteManyFilesApi({
 
 `GET` `/{version}/files/{filesIntegrationId}/download`
 
-
-
 **Request DTO**: `CodeMashApi2.DownloadFileApiRequest`
 **Response**: `CodeMashApi2.Blob`
 
@@ -163,8 +159,6 @@ const result = await norbix.api.files.getSignedUrl({
 
 `GET` `/{version}/files/{filesIntegrationId}`
 
-
-
 **Request DTO**: `CodeMashApi2.ListFilesRequest`
 **Response**: `CodeMashApi2.ListFilesResponse`
 
@@ -185,8 +179,6 @@ const result = await norbix.api.files.listFiles({
 ### requestUploadUrl
 
 `POST` `/{version}/files/{filesIntegrationId}/upload-url`
-
-
 
 **Request DTO**: `CodeMashApi2.RequestUploadUrlRequest`
 **Response**: `CodeMashApi2.RequestUploadUrlResponse`

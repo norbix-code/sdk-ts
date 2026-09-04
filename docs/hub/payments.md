@@ -8,24 +8,25 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`disablePayments`](#disablepayments) | `GET` | `/{version}/payments/disable` | `project` |
-| [`enablePayments`](#enablepayments) | `GET` | `/{version}/payments/enable` | `project` |
-| [`deletePaymentsTrigger`](#deletepaymentstrigger) | `DELETE` | `/{version}/payments/triggers/{triggerId}` | `project` |
-| [`disablePaymentsTrigger`](#disablepaymentstrigger) | `PATCH` | `/{version}/payments/triggers/{triggerId}/disable` | `project` |
-| [`enablePaymentsTrigger`](#enablepaymentstrigger) | `PATCH` | `/{version}/payments/triggers/{triggerId}/enable` | `project` |
-| [`getPaymentsTrigger`](#getpaymentstrigger) | `GET` | `/{version}/payments/triggers/{id}` | `project` |
-| [`getPaymentsTriggers`](#getpaymentstriggers) | `GET` | `/{version}/payments/triggers` | `project` |
-| [`savePaymentsTrigger`](#savepaymentstrigger) | `POST` | `/{version}/payments/triggers` | `project` |
-| [`confirmPaymentsIntegrationHumanDelivery`](#confirmpaymentsintegrationhumandelivery) | `POST` | `/{version}/payments/integrations/confirm-human-delivery` | `project` |
-| [`deletePaymentsIntegration`](#deletepaymentsintegration) | `DELETE` | `/{version}/payments/integrations/{Id}` | `project` |
-| [`disablePaymentsIntegration`](#disablepaymentsintegration) | `PUT` | `/{version}/payments/integrations/{Id}/disable` | `project` |
-| [`enablePaymentsIntegration`](#enablepaymentsintegration) | `PUT` | `/{version}/payments/integrations/{Id}/enable` | `project` |
-| [`getPaymentsIntegration`](#getpaymentsintegration) | `GET` | `/{version}/payments/integrations/{id}` | `project` |
-| [`getPaymentsIntegrations`](#getpaymentsintegrations) | `GET` | `/{version}/payments/integrations` | `project` |
-| [`savePaymentsIntegration`](#savepaymentsintegration) | `POST` | `/{version}/payments/integrations` | `project` |
-| [`testPaymentsIntegration`](#testpaymentsintegration) | `POST` | `/{version}/payments/integrations/test` | `project` |
+| Method                                                                                | Verb     | Path                                                      | Scope     |
+| ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------- | --------- |
+| [`disablePayments`](#disablepayments)                                                 | `GET`    | `/{version}/payments/disable`                             | `project` |
+| [`enablePayments`](#enablepayments)                                                   | `GET`    | `/{version}/payments/enable`                              | `project` |
+| [`getPaymentsWebhookLog`](#getpaymentswebhooklog)                                     | `GET`    | `/{version}/payments/webhooks/log`                        | `project` |
+| [`deletePaymentsTrigger`](#deletepaymentstrigger)                                     | `DELETE` | `/{version}/payments/triggers/{triggerId}`                | `project` |
+| [`disablePaymentsTrigger`](#disablepaymentstrigger)                                   | `PATCH`  | `/{version}/payments/triggers/{triggerId}/disable`        | `project` |
+| [`enablePaymentsTrigger`](#enablepaymentstrigger)                                     | `PATCH`  | `/{version}/payments/triggers/{triggerId}/enable`         | `project` |
+| [`getPaymentsTrigger`](#getpaymentstrigger)                                           | `GET`    | `/{version}/payments/triggers/{id}`                       | `project` |
+| [`getPaymentsTriggers`](#getpaymentstriggers)                                         | `GET`    | `/{version}/payments/triggers`                            | `project` |
+| [`savePaymentsTrigger`](#savepaymentstrigger)                                         | `POST`   | `/{version}/payments/triggers`                            | `project` |
+| [`confirmPaymentsIntegrationHumanDelivery`](#confirmpaymentsintegrationhumandelivery) | `POST`   | `/{version}/payments/integrations/confirm-human-delivery` | `project` |
+| [`deletePaymentsIntegration`](#deletepaymentsintegration)                             | `DELETE` | `/{version}/payments/integrations/{Id}`                   | `project` |
+| [`disablePaymentsIntegration`](#disablepaymentsintegration)                           | `PUT`    | `/{version}/payments/integrations/{Id}/disable`           | `project` |
+| [`enablePaymentsIntegration`](#enablepaymentsintegration)                             | `PUT`    | `/{version}/payments/integrations/{Id}/enable`            | `project` |
+| [`getPaymentsIntegration`](#getpaymentsintegration)                                   | `GET`    | `/{version}/payments/integrations/{id}`                   | `project` |
+| [`getPaymentsIntegrations`](#getpaymentsintegrations)                                 | `GET`    | `/{version}/payments/integrations`                        | `project` |
+| [`savePaymentsIntegration`](#savepaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations`                        | `project` |
+| [`testPaymentsIntegration`](#testpaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations/test`                   | `project` |
 
 ## Reference
 
@@ -69,6 +70,28 @@ const result = await norbix.hub.payments.enablePayments({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getPaymentsWebhookLog
+
+`GET` `/{version}/payments/webhooks/log`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPaymentsWebhookLog`
+**Response**: `CodeMashHub2.GetPaymentsWebhookLogResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.getPaymentsWebhookLog({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPaymentsWebhookLogResponse
 ```
 
 [↑ Top](#endpoints)
@@ -212,8 +235,6 @@ const result = await norbix.hub.payments.savePaymentsTrigger({
 ### confirmPaymentsIntegrationHumanDelivery
 
 `POST` `/{version}/payments/integrations/confirm-human-delivery`
-
-
 
 **Request DTO**: `CodeMashHub2.ConfirmPaymentsIntegrationHumanDeliveryRequest`
 **Response**: `CodeMashHub2.EmptyResponse`

@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.code (28 endpoints).
+ * Tests for hub.code (33 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.code', () => {
-  it('module exposes 28 method(s)', () => {
+  it('module exposes 33 method(s)', () => {
     const mock = createMockFetch();
     const mod = new CodeModule({} as never);
     void mod; // silence unused — we only need the type
@@ -48,14 +48,19 @@ describe('hub.code', () => {
     expect(typeof ns['deleteMarketplaceIntegration']).toBe('function');
     expect(typeof ns['enableMarketplaceIntegration']).toBe('function');
     expect(typeof ns['disableMarketplaceIntegration']).toBe('function');
-    expect(typeof ns['getMarketplaceBindings']).toBe('function');
-    expect(typeof ns['getMarketplaceBinding']).toBe('function');
-    expect(typeof ns['saveMarketplaceFunctionBinding']).toBe('function');
-    expect(typeof ns['deleteMarketplaceFunctionBinding']).toBe('function');
-    expect(typeof ns['enableMarketplaceFunctionBinding']).toBe('function');
-    expect(typeof ns['disableMarketplaceFunctionBinding']).toBe('function');
-    expect(typeof ns['getMarketplaceBindingTokens']).toBe('function');
-    expect(typeof ns['invokeMarketplaceFunctionBinding']).toBe('function');
+    expect(typeof ns['getMarketplaceFunctions']).toBe('function');
+    expect(typeof ns['getMarketplaceFunction']).toBe('function');
+    expect(typeof ns['saveMarketplaceFunction']).toBe('function');
+    expect(typeof ns['deleteMarketplaceFunction']).toBe('function');
+    expect(typeof ns['enableMarketplaceFunction']).toBe('function');
+    expect(typeof ns['disableMarketplaceFunction']).toBe('function');
+    expect(typeof ns['getMarketplaceFunctionTokens']).toBe('function');
+    expect(typeof ns['invokeMarketplaceFunction']).toBe('function');
+    expect(typeof ns['getMarketplaceListing']).toBe('function');
+    expect(typeof ns['testMarketplaceIntegration']).toBe('function');
+    expect(typeof ns['replaceMarketplaceIntegrationSecrets']).toBe('function');
+    expect(typeof ns['revealMarketplaceIntegrationSecrets']).toBe('function');
+    expect(typeof ns['setMarketplaceIntegrationTokenMappings']).toBe('function');
     expect(typeof ns['getMarketplaceFunctionCatalog']).toBe('function');
   });
 
@@ -502,13 +507,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getMarketplaceBindings: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings', async () => {
+  it('getMarketplaceFunctions: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       version: 'v2',
       stub,
     });
@@ -518,7 +523,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['getMarketplaceBindings']!;
+    )['code']!['getMarketplaceFunctions']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
@@ -527,13 +532,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getMarketplaceBinding: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}', async () => {
+  it('getMarketplaceFunction: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       version: 'v2',
       stub,
     });
@@ -543,7 +548,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['getMarketplaceBinding']!;
+    )['code']!['getMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
@@ -552,13 +557,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('saveMarketplaceFunctionBinding: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings', async () => {
+  it('saveMarketplaceFunction: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       version: 'v2',
       stub,
     });
@@ -568,7 +573,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['saveMarketplaceFunctionBinding']!;
+    )['code']!['saveMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
@@ -577,13 +582,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('deleteMarketplaceFunctionBinding: DELETE /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}', async () => {
+  it('deleteMarketplaceFunction: DELETE /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       version: 'v2',
       stub,
     });
@@ -593,7 +598,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['deleteMarketplaceFunctionBinding']!;
+    )['code']!['deleteMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('DELETE');
@@ -602,13 +607,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableMarketplaceFunctionBinding: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable', async () => {
+  it('enableMarketplaceFunction: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable',
       version: 'v2',
       stub,
     });
@@ -618,7 +623,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['enableMarketplaceFunctionBinding']!;
+    )['code']!['enableMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
@@ -627,13 +632,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('disableMarketplaceFunctionBinding: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable', async () => {
+  it('disableMarketplaceFunction: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable',
       version: 'v2',
       stub,
     });
@@ -643,7 +648,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['disableMarketplaceFunctionBinding']!;
+    )['code']!['disableMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
@@ -652,13 +657,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getMarketplaceBindingTokens: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens', async () => {
+  it('getMarketplaceFunctionTokens: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens',
       version: 'v2',
       stub,
     });
@@ -668,7 +673,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['getMarketplaceBindingTokens']!;
+    )['code']!['getMarketplaceFunctionTokens']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
@@ -677,13 +682,13 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('invokeMarketplaceFunctionBinding: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke', async () => {
+  it('invokeMarketplaceFunction: POST /{version}/code/marketplace/functions/{FunctionViewId}/invoke', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke',
+      '/{version}/code/marketplace/functions/{FunctionViewId}/invoke',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke',
+      path: '/{version}/code/marketplace/functions/{FunctionViewId}/invoke',
       version: 'v2',
       stub,
     });
@@ -693,7 +698,7 @@ describe('hub.code', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['code']!['invokeMarketplaceFunctionBinding']!;
+    )['code']!['invokeMarketplaceFunction']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
@@ -702,13 +707,136 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getMarketplaceFunctionCatalog: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions', async () => {
+  it('getMarketplaceListing: GET /{version}/code/marketplace/listings/{ListingViewId}', async () => {
+    const stub = stubRequestForPath('/{version}/code/marketplace/listings/{ListingViewId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/code/marketplace/listings/{ListingViewId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['getMarketplaceListing']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('testMarketplaceIntegration: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/test', async () => {
     const stub = stubRequestForPath(
-      '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['testMarketplaceIntegration']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('replaceMarketplaceIntegrationSecrets: PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/secrets', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['replaceMarketplaceIntegrationSecrets']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('revealMarketplaceIntegrationSecrets: POST /{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['revealMarketplaceIntegrationSecrets']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('setMarketplaceIntegrationTokenMappings: PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['setMarketplaceIntegrationTokenMappings']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getMarketplaceFunctionCatalog: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/catalog', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog',
       version: 'v2',
       stub,
     });

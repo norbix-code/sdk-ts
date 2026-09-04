@@ -2,23 +2,21 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.webhooks` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`getWebhookIntegration`](#getwebhookintegration) | `GET` | `/{version}/webhooks/integration` | `project` |
-| [`revealWebhookIntegrationSecret`](#revealwebhookintegrationsecret) | `GET` | `/{version}/webhooks/integration/secret` | `project` |
-| [`rotateWebhookIntegrationSecret`](#rotatewebhookintegrationsecret) | `POST` | `/{version}/webhooks/integration/secret/rotate` | `project` |
-| [`updateWebhookIntegrationExtraHeaders`](#updatewebhookintegrationextraheaders) | `PUT` | `/{version}/webhooks/integration/extra-headers` | `project` |
-| [`receiveWebhook`](#receivewebhook) | `POST` | `/{version}/webhooks/{source}/{integrationInstanceId}` | `project` |
-| [`disableWebhookDestination`](#disablewebhookdestination) | `PUT` | `/{version}/webhooks/destinations/{DestinationId}/disable` | `project` |
-| [`enableWebhookDestination`](#enablewebhookdestination) | `PUT` | `/{version}/webhooks/destinations/{DestinationId}/enable` | `project` |
-| [`removeWebhookDestination`](#removewebhookdestination) | `DELETE` | `/{version}/webhooks/destinations/{DestinationId}` | `project` |
-| [`saveWebhookDestination`](#savewebhookdestination) | `POST` | `/{version}/webhooks/destinations` | `project` |
+| Method                                                                          | Verb     | Path                                                       | Scope     |
+| ------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------- | --------- |
+| [`getWebhookIntegration`](#getwebhookintegration)                               | `GET`    | `/{version}/webhooks/integration`                          | `project` |
+| [`revealWebhookIntegrationSecret`](#revealwebhookintegrationsecret)             | `GET`    | `/{version}/webhooks/integration/secret`                   | `project` |
+| [`rotateWebhookIntegrationSecret`](#rotatewebhookintegrationsecret)             | `POST`   | `/{version}/webhooks/integration/secret/rotate`            | `project` |
+| [`updateWebhookIntegrationExtraHeaders`](#updatewebhookintegrationextraheaders) | `PUT`    | `/{version}/webhooks/integration/extra-headers`            | `project` |
+| [`receiveWebhook`](#receivewebhook)                                             | `POST`   | `/{version}/webhooks/{source}/{integrationInstanceId}`     | `project` |
+| [`disableWebhookDestination`](#disablewebhookdestination)                       | `PUT`    | `/{version}/webhooks/destinations/{DestinationId}/disable` | `project` |
+| [`enableWebhookDestination`](#enablewebhookdestination)                         | `PUT`    | `/{version}/webhooks/destinations/{DestinationId}/enable`  | `project` |
+| [`removeWebhookDestination`](#removewebhookdestination)                         | `DELETE` | `/{version}/webhooks/destinations/{DestinationId}`         | `project` |
+| [`saveWebhookDestination`](#savewebhookdestination)                             | `POST`   | `/{version}/webhooks/destinations`                         | `project` |
 
 ## Reference
 
@@ -114,8 +112,6 @@ const result = await norbix.hub.webhooks.updateWebhookIntegrationExtraHeaders({
 
 `POST` `/{version}/webhooks/{source}/{integrationInstanceId}`
 
-
-
 **Request DTO**: `CodeMashHub2.ReceiveWebhook`
 **Response**: `CodeMashHub2.HttpResult`
 
@@ -183,8 +179,6 @@ const result = await norbix.hub.webhooks.enableWebhookDestination({
 ### removeWebhookDestination
 
 `DELETE` `/{version}/webhooks/destinations/{DestinationId}`
-
-
 
 **Request DTO**: `CodeMashHub2.RemoveWebhookDestinationRequest`
 **Response**: `CodeMashHub2.EmptyResponse`

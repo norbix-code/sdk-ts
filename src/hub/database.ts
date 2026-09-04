@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 46
+ * Endpoints: 72
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -316,6 +316,25 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/taxonomies/{TaxonomyName}/merged-tree
+   * Request DTO: GetDatabaseMergedTermTreeRequest
+   */
+  getDatabaseMergedTermTree = (
+    request: Partial<CodeMashHub2.GetDatabaseMergedTermTreeRequest> = {} as Partial<CodeMashHub2.GetDatabaseMergedTermTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseMergedTermTreeResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseMergedTermTreeResponse>({
+      target: 'hub',
+      path: '/{version}/database/taxonomies/{TaxonomyName}/merged-tree',
+      method: 'GET',
+      request,
+      pathParams: ['TaxonomyName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/database/taxonomies/{TaxonomyName}/terms/tree
    * Request DTO: GetDatabaseTaxonomyTermTreeRequest
    */
@@ -367,6 +386,25 @@ export class DatabaseModule {
       method: 'PUT',
       request,
       pathParams: ['TaxonomyId', 'Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/schemas/apply-bundle
+   * Request DTO: ApplyDatabaseSchemaBundleRequest
+   */
+  applyDatabaseSchemaBundle = (
+    request: Partial<CodeMashHub2.ApplyDatabaseSchemaBundleRequest> = {} as Partial<CodeMashHub2.ApplyDatabaseSchemaBundleRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ApplyDatabaseSchemaBundleResponse> => {
+    return this.transport.send<CodeMashHub2.ApplyDatabaseSchemaBundleResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/apply-bundle',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });
@@ -459,6 +497,25 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.GetDatabaseSchemaDraftResponse>({
       target: 'hub',
       path: '/{version}/database/schemas/{Id}/draft',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/schemas/{Id}/list-settings
+   * Request DTO: GetDatabaseSchemaListSettings
+   */
+  getDatabaseSchemaListSettings = (
+    request: Partial<CodeMashHub2.GetDatabaseSchemaListSettings> = {} as Partial<CodeMashHub2.GetDatabaseSchemaListSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseSchemaListSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseSchemaListSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/{Id}/list-settings',
       method: 'GET',
       request,
       pathParams: ['Id'],
@@ -582,6 +639,25 @@ export class DatabaseModule {
   };
 
   /**
+   * PUT /{version}/database/schemas/{Id}/list-settings
+   * Request DTO: UpdateDatabaseSchemaListSettingsRequest
+   */
+  updateDatabaseSchemaListSettings = (
+    request: Partial<CodeMashHub2.UpdateDatabaseSchemaListSettingsRequest> = {} as Partial<CodeMashHub2.UpdateDatabaseSchemaListSettingsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/{Id}/list-settings',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/database/schemas/{Id}/settings
    * Request DTO: UpdateDatabaseSchemaSettingsRequest
    */
@@ -595,6 +671,310 @@ export class DatabaseModule {
       method: 'PUT',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/collections/{collectionName}/aggregate
+   * Request DTO: AggregateRecords
+   */
+  aggregateRecords = (
+    request: Partial<CodeMashHub2.AggregateRecords> = {} as Partial<CodeMashHub2.AggregateRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AggregateRecordsResponse> => {
+    return this.transport.send<CodeMashHub2.AggregateRecordsResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/aggregate',
+      method: 'POST',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/database/collections/{collectionName}/{id}/responsibility
+   * Request DTO: ChangeRecordResponsibility
+   */
+  changeRecordResponsibility = (
+    request: Partial<CodeMashHub2.ChangeRecordResponsibility> = {} as Partial<CodeMashHub2.ChangeRecordResponsibility>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/{id}/responsibility',
+      method: 'PUT',
+      request,
+      pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}/count
+   * Request DTO: CountRecords
+   */
+  countRecords = (
+    request: Partial<CodeMashHub2.CountRecords> = {} as Partial<CodeMashHub2.CountRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CountRecordsResponse> => {
+    return this.transport.send<CodeMashHub2.CountRecordsResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/count',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/database/collections/{collectionName}/many
+   * Request DTO: DeleteManyRecords
+   */
+  deleteManyRecords = (
+    request: Partial<CodeMashHub2.DeleteManyRecords> = {} as Partial<CodeMashHub2.DeleteManyRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/many',
+      method: 'DELETE',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/database/collections/{collectionName}/{id}
+   * Request DTO: DeleteRecord
+   */
+  deleteRecord = (
+    request: Partial<CodeMashHub2.DeleteRecord> = {} as Partial<CodeMashHub2.DeleteRecord>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/{id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}/distinct
+   * Request DTO: DistinctRecordValues
+   */
+  distinctRecordValues = (
+    request: Partial<CodeMashHub2.DistinctRecordValues> = {} as Partial<CodeMashHub2.DistinctRecordValues>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.DistinctRecordValuesResponse> => {
+    return this.transport.send<CodeMashHub2.DistinctRecordValuesResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/distinct',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute
+   * Request DTO: ExecuteRecordsAggregate
+   */
+  executeRecordsAggregate = (
+    request: Partial<CodeMashHub2.ExecuteRecordsAggregate> = {} as Partial<CodeMashHub2.ExecuteRecordsAggregate>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ExecuteRecordsAggregateResponse> => {
+    return this.transport.send<CodeMashHub2.ExecuteRecordsAggregateResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute',
+      method: 'POST',
+      request,
+      pathParams: ['collectionName', 'aggregateId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}
+   * Request DTO: FindRecords
+   */
+  findRecords = (
+    request: Partial<CodeMashHub2.FindRecords> = {} as Partial<CodeMashHub2.FindRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.FindRecordsResponse> => {
+    return this.transport.send<CodeMashHub2.FindRecordsResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}/{id}
+   * Request DTO: FindOneRecord
+   */
+  findOneRecord = (
+    request: Partial<CodeMashHub2.FindOneRecord> = {} as Partial<CodeMashHub2.FindOneRecord>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.FindOneRecordResponse> => {
+    return this.transport.send<CodeMashHub2.FindOneRecordResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/collections/{collectionName}/indexes
+   * Request DTO: GetCollectionIndexes
+   */
+  getCollectionIndexes = (
+    request: Partial<CodeMashHub2.GetCollectionIndexes> = {} as Partial<CodeMashHub2.GetCollectionIndexes>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCollectionIndexesResponse> => {
+    return this.transport.send<CodeMashHub2.GetCollectionIndexesResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/indexes',
+      method: 'GET',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/collections/{collectionName}/many
+   * Request DTO: InsertManyRecords
+   */
+  insertManyRecords = (
+    request: Partial<CodeMashHub2.InsertManyRecords> = {} as Partial<CodeMashHub2.InsertManyRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/many',
+      method: 'POST',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/collections/{collectionName}
+   * Request DTO: InsertRecord
+   */
+  insertRecord = (
+    request: Partial<CodeMashHub2.InsertRecord> = {} as Partial<CodeMashHub2.InsertRecord>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}',
+      method: 'POST',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/database/collections/{collectionName}/{id}/replace
+   * Request DTO: ReplaceRecord
+   */
+  replaceRecord = (
+    request: Partial<CodeMashHub2.ReplaceRecord> = {} as Partial<CodeMashHub2.ReplaceRecord>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/{id}/replace',
+      method: 'PUT',
+      request,
+      pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/collections/seed
+   * Request DTO: SeedCollectionRecords
+   */
+  seedCollectionRecords = (
+    request: Partial<CodeMashHub2.SeedCollectionRecords> = {} as Partial<CodeMashHub2.SeedCollectionRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.SeedCollectionRecordsResponse> => {
+    return this.transport.send<CodeMashHub2.SeedCollectionRecordsResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/seed',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/database/collections/{collectionName}/many
+   * Request DTO: UpdateManyRecords
+   */
+  updateManyRecords = (
+    request: Partial<CodeMashHub2.UpdateManyRecords> = {} as Partial<CodeMashHub2.UpdateManyRecords>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/many',
+      method: 'PUT',
+      request,
+      pathParams: ['collectionName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/database/collections/{collectionName}/{id}
+   * Request DTO: UpdateOneRecord
+   */
+  updateOneRecord = (
+    request: Partial<CodeMashHub2.UpdateOneRecord> = {} as Partial<CodeMashHub2.UpdateOneRecord>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/collections/{collectionName}/{id}',
+      method: 'PUT',
+      request,
+      pathParams: ['collectionName', 'id'],
       scope: 'project',
       ...options,
     });
@@ -782,6 +1162,120 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.TestDatabaseIntegrationResponse>({
       target: 'hub',
       path: '/{version}/database/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports
+   * Request DTO: CreateCollectionImport
+   */
+  createCollectionImport = (
+    request: Partial<CodeMashHub2.CreateCollectionImport> = {} as Partial<CodeMashHub2.CreateCollectionImport>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/database/imports/{Id}
+   * Request DTO: DeleteCollectionImportRequest
+   */
+  deleteCollectionImport = (
+    request: Partial<CodeMashHub2.DeleteCollectionImportRequest> = {} as Partial<CodeMashHub2.DeleteCollectionImportRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/imports/{Id}
+   * Request DTO: GetCollectionImport
+   */
+  getCollectionImport = (
+    request: Partial<CodeMashHub2.GetCollectionImport> = {} as Partial<CodeMashHub2.GetCollectionImport>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCollectionImportResponse> => {
+    return this.transport.send<CodeMashHub2.GetCollectionImportResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/imports
+   * Request DTO: GetCollectionImports
+   */
+  getCollectionImports = (
+    request: Partial<CodeMashHub2.GetCollectionImports> = {} as Partial<CodeMashHub2.GetCollectionImports>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCollectionImportsResponse> => {
+    return this.transport.send<CodeMashHub2.GetCollectionImportsResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports/upload-url
+   * Request DTO: RequestImportUploadUrlRequest
+   */
+  requestImportUploadUrl = (
+    request: Partial<CodeMashHub2.RequestImportUploadUrlRequest> = {} as Partial<CodeMashHub2.RequestImportUploadUrlRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RequestImportUploadUrlResponse> => {
+    return this.transport.send<CodeMashHub2.RequestImportUploadUrlResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports/upload-url',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports/analyze
+   * Request DTO: AnalyzeImportFileRequest
+   */
+  analyzeImportFile = (
+    request: Partial<CodeMashHub2.AnalyzeImportFileRequest> = {} as Partial<CodeMashHub2.AnalyzeImportFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AnalyzeImportFileResponse> => {
+    return this.transport.send<CodeMashHub2.AnalyzeImportFileResponse>({
+      target: 'hub',
+      path: '/{version}/database/imports/analyze',
       method: 'POST',
       request,
       pathParams: [],

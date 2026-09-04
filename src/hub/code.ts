@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 28
+ * Endpoints: 33
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -373,16 +373,16 @@ export class CodeModule {
   };
 
   /**
-   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings
-   * Request DTO: GetMarketplaceBindings
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions
+   * Request DTO: GetMarketplaceFunctions
    */
-  getMarketplaceBindings = (
-    request: Partial<CodeMashHub2.GetMarketplaceBindings> = {} as Partial<CodeMashHub2.GetMarketplaceBindings>,
+  getMarketplaceFunctions = (
+    request: Partial<CodeMashHub2.GetMarketplaceFunctions> = {} as Partial<CodeMashHub2.GetMarketplaceFunctions>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetMarketplaceBindingsResponse> => {
-    return this.transport.send<CodeMashHub2.GetMarketplaceBindingsResponse>({
+  ): Promise<CodeMashHub2.GetMarketplaceFunctionsResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceFunctionsResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       method: 'GET',
       request,
       pathParams: ['IntegrationViewId'],
@@ -392,35 +392,35 @@ export class CodeModule {
   };
 
   /**
-   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}
-   * Request DTO: GetMarketplaceBinding
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}
+   * Request DTO: GetMarketplaceFunction
    */
-  getMarketplaceBinding = (
-    request: Partial<CodeMashHub2.GetMarketplaceBinding> = {} as Partial<CodeMashHub2.GetMarketplaceBinding>,
+  getMarketplaceFunction = (
+    request: Partial<CodeMashHub2.GetMarketplaceFunction> = {} as Partial<CodeMashHub2.GetMarketplaceFunction>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetMarketplaceBindingResponse> => {
-    return this.transport.send<CodeMashHub2.GetMarketplaceBindingResponse>({
+  ): Promise<CodeMashHub2.GetMarketplaceFunctionResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceFunctionResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       method: 'GET',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['IntegrationViewId', 'FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings
-   * Request DTO: SaveMarketplaceFunctionBinding
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions
+   * Request DTO: SaveMarketplaceFunction
    */
-  saveMarketplaceFunctionBinding = (
-    request: Partial<CodeMashHub2.SaveMarketplaceFunctionBinding> = {} as Partial<CodeMashHub2.SaveMarketplaceFunctionBinding>,
+  saveMarketplaceFunction = (
+    request: Partial<CodeMashHub2.SaveMarketplaceFunction> = {} as Partial<CodeMashHub2.SaveMarketplaceFunction>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.IdResponse> => {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       method: 'POST',
       request,
       pathParams: ['IntegrationViewId'],
@@ -430,102 +430,197 @@ export class CodeModule {
   };
 
   /**
-   * DELETE /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}
-   * Request DTO: DeleteMarketplaceFunctionBinding
+   * DELETE /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}
+   * Request DTO: DeleteMarketplaceFunction
    */
-  deleteMarketplaceFunctionBinding = (
-    request: Partial<CodeMashHub2.DeleteMarketplaceFunctionBinding> = {} as Partial<CodeMashHub2.DeleteMarketplaceFunctionBinding>,
+  deleteMarketplaceFunction = (
+    request: Partial<CodeMashHub2.DeleteMarketplaceFunction> = {} as Partial<CodeMashHub2.DeleteMarketplaceFunction>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.IdResponse> => {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       method: 'DELETE',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['IntegrationViewId', 'FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable
-   * Request DTO: EnableMarketplaceFunctionBinding
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable
+   * Request DTO: EnableMarketplaceFunction
    */
-  enableMarketplaceFunctionBinding = (
-    request: Partial<CodeMashHub2.EnableMarketplaceFunctionBinding> = {} as Partial<CodeMashHub2.EnableMarketplaceFunctionBinding>,
+  enableMarketplaceFunction = (
+    request: Partial<CodeMashHub2.EnableMarketplaceFunction> = {} as Partial<CodeMashHub2.EnableMarketplaceFunction>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.IdResponse> => {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/enable',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable',
       method: 'POST',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['IntegrationViewId', 'FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable
-   * Request DTO: DisableMarketplaceFunctionBinding
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable
+   * Request DTO: DisableMarketplaceFunction
    */
-  disableMarketplaceFunctionBinding = (
-    request: Partial<CodeMashHub2.DisableMarketplaceFunctionBinding> = {} as Partial<CodeMashHub2.DisableMarketplaceFunctionBinding>,
+  disableMarketplaceFunction = (
+    request: Partial<CodeMashHub2.DisableMarketplaceFunction> = {} as Partial<CodeMashHub2.DisableMarketplaceFunction>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.IdResponse> => {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/disable',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable',
       method: 'POST',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['IntegrationViewId', 'FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens
-   * Request DTO: GetMarketplaceBindingTokens
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens
+   * Request DTO: GetMarketplaceFunctionTokens
    */
-  getMarketplaceBindingTokens = (
-    request: Partial<CodeMashHub2.GetMarketplaceBindingTokens> = {} as Partial<CodeMashHub2.GetMarketplaceBindingTokens>,
+  getMarketplaceFunctionTokens = (
+    request: Partial<CodeMashHub2.GetMarketplaceFunctionTokens> = {} as Partial<CodeMashHub2.GetMarketplaceFunctionTokens>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.GetMarketplaceTokensResponse> => {
     return this.transport.send<CodeMashHub2.GetMarketplaceTokensResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/tokens',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens',
       method: 'GET',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['IntegrationViewId', 'FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke
-   * Request DTO: InvokeMarketplaceFunctionBinding
+   * POST /{version}/code/marketplace/functions/{FunctionViewId}/invoke
+   * Request DTO: InvokeMarketplaceFunction
    */
-  invokeMarketplaceFunctionBinding = (
-    request: Partial<CodeMashHub2.InvokeMarketplaceFunctionBinding> = {} as Partial<CodeMashHub2.InvokeMarketplaceFunctionBinding>,
+  invokeMarketplaceFunction = (
+    request: Partial<CodeMashHub2.InvokeMarketplaceFunction> = {} as Partial<CodeMashHub2.InvokeMarketplaceFunction>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.InvokeMarketplaceFunctionBindingResponse> => {
-    return this.transport.send<CodeMashHub2.InvokeMarketplaceFunctionBindingResponse>({
+  ): Promise<CodeMashHub2.InvokeMarketplaceFunctionResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeMarketplaceFunctionResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/bindings/{BindingViewId}/invoke',
+      path: '/{version}/code/marketplace/functions/{FunctionViewId}/invoke',
       method: 'POST',
       request,
-      pathParams: ['IntegrationViewId', 'BindingViewId'],
+      pathParams: ['FunctionViewId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/functions
+   * GET /{version}/code/marketplace/listings/{ListingViewId}
+   * Request DTO: GetMarketplaceListing
+   */
+  getMarketplaceListing = (
+    request: Partial<CodeMashHub2.GetMarketplaceListing> = {} as Partial<CodeMashHub2.GetMarketplaceListing>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMarketplaceListingResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceListingResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/listings/{ListingViewId}',
+      method: 'GET',
+      request,
+      pathParams: ['ListingViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/test
+   * Request DTO: TestMarketplaceIntegration
+   */
+  testMarketplaceIntegration = (
+    request: Partial<CodeMashHub2.TestMarketplaceIntegration> = {} as Partial<CodeMashHub2.TestMarketplaceIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestMarketplaceIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.TestMarketplaceIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
+      method: 'POST',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/secrets
+   * Request DTO: ReplaceMarketplaceIntegrationSecretsRequest
+   */
+  replaceMarketplaceIntegrationSecrets = (
+    request: Partial<CodeMashHub2.ReplaceMarketplaceIntegrationSecretsRequest> = {} as Partial<CodeMashHub2.ReplaceMarketplaceIntegrationSecretsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyMarketplaceSecretsResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyMarketplaceSecretsResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets',
+      method: 'PUT',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal
+   * Request DTO: RevealMarketplaceIntegrationSecretsRequest
+   */
+  revealMarketplaceIntegrationSecrets = (
+    request: Partial<CodeMashHub2.RevealMarketplaceIntegrationSecretsRequest> = {} as Partial<CodeMashHub2.RevealMarketplaceIntegrationSecretsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RevealMarketplaceIntegrationSecretsResponse> => {
+    return this.transport.send<CodeMashHub2.RevealMarketplaceIntegrationSecretsResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal',
+      method: 'POST',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings
+   * Request DTO: SetMarketplaceIntegrationTokenMappingsRequest
+   */
+  setMarketplaceIntegrationTokenMappings = (
+    request: Partial<CodeMashHub2.SetMarketplaceIntegrationTokenMappingsRequest> = {} as Partial<CodeMashHub2.SetMarketplaceIntegrationTokenMappingsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.SetMarketplaceIntegrationTokenMappingsResponse> => {
+    return this.transport.send<CodeMashHub2.SetMarketplaceIntegrationTokenMappingsResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings',
+      method: 'PUT',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/catalog
    * Request DTO: GetMarketplaceFunctionCatalog
    */
   getMarketplaceFunctionCatalog = (
@@ -534,7 +629,7 @@ export class CodeModule {
   ): Promise<CodeMashHub2.GetMarketplaceFunctionCatalogResponse> => {
     return this.transport.send<CodeMashHub2.GetMarketplaceFunctionCatalogResponse>({
       target: 'hub',
-      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog',
       method: 'GET',
       request,
       pathParams: ['IntegrationViewId'],

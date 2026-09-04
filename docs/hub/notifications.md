@@ -8,133 +8,133 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`disableEmail`](#disableemail) | `GET` | `/{version}/notifications/email/disable` | `project` |
-| [`getEmailDisableDependencies`](#getemaildisabledependencies) | `GET` | `/{version}/notifications/email/disable-dependencies` | `project` |
-| [`enableEmail`](#enableemail) | `GET` | `/{version}/notifications/email/enable` | `project` |
-| [`saveEmailValidationIntegration`](#saveemailvalidationintegration) | `POST` | `/{version}/notifications/email/validation/integrations` | `project` |
-| [`testEmailValidationIntegration`](#testemailvalidationintegration) | `POST` | `/{version}/notifications/email/validation/integrations/test` | `project` |
-| [`attachFileToTemplate`](#attachfiletotemplate) | `POST` | `/{version}/notifications/email/templates/attachments` | `project` |
-| [`createEmailTemplate`](#createemailtemplate) | `POST` | `/{version}/notifications/email/templates` | `project` |
-| [`deleteEmailTemplate`](#deleteemailtemplate) | `DELETE` | `/{version}/notifications/email/templates/{Id}` | `project` |
-| [`getEmailTemplate`](#getemailtemplate) | `GET` | `/{version}/notifications/email/templates/{id}` | `project` |
-| [`getEmailTemplates`](#getemailtemplates) | `GET` | `/{version}/notifications/email/templates` | `project` |
-| [`getMjml`](#getmjml) | `POST` | `/{version}/notifications/email/templates/mjml` | `project` |
-| [`getSystemEmailTemplate`](#getsystememailtemplate) | `GET` | `/{version}/notifications/email/system-templates/{id}` | `project` |
-| [`getSystemEmailTemplates`](#getsystememailtemplates) | `GET` | `/{version}/notifications/email/system-templates` | `project` |
-| [`getEmailTemplateAvailableTokens`](#getemailtemplateavailabletokens) | `GET` | `/{version}/notifications/email/templates/{id}/tokens` | `project` |
-| [`updateEmailTemplate`](#updateemailtemplate) | `PUT` | `/{version}/notifications/email/templates` | `project` |
-| [`deleteEmailSignature`](#deleteemailsignature) | `DELETE` | `/{version}/notifications/email/signatures/{id}` | `project` |
-| [`getEmailSignature`](#getemailsignature) | `GET` | `/{version}/notifications/email/signatures/{id}` | `project` |
-| [`getEmailSignatures`](#getemailsignatures) | `GET` | `/{version}/notifications/email/signatures` | `project` |
-| [`saveEmailSignature`](#saveemailsignature) | `POST` | `/{version}/notifications/email/signatures` | `project` |
-| [`getEmailSettings`](#getemailsettings) | `GET` | `/{version}/notifications/email/settings` | `project` |
-| [`confirmEmailIntegrationHumanDelivery`](#confirmemailintegrationhumandelivery) | `POST` | `/{version}/notifications/email/integrations/confirm-human-delivery` | `project` |
-| [`deleteEmailIntegration`](#deleteemailintegration) | `DELETE` | `/{version}/notifications/email/integrations/{Id}` | `project` |
-| [`disableEmailIntegration`](#disableemailintegration) | `PUT` | `/{version}/notifications/email/integrations/{Id}/disable` | `project` |
-| [`checkEmailIntegrationDomainHealth`](#checkemailintegrationdomainhealth) | `POST` | `/{version}/notifications/email/integrations/domain-health` | `project` |
-| [`enableEmailIntegration`](#enableemailintegration) | `PUT` | `/{version}/notifications/email/integrations/{Id}/enable` | `project` |
-| [`getEmailIntegration`](#getemailintegration) | `GET` | `/{version}/notifications/email/integrations/{id}` | `project` |
-| [`getEmailIntegrations`](#getemailintegrations) | `GET` | `/{version}/notifications/email/integrations` | `project` |
-| [`saveEmailIntegration`](#saveemailintegration) | `POST` | `/{version}/notifications/email/integrations` | `project` |
-| [`setEmailsIntegrationAsDefault`](#setemailsintegrationasdefault) | `PUT` | `/{version}/notifications/email/integrations/{Id}/default` | `project` |
-| [`testEmailIntegration`](#testemailintegration) | `POST` | `/{version}/notifications/email/integrations/test` | `project` |
-| [`archiveEmailTemplate`](#archiveemailtemplate) | `PUT` | `/{version}/notifications/email/templates/{Id}/archive` | `project` |
-| [`cloneEmailTemplate`](#cloneemailtemplate) | `POST` | `/{version}/notifications/email/templates/{Id}/clone` | `project` |
-| [`unArchiveEmailTemplate`](#unarchiveemailtemplate) | `PUT` | `/{version}/notifications/email/templates/{Id}/unarchive` | `project` |
-| [`deleteEmailFooter`](#deleteemailfooter) | `DELETE` | `/{version}/notifications/email/footers/{id}` | `project` |
-| [`getEmailFooter`](#getemailfooter) | `GET` | `/{version}/notifications/email/footers/{id}` | `project` |
-| [`getEmailFooters`](#getemailfooters) | `GET` | `/{version}/notifications/email/footers` | `project` |
-| [`saveEmailFooter`](#saveemailfooter) | `POST` | `/{version}/notifications/email/footers` | `project` |
-| [`createEmailCampaign`](#createemailcampaign) | `POST` | `/{version}/notifications/email/campaigns` | `project` |
-| [`deleteEmailCampaign`](#deleteemailcampaign) | `DELETE` | `/{version}/notifications/email/campaigns/{Id}` | `project` |
-| [`getEmailCampaign`](#getemailcampaign) | `GET` | `/{version}/notifications/email/campaigns/{id}` | `project` |
-| [`getEmailCampaigns`](#getemailcampaigns) | `GET` | `/{version}/notifications/email/campaigns` | `project` |
-| [`getEmailCampaignBatches`](#getemailcampaignbatches) | `GET` | `/{version}/notifications/email/campaigns/{id}/batches` | `project` |
-| [`getEmailCampaignBatchNotification`](#getemailcampaignbatchnotification) | `GET` | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}` | `project` |
-| [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications) | `GET` | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}` | `project` |
-| [`getEmailCampaignStatistics`](#getemailcampaignstatistics) | `GET` | `/{version}/notifications/email/campaigns/{id}/stats` | `project` |
-| [`previewEmailNotification`](#previewemailnotification) | `GET` | `/{version}/notifications/email/preview` | `project` |
-| [`stopEmailCampaign`](#stopemailcampaign) | `POST` | `/{version}/notifications/email/campaigns/{Id}/stop` | `project` |
-| [`getEmailCampaignMessage`](#getemailcampaignmessage) | `GET` | `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}` | `project` |
-| [`getEmailCampaignMessages`](#getemailcampaignmessages) | `GET` | `/{version}/notifications/emails/campaigns/{campaignId}/messages` | `project` |
-| [`disableSms`](#disablesms) | `GET` | `/{version}/notifications/sms/disable` | `project` |
-| [`getSmsDisableDependencies`](#getsmsdisabledependencies) | `GET` | `/{version}/notifications/sms/disable-dependencies` | `project` |
-| [`enableSms`](#enablesms) | `GET` | `/{version}/notifications/sms/enable` | `project` |
-| [`archiveSmsTemplate`](#archivesmstemplate) | `PUT` | `/{version}/notifications/sms/templates/{Id}/archive` | `project` |
-| [`cloneSmsTemplate`](#clonesmstemplate) | `POST` | `/{version}/notifications/sms/templates/{Id}/clone` | `project` |
-| [`createSmsTemplate`](#createsmstemplate) | `POST` | `/{version}/notifications/sms/templates` | `project` |
-| [`deleteSmsTemplate`](#deletesmstemplate) | `DELETE` | `/{version}/notifications/sms/templates/{Id}` | `project` |
-| [`getSmsTemplate`](#getsmstemplate) | `GET` | `/{version}/notifications/sms/templates/{id}` | `project` |
-| [`getSmsTemplates`](#getsmstemplates) | `GET` | `/{version}/notifications/sms/templates` | `project` |
-| [`getSmsMessageContentTokens`](#getsmsmessagecontenttokens) | `GET` | `/{version}/notifications/sms/templates/{id}/tokens` | `project` |
-| [`renderSms`](#rendersms) | `POST` | `/{version}/notifications/sms/templates/render` | `project` |
-| [`unArchiveSmsTemplate`](#unarchivesmstemplate) | `PUT` | `/{version}/notifications/sms/templates/{Id}/unarchive` | `project` |
-| [`updateSmsTemplate`](#updatesmstemplate) | `PUT` | `/{version}/notifications/sms/templates` | `project` |
-| [`getSmsSettings`](#getsmssettings) | `GET` | `/{version}/notifications/sms/settings` | `project` |
-| [`confirmSmsIntegrationHumanDelivery`](#confirmsmsintegrationhumandelivery) | `POST` | `/{version}/notifications/sms/integrations/confirm-human-delivery` | `project` |
-| [`deleteSmsIntegration`](#deletesmsintegration) | `DELETE` | `/{version}/notifications/sms/integrations/{Id}` | `project` |
-| [`disableSmsIntegration`](#disablesmsintegration) | `PUT` | `/{version}/notifications/sms/integrations/{Id}/disable` | `project` |
-| [`enableSmsIntegration`](#enablesmsintegration) | `PUT` | `/{version}/notifications/sms/integrations/{Id}/enable` | `project` |
-| [`getSmsIntegration`](#getsmsintegration) | `GET` | `/{version}/notifications/sms/integrations/{id}` | `project` |
-| [`getSmsIntegrations`](#getsmsintegrations) | `GET` | `/{version}/notifications/sms/integrations` | `project` |
-| [`saveSmsIntegration`](#savesmsintegration) | `POST` | `/{version}/notifications/sms/integrations` | `project` |
-| [`setSmsIntegrationAsDefault`](#setsmsintegrationasdefault) | `PUT` | `/{version}/notifications/sms/integrations/{Id}/default` | `project` |
-| [`testSmsIntegration`](#testsmsintegration) | `POST` | `/{version}/notifications/sms/integrations/test` | `project` |
-| [`createSmsCampaign`](#createsmscampaign) | `POST` | `/{version}/notifications/sms/campaigns` | `project` |
-| [`deleteSmsCampaign`](#deletesmscampaign) | `DELETE` | `/{version}/notifications/sms/campaigns/{id}` | `project` |
-| [`getSmsCampaign`](#getsmscampaign) | `GET` | `/{version}/notifications/sms/campaigns/{id}` | `project` |
-| [`getSmsCampaigns`](#getsmscampaigns) | `GET` | `/{version}/notifications/sms/campaigns` | `project` |
-| [`getSmsCampaignBatches`](#getsmscampaignbatches) | `GET` | `/{version}/notifications/sms/campaigns/{id}/batches` | `project` |
-| [`getSmsCampaignBatchNotification`](#getsmscampaignbatchnotification) | `GET` | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}` | `project` |
-| [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications) | `GET` | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}` | `project` |
-| [`getSmsCampaignStatistics`](#getsmscampaignstatistics) | `GET` | `/{version}/notifications/sms/campaigns/{id}/stats` | `project` |
-| [`previewSmsNotification`](#previewsmsnotification) | `GET` | `/{version}/notifications/sms/preview` | `project` |
-| [`stopSmsCampaign`](#stopsmscampaign) | `POST` | `/{version}/notifications/sms/campaigns/{Id}/stop` | `project` |
-| [`getSmsCampaignMessage`](#getsmscampaignmessage) | `GET` | `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}` | `project` |
-| [`getSmsCampaignMessages`](#getsmscampaignmessages) | `GET` | `/{version}/notifications/sms/campaigns/{campaignId}/messages` | `project` |
-| [`disablePush`](#disablepush) | `GET` | `/{version}/notifications/push/disable` | `project` |
-| [`getPushDisableDependencies`](#getpushdisabledependencies) | `GET` | `/{version}/notifications/push/disable-dependencies` | `project` |
-| [`enablePush`](#enablepush) | `GET` | `/{version}/notifications/push/enable` | `project` |
-| [`archivePushTemplate`](#archivepushtemplate) | `PUT` | `/{version}/notifications/push/templates/{Id}/archive` | `project` |
-| [`clonePushTemplate`](#clonepushtemplate) | `POST` | `/{version}/notifications/push/templates/{Id}/clone` | `project` |
-| [`createPushTemplate`](#createpushtemplate) | `POST` | `/{version}/notifications/push/templates` | `project` |
-| [`deletePushTemplate`](#deletepushtemplate) | `DELETE` | `/{version}/notifications/push/templates/{Id}` | `project` |
-| [`getPushTemplate`](#getpushtemplate) | `GET` | `/{version}/notifications/push/templates/{id}` | `project` |
-| [`getPushTemplates`](#getpushtemplates) | `GET` | `/{version}/notifications/push/templates` | `project` |
-| [`getPushMessageContentTokens`](#getpushmessagecontenttokens) | `GET` | `/{version}/notifications/push/templates/{id}/tokens` | `project` |
-| [`renderPush`](#renderpush) | `POST` | `/{version}/notifications/push/templates/render` | `project` |
-| [`unArchivePushTemplate`](#unarchivepushtemplate) | `PUT` | `/{version}/notifications/push/templates/{Id}/unarchive` | `project` |
-| [`updatePushTemplate`](#updatepushtemplate) | `PUT` | `/{version}/notifications/push/templates` | `project` |
-| [`getPushSettings`](#getpushsettings) | `GET` | `/{version}/notifications/push/settings` | `project` |
-| [`confirmPushIntegrationHumanDelivery`](#confirmpushintegrationhumandelivery) | `POST` | `/{version}/notifications/push/integrations/confirm-human-delivery` | `project` |
-| [`deletePushIntegration`](#deletepushintegration) | `DELETE` | `/{version}/notifications/push/integrations/{Id}` | `project` |
-| [`disablePushIntegration`](#disablepushintegration) | `PUT` | `/{version}/notifications/push/integrations/{Id}/disable` | `project` |
-| [`enablePushIntegration`](#enablepushintegration) | `PUT` | `/{version}/notifications/push/integrations/{Id}/enable` | `project` |
-| [`getPushIntegration`](#getpushintegration) | `GET` | `/{version}/notifications/push/integrations/{id}` | `project` |
-| [`getPushIntegrations`](#getpushintegrations) | `GET` | `/{version}/notifications/push/integrations` | `project` |
-| [`savePushIntegration`](#savepushintegration) | `POST` | `/{version}/notifications/push/integrations` | `project` |
-| [`setPushIntegrationAsDefault`](#setpushintegrationasdefault) | `PUT` | `/{version}/notifications/push/integrations/{Id}/default` | `project` |
-| [`testPushIntegration`](#testpushintegration) | `POST` | `/{version}/notifications/push/integrations/test` | `project` |
-| [`registerCodeMashAppPushIntegration`](#registercodemashapppushintegration) | `POST` | `/{version}/notifications/push/integrations/app/request` | `account` |
-| [`registerDevice`](#registerdevice) | `POST` | `/{version}/notifications/push/devices` | `project` |
-| [`createPushCampaign`](#createpushcampaign) | `POST` | `/{version}/notifications/push/campaigns` | `project` |
-| [`deletePushCampaign`](#deletepushcampaign) | `DELETE` | `/{version}/notifications/push/campaigns/{Id}` | `project` |
-| [`getPushCampaign`](#getpushcampaign) | `GET` | `/{version}/notifications/push/campaigns/{id}` | `project` |
-| [`getPushCampaigns`](#getpushcampaigns) | `GET` | `/{version}/notifications/push/campaigns` | `project` |
-| [`getPushCampaignBatches`](#getpushcampaignbatches) | `GET` | `/{version}/notifications/push/campaigns/{id}/batches` | `project` |
-| [`getPushCampaignBatchNotification`](#getpushcampaignbatchnotification) | `GET` | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}` | `project` |
-| [`getPushCampaignBatchNotifications`](#getpushcampaignbatchnotifications) | `GET` | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}` | `project` |
-| [`getPushCampaignStatistics`](#getpushcampaignstatistics) | `GET` | `/{version}/notifications/push/campaigns/{id}/stats` | `project` |
-| [`previewPushNotification`](#previewpushnotification) | `GET` | `/{version}/notifications/push/preview` | `project` |
-| [`stopPushCampaign`](#stoppushcampaign) | `POST` | `/{version}/notifications/push/campaigns/{Id}/stop` | `project` |
-| [`getPushCampaignMessage`](#getpushcampaignmessage) | `GET` | `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}` | `project` |
-| [`getPushCampaignMessages`](#getpushcampaignmessages) | `GET` | `/{version}/notifications/push/campaigns/{campaignId}/messages` | `project` |
-| [`getUserNotificationPreferences`](#getusernotificationpreferences) | `GET` | `/{version}/notifications/user/preferences` | `project` |
-| [`updateUserNotificationsPreferences`](#updateusernotificationspreferences) | `PUT` | `/{version}/notifications/user/preferences` | `project` |
-| [`grantContactConsent`](#grantcontactconsent) | `POST` | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent` | `project` |
-| [`unsubscribeContact`](#unsubscribecontact) | `POST` | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe` | `project` |
+| Method                                                                          | Verb     | Path                                                                                  | Scope     |
+| ------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------- | --------- |
+| [`disableEmail`](#disableemail)                                                 | `GET`    | `/{version}/notifications/email/disable`                                              | `project` |
+| [`getEmailDisableDependencies`](#getemaildisabledependencies)                   | `GET`    | `/{version}/notifications/email/disable-dependencies`                                 | `project` |
+| [`enableEmail`](#enableemail)                                                   | `GET`    | `/{version}/notifications/email/enable`                                               | `project` |
+| [`saveEmailValidationIntegration`](#saveemailvalidationintegration)             | `POST`   | `/{version}/notifications/email/validation/integrations`                              | `project` |
+| [`testEmailValidationIntegration`](#testemailvalidationintegration)             | `POST`   | `/{version}/notifications/email/validation/integrations/test`                         | `project` |
+| [`attachFileToTemplate`](#attachfiletotemplate)                                 | `POST`   | `/{version}/notifications/email/templates/attachments`                                | `project` |
+| [`createEmailTemplate`](#createemailtemplate)                                   | `POST`   | `/{version}/notifications/email/templates`                                            | `project` |
+| [`deleteEmailTemplate`](#deleteemailtemplate)                                   | `DELETE` | `/{version}/notifications/email/templates/{Id}`                                       | `project` |
+| [`getEmailTemplate`](#getemailtemplate)                                         | `GET`    | `/{version}/notifications/email/templates/{id}`                                       | `project` |
+| [`getEmailTemplates`](#getemailtemplates)                                       | `GET`    | `/{version}/notifications/email/templates`                                            | `project` |
+| [`getMjml`](#getmjml)                                                           | `POST`   | `/{version}/notifications/email/templates/mjml`                                       | `project` |
+| [`getSystemEmailTemplate`](#getsystememailtemplate)                             | `GET`    | `/{version}/notifications/email/system-templates/{id}`                                | `project` |
+| [`getSystemEmailTemplates`](#getsystememailtemplates)                           | `GET`    | `/{version}/notifications/email/system-templates`                                     | `project` |
+| [`getEmailTemplateAvailableTokens`](#getemailtemplateavailabletokens)           | `GET`    | `/{version}/notifications/email/templates/{id}/tokens`                                | `project` |
+| [`updateEmailTemplate`](#updateemailtemplate)                                   | `PUT`    | `/{version}/notifications/email/templates`                                            | `project` |
+| [`deleteEmailSignature`](#deleteemailsignature)                                 | `DELETE` | `/{version}/notifications/email/signatures/{id}`                                      | `project` |
+| [`getEmailSignature`](#getemailsignature)                                       | `GET`    | `/{version}/notifications/email/signatures/{id}`                                      | `project` |
+| [`getEmailSignatures`](#getemailsignatures)                                     | `GET`    | `/{version}/notifications/email/signatures`                                           | `project` |
+| [`saveEmailSignature`](#saveemailsignature)                                     | `POST`   | `/{version}/notifications/email/signatures`                                           | `project` |
+| [`getEmailSettings`](#getemailsettings)                                         | `GET`    | `/{version}/notifications/email/settings`                                             | `project` |
+| [`confirmEmailIntegrationHumanDelivery`](#confirmemailintegrationhumandelivery) | `POST`   | `/{version}/notifications/email/integrations/confirm-human-delivery`                  | `project` |
+| [`deleteEmailIntegration`](#deleteemailintegration)                             | `DELETE` | `/{version}/notifications/email/integrations/{Id}`                                    | `project` |
+| [`disableEmailIntegration`](#disableemailintegration)                           | `PUT`    | `/{version}/notifications/email/integrations/{Id}/disable`                            | `project` |
+| [`checkEmailIntegrationDomainHealth`](#checkemailintegrationdomainhealth)       | `POST`   | `/{version}/notifications/email/integrations/domain-health`                           | `project` |
+| [`enableEmailIntegration`](#enableemailintegration)                             | `PUT`    | `/{version}/notifications/email/integrations/{Id}/enable`                             | `project` |
+| [`getEmailIntegration`](#getemailintegration)                                   | `GET`    | `/{version}/notifications/email/integrations/{id}`                                    | `project` |
+| [`getEmailIntegrations`](#getemailintegrations)                                 | `GET`    | `/{version}/notifications/email/integrations`                                         | `project` |
+| [`saveEmailIntegration`](#saveemailintegration)                                 | `POST`   | `/{version}/notifications/email/integrations`                                         | `project` |
+| [`setEmailsIntegrationAsDefault`](#setemailsintegrationasdefault)               | `PUT`    | `/{version}/notifications/email/integrations/{Id}/default`                            | `project` |
+| [`testEmailIntegration`](#testemailintegration)                                 | `POST`   | `/{version}/notifications/email/integrations/test`                                    | `project` |
+| [`archiveEmailTemplate`](#archiveemailtemplate)                                 | `PUT`    | `/{version}/notifications/email/templates/{Id}/archive`                               | `project` |
+| [`cloneEmailTemplate`](#cloneemailtemplate)                                     | `POST`   | `/{version}/notifications/email/templates/{Id}/clone`                                 | `project` |
+| [`unArchiveEmailTemplate`](#unarchiveemailtemplate)                             | `PUT`    | `/{version}/notifications/email/templates/{Id}/unarchive`                             | `project` |
+| [`deleteEmailFooter`](#deleteemailfooter)                                       | `DELETE` | `/{version}/notifications/email/footers/{id}`                                         | `project` |
+| [`getEmailFooter`](#getemailfooter)                                             | `GET`    | `/{version}/notifications/email/footers/{id}`                                         | `project` |
+| [`getEmailFooters`](#getemailfooters)                                           | `GET`    | `/{version}/notifications/email/footers`                                              | `project` |
+| [`saveEmailFooter`](#saveemailfooter)                                           | `POST`   | `/{version}/notifications/email/footers`                                              | `project` |
+| [`createEmailCampaign`](#createemailcampaign)                                   | `POST`   | `/{version}/notifications/email/campaigns`                                            | `project` |
+| [`deleteEmailCampaign`](#deleteemailcampaign)                                   | `DELETE` | `/{version}/notifications/email/campaigns/{Id}`                                       | `project` |
+| [`getEmailCampaign`](#getemailcampaign)                                         | `GET`    | `/{version}/notifications/email/campaigns/{id}`                                       | `project` |
+| [`getEmailCampaigns`](#getemailcampaigns)                                       | `GET`    | `/{version}/notifications/email/campaigns`                                            | `project` |
+| [`getEmailCampaignBatches`](#getemailcampaignbatches)                           | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches`                               | `project` |
+| [`getEmailCampaignBatchNotification`](#getemailcampaignbatchnotification)       | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}`    | `project` |
+| [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications)     | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`                     | `project` |
+| [`getEmailCampaignStatistics`](#getemailcampaignstatistics)                     | `GET`    | `/{version}/notifications/email/campaigns/{id}/stats`                                 | `project` |
+| [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                              | `project` |
+| [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                                  | `project` |
+| [`getEmailCampaignMessage`](#getemailcampaignmessage)                           | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}`                | `project` |
+| [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                     | `project` |
+| [`disableSms`](#disablesms)                                                     | `GET`    | `/{version}/notifications/sms/disable`                                                | `project` |
+| [`getSmsDisableDependencies`](#getsmsdisabledependencies)                       | `GET`    | `/{version}/notifications/sms/disable-dependencies`                                   | `project` |
+| [`enableSms`](#enablesms)                                                       | `GET`    | `/{version}/notifications/sms/enable`                                                 | `project` |
+| [`archiveSmsTemplate`](#archivesmstemplate)                                     | `PUT`    | `/{version}/notifications/sms/templates/{Id}/archive`                                 | `project` |
+| [`cloneSmsTemplate`](#clonesmstemplate)                                         | `POST`   | `/{version}/notifications/sms/templates/{Id}/clone`                                   | `project` |
+| [`createSmsTemplate`](#createsmstemplate)                                       | `POST`   | `/{version}/notifications/sms/templates`                                              | `project` |
+| [`deleteSmsTemplate`](#deletesmstemplate)                                       | `DELETE` | `/{version}/notifications/sms/templates/{Id}`                                         | `project` |
+| [`getSmsTemplate`](#getsmstemplate)                                             | `GET`    | `/{version}/notifications/sms/templates/{id}`                                         | `project` |
+| [`getSmsTemplates`](#getsmstemplates)                                           | `GET`    | `/{version}/notifications/sms/templates`                                              | `project` |
+| [`getSmsMessageContentTokens`](#getsmsmessagecontenttokens)                     | `GET`    | `/{version}/notifications/sms/templates/{id}/tokens`                                  | `project` |
+| [`renderSms`](#rendersms)                                                       | `POST`   | `/{version}/notifications/sms/templates/render`                                       | `project` |
+| [`unArchiveSmsTemplate`](#unarchivesmstemplate)                                 | `PUT`    | `/{version}/notifications/sms/templates/{Id}/unarchive`                               | `project` |
+| [`updateSmsTemplate`](#updatesmstemplate)                                       | `PUT`    | `/{version}/notifications/sms/templates`                                              | `project` |
+| [`getSmsSettings`](#getsmssettings)                                             | `GET`    | `/{version}/notifications/sms/settings`                                               | `project` |
+| [`confirmSmsIntegrationHumanDelivery`](#confirmsmsintegrationhumandelivery)     | `POST`   | `/{version}/notifications/sms/integrations/confirm-human-delivery`                    | `project` |
+| [`deleteSmsIntegration`](#deletesmsintegration)                                 | `DELETE` | `/{version}/notifications/sms/integrations/{Id}`                                      | `project` |
+| [`disableSmsIntegration`](#disablesmsintegration)                               | `PUT`    | `/{version}/notifications/sms/integrations/{Id}/disable`                              | `project` |
+| [`enableSmsIntegration`](#enablesmsintegration)                                 | `PUT`    | `/{version}/notifications/sms/integrations/{Id}/enable`                               | `project` |
+| [`getSmsIntegration`](#getsmsintegration)                                       | `GET`    | `/{version}/notifications/sms/integrations/{id}`                                      | `project` |
+| [`getSmsIntegrations`](#getsmsintegrations)                                     | `GET`    | `/{version}/notifications/sms/integrations`                                           | `project` |
+| [`saveSmsIntegration`](#savesmsintegration)                                     | `POST`   | `/{version}/notifications/sms/integrations`                                           | `project` |
+| [`setSmsIntegrationAsDefault`](#setsmsintegrationasdefault)                     | `PUT`    | `/{version}/notifications/sms/integrations/{Id}/default`                              | `project` |
+| [`testSmsIntegration`](#testsmsintegration)                                     | `POST`   | `/{version}/notifications/sms/integrations/test`                                      | `project` |
+| [`createSmsCampaign`](#createsmscampaign)                                       | `POST`   | `/{version}/notifications/sms/campaigns`                                              | `project` |
+| [`deleteSmsCampaign`](#deletesmscampaign)                                       | `DELETE` | `/{version}/notifications/sms/campaigns/{id}`                                         | `project` |
+| [`getSmsCampaign`](#getsmscampaign)                                             | `GET`    | `/{version}/notifications/sms/campaigns/{id}`                                         | `project` |
+| [`getSmsCampaigns`](#getsmscampaigns)                                           | `GET`    | `/{version}/notifications/sms/campaigns`                                              | `project` |
+| [`getSmsCampaignBatches`](#getsmscampaignbatches)                               | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches`                                 | `project` |
+| [`getSmsCampaignBatchNotification`](#getsmscampaignbatchnotification)           | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}`      | `project` |
+| [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications)         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`                       | `project` |
+| [`getSmsCampaignStatistics`](#getsmscampaignstatistics)                         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/stats`                                   | `project` |
+| [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                                | `project` |
+| [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                    | `project` |
+| [`getSmsCampaignMessage`](#getsmscampaignmessage)                               | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}`                   | `project` |
+| [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                        | `project` |
+| [`disablePush`](#disablepush)                                                   | `GET`    | `/{version}/notifications/push/disable`                                               | `project` |
+| [`getPushDisableDependencies`](#getpushdisabledependencies)                     | `GET`    | `/{version}/notifications/push/disable-dependencies`                                  | `project` |
+| [`enablePush`](#enablepush)                                                     | `GET`    | `/{version}/notifications/push/enable`                                                | `project` |
+| [`archivePushTemplate`](#archivepushtemplate)                                   | `PUT`    | `/{version}/notifications/push/templates/{Id}/archive`                                | `project` |
+| [`clonePushTemplate`](#clonepushtemplate)                                       | `POST`   | `/{version}/notifications/push/templates/{Id}/clone`                                  | `project` |
+| [`createPushTemplate`](#createpushtemplate)                                     | `POST`   | `/{version}/notifications/push/templates`                                             | `project` |
+| [`deletePushTemplate`](#deletepushtemplate)                                     | `DELETE` | `/{version}/notifications/push/templates/{Id}`                                        | `project` |
+| [`getPushTemplate`](#getpushtemplate)                                           | `GET`    | `/{version}/notifications/push/templates/{id}`                                        | `project` |
+| [`getPushTemplates`](#getpushtemplates)                                         | `GET`    | `/{version}/notifications/push/templates`                                             | `project` |
+| [`getPushMessageContentTokens`](#getpushmessagecontenttokens)                   | `GET`    | `/{version}/notifications/push/templates/{id}/tokens`                                 | `project` |
+| [`renderPush`](#renderpush)                                                     | `POST`   | `/{version}/notifications/push/templates/render`                                      | `project` |
+| [`unArchivePushTemplate`](#unarchivepushtemplate)                               | `PUT`    | `/{version}/notifications/push/templates/{Id}/unarchive`                              | `project` |
+| [`updatePushTemplate`](#updatepushtemplate)                                     | `PUT`    | `/{version}/notifications/push/templates`                                             | `project` |
+| [`getPushSettings`](#getpushsettings)                                           | `GET`    | `/{version}/notifications/push/settings`                                              | `project` |
+| [`confirmPushIntegrationHumanDelivery`](#confirmpushintegrationhumandelivery)   | `POST`   | `/{version}/notifications/push/integrations/confirm-human-delivery`                   | `project` |
+| [`deletePushIntegration`](#deletepushintegration)                               | `DELETE` | `/{version}/notifications/push/integrations/{Id}`                                     | `project` |
+| [`disablePushIntegration`](#disablepushintegration)                             | `PUT`    | `/{version}/notifications/push/integrations/{Id}/disable`                             | `project` |
+| [`enablePushIntegration`](#enablepushintegration)                               | `PUT`    | `/{version}/notifications/push/integrations/{Id}/enable`                              | `project` |
+| [`getPushIntegration`](#getpushintegration)                                     | `GET`    | `/{version}/notifications/push/integrations/{id}`                                     | `project` |
+| [`getPushIntegrations`](#getpushintegrations)                                   | `GET`    | `/{version}/notifications/push/integrations`                                          | `project` |
+| [`savePushIntegration`](#savepushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations`                                          | `project` |
+| [`setPushIntegrationAsDefault`](#setpushintegrationasdefault)                   | `PUT`    | `/{version}/notifications/push/integrations/{Id}/default`                             | `project` |
+| [`testPushIntegration`](#testpushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations/test`                                     | `project` |
+| [`registerCodeMashAppPushIntegration`](#registercodemashapppushintegration)     | `POST`   | `/{version}/notifications/push/integrations/app/request`                              | `account` |
+| [`registerDevice`](#registerdevice)                                             | `POST`   | `/{version}/notifications/push/devices`                                               | `project` |
+| [`createPushCampaign`](#createpushcampaign)                                     | `POST`   | `/{version}/notifications/push/campaigns`                                             | `project` |
+| [`deletePushCampaign`](#deletepushcampaign)                                     | `DELETE` | `/{version}/notifications/push/campaigns/{Id}`                                        | `project` |
+| [`getPushCampaign`](#getpushcampaign)                                           | `GET`    | `/{version}/notifications/push/campaigns/{id}`                                        | `project` |
+| [`getPushCampaigns`](#getpushcampaigns)                                         | `GET`    | `/{version}/notifications/push/campaigns`                                             | `project` |
+| [`getPushCampaignBatches`](#getpushcampaignbatches)                             | `GET`    | `/{version}/notifications/push/campaigns/{id}/batches`                                | `project` |
+| [`getPushCampaignBatchNotification`](#getpushcampaignbatchnotification)         | `GET`    | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}`     | `project` |
+| [`getPushCampaignBatchNotifications`](#getpushcampaignbatchnotifications)       | `GET`    | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}`                      | `project` |
+| [`getPushCampaignStatistics`](#getpushcampaignstatistics)                       | `GET`    | `/{version}/notifications/push/campaigns/{id}/stats`                                  | `project` |
+| [`previewPushNotification`](#previewpushnotification)                           | `GET`    | `/{version}/notifications/push/preview`                                               | `project` |
+| [`stopPushCampaign`](#stoppushcampaign)                                         | `POST`   | `/{version}/notifications/push/campaigns/{Id}/stop`                                   | `project` |
+| [`getPushCampaignMessage`](#getpushcampaignmessage)                             | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}`                  | `project` |
+| [`getPushCampaignMessages`](#getpushcampaignmessages)                           | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages`                       | `project` |
+| [`getUserNotificationPreferences`](#getusernotificationpreferences)             | `GET`    | `/{version}/notifications/user/preferences`                                           | `project` |
+| [`updateUserNotificationsPreferences`](#updateusernotificationspreferences)     | `PUT`    | `/{version}/notifications/user/preferences`                                           | `project` |
+| [`grantContactConsent`](#grantcontactconsent)                                   | `POST`   | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent`     | `project` |
+| [`unsubscribeContact`](#unsubscribecontact)                                     | `POST`   | `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe` | `project` |
 
 ## Reference
 
@@ -251,8 +251,6 @@ const result = await norbix.hub.notifications.testEmailValidationIntegration({
 ### attachFileToTemplate
 
 `POST` `/{version}/notifications/email/templates/attachments`
-
-
 
 **Request DTO**: `CodeMashHub2.AttachFileToTemplateRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -588,8 +586,6 @@ const result = await norbix.hub.notifications.getEmailSettings({
 
 `POST` `/{version}/notifications/email/integrations/confirm-human-delivery`
 
-
-
 **Request DTO**: `CodeMashHub2.ConfirmEmailIntegrationHumanDeliveryRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -768,8 +764,6 @@ const result = await norbix.hub.notifications.saveEmailIntegration({
 
 `PUT` `/{version}/notifications/email/integrations/{Id}/default`
 
-
-
 **Request DTO**: `CodeMashHub2.SetEmailsIntegrationAsDefault`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -858,8 +852,6 @@ const result = await norbix.hub.notifications.cloneEmailTemplate({
 ### unArchiveEmailTemplate
 
 `PUT` `/{version}/notifications/email/templates/{Id}/unarchive`
-
-
 
 **Request DTO**: `CodeMashHub2.UnArchiveEmailTemplateRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1179,8 +1171,6 @@ const result = await norbix.hub.notifications.previewEmailNotification({
 
 `POST` `/{version}/notifications/email/campaigns/{Id}/stop`
 
-
-
 **Request DTO**: `CodeMashHub2.StopEmailCampaignRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -1474,8 +1464,6 @@ const result = await norbix.hub.notifications.getSmsMessageContentTokens({
 
 `POST` `/{version}/notifications/sms/templates/render`
 
-
-
 **Request DTO**: `CodeMashHub2.RenderSms`
 **Response**: `CodeMashHub2.RenderSmsTextResponse`
 
@@ -1495,8 +1483,6 @@ const result = await norbix.hub.notifications.renderSms({
 ### unArchiveSmsTemplate
 
 `PUT` `/{version}/notifications/sms/templates/{Id}/unarchive`
-
-
 
 **Request DTO**: `CodeMashHub2.UnArchiveSmsTemplateRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1562,8 +1548,6 @@ const result = await norbix.hub.notifications.getSmsSettings({
 ### confirmSmsIntegrationHumanDelivery
 
 `POST` `/{version}/notifications/sms/integrations/confirm-human-delivery`
-
-
 
 **Request DTO**: `CodeMashHub2.ConfirmSmsIntegrationHumanDeliveryRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1720,8 +1704,6 @@ const result = await norbix.hub.notifications.saveSmsIntegration({
 ### setSmsIntegrationAsDefault
 
 `PUT` `/{version}/notifications/sms/integrations/{Id}/default`
-
-
 
 **Request DTO**: `CodeMashHub2.SetSmsIntegrationAsDefaultRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1972,8 +1954,6 @@ const result = await norbix.hub.notifications.previewSmsNotification({
 ### stopSmsCampaign
 
 `POST` `/{version}/notifications/sms/campaigns/{Id}/stop`
-
-
 
 **Request DTO**: `CodeMashHub2.StopSmsCampaignRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -2268,8 +2248,6 @@ const result = await norbix.hub.notifications.getPushMessageContentTokens({
 
 `POST` `/{version}/notifications/push/templates/render`
 
-
-
 **Request DTO**: `CodeMashHub2.RenderPush`
 **Response**: `CodeMashHub2.RenderPushResponse`
 
@@ -2289,8 +2267,6 @@ const result = await norbix.hub.notifications.renderPush({
 ### unArchivePushTemplate
 
 `PUT` `/{version}/notifications/push/templates/{Id}/unarchive`
-
-
 
 **Request DTO**: `CodeMashHub2.UnArchivePushTemplateRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -2356,8 +2332,6 @@ const result = await norbix.hub.notifications.getPushSettings({
 ### confirmPushIntegrationHumanDelivery
 
 `POST` `/{version}/notifications/push/integrations/confirm-human-delivery`
-
-
 
 **Request DTO**: `CodeMashHub2.ConfirmPushIntegrationHumanDeliveryRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -2514,8 +2488,6 @@ const result = await norbix.hub.notifications.savePushIntegration({
 ### setPushIntegrationAsDefault
 
 `PUT` `/{version}/notifications/push/integrations/{Id}/default`
-
-
 
 **Request DTO**: `CodeMashHub2.SetPushIntegrationAsDefaultRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -2813,8 +2785,6 @@ const result = await norbix.hub.notifications.previewPushNotification({
 
 `POST` `/{version}/notifications/push/campaigns/{Id}/stop`
 
-
-
 **Request DTO**: `CodeMashHub2.StopPushCampaignRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -2927,8 +2897,6 @@ const result = await norbix.hub.notifications.updateUserNotificationsPreferences
 
 `POST` `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent`
 
-
-
 **Request DTO**: `CodeMashHub2.GrantContactConsentRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -2950,8 +2918,6 @@ const result = await norbix.hub.notifications.grantContactConsent({
 ### unsubscribeContact
 
 `POST` `/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe`
-
-
 
 **Request DTO**: `CodeMashHub2.UnsubscribeContactRequest`
 **Response**: `CodeMashHub2.EmptyResponse`

@@ -2,28 +2,26 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.ai` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`deleteLlmIntegration`](#deletellmintegration) | `DELETE` | `/{version}/ai/integrations/llms/{Id}` | `project` |
-| [`disableLlmIntegration`](#disablellmintegration) | `PUT` | `/{version}/ai/integrations/llms/{Id}/disable` | `project` |
-| [`enableLlmIntegration`](#enablellmintegration) | `PUT` | `/{version}/ai/integrations/llms/{Id}/enable` | `project` |
-| [`getLlmIntegration`](#getllmintegration) | `GET` | `/{version}/ai/integrations/llms/{id}` | `project` |
-| [`getLlmIntegrations`](#getllmintegrations) | `GET` | `/{version}/ai/integrations/llms/integrations` | `project` |
-| [`saveLlmIntegration`](#savellmintegration) | `POST` | `/{version}/ai/integrations/llms/` | `project` |
-| [`testLlmIntegration`](#testllmintegration) | `POST` | `/{version}/ai/integrations/llms/test` | `project` |
-| [`deleteMcpIntegration`](#deletemcpintegration) | `DELETE` | `/{version}/ai/integrations/mcp/{Id}` | `project` |
-| [`disableMcpIntegration`](#disablemcpintegration) | `PUT` | `/{version}/ai/integrations/mcp/{Id}/disable` | `project` |
-| [`enableMcpIntegration`](#enablemcpintegration) | `PUT` | `/{version}/ai/integrations/mcp/{Id}/enable` | `project` |
-| [`getMcpIntegration`](#getmcpintegration) | `GET` | `/{version}/ai/integrations/mcp/{id}` | `project` |
-| [`getMcpIntegrations`](#getmcpintegrations) | `GET` | `/{version}/ai/integrations/mcp/integrations` | `project` |
-| [`saveMcpIntegration`](#savemcpintegration) | `POST` | `/{version}/ai/integrations/mcp/` | `project` |
-| [`testMcpIntegration`](#testmcpintegration) | `POST` | `/{version}/ai/integrations/mcp/test` | `project` |
+| Method                                            | Verb     | Path                                           | Scope     |
+| ------------------------------------------------- | -------- | ---------------------------------------------- | --------- |
+| [`deleteLlmIntegration`](#deletellmintegration)   | `DELETE` | `/{version}/ai/integrations/llms/{Id}`         | `project` |
+| [`disableLlmIntegration`](#disablellmintegration) | `PUT`    | `/{version}/ai/integrations/llms/{Id}/disable` | `project` |
+| [`enableLlmIntegration`](#enablellmintegration)   | `PUT`    | `/{version}/ai/integrations/llms/{Id}/enable`  | `project` |
+| [`getLlmIntegration`](#getllmintegration)         | `GET`    | `/{version}/ai/integrations/llms/{id}`         | `project` |
+| [`getLlmIntegrations`](#getllmintegrations)       | `GET`    | `/{version}/ai/integrations/llms/integrations` | `project` |
+| [`saveLlmIntegration`](#savellmintegration)       | `POST`   | `/{version}/ai/integrations/llms/`             | `project` |
+| [`testLlmIntegration`](#testllmintegration)       | `POST`   | `/{version}/ai/integrations/llms/test`         | `project` |
+| [`deleteMcpIntegration`](#deletemcpintegration)   | `DELETE` | `/{version}/ai/integrations/mcp/{Id}`          | `project` |
+| [`disableMcpIntegration`](#disablemcpintegration) | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/disable`  | `project` |
+| [`enableMcpIntegration`](#enablemcpintegration)   | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/enable`   | `project` |
+| [`getMcpIntegration`](#getmcpintegration)         | `GET`    | `/{version}/ai/integrations/mcp/{id}`          | `project` |
+| [`getMcpIntegrations`](#getmcpintegrations)       | `GET`    | `/{version}/ai/integrations/mcp/integrations`  | `project` |
+| [`saveMcpIntegration`](#savemcpintegration)       | `POST`   | `/{version}/ai/integrations/mcp/`              | `project` |
+| [`testMcpIntegration`](#testmcpintegration)       | `POST`   | `/{version}/ai/integrations/mcp/test`          | `project` |
 
 ## Reference
 

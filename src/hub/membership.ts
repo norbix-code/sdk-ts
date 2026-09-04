@@ -810,7 +810,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/users/{contactId}/identities/{identityId}/promote
+   * POST /{version}/membership/users/{contactId}/identities/{authId}/promote
    * Request DTO: PromoteContactIdentityRequest
    */
   promoteContactIdentity = (
@@ -819,17 +819,17 @@ export class MembershipModule {
   ): Promise<CodeMashHub2.EmptyResponse> => {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
-      path: '/{version}/membership/users/{contactId}/identities/{identityId}/promote',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}/promote',
       method: 'POST',
       request,
-      pathParams: ['contactId', 'identityId'],
+      pathParams: ['contactId', 'authId'],
       scope: 'project',
       ...options,
     });
   };
 
   /**
-   * DELETE /{version}/membership/users/{contactId}/identities/{identityId}
+   * DELETE /{version}/membership/users/{contactId}/identities/{authId}
    * Request DTO: RemoveContactIdentityRequest
    */
   removeContactIdentity = (
@@ -838,10 +838,10 @@ export class MembershipModule {
   ): Promise<CodeMashHub2.EmptyResponse> => {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
-      path: '/{version}/membership/users/{contactId}/identities/{identityId}',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}',
       method: 'DELETE',
       request,
-      pathParams: ['contactId', 'identityId'],
+      pathParams: ['contactId', 'authId'],
       scope: 'project',
       ...options,
     });

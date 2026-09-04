@@ -8,8 +8,8 @@ Accessed as `norbix.hub.accessToken` on the [`Norbix`](../../README.md#authentic
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method                              | Verb   | Path            | Scope     |
+| ----------------------------------- | ------ | --------------- | --------- |
 | [`getAccessToken`](#getaccesstoken) | `POST` | `/access-token` | `project` |
 
 ## Reference

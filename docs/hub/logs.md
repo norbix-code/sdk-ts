@@ -8,22 +8,22 @@ Accessed as `norbix.hub.logs` on the [`Norbix`](../../README.md#authentication) 
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`disableLogging`](#disablelogging) | `GET` | `/{version}/logs/disable` | `project` |
-| [`enableLogging`](#enablelogging) | `GET` | `/{version}/logs/enable` | `project` |
-| [`deleteLoggingIntegration`](#deleteloggingintegration) | `DELETE` | `/{version}/logs/integrations/{Id}` | `project` |
-| [`disableLoggingIntegration`](#disableloggingintegration) | `PUT` | `/{version}/logs/integrations/{Id}/disable` | `project` |
-| [`enableLoggingIntegration`](#enableloggingintegration) | `PUT` | `/{version}/logs/integrations/{Id}/enable` | `project` |
-| [`getLoggingIntegration`](#getloggingintegration) | `GET` | `/{version}/logs/integrations/{id}` | `project` |
-| [`getLoggingIntegrations`](#getloggingintegrations) | `GET` | `/{version}/logs/integrations` | `project` |
-| [`saveLoggingIntegration`](#saveloggingintegration) | `POST` | `/{version}/logs/integrations` | `project` |
-| [`testLoggingIntegration`](#testloggingintegration) | `POST` | `/{version}/logs/integrations/test` | `project` |
-| [`cleanLogs`](#cleanlogs) | `POST` | `/{version}/logs/clean` | `project` |
-| [`getLogsByCorrelationId`](#getlogsbycorrelationid) | `GET` | `/{version}/logs/audit` | `project` |
-| [`getLogs`](#getlogs) | `GET` | `/{version}/logs` | `project` |
-| [`getLogSettings`](#getlogsettings) | `GET` | `/{version}/logs/settings` | `project` |
-| [`saveLogSettings`](#savelogsettings) | `POST` | `/{version}/logs/settings` | `project` |
+| Method                                                    | Verb     | Path                                        | Scope     |
+| --------------------------------------------------------- | -------- | ------------------------------------------- | --------- |
+| [`disableLogging`](#disablelogging)                       | `GET`    | `/{version}/logs/disable`                   | `project` |
+| [`enableLogging`](#enablelogging)                         | `GET`    | `/{version}/logs/enable`                    | `project` |
+| [`deleteLoggingIntegration`](#deleteloggingintegration)   | `DELETE` | `/{version}/logs/integrations/{Id}`         | `project` |
+| [`disableLoggingIntegration`](#disableloggingintegration) | `PUT`    | `/{version}/logs/integrations/{Id}/disable` | `project` |
+| [`enableLoggingIntegration`](#enableloggingintegration)   | `PUT`    | `/{version}/logs/integrations/{Id}/enable`  | `project` |
+| [`getLoggingIntegration`](#getloggingintegration)         | `GET`    | `/{version}/logs/integrations/{id}`         | `project` |
+| [`getLoggingIntegrations`](#getloggingintegrations)       | `GET`    | `/{version}/logs/integrations`              | `project` |
+| [`saveLoggingIntegration`](#saveloggingintegration)       | `POST`   | `/{version}/logs/integrations`              | `project` |
+| [`testLoggingIntegration`](#testloggingintegration)       | `POST`   | `/{version}/logs/integrations/test`         | `project` |
+| [`cleanLogs`](#cleanlogs)                                 | `POST`   | `/{version}/logs/clean`                     | `project` |
+| [`getLogsByCorrelationId`](#getlogsbycorrelationid)       | `GET`    | `/{version}/logs/audit`                     | `project` |
+| [`getLogs`](#getlogs)                                     | `GET`    | `/{version}/logs`                           | `project` |
+| [`getLogSettings`](#getlogsettings)                       | `GET`    | `/{version}/logs/settings`                  | `project` |
+| [`saveLogSettings`](#savelogsettings)                     | `POST`   | `/{version}/logs/settings`                  | `project` |
 
 ## Reference
 
@@ -232,8 +232,6 @@ const result = await norbix.hub.logs.testLoggingIntegration({
 ### cleanLogs
 
 `POST` `/{version}/logs/clean`
-
-
 
 **Request DTO**: `CodeMashHub2.CleanLogs`
 **Response**: `CodeMashHub2.CleanLogsResponse`

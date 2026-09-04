@@ -8,8 +8,8 @@ Accessed as `norbix.hub.auth` on the [`Norbix`](../../README.md#authentication) 
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method                          | Verb   | Path    | Scope     |
+| ------------------------------- | ------ | ------- | --------- |
 | [`authenticate`](#authenticate) | `POST` | `/auth` | `project` |
 
 ## Reference
