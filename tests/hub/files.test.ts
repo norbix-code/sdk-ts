@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.files (17 endpoints).
+ * Tests for hub.files (18 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.files', () => {
-  it('module exposes 17 method(s)', () => {
+  it('module exposes 18 method(s)', () => {
     const mock = createMockFetch();
     const mod = new FilesModule({} as never);
     void mod; // silence unused — we only need the type
@@ -44,6 +44,7 @@ describe('hub.files', () => {
     expect(typeof ns['getFilesIntegrations']).toBe('function');
     expect(typeof ns['saveFilesIntegration']).toBe('function');
     expect(typeof ns['setFilesIntegrationAsDefault']).toBe('function');
+    expect(typeof ns['testFilesIntegration']).toBe('function');
     expect(typeof ns['getFile']).toBe('function');
     expect(typeof ns['getFolderFiles']).toBe('function');
   });
@@ -388,6 +389,29 @@ describe('hub.files', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('testFilesIntegration: POST /{version}/files/integrations/test', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/files/integrations/test',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['testFilesIntegration']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

@@ -8,8 +8,8 @@ Accessed as `norbix.hub.echo` on the [`Norbix`](../../README.md#authentication) 
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method          | Verb  | Path              | Scope     |
+| --------------- | ----- | ----------------- | --------- |
 | [`echo`](#echo) | `GET` | `/{version}/echo` | `project` |
 
 ## Reference

@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 60
+ * Endpoints: 93
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -482,6 +482,25 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/wait-active
+   * Request DTO: WaitForProjectActiveRequest
+   */
+  waitForProjectActive = (
+    request: Partial<CodeMashHub2.WaitForProjectActiveRequest> = {} as Partial<CodeMashHub2.WaitForProjectActiveRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WaitForProjectActiveResponse> => {
+    return this.transport.send<CodeMashHub2.WaitForProjectActiveResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/wait-active',
+      method: 'GET',
+      request,
+      pathParams: ['projectId'],
       scope: 'project',
       ...options,
     });
@@ -1115,6 +1134,253 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/userauth/has-passkey
+   * Request DTO: AccountHasPasskeyRequest
+   */
+  accountHasPasskey = (
+    request: Partial<CodeMashHub2.AccountHasPasskeyRequest> = {} as Partial<CodeMashHub2.AccountHasPasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyOkResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyOkResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/has-passkey',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/email/start-verification
+   * Request DTO: AccountStartEmailVerificationRequest
+   */
+  accountStartEmailVerification = (
+    request: Partial<CodeMashHub2.AccountStartEmailVerificationRequest> = {} as Partial<CodeMashHub2.AccountStartEmailVerificationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyOkResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyOkResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/email/start-verification',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/email/confirm-verification
+   * Request DTO: AccountConfirmEmailVerificationRequest
+   */
+  accountConfirmEmailVerification = (
+    request: Partial<CodeMashHub2.AccountConfirmEmailVerificationRequest> = {} as Partial<CodeMashHub2.AccountConfirmEmailVerificationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyVerificationTokenResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyVerificationTokenResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/email/confirm-verification',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/registration-options
+   * Request DTO: AccountPasskeyRegistrationOptionsRequest
+   */
+  accountPasskeyRegistrationOptions = (
+    request: Partial<CodeMashHub2.AccountPasskeyRegistrationOptionsRequest> = {} as Partial<CodeMashHub2.AccountPasskeyRegistrationOptionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/registration-options',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/verify-registration
+   * Request DTO: AccountVerifyPasskeyRegistrationRequest
+   */
+  accountVerifyPasskeyRegistration = (
+    request: Partial<CodeMashHub2.AccountVerifyPasskeyRegistrationRequest> = {} as Partial<CodeMashHub2.AccountVerifyPasskeyRegistrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyAuthTokensResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyAuthTokensResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/verify-registration',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/authentication-options
+   * Request DTO: AccountPasskeyAuthenticationOptionsRequest
+   */
+  accountPasskeyAuthenticationOptions = (
+    request: Partial<CodeMashHub2.AccountPasskeyAuthenticationOptionsRequest> = {} as Partial<CodeMashHub2.AccountPasskeyAuthenticationOptionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/authentication-options',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/verify-authentication
+   * Request DTO: AccountVerifyPasskeyAuthenticationRequest
+   */
+  accountVerifyPasskeyAuthentication = (
+    request: Partial<CodeMashHub2.AccountVerifyPasskeyAuthenticationRequest> = {} as Partial<CodeMashHub2.AccountVerifyPasskeyAuthenticationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyAuthTokensResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyAuthTokensResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/verify-authentication',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/userauth/passkeys
+   * Request DTO: ListAccountPasskeysRequest
+   */
+  listAccountPasskeys = (
+    request: Partial<CodeMashHub2.ListAccountPasskeysRequest> = {} as Partial<CodeMashHub2.ListAccountPasskeysRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyListResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyListResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkeys',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkeys/{CredentialId}/rename
+   * Request DTO: RenameAccountPasskeyRequest
+   */
+  renameAccountPasskey = (
+    request: Partial<CodeMashHub2.RenameAccountPasskeyRequest> = {} as Partial<CodeMashHub2.RenameAccountPasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyOkResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyOkResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkeys/{CredentialId}/rename',
+      method: 'POST',
+      request,
+      pathParams: ['CredentialId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkeys/{CredentialId}/revoke
+   * Request DTO: RevokeAccountPasskeyRequest
+   */
+  revokeAccountPasskey = (
+    request: Partial<CodeMashHub2.RevokeAccountPasskeyRequest> = {} as Partial<CodeMashHub2.RevokeAccountPasskeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyOkResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyOkResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkeys/{CredentialId}/revoke',
+      method: 'POST',
+      request,
+      pathParams: ['CredentialId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/enrollment-options
+   * Request DTO: AccountPasskeyEnrollmentOptionsRequest
+   */
+  accountPasskeyEnrollmentOptions = (
+    request: Partial<CodeMashHub2.AccountPasskeyEnrollmentOptionsRequest> = {} as Partial<CodeMashHub2.AccountPasskeyEnrollmentOptionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyCeremonyOptionsResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/enrollment-options',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/userauth/passkey/verify-enrollment
+   * Request DTO: AccountVerifyPasskeyEnrollmentRequest
+   */
+  accountVerifyPasskeyEnrollment = (
+    request: Partial<CodeMashHub2.AccountVerifyPasskeyEnrollmentRequest> = {} as Partial<CodeMashHub2.AccountVerifyPasskeyEnrollmentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.AccountPasskeyEnrollmentResponse> => {
+    return this.transport.send<CodeMashHub2.AccountPasskeyEnrollmentResponse>({
+      target: 'hub',
+      path: '/{version}/account/userauth/passkey/verify-enrollment',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/licensing/dns-status
+   * Request DTO: GetLicenseDomainDnsStatus
+   */
+  getLicenseDomainDnsStatus = (
+    request: Partial<CodeMashHub2.GetLicenseDomainDnsStatus> = {} as Partial<CodeMashHub2.GetLicenseDomainDnsStatus>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLicenseDomainDnsStatusResponse> => {
+    return this.transport.send<CodeMashHub2.GetLicenseDomainDnsStatusResponse>({
+      target: 'hub',
+      path: '/{version}/account/licensing/dns-status',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/account/licenses
    * Request DTO: GetLicenses
    */
@@ -1134,6 +1400,63 @@ export class AccountModule {
   };
 
   /**
+   * GET /{version}/account/licensing/status
+   * Request DTO: GetInstallationLicenseStatus
+   */
+  getInstallationLicenseStatus = (
+    request: Partial<CodeMashHub2.GetInstallationLicenseStatus> = {} as Partial<CodeMashHub2.GetInstallationLicenseStatus>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetInstallationLicenseStatusResponse> => {
+    return this.transport.send<CodeMashHub2.GetInstallationLicenseStatusResponse>({
+      target: 'hub',
+      path: '/{version}/account/licensing/status',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/ai/tools
+   * Request DTO: GetAiToolsRequest
+   */
+  getAiTools = (
+    request: Partial<CodeMashHub2.GetAiToolsRequest> = {} as Partial<CodeMashHub2.GetAiToolsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAiToolsResponse> => {
+    return this.transport.send<CodeMashHub2.GetAiToolsResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/tools',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/ai/tools/{ToolName}
+   * Request DTO: InvokeAiToolRequest
+   */
+  invokeAiTool = (
+    request: Partial<CodeMashHub2.InvokeAiToolRequest> = {} as Partial<CodeMashHub2.InvokeAiToolRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.InvokeAiToolResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeAiToolResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/tools/{ToolName}',
+      method: 'POST',
+      request,
+      pathParams: ['ToolName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/chat/complete
    * Request DTO: AskChatRequest
    */
@@ -1144,6 +1467,310 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.AskChatResponse>({
       target: 'hub',
       path: '/{version}/account/chat/complete',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/attachments
+   * Request DTO: UploadChatAttachmentRequest
+   */
+  uploadChatAttachment = (
+    request: Partial<CodeMashHub2.UploadChatAttachmentRequest> = {} as Partial<CodeMashHub2.UploadChatAttachmentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.UploadChatAttachmentResponse> => {
+    return this.transport.send<CodeMashHub2.UploadChatAttachmentResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/attachments',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/chat/availability
+   * Request DTO: ChatAvailabilityRequest
+   */
+  chatAvailability = (
+    request: Partial<CodeMashHub2.ChatAvailabilityRequest> = {} as Partial<CodeMashHub2.ChatAvailabilityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ChatAvailabilityResponse> => {
+    return this.transport.send<CodeMashHub2.ChatAvailabilityResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/availability',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/chat/memory
+   * Request DTO: GetChatMemoryRequest
+   */
+  getChatMemory = (
+    request: Partial<CodeMashHub2.GetChatMemoryRequest> = {} as Partial<CodeMashHub2.GetChatMemoryRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetChatMemoryResponse> => {
+    return this.transport.send<CodeMashHub2.GetChatMemoryResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/memory',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/chat/memory/{NoteId}
+   * Request DTO: ForgetChatMemoryRequest
+   */
+  forgetChatMemory = (
+    request: Partial<CodeMashHub2.ForgetChatMemoryRequest> = {} as Partial<CodeMashHub2.ForgetChatMemoryRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/memory/{NoteId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['NoteId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/chat/sessions/{SessionId}
+   * Request DTO: DeleteChatSessionRequest
+   */
+  deleteChatSession = (
+    request: Partial<CodeMashHub2.DeleteChatSessionRequest> = {} as Partial<CodeMashHub2.DeleteChatSessionRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['SessionId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/chat/sessions/{SessionId}/archive
+   * Request DTO: SetChatSessionArchivedRequest
+   */
+  setChatSessionArchived = (
+    request: Partial<CodeMashHub2.SetChatSessionArchivedRequest> = {} as Partial<CodeMashHub2.SetChatSessionArchivedRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/archive',
+      method: 'PATCH',
+      request,
+      pathParams: ['SessionId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/chat/sessions/{SessionId}/pin
+   * Request DTO: SetChatSessionPinnedRequest
+   */
+  setChatSessionPinned = (
+    request: Partial<CodeMashHub2.SetChatSessionPinnedRequest> = {} as Partial<CodeMashHub2.SetChatSessionPinnedRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/pin',
+      method: 'PATCH',
+      request,
+      pathParams: ['SessionId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/chat/sessions/{SessionId}/sharing
+   * Request DTO: SetChatSessionSharingRequest
+   */
+  setChatSessionSharing = (
+    request: Partial<CodeMashHub2.SetChatSessionSharingRequest> = {} as Partial<CodeMashHub2.SetChatSessionSharingRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/sharing',
+      method: 'PATCH',
+      request,
+      pathParams: ['SessionId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/chat/sessions
+   * Request DTO: GetChatSessionsRequest
+   */
+  getChatSessions = (
+    request: Partial<CodeMashHub2.GetChatSessionsRequest> = {} as Partial<CodeMashHub2.GetChatSessionsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetChatSessionsResponse> => {
+    return this.transport.send<CodeMashHub2.GetChatSessionsResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/chat/sessions/{SessionId}/entries
+   * Request DTO: GetChatSessionEntriesRequest
+   */
+  getChatSessionEntries = (
+    request: Partial<CodeMashHub2.GetChatSessionEntriesRequest> = {} as Partial<CodeMashHub2.GetChatSessionEntriesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetChatSessionEntriesResponse> => {
+    return this.transport.send<CodeMashHub2.GetChatSessionEntriesResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/entries',
+      method: 'GET',
+      request,
+      pathParams: ['SessionId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback
+   * Request DTO: SetChatEntryFeedbackRequest
+   */
+  setChatEntryFeedback = (
+    request: Partial<CodeMashHub2.SetChatEntryFeedbackRequest> = {} as Partial<CodeMashHub2.SetChatEntryFeedbackRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
+      method: 'POST',
+      request,
+      pathParams: ['SessionId', 'EntryId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer
+   * Request DTO: AnswerChatQuestionRequest
+   */
+  answerChatQuestion = (
+    request: Partial<CodeMashHub2.AnswerChatQuestionRequest> = {} as Partial<CodeMashHub2.AnswerChatQuestionRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer',
+      method: 'POST',
+      request,
+      pathParams: ['SessionId', 'EntryId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision
+   * Request DTO: DecideChatPlanRequest
+   */
+  decideChatPlan = (
+    request: Partial<CodeMashHub2.DecideChatPlanRequest> = {} as Partial<CodeMashHub2.DecideChatPlanRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision',
+      method: 'POST',
+      request,
+      pathParams: ['SessionId', 'EntryId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop
+   * Request DTO: StopChatRunStepRequest
+   */
+  stopChatRunStep = (
+    request: Partial<CodeMashHub2.StopChatRunStepRequest> = {} as Partial<CodeMashHub2.StopChatRunStepRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop',
+      method: 'POST',
+      request,
+      pathParams: ['SessionId', 'EntryId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/chat/turn
+   * Request DTO: ChatTurnRequest
+   */
+  chatTurn = (
+    request: Partial<CodeMashHub2.ChatTurnRequest> = {} as Partial<CodeMashHub2.ChatTurnRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ChatTurnResponse> => {
+    return this.transport.send<CodeMashHub2.ChatTurnResponse>({
+      target: 'hub',
+      path: '/{version}/account/chat/turn',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/mcp
+   * Request DTO: McpRequest
+   */
+  mcp = (
+    request: Partial<CodeMashHub2.McpRequest> = {} as Partial<CodeMashHub2.McpRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.string> => {
+    return this.transport.send<CodeMashHub2.string>({
+      target: 'hub',
+      path: '/{version}/account/mcp',
       method: 'POST',
       request,
       pathParams: [],

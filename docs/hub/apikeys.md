@@ -8,9 +8,9 @@ Accessed as `norbix.hub.apikeys` on the [`Norbix`](../../README.md#authenticatio
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`getApiKeys`](#getapikeys) | `POST` | `/apikeys` | `project` |
+| Method                                    | Verb   | Path                  | Scope     |
+| ----------------------------------------- | ------ | --------------------- | --------- |
+| [`getApiKeys`](#getapikeys)               | `POST` | `/apikeys`            | `project` |
 | [`regenerateApiKeys`](#regenerateapikeys) | `POST` | `/apikeys/regenerate` | `project` |
 
 ## Reference
@@ -40,8 +40,6 @@ const result = await norbix.hub.apikeys.getApiKeys({
 ### regenerateApiKeys
 
 `POST` `/apikeys/regenerate`
-
-
 
 **Request DTO**: `CodeMashHub2.RegenerateApiKeys`
 **Response**: `CodeMashHub2.RegenerateApiKeysResponse`

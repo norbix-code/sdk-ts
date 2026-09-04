@@ -1041,13 +1041,13 @@ describe('hub.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('promoteContactIdentity: POST /{version}/membership/users/{contactId}/identities/{identityId}/promote', async () => {
+  it('promoteContactIdentity: POST /{version}/membership/users/{contactId}/identities/{authId}/promote', async () => {
     const stub = stubRequestForPath(
-      '/{version}/membership/users/{contactId}/identities/{identityId}/promote',
+      '/{version}/membership/users/{contactId}/identities/{authId}/promote',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/membership/users/{contactId}/identities/{identityId}/promote',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}/promote',
       version: 'v2',
       stub,
     });
@@ -1066,13 +1066,11 @@ describe('hub.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('removeContactIdentity: DELETE /{version}/membership/users/{contactId}/identities/{identityId}', async () => {
-    const stub = stubRequestForPath(
-      '/{version}/membership/users/{contactId}/identities/{identityId}',
-    );
+  it('removeContactIdentity: DELETE /{version}/membership/users/{contactId}/identities/{authId}', async () => {
+    const stub = stubRequestForPath('/{version}/membership/users/{contactId}/identities/{authId}');
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.dev',
-      path: '/{version}/membership/users/{contactId}/identities/{identityId}',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}',
       version: 'v2',
       stub,
     });

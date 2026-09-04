@@ -6,10 +6,29 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 21
+ * Endpoints: 22
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/database/taxonomies/{taxonomyName}/merged-tree
+   * Request DTO: FindMergedTermTreeRequest
+   */
+  findMergedTermTree = (
+    request: Partial<CodeMashApi2.FindMergedTermTreeRequest> = {} as Partial<CodeMashApi2.FindMergedTermTreeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.FindMergedTermTreeResponse> => {
+    return this.transport.send<CodeMashApi2.FindMergedTermTreeResponse>({
+      target: 'api',
+      path: '/{version}/database/taxonomies/{taxonomyName}/merged-tree',
+      method: 'GET',
+      request,
+      pathParams: ['taxonomyName'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/database/taxonomies/tree

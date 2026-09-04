@@ -8,49 +8,50 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`blockUser`](#blockuser) | `PATCH` | `/{version}/membership/auth/block` | `project` |
-| [`saveSystemUserWithPermissions`](#savesystemuserwithpermissions) | `POST` | `/{version}/membership/auth/register/service` | `project` |
-| [`saveGuestUser`](#saveguestuser) | `POST` | `/{version}/membership/auth/register/guest` | `project` |
-| [`saveUserNameUser`](#saveusernameuser) | `POST` | `/{version}/membership/auth/register/user-name` | `project` |
-| [`saveEmailUser`](#saveemailuser) | `POST` | `/{version}/membership/auth/register/email` | `project` |
-| [`savePhoneUser`](#savephoneuser) | `POST` | `/{version}/membership/auth/register/phone` | `project` |
-| [`savePhoneUserNameWithPermissions`](#savephoneusernamewithpermissions) | `POST` | `/{version}/membership/auth/register/phone-with-permissions` | `project` |
-| [`saveEmailUserNameWithPermissions`](#saveemailusernamewithpermissions) | `POST` | `/{version}/membership/auth/register/email-with-permissions` | `project` |
-| [`saveUserNameWithPermissions`](#saveusernamewithpermissions) | `POST` | `/{version}/membership/auth/register/user-name-with-permissions` | `project` |
-| [`deleteUser`](#deleteuser) | `DELETE` | `/{version}/membership/auth` | `project` |
-| [`getUser`](#getuser) | `GET` | `/{version}/membership/auth/{id}` | `project` |
-| [`getUsers`](#getusers) | `GET` | `/{version}/membership/auth` | `project` |
-| [`getUserPreferences`](#getuserpreferences) | `GET` | `/{version}/membership/auth/{id}/preferences` | `project` |
-| [`grantContactConsent`](#grantcontactconsent) | `POST` | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent` | `project` |
-| [`inviteUser`](#inviteuser) | `POST` | `/{version}/membership/auth/invite` | `project` |
-| [`linkIdentity`](#linkidentity) | `POST` | `/{version}/membership/auth/{userId}/link-identity` | `project` |
-| [`mapAuthToUser`](#mapauthtouser) | `POST` | `/{version}/membership/users/{userId}/map-auth` | `project` |
-| [`assignRolePermissions`](#assignrolepermissions) | `PUT` | `/{version}/membership/auth/assign-roles` | `project` |
-| [`setContactTagSubscription`](#setcontacttagsubscription) | `PUT` | `/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}` | `project` |
-| [`unblockUser`](#unblockuser) | `PATCH` | `/{version}/membership/auth/unblock` | `project` |
-| [`unsubscribeContact`](#unsubscribecontact) | `POST` | `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe` | `project` |
-| [`updateUser`](#updateuser) | `PUT` | `/{version}/membership/auth` | `project` |
-| [`updateUserPreferences`](#updateuserpreferences) | `PUT` | `/{version}/membership/auth/{id}/preferences` | `project` |
-| [`passkeyAuthenticationOptions`](#passkeyauthenticationoptions) | `POST` | `/{version}/membership/userauth/passkey/authentication-options` | `project` |
-| [`verifyPasskeyAuthentication`](#verifypasskeyauthentication) | `POST` | `/{version}/membership/userauth/passkey/verify-authentication` | `project` |
-| [`listPasskeys`](#listpasskeys) | `GET` | `/{version}/membership/userauth/passkeys` | `project` |
-| [`renamePasskey`](#renamepasskey) | `POST` | `/{version}/membership/userauth/passkeys/{CredentialId}/rename` | `project` |
-| [`revokePasskey`](#revokepasskey) | `POST` | `/{version}/membership/userauth/passkeys/{CredentialId}/revoke` | `project` |
-| [`useRecoveryCode`](#userecoverycode) | `POST` | `/{version}/membership/userauth/recovery/use-code` | `project` |
-| [`requestMagicLink`](#requestmagiclink) | `POST` | `/{version}/membership/userauth/recovery/magic-link/request` | `project` |
-| [`consumeMagicLink`](#consumemagiclink) | `POST` | `/{version}/membership/userauth/recovery/magic-link/consume` | `project` |
-| [`hasPasskey`](#haspasskey) | `POST` | `/{version}/membership/userauth/has-passkey` | `project` |
-| [`startEmailVerification`](#startemailverification) | `POST` | `/{version}/membership/userauth/email/start-verification` | `project` |
-| [`confirmEmailVerification`](#confirmemailverification) | `POST` | `/{version}/membership/userauth/email/confirm-verification` | `project` |
-| [`passkeyRegistrationOptions`](#passkeyregistrationoptions) | `POST` | `/{version}/membership/userauth/passkey/registration-options` | `project` |
-| [`verifyPasskeyRegistration`](#verifypasskeyregistration) | `POST` | `/{version}/membership/userauth/passkey/verify-registration` | `project` |
-| [`refreshPasskeyToken`](#refreshpasskeytoken) | `POST` | `/{version}/membership/userauth/token/refresh` | `project` |
-| [`passkeyLogout`](#passkeylogout) | `POST` | `/{version}/membership/userauth/logout` | `project` |
-| [`changePassword`](#changepassword) | `POST` | `/{version}/membership/userauth/password/change` | `project` |
-| [`requestPasswordReset`](#requestpasswordreset) | `POST` | `/{version}/membership/userauth/password/reset/request` | `project` |
-| [`confirmPasswordReset`](#confirmpasswordreset) | `POST` | `/{version}/membership/userauth/password/reset/confirm` | `project` |
+| Method                                                                  | Verb     | Path                                                                                         | Scope     |
+| ----------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- | --------- |
+| [`blockUser`](#blockuser)                                               | `PATCH`  | `/{version}/membership/auth/block`                                                           | `project` |
+| [`saveSystemUserWithPermissions`](#savesystemuserwithpermissions)       | `POST`   | `/{version}/membership/auth/register/service`                                                | `project` |
+| [`saveGuestUser`](#saveguestuser)                                       | `POST`   | `/{version}/membership/auth/register/guest`                                                  | `project` |
+| [`saveUserNameUser`](#saveusernameuser)                                 | `POST`   | `/{version}/membership/auth/register/user-name`                                              | `project` |
+| [`saveEmailUser`](#saveemailuser)                                       | `POST`   | `/{version}/membership/auth/register/email`                                                  | `project` |
+| [`savePhoneUser`](#savephoneuser)                                       | `POST`   | `/{version}/membership/auth/register/phone`                                                  | `project` |
+| [`savePhoneUserNameWithPermissions`](#savephoneusernamewithpermissions) | `POST`   | `/{version}/membership/auth/register/phone-with-permissions`                                 | `project` |
+| [`saveEmailUserNameWithPermissions`](#saveemailusernamewithpermissions) | `POST`   | `/{version}/membership/auth/register/email-with-permissions`                                 | `project` |
+| [`saveUserNameWithPermissions`](#saveusernamewithpermissions)           | `POST`   | `/{version}/membership/auth/register/user-name-with-permissions`                             | `project` |
+| [`deleteUser`](#deleteuser)                                             | `DELETE` | `/{version}/membership/auth`                                                                 | `project` |
+| [`getUser`](#getuser)                                                   | `GET`    | `/{version}/membership/auth/{id}`                                                            | `project` |
+| [`getUsers`](#getusers)                                                 | `GET`    | `/{version}/membership/auth`                                                                 | `project` |
+| [`getUserPreferences`](#getuserpreferences)                             | `GET`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
+| [`grantContactConsent`](#grantcontactconsent)                           | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`                  | `project` |
+| [`inviteUser`](#inviteuser)                                             | `POST`   | `/{version}/membership/auth/invite`                                                          | `project` |
+| [`linkIdentity`](#linkidentity)                                         | `POST`   | `/{version}/membership/auth/{userId}/link-identity`                                          | `project` |
+| [`mapAuthToUser`](#mapauthtouser)                                       | `POST`   | `/{version}/membership/users/{userId}/map-auth`                                              | `project` |
+| [`assignRolePermissions`](#assignrolepermissions)                       | `PUT`    | `/{version}/membership/auth/assign-roles`                                                    | `project` |
+| [`setContactRoles`](#setcontactroles)                                   | `PUT`    | `/{version}/membership/users/{userId}/roles`                                                 | `project` |
+| [`setContactTagSubscription`](#setcontacttagsubscription)               | `PUT`    | `/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}` | `project` |
+| [`unblockUser`](#unblockuser)                                           | `PATCH`  | `/{version}/membership/auth/unblock`                                                         | `project` |
+| [`unsubscribeContact`](#unsubscribecontact)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe`              | `project` |
+| [`updateUser`](#updateuser)                                             | `PUT`    | `/{version}/membership/auth`                                                                 | `project` |
+| [`updateUserPreferences`](#updateuserpreferences)                       | `PUT`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
+| [`passkeyAuthenticationOptions`](#passkeyauthenticationoptions)         | `POST`   | `/{version}/membership/userauth/passkey/authentication-options`                              | `project` |
+| [`verifyPasskeyAuthentication`](#verifypasskeyauthentication)           | `POST`   | `/{version}/membership/userauth/passkey/verify-authentication`                               | `project` |
+| [`listPasskeys`](#listpasskeys)                                         | `GET`    | `/{version}/membership/userauth/passkeys`                                                    | `project` |
+| [`renamePasskey`](#renamepasskey)                                       | `POST`   | `/{version}/membership/userauth/passkeys/{CredentialId}/rename`                              | `project` |
+| [`revokePasskey`](#revokepasskey)                                       | `POST`   | `/{version}/membership/userauth/passkeys/{CredentialId}/revoke`                              | `project` |
+| [`useRecoveryCode`](#userecoverycode)                                   | `POST`   | `/{version}/membership/userauth/recovery/use-code`                                           | `project` |
+| [`requestMagicLink`](#requestmagiclink)                                 | `POST`   | `/{version}/membership/userauth/recovery/magic-link/request`                                 | `project` |
+| [`consumeMagicLink`](#consumemagiclink)                                 | `POST`   | `/{version}/membership/userauth/recovery/magic-link/consume`                                 | `project` |
+| [`hasPasskey`](#haspasskey)                                             | `POST`   | `/{version}/membership/userauth/has-passkey`                                                 | `project` |
+| [`startEmailVerification`](#startemailverification)                     | `POST`   | `/{version}/membership/userauth/email/start-verification`                                    | `project` |
+| [`confirmEmailVerification`](#confirmemailverification)                 | `POST`   | `/{version}/membership/userauth/email/confirm-verification`                                  | `project` |
+| [`passkeyRegistrationOptions`](#passkeyregistrationoptions)             | `POST`   | `/{version}/membership/userauth/passkey/registration-options`                                | `project` |
+| [`verifyPasskeyRegistration`](#verifypasskeyregistration)               | `POST`   | `/{version}/membership/userauth/passkey/verify-registration`                                 | `project` |
+| [`refreshPasskeyToken`](#refreshpasskeytoken)                           | `POST`   | `/{version}/membership/userauth/token/refresh`                                               | `project` |
+| [`passkeyLogout`](#passkeylogout)                                       | `POST`   | `/{version}/membership/userauth/logout`                                                      | `project` |
+| [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
+| [`requestPasswordReset`](#requestpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/request`                                      | `project` |
+| [`confirmPasswordReset`](#confirmpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/confirm`                                      | `project` |
 
 ## Reference
 
@@ -346,8 +347,6 @@ const result = await norbix.api.membership.getUserPreferences({
 
 `POST` `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`
 
-
-
 **Request DTO**: `CodeMashApi2.GrantContactConsentRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
 
@@ -370,8 +369,6 @@ const result = await norbix.api.membership.grantContactConsent({
 
 `POST` `/{version}/membership/auth/invite`
 
-
-
 **Request DTO**: `CodeMashApi2.InviteUserRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
 
@@ -391,8 +388,6 @@ const result = await norbix.api.membership.inviteUser({
 ### linkIdentity
 
 `POST` `/{version}/membership/auth/{userId}/link-identity`
-
-
 
 **Request DTO**: `CodeMashApi2.LinkIdentityRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -414,8 +409,6 @@ const result = await norbix.api.membership.linkIdentity({
 ### mapAuthToUser
 
 `POST` `/{version}/membership/users/{userId}/map-auth`
-
-
 
 **Request DTO**: `CodeMashApi2.MapAuthToUserRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -456,11 +449,30 @@ const result = await norbix.api.membership.assignRolePermissions({
 
 [↑ Top](#endpoints)
 
+### setContactRoles
+
+`PUT` `/{version}/membership/users/{userId}/roles`
+
+**Request DTO**: `CodeMashApi2.SetContactRolesRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.setContactRoles({
+  userId: 'userId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### setContactTagSubscription
 
 `PUT` `/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}`
-
-
 
 **Request DTO**: `CodeMashApi2.SetContactTagSubscriptionRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -507,8 +519,6 @@ const result = await norbix.api.membership.unblockUser({
 ### unsubscribeContact
 
 `POST` `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe`
-
-
 
 **Request DTO**: `CodeMashApi2.UnsubscribeContactRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -577,8 +587,6 @@ const result = await norbix.api.membership.updateUserPreferences({
 
 `POST` `/{version}/membership/userauth/passkey/authentication-options`
 
-
-
 **Request DTO**: `CodeMashApi2.PasskeyAuthenticationOptionsRequest`
 **Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
 
@@ -621,8 +629,6 @@ const result = await norbix.api.membership.verifyPasskeyAuthentication({
 
 `GET` `/{version}/membership/userauth/passkeys`
 
-
-
 **Request DTO**: `CodeMashApi2.ListPasskeysRequest`
 **Response**: `CodeMashApi2.PasskeyListResponse`
 
@@ -642,8 +648,6 @@ const result = await norbix.api.membership.listPasskeys({
 ### renamePasskey
 
 `POST` `/{version}/membership/userauth/passkeys/{CredentialId}/rename`
-
-
 
 **Request DTO**: `CodeMashApi2.RenamePasskeyRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
@@ -666,8 +670,6 @@ const result = await norbix.api.membership.renamePasskey({
 
 `POST` `/{version}/membership/userauth/passkeys/{CredentialId}/revoke`
 
-
-
 **Request DTO**: `CodeMashApi2.RevokePasskeyRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
@@ -689,8 +691,6 @@ const result = await norbix.api.membership.revokePasskey({
 
 `POST` `/{version}/membership/userauth/recovery/use-code`
 
-
-
 **Request DTO**: `CodeMashApi2.UseRecoveryCodeRequest`
 **Response**: `CodeMashApi2.PasskeyRecoveryResponse`
 
@@ -710,8 +710,6 @@ const result = await norbix.api.membership.useRecoveryCode({
 ### requestMagicLink
 
 `POST` `/{version}/membership/userauth/recovery/magic-link/request`
-
-
 
 **Request DTO**: `CodeMashApi2.RequestMagicLinkRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
@@ -733,8 +731,6 @@ const result = await norbix.api.membership.requestMagicLink({
 
 `POST` `/{version}/membership/userauth/recovery/magic-link/consume`
 
-
-
 **Request DTO**: `CodeMashApi2.ConsumeMagicLinkRequest`
 **Response**: `CodeMashApi2.PasskeyRecoveryResponse`
 
@@ -754,8 +750,6 @@ const result = await norbix.api.membership.consumeMagicLink({
 ### hasPasskey
 
 `POST` `/{version}/membership/userauth/has-passkey`
-
-
 
 **Request DTO**: `CodeMashApi2.HasPasskeyRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
@@ -777,8 +771,6 @@ const result = await norbix.api.membership.hasPasskey({
 
 `POST` `/{version}/membership/userauth/email/start-verification`
 
-
-
 **Request DTO**: `CodeMashApi2.StartEmailVerificationRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
@@ -799,8 +791,6 @@ const result = await norbix.api.membership.startEmailVerification({
 
 `POST` `/{version}/membership/userauth/email/confirm-verification`
 
-
-
 **Request DTO**: `CodeMashApi2.ConfirmEmailVerificationRequest`
 **Response**: `CodeMashApi2.PasskeyVerificationTokenResponse`
 
@@ -820,8 +810,6 @@ const result = await norbix.api.membership.confirmEmailVerification({
 ### passkeyRegistrationOptions
 
 `POST` `/{version}/membership/userauth/passkey/registration-options`
-
-
 
 **Request DTO**: `CodeMashApi2.PasskeyRegistrationOptionsRequest`
 **Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
@@ -865,8 +853,6 @@ const result = await norbix.api.membership.verifyPasskeyRegistration({
 
 `POST` `/{version}/membership/userauth/token/refresh`
 
-
-
 **Request DTO**: `CodeMashApi2.RefreshPasskeyTokenRequest`
 **Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
 
@@ -886,8 +872,6 @@ const result = await norbix.api.membership.refreshPasskeyToken({
 ### passkeyLogout
 
 `POST` `/{version}/membership/userauth/logout`
-
-
 
 **Request DTO**: `CodeMashApi2.PasskeyLogoutRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
@@ -909,8 +893,6 @@ const result = await norbix.api.membership.passkeyLogout({
 
 `POST` `/{version}/membership/userauth/password/change`
 
-
-
 **Request DTO**: `CodeMashApi2.ChangePasswordRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
@@ -931,8 +913,6 @@ const result = await norbix.api.membership.changePassword({
 
 `POST` `/{version}/membership/userauth/password/reset/request`
 
-
-
 **Request DTO**: `CodeMashApi2.RequestPasswordResetRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
@@ -952,8 +932,6 @@ const result = await norbix.api.membership.requestPasswordReset({
 ### confirmPasswordReset
 
 `POST` `/{version}/membership/userauth/password/reset/confirm`
-
-
 
 **Request DTO**: `CodeMashApi2.ConfirmPasswordResetRequest`
 **Response**: `CodeMashApi2.PasskeyOkResponse`

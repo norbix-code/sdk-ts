@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: payments
- * Endpoints: 16
+ * Endpoints: 17
  */
 export class PaymentsModule {
   constructor(private readonly transport: Transport) {}
@@ -41,6 +41,25 @@ export class PaymentsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/payments/enable',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/payments/webhooks/log
+   * Request DTO: GetPaymentsWebhookLog
+   */
+  getPaymentsWebhookLog = (
+    request: Partial<CodeMashHub2.GetPaymentsWebhookLog> = {} as Partial<CodeMashHub2.GetPaymentsWebhookLog>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPaymentsWebhookLogResponse> => {
+    return this.transport.send<CodeMashHub2.GetPaymentsWebhookLogResponse>({
+      target: 'hub',
+      path: '/{version}/payments/webhooks/log',
       method: 'GET',
       request,
       pathParams: [],

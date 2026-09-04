@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for api.database (21 endpoints).
+ * Tests for api.database (22 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('api.database', () => {
-  it('module exposes 21 method(s)', () => {
+  it('module exposes 22 method(s)', () => {
     const mock = createMockFetch();
     const mod = new DatabaseModule({} as never);
     void mod; // silence unused — we only need the type
@@ -29,6 +29,7 @@ describe('api.database', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['findMergedTermTree']).toBe('function');
     expect(typeof ns['findTaxonomyTree']).toBe('function');
     expect(typeof ns['findTerms']).toBe('function');
     expect(typeof ns['findTermsChildren']).toBe('function');
@@ -50,6 +51,29 @@ describe('api.database', () => {
     expect(typeof ns['replaceOne']).toBe('function');
     expect(typeof ns['updateMany']).toBe('function');
     expect(typeof ns['updateOne']).toBe('function');
+  });
+
+  it('findMergedTermTree: GET /{version}/database/taxonomies/{taxonomyName}/merged-tree', async () => {
+    const stub = stubRequestForPath('/{version}/database/taxonomies/{taxonomyName}/merged-tree');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.dev',
+      path: '/{version}/database/taxonomies/{taxonomyName}/merged-tree',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['database']!['findMergedTermTree']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
   it('findTaxonomyTree: GET /{version}/database/taxonomies/tree', async () => {

@@ -2,14 +2,12 @@
 
 [← Back to API index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.api.chat` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
+| Method                | Verb   | Path                       | Scope     |
+| --------------------- | ------ | -------------------------- | --------- |
 | [`askChat`](#askchat) | `POST` | `/{version}/chat/complete` | `project` |
 
 ## Reference

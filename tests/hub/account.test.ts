@@ -8,7 +8,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (60 endpoints).
+ * Tests for hub.account (93 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -18,7 +18,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 60 method(s)', () => {
+  it('module exposes 93 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -55,6 +55,7 @@ describe('hub.account', () => {
     expect(typeof ns['getProject']).toBe('function');
     expect(typeof ns['getProjects']).toBe('function');
     expect(typeof ns['getAccountRegions']).toBe('function');
+    expect(typeof ns['waitForProjectActive']).toBe('function');
     expect(typeof ns['getProjectTokens']).toBe('function');
     expect(typeof ns['assignAdminPortalServiceUser']).toBe('function');
     expect(typeof ns['getAdminPortalStructure']).toBe('function');
@@ -88,8 +89,40 @@ describe('hub.account', () => {
     expect(typeof ns['sendInviteToTeamMember']).toBe('function');
     expect(typeof ns['updateAccountPolicy']).toBe('function');
     expect(typeof ns['updateAccountRole']).toBe('function');
+    expect(typeof ns['accountHasPasskey']).toBe('function');
+    expect(typeof ns['accountStartEmailVerification']).toBe('function');
+    expect(typeof ns['accountConfirmEmailVerification']).toBe('function');
+    expect(typeof ns['accountPasskeyRegistrationOptions']).toBe('function');
+    expect(typeof ns['accountVerifyPasskeyRegistration']).toBe('function');
+    expect(typeof ns['accountPasskeyAuthenticationOptions']).toBe('function');
+    expect(typeof ns['accountVerifyPasskeyAuthentication']).toBe('function');
+    expect(typeof ns['listAccountPasskeys']).toBe('function');
+    expect(typeof ns['renameAccountPasskey']).toBe('function');
+    expect(typeof ns['revokeAccountPasskey']).toBe('function');
+    expect(typeof ns['accountPasskeyEnrollmentOptions']).toBe('function');
+    expect(typeof ns['accountVerifyPasskeyEnrollment']).toBe('function');
+    expect(typeof ns['getLicenseDomainDnsStatus']).toBe('function');
     expect(typeof ns['getLicenses']).toBe('function');
+    expect(typeof ns['getInstallationLicenseStatus']).toBe('function');
+    expect(typeof ns['getAiTools']).toBe('function');
+    expect(typeof ns['invokeAiTool']).toBe('function');
     expect(typeof ns['askChat']).toBe('function');
+    expect(typeof ns['uploadChatAttachment']).toBe('function');
+    expect(typeof ns['chatAvailability']).toBe('function');
+    expect(typeof ns['getChatMemory']).toBe('function');
+    expect(typeof ns['forgetChatMemory']).toBe('function');
+    expect(typeof ns['deleteChatSession']).toBe('function');
+    expect(typeof ns['setChatSessionArchived']).toBe('function');
+    expect(typeof ns['setChatSessionPinned']).toBe('function');
+    expect(typeof ns['setChatSessionSharing']).toBe('function');
+    expect(typeof ns['getChatSessions']).toBe('function');
+    expect(typeof ns['getChatSessionEntries']).toBe('function');
+    expect(typeof ns['setChatEntryFeedback']).toBe('function');
+    expect(typeof ns['answerChatQuestion']).toBe('function');
+    expect(typeof ns['decideChatPlan']).toBe('function');
+    expect(typeof ns['stopChatRunStep']).toBe('function');
+    expect(typeof ns['chatTurn']).toBe('function');
+    expect(typeof ns['mcp']).toBe('function');
   });
 
   it('getAccountProfile: GET /{version}/account/profile', async () => {
@@ -706,6 +739,29 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['getAccountRegions']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('waitForProjectActive: GET /{version}/account/projects/{projectId}/wait-active', async () => {
+    const stub = stubRequestForPath('/{version}/account/projects/{projectId}/wait-active');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/projects/{projectId}/wait-active',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['waitForProjectActive']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
@@ -1483,6 +1539,305 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('accountHasPasskey: POST /{version}/account/userauth/has-passkey', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/has-passkey',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountHasPasskey']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountStartEmailVerification: POST /{version}/account/userauth/email/start-verification', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/email/start-verification',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountStartEmailVerification']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountConfirmEmailVerification: POST /{version}/account/userauth/email/confirm-verification', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/email/confirm-verification',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountConfirmEmailVerification']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountPasskeyRegistrationOptions: POST /{version}/account/userauth/passkey/registration-options', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/registration-options',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountPasskeyRegistrationOptions']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountVerifyPasskeyRegistration: POST /{version}/account/userauth/passkey/verify-registration', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/verify-registration',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountVerifyPasskeyRegistration']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountPasskeyAuthenticationOptions: POST /{version}/account/userauth/passkey/authentication-options', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/authentication-options',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountPasskeyAuthenticationOptions']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountVerifyPasskeyAuthentication: POST /{version}/account/userauth/passkey/verify-authentication', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/verify-authentication',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountVerifyPasskeyAuthentication']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('listAccountPasskeys: GET /{version}/account/userauth/passkeys', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkeys',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['listAccountPasskeys']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('renameAccountPasskey: POST /{version}/account/userauth/passkeys/{CredentialId}/rename', async () => {
+    const stub = stubRequestForPath('/{version}/account/userauth/passkeys/{CredentialId}/rename');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkeys/{CredentialId}/rename',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['renameAccountPasskey']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('revokeAccountPasskey: POST /{version}/account/userauth/passkeys/{CredentialId}/revoke', async () => {
+    const stub = stubRequestForPath('/{version}/account/userauth/passkeys/{CredentialId}/revoke');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkeys/{CredentialId}/revoke',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['revokeAccountPasskey']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountPasskeyEnrollmentOptions: POST /{version}/account/userauth/passkey/enrollment-options', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/enrollment-options',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountPasskeyEnrollmentOptions']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('accountVerifyPasskeyEnrollment: POST /{version}/account/userauth/passkey/verify-enrollment', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/userauth/passkey/verify-enrollment',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['accountVerifyPasskeyEnrollment']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getLicenseDomainDnsStatus: GET /{version}/account/licensing/dns-status', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/licensing/dns-status',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getLicenseDomainDnsStatus']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('getLicenses: GET /{version}/account/licenses', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -1506,6 +1861,75 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('getInstallationLicenseStatus: GET /{version}/account/licensing/status', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/licensing/status',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getInstallationLicenseStatus']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getAiTools: GET /{version}/account/ai/tools', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/ai/tools',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getAiTools']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('invokeAiTool: POST /{version}/account/ai/tools/{ToolName}', async () => {
+    const stub = stubRequestForPath('/{version}/account/ai/tools/{ToolName}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/ai/tools/{ToolName}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['invokeAiTool']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('askChat: POST /{version}/account/chat/complete', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -1521,6 +1945,382 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['askChat']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('uploadChatAttachment: POST /{version}/account/chat/attachments', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/attachments',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['uploadChatAttachment']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('chatAvailability: GET /{version}/account/chat/availability', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/availability',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['chatAvailability']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getChatMemory: GET /{version}/account/chat/memory', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/memory',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getChatMemory']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('forgetChatMemory: DELETE /{version}/account/chat/memory/{NoteId}', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/memory/{NoteId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/memory/{NoteId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['forgetChatMemory']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('DELETE');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('deleteChatSession: DELETE /{version}/account/chat/sessions/{SessionId}', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['deleteChatSession']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('DELETE');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('setChatSessionArchived: PATCH /{version}/account/chat/sessions/{SessionId}/archive', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/archive');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/archive',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['setChatSessionArchived']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('setChatSessionPinned: PATCH /{version}/account/chat/sessions/{SessionId}/pin', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/pin');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/pin',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['setChatSessionPinned']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('setChatSessionSharing: PATCH /{version}/account/chat/sessions/{SessionId}/sharing', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/sharing');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/sharing',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['setChatSessionSharing']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getChatSessions: GET /{version}/account/chat/sessions', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getChatSessions']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getChatSessionEntries: GET /{version}/account/chat/sessions/{SessionId}/entries', async () => {
+    const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/entries');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/entries',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getChatSessionEntries']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('setChatEntryFeedback: POST /{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['setChatEntryFeedback']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('answerChatQuestion: POST /{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['answerChatQuestion']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('decideChatPlan: POST /{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['decideChatPlan']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('stopChatRunStep: POST /{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['stopChatRunStep']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('chatTurn: POST /{version}/account/chat/turn', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/chat/turn',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['chatTurn']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('mcp: POST /{version}/account/mcp', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.dev',
+      path: '/{version}/account/mcp',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['mcp']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

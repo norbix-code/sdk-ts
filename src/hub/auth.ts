@@ -17,6 +17,8 @@ export class AuthModule {
    *   - GET,POST /auth/{provider}
    *   - POST,GET,OPTIONS /v3/auth
    *   - POST,GET,OPTIONS /v3/auth/{provider}
+   *   - POST,GET,OPTIONS /v3/staff/auth
+   *   - POST,GET,OPTIONS /v3/staff/auth/{provider}
    * Request DTO: Authenticate
    */
   authenticate = (

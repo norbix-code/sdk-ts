@@ -8,31 +8,55 @@ Accessed as `norbix.api.database` on the [`Norbix`](../../README.md#authenticati
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`findTaxonomyTree`](#findtaxonomytree) | `GET` | `/{version}/database/taxonomies/tree` | `project` |
-| [`findTerms`](#findterms) | `GET` | `/{version}/database/taxonomies/{taxonomyName}/terms` | `project` |
-| [`findTermsChildren`](#findtermschildren) | `GET` | `/{version}/database/taxonomies/{taxonomyName}/terms/{parentId}/children` | `project` |
-| [`findTermTree`](#findtermtree) | `GET` | `/{version}/database/taxonomies/{taxonomyName}/terms/tree` | `project` |
-| [`getDatabaseSchema`](#getdatabaseschema) | `GET` | `/{version}/database/schemas/{id}` | `project` |
-| [`getDatabaseSchemas`](#getdatabaseschemas) | `GET` | `/{version}/database/schemas` | `project` |
-| [`aggregate`](#aggregate) | `POST` | `/{version}/database/collections/{collectionName}/aggregate` | `project` |
-| [`changeResponsibility`](#changeresponsibility) | `PUT` | `/{version}/database/collections/{collectionName}/{id}/responsibility` | `project` |
-| [`count`](#count) | `GET` | `/{version}/database/collections/{collectionName}/count` | `project` |
-| [`deleteMany`](#deletemany) | `DELETE` | `/{version}/database/collections/{collectionName}/many` | `project` |
-| [`deleteOne`](#deleteone) | `DELETE` | `/{version}/database/collections/{collectionName}/{id}` | `project` |
-| [`distinct`](#distinct) | `GET` | `/{version}/database/collections/{collectionName}/distinct` | `project` |
-| [`executeAggregate`](#executeaggregate) | `POST` | `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute` | `project` |
-| [`find`](#find) | `GET` | `/{version}/database/collections/{collectionName}` | `project` |
-| [`findOne`](#findone) | `GET` | `/{version}/database/collections/{collectionName}/{id}` | `project` |
-| [`findOwn`](#findown) | `GET` | `/{version}/database/collections/{collectionName}/own` | `project` |
-| [`insertMany`](#insertmany) | `POST` | `/{version}/database/collections/{collectionName}/many` | `project` |
-| [`insertOne`](#insertone) | `POST` | `/{version}/database/collections/{collectionName}` | `project` |
-| [`replaceOne`](#replaceone) | `PUT` | `/{version}/database/collections/{collectionName}/{id}/replace` | `project` |
-| [`updateMany`](#updatemany) | `PUT` | `/{version}/database/collections/{collectionName}/many` | `project` |
-| [`updateOne`](#updateone) | `PUT` | `/{version}/database/collections/{collectionName}/{id}` | `project` |
+| Method                                          | Verb     | Path                                                                                | Scope     |
+| ----------------------------------------------- | -------- | ----------------------------------------------------------------------------------- | --------- |
+| [`findMergedTermTree`](#findmergedtermtree)     | `GET`    | `/{version}/database/taxonomies/{taxonomyName}/merged-tree`                         | `project` |
+| [`findTaxonomyTree`](#findtaxonomytree)         | `GET`    | `/{version}/database/taxonomies/tree`                                               | `project` |
+| [`findTerms`](#findterms)                       | `GET`    | `/{version}/database/taxonomies/{taxonomyName}/terms`                               | `project` |
+| [`findTermsChildren`](#findtermschildren)       | `GET`    | `/{version}/database/taxonomies/{taxonomyName}/terms/{parentId}/children`           | `project` |
+| [`findTermTree`](#findtermtree)                 | `GET`    | `/{version}/database/taxonomies/{taxonomyName}/terms/tree`                          | `project` |
+| [`getDatabaseSchema`](#getdatabaseschema)       | `GET`    | `/{version}/database/schemas/{id}`                                                  | `project` |
+| [`getDatabaseSchemas`](#getdatabaseschemas)     | `GET`    | `/{version}/database/schemas`                                                       | `project` |
+| [`aggregate`](#aggregate)                       | `POST`   | `/{version}/database/collections/{collectionName}/aggregate`                        | `project` |
+| [`changeResponsibility`](#changeresponsibility) | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/responsibility`              | `project` |
+| [`count`](#count)                               | `GET`    | `/{version}/database/collections/{collectionName}/count`                            | `project` |
+| [`deleteMany`](#deletemany)                     | `DELETE` | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`deleteOne`](#deleteone)                       | `DELETE` | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
+| [`distinct`](#distinct)                         | `GET`    | `/{version}/database/collections/{collectionName}/distinct`                         | `project` |
+| [`executeAggregate`](#executeaggregate)         | `POST`   | `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute` | `project` |
+| [`find`](#find)                                 | `GET`    | `/{version}/database/collections/{collectionName}`                                  | `project` |
+| [`findOne`](#findone)                           | `GET`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
+| [`findOwn`](#findown)                           | `GET`    | `/{version}/database/collections/{collectionName}/own`                              | `project` |
+| [`insertMany`](#insertmany)                     | `POST`   | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`insertOne`](#insertone)                       | `POST`   | `/{version}/database/collections/{collectionName}`                                  | `project` |
+| [`replaceOne`](#replaceone)                     | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/replace`                     | `project` |
+| [`updateMany`](#updatemany)                     | `PUT`    | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`updateOne`](#updateone)                       | `PUT`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
 
 ## Reference
+
+### findMergedTermTree
+
+`GET` `/{version}/database/taxonomies/{taxonomyName}/merged-tree`
+
+Search / paginate items.
+
+**Request DTO**: `CodeMashApi2.FindMergedTermTreeRequest`
+**Response**: `CodeMashApi2.FindMergedTermTreeResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.database.findMergedTermTree({
+  taxonomyName: 'taxonomyName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.FindMergedTermTreeResponse
+```
+
+[↑ Top](#endpoints)
 
 ### findTaxonomyTree
 
@@ -198,8 +222,6 @@ const result = await norbix.api.database.aggregate({
 
 `PUT` `/{version}/database/collections/{collectionName}/{id}/responsibility`
 
-
-
 **Request DTO**: `CodeMashApi2.ChangeResponsibilityRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
 
@@ -314,8 +336,6 @@ const result = await norbix.api.database.distinct({
 ### executeAggregate
 
 `POST` `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute`
-
-
 
 **Request DTO**: `CodeMashApi2.ExecuteAggregateRequest`
 **Response**: `CodeMashApi2.ExecuteAggregateResponse`

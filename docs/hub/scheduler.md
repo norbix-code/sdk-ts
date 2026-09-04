@@ -2,22 +2,20 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-
-
 Accessed as `norbix.hub.scheduler` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method | Verb | Path | Scope |
-| --- | --- | --- | --- |
-| [`disableScheduler`](#disablescheduler) | `GET` | `/{version}/scheduler/disable` | `project` |
-| [`enableScheduler`](#enablescheduler) | `GET` | `/{version}/scheduler/enable` | `project` |
-| [`deleteSchedulerTask`](#deleteschedulertask) | `DELETE` | `/{version}/scheduler/tasks/{Id}` | `project` |
-| [`disableSchedulerTask`](#disableschedulertask) | `PUT` | `/{version}/scheduler/tasks/{Id}/disable` | `project` |
-| [`enableSchedulerTask`](#enableschedulertask) | `PUT` | `/{version}/scheduler/tasks/{Id}/enable` | `project` |
-| [`getSchedulerTask`](#getschedulertask) | `GET` | `/{version}/scheduler/tasks/{id}` | `project` |
-| [`getSchedulerTasks`](#getschedulertasks) | `GET` | `/{version}/scheduler/tasks` | `project` |
-| [`saveSchedulerTask`](#saveschedulertask) | `POST` | `/{version}/scheduler/tasks` | `project` |
+| Method                                          | Verb     | Path                                      | Scope     |
+| ----------------------------------------------- | -------- | ----------------------------------------- | --------- |
+| [`disableScheduler`](#disablescheduler)         | `GET`    | `/{version}/scheduler/disable`            | `project` |
+| [`enableScheduler`](#enablescheduler)           | `GET`    | `/{version}/scheduler/enable`             | `project` |
+| [`deleteSchedulerTask`](#deleteschedulertask)   | `DELETE` | `/{version}/scheduler/tasks/{Id}`         | `project` |
+| [`disableSchedulerTask`](#disableschedulertask) | `PUT`    | `/{version}/scheduler/tasks/{Id}/disable` | `project` |
+| [`enableSchedulerTask`](#enableschedulertask)   | `PUT`    | `/{version}/scheduler/tasks/{Id}/enable`  | `project` |
+| [`getSchedulerTask`](#getschedulertask)         | `GET`    | `/{version}/scheduler/tasks/{id}`         | `project` |
+| [`getSchedulerTasks`](#getschedulertasks)       | `GET`    | `/{version}/scheduler/tasks`              | `project` |
+| [`saveSchedulerTask`](#saveschedulertask)       | `POST`   | `/{version}/scheduler/tasks`              | `project` |
 
 ## Reference
 

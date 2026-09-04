@@ -81,11 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStatus('idle');
   };
 
-  return (
-    <AuthCtx.Provider value={{ user, status, login, logout }}>
-      {children}
-    </AuthCtx.Provider>
-  );
+  return <AuthCtx.Provider value={{ user, status, login, logout }}>{children}</AuthCtx.Provider>;
 }
 
 export function useAuth() {
@@ -99,10 +95,10 @@ export function useAuth() {
 
 The SDK keeps the JWT only in memory, so a page reload loses it. To survive reloads, save the token on login and rehydrate the SDK on app start. Two common options:
 
-| Where | Pros | Cons |
-| --- | --- | --- |
-| `localStorage` | Simple, works in any SPA | Vulnerable to XSS — only safe if you trust your script supply chain |
-| `httpOnly` cookie set by your own backend | Not readable from JS, safer | Requires a backend you control |
+| Where                                     | Pros                        | Cons                                                                |
+| ----------------------------------------- | --------------------------- | ------------------------------------------------------------------- |
+| `localStorage`                            | Simple, works in any SPA    | Vulnerable to XSS — only safe if you trust your script supply chain |
+| `httpOnly` cookie set by your own backend | Not readable from JS, safer | Requires a backend you control                                      |
 
 The example above uses `localStorage`. For sensitive apps, route auth through your backend and let it set an `httpOnly` cookie. The SDK still works the same — just call `norbix.setBearerToken(...)` after your backend hands you a fresh token.
 
@@ -125,7 +121,13 @@ export function OrdersList() {
   }, []);
 
   if (error) return <p>Error: {error}</p>;
-  return <ul>{orders.map((o, i) => <li key={i}>{JSON.stringify(o)}</li>)}</ul>;
+  return (
+    <ul>
+      {orders.map((o, i) => (
+        <li key={i}>{JSON.stringify(o)}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 

@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 41
+ * Endpoints: 42
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -348,6 +348,25 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/users/{userId}/roles
+   * Request DTO: SetContactRolesRequest
+   */
+  setContactRoles = (
+    request: Partial<CodeMashApi2.SetContactRolesRequest> = {} as Partial<CodeMashApi2.SetContactRolesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{userId}/roles',
+      method: 'PUT',
+      request,
+      pathParams: ['userId'],
       scope: 'project',
       ...options,
     });
