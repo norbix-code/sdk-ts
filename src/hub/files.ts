@@ -352,4 +352,98 @@ export class FilesModule {
       ...options,
     });
   };
+
+  // ---------------------------------------------------------------------
+  // Public file links (10b-files slice PUB). Hand-added by slice SDK-2 in
+  // the shape `npm run generate-endpoints` produces; the next regeneration
+  // writes them from the DTO definitions and this block can go.
+  // ---------------------------------------------------------------------
+
+  /**
+   * POST /{version}/files/item/public
+   * Request DTO: MakeFilePublicRequest
+   *
+   * Makes one file readable by anyone holding its link. Answers with the
+   * `nbpf_…` public id; the link itself is on the file's `publicUrl` the next
+   * time you read it.
+   */
+  makeFilePublic = (
+    request: Partial<CodeMashHub2.MakeFilePublicRequest> = {} as Partial<CodeMashHub2.MakeFilePublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/files/item/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/private
+   * Request DTO: MakeFilePrivateRequest
+   *
+   * Takes a file's public link away. It is refused while a folder above the
+   * file is public — switch the folder off instead.
+   */
+  makeFilePrivate = (
+    request: Partial<CodeMashHub2.MakeFilePrivateRequest> = {} as Partial<CodeMashHub2.MakeFilePrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/files/item/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/public
+   * Request DTO: MakeFolderPublicRequest
+   *
+   * Publishes a whole folder prefix — one record, however many files sit
+   * under it, at any depth. The root cannot be published.
+   */
+  makeFolderPublic = (
+    request: Partial<CodeMashHub2.MakeFolderPublicRequest> = {} as Partial<CodeMashHub2.MakeFolderPublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/private
+   * Request DTO: MakeFolderPrivateRequest
+   *
+   * Takes back every link inside the folder, including per-file ones.
+   */
+  makeFolderPrivate = (
+    request: Partial<CodeMashHub2.MakeFolderPrivateRequest> = {} as Partial<CodeMashHub2.MakeFolderPrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
 }

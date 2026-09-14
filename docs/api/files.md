@@ -15,6 +15,7 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 | [`deleteManyFilesApi`](#deletemanyfilesapi) | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk`       | `project` |
 | [`downloadFileApi`](#downloadfileapi)       | `GET`    | `/{version}/files/{filesIntegrationId}/download`   | `project` |
 | [`getFileInfo`](#getfileinfo)               | `GET`    | `/{version}/files/{filesIntegrationId}/info`       | `project` |
+| [`getPublicFile`](#getpublicfile)           | `GET`    | `/{version}/files/public/{publicId}/{name}`        | none      |
 | [`getSignedUrl`](#getsignedurl)             | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
 | [`listFiles`](#listfiles)                   | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
 | [`requestUploadUrl`](#requestuploadurl)     | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
@@ -194,5 +195,58 @@ const result = await norbix.api.files.requestUploadUrl({
 });
 // → typed as CodeMashApi2.RequestUploadUrlResponse
 ```
+
+[↑ Top](#endpoints)
+
+### getPublicFile
+
+`GET` `/{version}/files/public/{publicId}/{name}`
+
+Reads a file somebody made public. **This call carries no sign-in and no
+project id** — the SDK deliberately sends no `Authorization` header, even when
+the client you call it on is signed in. That is what public means: the link has
+to work in an e-mail, in an `<img src>`, or in a browser on a stranger's phone,
+and the unguessable `nbpf_…` id is the whole credential.
+
+Answers with the file's raw bytes as a `Uint8Array`. When the storage provider
+signs its own links (Amazon S3, Azure Blob, Google Cloud Storage) the gateway
+replies `302` and `fetch` follows it, so the bytes come from the provider and
+never pass through Norbix.
+
+`name` is the file's name for a file link, or the path inside the folder for a
+folder link — its slashes stay slashes.
+
+Every miss is the same plain `404`: an id that does not exist, a name that does
+not match, a file made private again, a file gone from storage. That is on
+purpose — a more precise answer would tell a stranger the file is there.
+
+**Request DTO**: `CodeMashApi2.GetPublicFileRequest`
+**Response**: `Uint8Array`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const bytes = await norbix.api.files.getPublicFile({
+  publicId: 'nbpf_7hK2abc',
+  name: 'invoice.pdf',
+});
+// → Uint8Array
+
+// A file inside a published folder — the path keeps its slashes:
+const report = await norbix.api.files.getPublicFile({
+  publicId: 'nbpf_folder1',
+  name: '2026/q1/report.pdf',
+});
+```
+
+Making a file or a folder public is a dashboard operation, on the Hub side:
+[`hub.files.makeFilePublic`](../hub/files.md#makefilepublic).
+
+> The link is a plain HTTP address. Anything that can do a `GET` can read it —
+> `fetch`, `curl`, an `<img>` tag — so you do not need this SDK, or a Norbix
+> client at all, to open one. The method is here for code that already has a
+> client in its hands.
 
 [↑ Top](#endpoints)
