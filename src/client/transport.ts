@@ -41,6 +41,14 @@ export interface RequestOptions<TBody = unknown> {
    * Affects the header only; it never changes the request URL.
    */
   region?: string;
+  /**
+   * How to read a successful response body. `json` (the default) parses it as
+   * JSON. `binary` returns the raw bytes as a `Uint8Array` — for endpoints
+   * that answer with a file rather than a document, such as a download or a
+   * public file link. Parsing a PDF as JSON throws, which is why this exists
+   * (10b-files slice SDK-2, finding F2).
+   */
+  responseType?: 'json' | 'binary';
 }
 
 export interface RequestOverrideOptions {
@@ -208,6 +216,9 @@ export class Transport {
 
         if (res.ok) {
           if (res.status === 204) return undefined as TResponse;
+          if (opts.responseType === 'binary') {
+            return new Uint8Array(await res.arrayBuffer()) as TResponse;
+          }
           const text = await res.text();
           if (!text) return undefined as TResponse;
           return JSON.parse(text) as TResponse;
@@ -309,16 +320,24 @@ function buildUrlAndBody(args: {
   const consumedFromBody = new Set<string>();
   const tokenRegex = /\{([^/{}]+)\}/g;
   path = path.replace(tokenRegex, (_match, token: string) => {
-    const value = args.request[token];
+    // A trailing `*` marks a wildcard segment (ServiceStack's `{Name*}`): the
+    // value is a whole relative path and its slashes are real separators, so
+    // each segment is encoded on its own. Without this, `a/b.pdf` would be
+    // sent as `a%2Fb.pdf` and the route would not match.
+    const isWildcard = token.endsWith('*');
+    const key = isWildcard ? token.slice(0, -1) : token;
+    const value = args.request[key];
     if (value === undefined || value === null) {
       throw new NorbixError({
-        message: `Missing path parameter "${token}" for ${args.path}`,
+        message: `Missing path parameter "${key}" for ${args.path}`,
         status: 0,
         code: 'NORBIX_MISSING_PATH_PARAM',
       });
     }
-    consumedFromBody.add(token);
-    return encodeURIComponent(String(value));
+    consumedFromBody.add(key);
+    return isWildcard
+      ? String(value).split('/').map(encodeURIComponent).join('/')
+      : encodeURIComponent(String(value));
   });
   for (const p of args.pathParams) {
     if (p in args.request) consumedFromBody.add(p);

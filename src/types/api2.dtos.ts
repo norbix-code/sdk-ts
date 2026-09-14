@@ -1512,7 +1512,42 @@ export module CodeMashApi2 {
     // @DataMember(Order=4)
     public path: string;
 
+    /** @description The address anyone can open without signing in. Null unless the file really is public. Hand-added by 10b-files slice SDK-2. */
+    // @DataMember(Order=5)
+    public publicUrl?: string;
+
+    /** @description True when anyone holding publicUrl can read this file without signing in. Hand-added by 10b-files slice SDK-2. */
+    // @DataMember(Order=6)
+    public isPublic?: boolean;
+
     public constructor(init?: Partial<FileResourceRefDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  /**
+   * One folder in a listing that anyone can read from without signing in.
+   * Hand-added by 10b-files slice SDK-2.
+   */
+  // @DataContract
+  export class PublicFolderDto {
+    /** @description The folder prefix, exactly as it appears in the folders list. */
+    // @DataMember(Order=1)
+    public path: string;
+
+    /** @description The record that makes it public — its own, or a folder above it. */
+    // @DataMember(Order=2)
+    public publicId: string;
+
+    /** @description The base a file inside this folder is served from. Ends with a slash. */
+    // @DataMember(Order=3)
+    public publicUrl?: string;
+
+    /** @description True when a folder ABOVE this one is what makes it public. */
+    // @DataMember(Order=4)
+    public inherited?: boolean;
+
+    public constructor(init?: Partial<PublicFolderDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -2057,7 +2092,33 @@ export module CodeMashApi2 {
     public list?: PaginatedResponse<FileResourceRefDto>;
     public folders?: string[];
 
+    /** @description The subset of folders that anyone can read from without signing in. Hand-added by 10b-files slice SDK-2. */
+    public publicFolders?: PublicFolderDto[];
+
     public constructor(init?: Partial<ListFilesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  /**
+   * The public file link. Hand-added by 10b-files slice SDK-2.
+   *
+   * It does NOT extend CodeMashRequestBase: a public link carries no project
+   * id and no session. The unguessable `nbpf_…` id is the whole credential,
+   * and the permission was checked when somebody ran "make public".
+   */
+  // @Route("/{version}/files/public/{PublicId}/{Name*}", "GET")
+  export class GetPublicFileRequest extends RequestBase {
+    /** @description The nbpf_… id from the link. */
+    // @DataMember
+    public publicId: string;
+
+    /** @description What follows the id: the file's name for a file link, or the path inside the folder for a folder link (2026/q1/report.pdf). */
+    // @DataMember
+    public name: string;
+
+    public constructor(init?: Partial<GetPublicFileRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }

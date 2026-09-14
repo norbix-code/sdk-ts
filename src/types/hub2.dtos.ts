@@ -406,7 +406,43 @@ export class FileResourceRefDto
     // @DataMember(Order=4)
     public path: string;
 
+    /** @description The address anyone can open without signing in. Null unless the file really is public. Hand-added by 10b-files slice SDK-2; the next regeneration writes it from the gateway. */
+    // @DataMember(Order=5)
+    public publicUrl?: string;
+
+    /** @description True when anyone holding publicUrl can read this file without signing in — because the file was made public, or because a folder above it was. Hand-added by 10b-files slice SDK-2. */
+    // @DataMember(Order=6)
+    public isPublic?: boolean;
+
     public constructor(init?: Partial<FileResourceRefDto>) { (Object as any).assign(this, init); }
+}
+
+/**
+ * One folder in a listing that anyone can read from without signing in.
+ * Sent alongside the plain `folders` prefix list, so a client that does not
+ * know about public folders keeps working. Hand-added by 10b-files slice
+ * SDK-2 in the shape the generator produces.
+ */
+// @DataContract
+export class PublicFolderDto
+{
+    /** @description The folder prefix, exactly as it appears in the folders list. */
+    // @DataMember(Order=1)
+    public path: string;
+
+    /** @description The record that makes it public — its own, or a folder above it. */
+    // @DataMember(Order=2)
+    public publicId: string;
+
+    /** @description The base a file inside this folder is served from; put the path inside the folder after it. Ends with a slash. */
+    // @DataMember(Order=3)
+    public publicUrl?: string;
+
+    /** @description True when a folder ABOVE this one is what makes it public. */
+    // @DataMember(Order=4)
+    public inherited?: boolean;
+
+    public constructor(init?: Partial<PublicFolderDto>) { (Object as any).assign(this, init); }
 }
 
 export class FilesTriggerRequest extends SaveTriggerRequest
@@ -10834,7 +10870,68 @@ export class GetFolderFilesResponse extends ResponseBase
     public list?: PaginatedResponse<FileResourceRefDto>;
     public folders?: string[];
 
+    /** @description The subset of folders that anyone can read from without signing in. Hand-added by 10b-files slice SDK-2. */
+    public publicFolders?: PublicFolderDto[];
+
     public constructor(init?: Partial<GetFolderFilesResponse>) { super(init); (Object as any).assign(this, init); }
+}
+
+/**
+ * The four "make it public / make it private" requests, hand-added by
+ * 10b-files slice SDK-2 in the shape the generator produces. They are the
+ * dashboard side of a public file link: the gateway writes a record, mints an
+ * `nbpf_…` id, and the link it builds needs no session at all.
+ */
+// @Route("/{version}/files/item/public", "POST")
+export class MakeFilePublicRequest extends CodeMashRequestBase implements IReturn<IdResponse>
+{
+    /** @description The files integration the file lives on. */
+    public filesIntegrationId: string;
+
+    /** @description Path of the file to publish, relative to the integration. */
+    public path: string;
+
+    public constructor(init?: Partial<MakeFilePublicRequest>) { super(init); (Object as any).assign(this, init); }
+    public createResponse() { return new IdResponse(); }
+}
+
+// @Route("/{version}/files/item/private", "POST")
+export class MakeFilePrivateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+{
+    /** @description The files integration the file lives on. */
+    public filesIntegrationId: string;
+
+    /** @description Path of the file, relative to the integration. */
+    public path: string;
+
+    public constructor(init?: Partial<MakeFilePrivateRequest>) { super(init); (Object as any).assign(this, init); }
+    public createResponse() { return new EmptyResponse(); }
+}
+
+// @Route("/{version}/files/folder/public", "POST")
+export class MakeFolderPublicRequest extends CodeMashRequestBase implements IReturn<IdResponse>
+{
+    /** @description The files integration the folder lives on. */
+    public filesIntegrationId: string;
+
+    /** @description Folder prefix to publish, relative to the integration. The root cannot be published. */
+    public path: string;
+
+    public constructor(init?: Partial<MakeFolderPublicRequest>) { super(init); (Object as any).assign(this, init); }
+    public createResponse() { return new IdResponse(); }
+}
+
+// @Route("/{version}/files/folder/private", "POST")
+export class MakeFolderPrivateRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+{
+    /** @description The files integration the folder lives on. */
+    public filesIntegrationId: string;
+
+    /** @description Folder prefix, relative to the integration. */
+    public path: string;
+
+    public constructor(init?: Partial<MakeFolderPrivateRequest>) { super(init); (Object as any).assign(this, init); }
+    public createResponse() { return new EmptyResponse(); }
 }
 
 export class GetNotificationModuleDisableDependenciesResponse extends ResponseBase

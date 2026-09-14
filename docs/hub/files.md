@@ -28,6 +28,10 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 | [`testFilesIntegration`](#testfilesintegration)                 | `POST`   | `/{version}/files/integrations/test`            | `project` |
 | [`getFile`](#getfile)                                           | `GET`    | `/{version}/files/item`                         | `project` |
 | [`getFolderFiles`](#getfolderfiles)                             | `GET`    | `/{version}/files/folder`                       | `project` |
+| [`makeFilePublic`](#makefilepublic)                             | `POST`   | `/{version}/files/item/public`                  | `project` |
+| [`makeFilePrivate`](#makefileprivate)                           | `POST`   | `/{version}/files/item/private`                 | `project` |
+| [`makeFolderPublic`](#makefolderpublic)                         | `POST`   | `/{version}/files/folder/public`                | `project` |
+| [`makeFolderPrivate`](#makefolderprivate)                       | `POST`   | `/{version}/files/folder/private`               | `project` |
 
 ## Reference
 
@@ -430,6 +434,118 @@ const result = await norbix.hub.files.getFolderFiles({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetFolderFilesResponse
+```
+
+[↑ Top](#endpoints)
+
+## Public file links
+
+A file, or a whole folder, can be made readable by anyone holding a link — no
+sign-in, no project id, no account. The gateway keeps a record and mints an
+unguessable id that looks like `nbpf_7hK2…`; the link is then
+
+```
+https://<your api host>/v3/files/public/nbpf_7hK2…/invoice.pdf
+```
+
+Four rules worth knowing before you call these:
+
+- **Publishing a folder is one record**, whatever is under it. A folder with a
+  million objects costs one row, and every file inside it is reachable at
+  `…/nbpf_…/path/inside/the/folder.pdf`, at any depth.
+- **Asking twice gives the same id back.** The first link is already in
+  somebody's hands; a second id would leave it live and invisible.
+- **A file cannot be made private on its own while a folder above it is
+  public.** The call is refused and the message names the folder to switch off.
+- **The root cannot be published**, and a folder link with nothing after it is
+  a `404`. Publishing a prefix must not publish its listing.
+
+Read [`getFile`](#getfile) or `api.files.listFiles` afterwards to see
+`isPublic` and `publicUrl` on the file, and `publicFolders` on a listing. The
+link itself is fetched with [`api.files.getPublicFile`](../api/files.md#getpublicfile).
+
+### makeFilePublic
+
+`POST` `/{version}/files/item/public`
+
+Makes one file readable by anyone holding its link. The file has to exist
+already — the gateway reads it from the provider first, so a link that points
+at nothing is never handed out.
+
+**Request DTO**: `CodeMashHub2.MakeFilePublicRequest`
+**Response**: `CodeMashHub2.IdResponse` — `id` is the `nbpf_…` public id
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const { id } = await norbix.hub.files.makeFilePublic({
+  filesIntegrationId: 'nbin_42',
+  path: 'invoices/invoice.pdf',
+});
+// → id: 'nbpf_7hK2abc'
+```
+
+[↑ Top](#endpoints)
+
+### makeFilePrivate
+
+`POST` `/{version}/files/item/private`
+
+Takes the file's public link away; opening it afterwards gives a `404`.
+Refused while a folder above the file is public (`CM-ERRORS-FILES-021`) —
+switch the folder off instead.
+
+**Request DTO**: `CodeMashHub2.MakeFilePrivateRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+await norbix.hub.files.makeFilePrivate({
+  filesIntegrationId: 'nbin_42',
+  path: 'invoices/invoice.pdf',
+});
+```
+
+[↑ Top](#endpoints)
+
+### makeFolderPublic
+
+`POST` `/{version}/files/folder/public`
+
+Publishes a whole folder prefix. Files already published inside it keep their
+own links — they agree with the folder, and those links are already shared.
+
+**Request DTO**: `CodeMashHub2.MakeFolderPublicRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+const { id } = await norbix.hub.files.makeFolderPublic({
+  filesIntegrationId: 'nbin_42',
+  path: 'invoices',
+});
+// every file under invoices/ is now readable at
+// https://<api host>/v3/files/public/<id>/<path inside the folder>
+```
+
+[↑ Top](#endpoints)
+
+### makeFolderPrivate
+
+`POST` `/{version}/files/folder/private`
+
+Takes back every link inside the folder, per-file links included. That is the
+point: after this call nothing under the prefix is public, which is what was
+asked for.
+
+**Request DTO**: `CodeMashHub2.MakeFolderPrivateRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+await norbix.hub.files.makeFolderPrivate({
+  filesIntegrationId: 'nbin_42',
+  path: 'invoices',
+});
 ```
 
 [↑ Top](#endpoints)

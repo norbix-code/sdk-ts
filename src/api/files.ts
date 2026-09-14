@@ -162,4 +162,46 @@ export class FilesModule {
       ...options,
     });
   };
+
+  // ---------------------------------------------------------------------
+  // The public file link (10b-files slice PUB). Hand-added by slice SDK-2.
+  // ---------------------------------------------------------------------
+
+  /**
+   * GET /{version}/files/public/{publicId}/{name}
+   * Request DTO: GetPublicFileRequest
+   *
+   * Reads a file somebody made public. **No sign-in and no project id**: this
+   * call deliberately goes out with no `Authorization` header (`scope:
+   * 'unauthenticated'`), because the link has to work in an e-mail, in an
+   * `<img src>`, or in a browser on a stranger's phone. The unguessable
+   * `nbpf_…` id is the whole credential.
+   *
+   * Answers with the file's raw bytes as a `Uint8Array`. When the storage
+   * provider can sign its own links (Amazon S3, Azure Blob, Google Cloud
+   * Storage) the gateway replies `302` and `fetch` follows it, so the bytes
+   * come straight from the provider and never pass through Norbix.
+   *
+   * Every miss — unknown id, wrong name, made private again, file gone — is
+   * the same plain `404`. That is deliberate: a more precise answer would
+   * tell a stranger that the file exists.
+   *
+   * `name` is the file's name for a file link, or the path inside the folder
+   * for a folder link (`2026/q1/report.pdf`); its slashes stay slashes.
+   */
+  getPublicFile = (
+    request: Partial<CodeMashApi2.GetPublicFileRequest> = {} as Partial<CodeMashApi2.GetPublicFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<Uint8Array> => {
+    return this.transport.send<Uint8Array>({
+      target: 'api',
+      path: '/{version}/files/public/{publicId}/{name*}',
+      method: 'GET',
+      request,
+      pathParams: ['publicId', 'name'],
+      scope: 'unauthenticated',
+      responseType: 'binary',
+      ...options,
+    });
+  };
 }
