@@ -23978,112 +23978,112 @@ export class GetAccessToken implements IReturn<GetAccessTokenResponse>, IPost
     public getTypeName() { return 'GetAccessToken'; }
     public getMethod() { return 'POST'; }
     public createResponse() { return new GetAccessTokenResponse(); }
-    // @sdk-dto-patches (injected by sync-types.mjs)
-    export class UserApiKey
-    {
-        public key?: string;
-        public keyType?: string;
-        public expiryDate?: string;
-        public meta?: { [index:string]: string; };
+}
 
-        public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
-    }
-    export class GetUserEmailPreferencesResponse extends ResponseBase
-    {
-        public defaultLanguage: string;
-        public projectLanguages: string[] = [];
-        public blockAllMarketingMessages: boolean;
-        public subscribedTags?: { [index:string]: HashSet<string>; };
+// @sdk-dto-patches (injected by sync-types.mjs)
+export class UserApiKey
+{
+    public key?: string;
+    public keyType?: string;
+    public expiryDate?: string;
+    public meta?: { [index:string]: string; };
 
-        public constructor(init?: Partial<GetUserEmailPreferencesResponse>) { super(init); (Object as any).assign(this, init); }
-    }
-    export class GetApiKeysResponse
-    {
-        public results?: UserApiKey[];
-        public meta?: { [index:string]: string; };
-        public responseStatus?: ResponseStatus;
+    public constructor(init?: Partial<UserApiKey>) { (Object as any).assign(this, init); }
+}
+export class GetUserEmailPreferencesResponse extends ResponseBase
+{
+    public defaultLanguage: string;
+    public projectLanguages: string[] = [];
+    public blockAllMarketingMessages: boolean;
+    public subscribedTags?: { [index:string]: HashSet<string>; };
 
-        public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
-    }
-    export class RegenerateApiKeysResponse
-    {
-        public results?: UserApiKey[];
-        public meta?: { [index:string]: string; };
-        public responseStatus?: ResponseStatus;
+    public constructor(init?: Partial<GetUserEmailPreferencesResponse>) { super(init); (Object as any).assign(this, init); }
+}
+export class GetApiKeysResponse
+{
+    public results?: UserApiKey[];
+    public meta?: { [index:string]: string; };
+    public responseStatus?: ResponseStatus;
 
-        public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
-    }
-    // @Route("/{version}/notifications/user/preferences", "GET")
-    export class GetUserNotificationPreferences extends CodeMashRequestBase implements IReturn<GetUserEmailPreferencesResponse>
-    {
-        public userId: string;
+    public constructor(init?: Partial<GetApiKeysResponse>) { (Object as any).assign(this, init); }
+}
+export class RegenerateApiKeysResponse
+{
+    public results?: UserApiKey[];
+    public meta?: { [index:string]: string; };
+    public responseStatus?: ResponseStatus;
 
-        public constructor(init?: Partial<GetUserNotificationPreferences>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetUserNotificationPreferences'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new GetUserEmailPreferencesResponse(); }
-    }
-    // @Route("/{version}/notifications/user/preferences", "PUT")
-    export class UpdateUserNotificationsPreferences extends CodeMashRequestBase implements IReturn<EmptyResponse>
-    {
-        public userId: string;
-        public blockAllMarketingMessages: boolean;
-        public subscribedToTags?: { [index:string]: HashSet<string>; };
+    public constructor(init?: Partial<RegenerateApiKeysResponse>) { (Object as any).assign(this, init); }
+}
+// @Route("/{version}/notifications/user/preferences", "GET")
+export class GetUserNotificationPreferences extends CodeMashRequestBase implements IReturn<GetUserEmailPreferencesResponse>
+{
+    public userId: string;
 
-        public constructor(init?: Partial<UpdateUserNotificationsPreferences>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'UpdateUserNotificationsPreferences'; }
-        public getMethod() { return 'PUT'; }
-        public createResponse() { return new EmptyResponse(); }
-    }
-    // @Route("/apikeys")
-    // @Route("/apikeys/{Environment}")
-    export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet
-    {
-        public environment?: string;
-        public meta?: { [index:string]: string; };
+    public constructor(init?: Partial<GetUserNotificationPreferences>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'GetUserNotificationPreferences'; }
+    public getMethod() { return 'GET'; }
+    public createResponse() { return new GetUserEmailPreferencesResponse(); }
+}
+// @Route("/{version}/notifications/user/preferences", "PUT")
+export class UpdateUserNotificationsPreferences extends CodeMashRequestBase implements IReturn<EmptyResponse>
+{
+    public userId: string;
+    public blockAllMarketingMessages: boolean;
+    public subscribedToTags?: { [index:string]: HashSet<string>; };
 
-        public constructor(init?: Partial<GetApiKeys>) { (Object as any).assign(this, init); }
-        public getTypeName() { return 'GetApiKeys'; }
-        public getMethod() { return 'GET'; }
-        public createResponse() { return new GetApiKeysResponse(); }
-    }
-    // @Route("/apikeys/regenerate")
-    // @Route("/apikeys/regenerate/{Environment}")
-    export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost
-    {
-        public environment?: string;
-        public meta?: { [index:string]: string; };
+    public constructor(init?: Partial<UpdateUserNotificationsPreferences>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'UpdateUserNotificationsPreferences'; }
+    public getMethod() { return 'PUT'; }
+    public createResponse() { return new EmptyResponse(); }
+}
+// @Route("/apikeys")
+// @Route("/apikeys/{Environment}")
+export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet
+{
+    public environment?: string;
+    public meta?: { [index:string]: string; };
 
-        public constructor(init?: Partial<RegenerateApiKeys>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'RegenerateApiKeys'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new RegenerateApiKeysResponse(); }
-    }
-    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
-    export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
-    {
-        public contactId: string;
-        public channel: string;
-        public lawfulBasis: string;
-        declare source: string;
-        public evidenceRef?: string;
+    public constructor(init?: Partial<GetApiKeys>) { (Object as any).assign(this, init); }
+    public getTypeName() { return 'GetApiKeys'; }
+    public getMethod() { return 'GET'; }
+    public createResponse() { return new GetApiKeysResponse(); }
+}
+// @Route("/apikeys/regenerate")
+// @Route("/apikeys/regenerate/{Environment}")
+export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost
+{
+    public environment?: string;
+    public meta?: { [index:string]: string; };
 
-        public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'GrantContactConsentRequest'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new EmptyResponse(); }
-    }
-    // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
-    export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
-    {
-        public contactId: string;
-        public channel: string;
-        public reason?: string;
+    public constructor(init?: Partial<RegenerateApiKeys>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'RegenerateApiKeys'; }
+    public getMethod() { return 'POST'; }
+    public createResponse() { return new RegenerateApiKeysResponse(); }
+}
+// @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
+export class GrantContactConsentRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+{
+    public contactId: string;
+    public channel: string;
+    public lawfulBasis: string;
+    declare source: string;
+    public evidenceRef?: string;
 
-        public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
-        public getTypeName() { return 'UnsubscribeContactRequest'; }
-        public getMethod() { return 'POST'; }
-        public createResponse() { return new EmptyResponse(); }
-    }
+    public constructor(init?: Partial<GrantContactConsentRequest>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'GrantContactConsentRequest'; }
+    public getMethod() { return 'POST'; }
+    public createResponse() { return new EmptyResponse(); }
+}
+// @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
+export class UnsubscribeContactRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
+{
+    public contactId: string;
+    public channel: string;
+    public reason?: string;
 
+    public constructor(init?: Partial<UnsubscribeContactRequest>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'UnsubscribeContactRequest'; }
+    public getMethod() { return 'POST'; }
+    public createResponse() { return new EmptyResponse(); }
 }
