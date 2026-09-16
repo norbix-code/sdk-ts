@@ -59,9 +59,9 @@ describe('readSse', () => {
     );
 
     expect(messages).toHaveLength(1);
-    expect(messages[0].event).toBe('cmd.payments.order.paid');
-    expect(messages[0].id).toBe('42');
-    expect(JSON.parse(messages[0].data).payload.type).toBe('promoPopup');
+    expect(messages[0]!.event).toBe('cmd.payments.order.paid');
+    expect(messages[0]!.id).toBe('42');
+    expect(JSON.parse(messages[0]!.data).payload.type).toBe('promoPopup');
   });
 });
 
@@ -97,20 +97,26 @@ describe('NorbixSseClient', () => {
     const all: NorbixRealtimeEnvelope[] = [];
     const named: NorbixRealtimeEnvelope[] = [];
     const inapp: NorbixRealtimeEnvelope[] = [];
-    client.onMessage((e) => all.push(e));
-    client.on('payments.order.paid', (e) => named.push(e));
-    client.onInApp((e) => inapp.push(e));
+    client.onMessage((e) => {
+      all.push(e);
+    });
+    client.on('payments.order.paid', (e) => {
+      named.push(e);
+    });
+    client.onInApp((e) => {
+      inapp.push(e);
+    });
 
     await client.connect();
 
     expect(all).toHaveLength(1);
     expect(named).toHaveLength(1);
     expect(inapp).toHaveLength(1);
-    expect(all[0].eventName).toBe('payments.order.paid');
-    expect(all[0].notificationId).toBe('n1');
+    expect(all[0]!.eventName).toBe('payments.order.paid');
+    expect(all[0]!.notificationId).toBe('n1');
 
     // Auth header sent.
-    const init = fakeFetch.mock.calls[0][1] as RequestInit;
+    const init = fakeFetch.mock.calls[0]![1] as RequestInit;
     expect((init.headers as Record<string, string>).Authorization).toBe('Bearer jwt-abc');
   });
 
@@ -128,7 +134,9 @@ describe('NorbixSseClient', () => {
     });
 
     const all: NorbixRealtimeEnvelope[] = [];
-    client.onMessage((e) => all.push(e));
+    client.onMessage((e) => {
+      all.push(e);
+    });
     await client.connect();
 
     expect(all).toHaveLength(0);
