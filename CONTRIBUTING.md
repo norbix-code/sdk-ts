@@ -92,17 +92,21 @@ Opens PRs for npm + GitHub Actions updates weekly (Monday 06:00 Europe/Vilnius).
 
 `next` and `beta` branches publish prereleases (`1.2.0-beta.3`, etc.) and never promote to `latest` on npm.
 
-### Required secrets
+### Authentication
+
+npm publishing uses **trusted publishing (OIDC)**: there is no `NPM_TOKEN`. npm requires 2FA for token-based publishes, which CI cannot do.
+
+One-time setup on npmjs.com: package `@norbix.ai/ts` → Settings → Trusted Publisher → GitHub Actions, organization `norbix-code`, repository `sdk-ts`, workflow `release.yml` (no environment).
 
 | Secret | Where to set it | What it's for |
 | --- | --- | --- |
-| `NPM_TOKEN` | GitHub repo settings → Secrets → Actions | npm granular access token with read/write on `@norbix.ai`. Granular tokens expire (max 90 days), so renew it before it lapses — an expired token fails the release at `npm whoami` with E401. |
 | `GITHUB_TOKEN` | provided by Actions | Used to push the release tag and create the GH Release. No setup needed. |
 
 ### How to debug a failed release
 
 - **`semantic-release` says "no release-worthy commits"** — your commits don't bump anything. Use `feat:` / `fix:` / `feat!:` for the bump you want. Squash merging? Make sure the squash subject also follows conventional commits.
-- **`npm publish` 401** — `NPM_TOKEN` expired or doesn't have publish scope on `@norbix/ts`. Regenerate as Automation token.
+- **`npm publish` fails with E401 / EOTP, or `OIDC token exchange ... 404`**: trusted publishing is not configured on npmjs.com, or no longer matches the repository / workflow file name. Fix the Trusted Publisher settings; do not add a token.
+- **Tag exists but npm or the GitHub Release is missing**: publishing failed after tagging. Run the Release workflow manually with `republish=true`. It publishes the latest tag from the tag's own tree and creates the missing GitHub Release.
 - **`audit` failure mid-release** — a CVE landed between the PR's CI run and the merge. Land a fix or wait for the patched version (Dependabot usually opens a PR within minutes).
 
 ## Adding behavior the SDK doesn't have yet
