@@ -56,10 +56,7 @@ export interface NorbixCustomPayload extends NorbixRealtimePayloadBase {
 }
 
 export type NorbixRealtimePayload =
-  | NorbixGlobalAdPayload
-  | NorbixPromoPopupPayload
-  | NorbixWorkflowStepPayload
-  | NorbixCustomPayload;
+  NorbixGlobalAdPayload | NorbixPromoPopupPayload | NorbixWorkflowStepPayload | NorbixCustomPayload;
 
 export interface NorbixRealtimeAction {
   type: string; // "navigate" | "open" | ...

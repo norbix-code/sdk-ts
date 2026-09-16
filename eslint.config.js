@@ -1,9 +1,9 @@
-// Flat ESLint config for ESLint 9.
+// Flat ESLint config for ESLint 10.
 // Keeps rules tight enough for an SDK shipping types to consumers,
 // but tolerant of generated DTO files.
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
