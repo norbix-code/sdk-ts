@@ -35,7 +35,7 @@ describe('api.chat', () => {
   it('askChat: POST /{version}/chat/complete', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/chat/complete',
       version: 'v2',
       stub,

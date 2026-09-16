@@ -56,7 +56,7 @@ describe('api.database', () => {
   it('findMergedTermTree: GET /{version}/database/taxonomies/{taxonomyName}/merged-tree', async () => {
     const stub = stubRequestForPath('/{version}/database/taxonomies/{taxonomyName}/merged-tree');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/taxonomies/{taxonomyName}/merged-tree',
       version: 'v2',
       stub,
@@ -79,7 +79,7 @@ describe('api.database', () => {
   it('findTaxonomyTree: GET /{version}/database/taxonomies/tree', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/taxonomies/tree',
       version: 'v2',
       stub,
@@ -102,7 +102,7 @@ describe('api.database', () => {
   it('findTerms: GET /{version}/database/taxonomies/{taxonomyName}/terms', async () => {
     const stub = stubRequestForPath('/{version}/database/taxonomies/{taxonomyName}/terms');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/taxonomies/{taxonomyName}/terms',
       version: 'v2',
       stub,
@@ -127,7 +127,7 @@ describe('api.database', () => {
       '/{version}/database/taxonomies/{taxonomyName}/terms/{parentId}/children',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/taxonomies/{taxonomyName}/terms/{parentId}/children',
       version: 'v2',
       stub,
@@ -150,7 +150,7 @@ describe('api.database', () => {
   it('findTermTree: GET /{version}/database/taxonomies/{taxonomyName}/terms/tree', async () => {
     const stub = stubRequestForPath('/{version}/database/taxonomies/{taxonomyName}/terms/tree');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/taxonomies/{taxonomyName}/terms/tree',
       version: 'v2',
       stub,
@@ -173,7 +173,7 @@ describe('api.database', () => {
   it('getDatabaseSchema: GET /{version}/database/schemas/{id}', async () => {
     const stub = stubRequestForPath('/{version}/database/schemas/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/schemas/{id}',
       version: 'v2',
       stub,
@@ -196,7 +196,7 @@ describe('api.database', () => {
   it('getDatabaseSchemas: GET /{version}/database/schemas', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/schemas',
       version: 'v2',
       stub,
@@ -219,7 +219,7 @@ describe('api.database', () => {
   it('aggregate: POST /{version}/database/collections/{collectionName}/aggregate', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/aggregate');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/aggregate',
       version: 'v2',
       stub,
@@ -244,7 +244,7 @@ describe('api.database', () => {
       '/{version}/database/collections/{collectionName}/{id}/responsibility',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/{id}/responsibility',
       version: 'v2',
       stub,
@@ -267,7 +267,7 @@ describe('api.database', () => {
   it('count: GET /{version}/database/collections/{collectionName}/count', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/count');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/count',
       version: 'v2',
       stub,
@@ -290,7 +290,7 @@ describe('api.database', () => {
   it('deleteMany: DELETE /{version}/database/collections/{collectionName}/many', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/many');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/many',
       version: 'v2',
       stub,
@@ -313,7 +313,7 @@ describe('api.database', () => {
   it('deleteOne: DELETE /{version}/database/collections/{collectionName}/{id}', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/{id}',
       version: 'v2',
       stub,
@@ -336,7 +336,7 @@ describe('api.database', () => {
   it('distinct: GET /{version}/database/collections/{collectionName}/distinct', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/distinct');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/distinct',
       version: 'v2',
       stub,
@@ -361,7 +361,7 @@ describe('api.database', () => {
       '/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute',
       version: 'v2',
       stub,
@@ -384,7 +384,7 @@ describe('api.database', () => {
   it('find: GET /{version}/database/collections/{collectionName}', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}',
       version: 'v2',
       stub,
@@ -407,7 +407,7 @@ describe('api.database', () => {
   it('findOne: GET /{version}/database/collections/{collectionName}/{id}', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/{id}',
       version: 'v2',
       stub,
@@ -430,7 +430,7 @@ describe('api.database', () => {
   it('findOwn: GET /{version}/database/collections/{collectionName}/own', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/own');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/own',
       version: 'v2',
       stub,
@@ -453,7 +453,7 @@ describe('api.database', () => {
   it('insertMany: POST /{version}/database/collections/{collectionName}/many', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/many');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/many',
       version: 'v2',
       stub,
@@ -476,7 +476,7 @@ describe('api.database', () => {
   it('insertOne: POST /{version}/database/collections/{collectionName}', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}',
       version: 'v2',
       stub,
@@ -501,7 +501,7 @@ describe('api.database', () => {
       '/{version}/database/collections/{collectionName}/{id}/replace',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/{id}/replace',
       version: 'v2',
       stub,
@@ -524,7 +524,7 @@ describe('api.database', () => {
   it('updateMany: PUT /{version}/database/collections/{collectionName}/many', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/many');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/many',
       version: 'v2',
       stub,
@@ -547,7 +547,7 @@ describe('api.database', () => {
   it('updateOne: PUT /{version}/database/collections/{collectionName}/{id}', async () => {
     const stub = stubRequestForPath('/{version}/database/collections/{collectionName}/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/database/collections/{collectionName}/{id}',
       version: 'v2',
       stub,

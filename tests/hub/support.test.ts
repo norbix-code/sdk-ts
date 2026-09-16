@@ -41,7 +41,7 @@ describe('hub.support', () => {
   it('closeSupportCase: POST /{version}/support/cases/{CaseId}/close', async () => {
     const stub = stubRequestForPath('/{version}/support/cases/{CaseId}/close');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases/{CaseId}/close',
       version: 'v2',
       stub,
@@ -64,7 +64,7 @@ describe('hub.support', () => {
   it('reopenSupportCase: POST /{version}/support/cases/{CaseId}/reopen', async () => {
     const stub = stubRequestForPath('/{version}/support/cases/{CaseId}/reopen');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases/{CaseId}/reopen',
       version: 'v2',
       stub,
@@ -87,7 +87,7 @@ describe('hub.support', () => {
   it('resolveSupportCase: POST /{version}/support/cases/{CaseId}/resolve', async () => {
     const stub = stubRequestForPath('/{version}/support/cases/{CaseId}/resolve');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases/{CaseId}/resolve',
       version: 'v2',
       stub,
@@ -110,7 +110,7 @@ describe('hub.support', () => {
   it('appendSupportCaseMessage: POST /{version}/support/cases/{CaseId}/messages', async () => {
     const stub = stubRequestForPath('/{version}/support/cases/{CaseId}/messages');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases/{CaseId}/messages',
       version: 'v2',
       stub,
@@ -133,7 +133,7 @@ describe('hub.support', () => {
   it('getSupportCase: GET /{version}/support/cases/{CaseId}', async () => {
     const stub = stubRequestForPath('/{version}/support/cases/{CaseId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases/{CaseId}',
       version: 'v2',
       stub,
@@ -156,7 +156,7 @@ describe('hub.support', () => {
   it('getSupportCases: GET /{version}/support/cases', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases',
       version: 'v2',
       stub,
@@ -179,7 +179,7 @@ describe('hub.support', () => {
   it('openSupportCase: POST /{version}/support/cases', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/support/cases',
       version: 'v2',
       stub,

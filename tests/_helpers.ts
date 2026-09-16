@@ -71,6 +71,9 @@ export function makeClient(overrides: Partial<NorbixConfig> = {}) {
     projectId: 'test-project',
     apiVersion: 'v2',
     hubVersion: 'v2',
+    // Tests default to the staging hosts (norbix.io), not the SDK's
+    // production defaults (norbix.io).
+    baseUrl: { api: 'https://api.norbix.io', hub: 'https://hub.norbix.io' },
     fetch: mock.fetch,
     ...overrides,
   });

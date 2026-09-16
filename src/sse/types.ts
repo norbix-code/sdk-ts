@@ -70,7 +70,7 @@ export interface NorbixRealtimeAction {
 export type NorbixSseStatus = 'connecting' | 'open' | 'reconnecting' | 'closed';
 
 export interface NorbixSseClientOptions {
-  /** Hub base URL, e.g. https://hub.norbix.dev. */
+  /** Hub base URL, e.g. https://hub.norbix.ai. */
   hubUrl: string;
   /** API version segment for the stream path. Defaults to "v2". */
   hubVersion?: string;

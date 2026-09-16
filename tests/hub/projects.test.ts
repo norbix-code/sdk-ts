@@ -39,7 +39,7 @@ describe('hub.projects', () => {
   it('getProjectBrief: GET /{version}/projects/{projectId}/ai/brief', async () => {
     const stub = stubRequestForPath('/{version}/projects/{projectId}/ai/brief');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/projects/{projectId}/ai/brief',
       version: 'v2',
       stub,
@@ -62,7 +62,7 @@ describe('hub.projects', () => {
   it('getWorkItems: GET /{version}/projects/{projectId}/ai/work-items', async () => {
     const stub = stubRequestForPath('/{version}/projects/{projectId}/ai/work-items');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/projects/{projectId}/ai/work-items',
       version: 'v2',
       stub,
@@ -85,7 +85,7 @@ describe('hub.projects', () => {
   it('getWorkItem: GET /{version}/projects/{projectId}/ai/work-items/{WorkItemId}', async () => {
     const stub = stubRequestForPath('/{version}/projects/{projectId}/ai/work-items/{WorkItemId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/projects/{projectId}/ai/work-items/{WorkItemId}',
       version: 'v2',
       stub,
@@ -110,7 +110,7 @@ describe('hub.projects', () => {
       '/{version}/projects/{projectId}/ai/work-items/{WorkItemId}/export.md',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/projects/{projectId}/ai/work-items/{WorkItemId}/export.md',
       version: 'v2',
       stub,
@@ -135,7 +135,7 @@ describe('hub.projects', () => {
       '/{version}/projects/{projectId}/ai/work-items/{WorkItemId}/needs-you/{Index}/done',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/projects/{projectId}/ai/work-items/{WorkItemId}/needs-you/{Index}/done',
       version: 'v2',
       stub,

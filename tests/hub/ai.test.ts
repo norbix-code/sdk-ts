@@ -45,7 +45,7 @@ describe('hub.ai', () => {
   it('deleteLlmIntegration: DELETE /{version}/ai/integrations/llms/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/llms/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/{Id}',
       version: 'v2',
       stub,
@@ -68,7 +68,7 @@ describe('hub.ai', () => {
   it('disableLlmIntegration: PUT /{version}/ai/integrations/llms/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/llms/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/{Id}/disable',
       version: 'v2',
       stub,
@@ -91,7 +91,7 @@ describe('hub.ai', () => {
   it('enableLlmIntegration: PUT /{version}/ai/integrations/llms/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/llms/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/{Id}/enable',
       version: 'v2',
       stub,
@@ -114,7 +114,7 @@ describe('hub.ai', () => {
   it('getLlmIntegration: GET /{version}/ai/integrations/llms/{id}', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/llms/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/{id}',
       version: 'v2',
       stub,
@@ -137,7 +137,7 @@ describe('hub.ai', () => {
   it('getLlmIntegrations: GET /{version}/ai/integrations/llms/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/integrations',
       version: 'v2',
       stub,
@@ -160,7 +160,7 @@ describe('hub.ai', () => {
   it('saveLlmIntegration: POST /{version}/ai/integrations/llms/', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/',
       version: 'v2',
       stub,
@@ -183,7 +183,7 @@ describe('hub.ai', () => {
   it('testLlmIntegration: POST /{version}/ai/integrations/llms/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/llms/test',
       version: 'v2',
       stub,
@@ -206,7 +206,7 @@ describe('hub.ai', () => {
   it('deleteMcpIntegration: DELETE /{version}/ai/integrations/mcp/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/mcp/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/{Id}',
       version: 'v2',
       stub,
@@ -229,7 +229,7 @@ describe('hub.ai', () => {
   it('disableMcpIntegration: PUT /{version}/ai/integrations/mcp/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/mcp/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/{Id}/disable',
       version: 'v2',
       stub,
@@ -252,7 +252,7 @@ describe('hub.ai', () => {
   it('enableMcpIntegration: PUT /{version}/ai/integrations/mcp/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/mcp/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/{Id}/enable',
       version: 'v2',
       stub,
@@ -275,7 +275,7 @@ describe('hub.ai', () => {
   it('getMcpIntegration: GET /{version}/ai/integrations/mcp/{id}', async () => {
     const stub = stubRequestForPath('/{version}/ai/integrations/mcp/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/{id}',
       version: 'v2',
       stub,
@@ -298,7 +298,7 @@ describe('hub.ai', () => {
   it('getMcpIntegrations: GET /{version}/ai/integrations/mcp/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/integrations',
       version: 'v2',
       stub,
@@ -321,7 +321,7 @@ describe('hub.ai', () => {
   it('saveMcpIntegration: POST /{version}/ai/integrations/mcp/', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/',
       version: 'v2',
       stub,
@@ -344,7 +344,7 @@ describe('hub.ai', () => {
   it('testMcpIntegration: POST /{version}/ai/integrations/mcp/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/ai/integrations/mcp/test',
       version: 'v2',
       stub,

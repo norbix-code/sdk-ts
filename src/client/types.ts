@@ -71,7 +71,7 @@ export interface NorbixConfig {
    * primary region. Falls back to `NORBIX_REGION`.
    *
    * When the client uses the SDK's default base URLs, setting a region also
-   * composes the regional URL (`https://nb-eu-germany.api.norbix.dev`); a
+   * composes the regional URL (`https://nb-eu-germany.api.norbix.ai`); a
    * user-supplied custom `baseUrl` is never rewritten.
    *
    * Override per call via the `region` option on any request (header only —

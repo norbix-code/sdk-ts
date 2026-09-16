@@ -51,7 +51,7 @@ describe('hub.payments', () => {
   it('disablePayments: GET /{version}/payments/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/disable',
       version: 'v2',
       stub,
@@ -74,7 +74,7 @@ describe('hub.payments', () => {
   it('enablePayments: GET /{version}/payments/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/enable',
       version: 'v2',
       stub,
@@ -97,7 +97,7 @@ describe('hub.payments', () => {
   it('getPaymentsWebhookLog: GET /{version}/payments/webhooks/log', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/webhooks/log',
       version: 'v2',
       stub,
@@ -120,7 +120,7 @@ describe('hub.payments', () => {
   it('deletePaymentsTrigger: DELETE /{version}/payments/triggers/{triggerId}', async () => {
     const stub = stubRequestForPath('/{version}/payments/triggers/{triggerId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers/{triggerId}',
       version: 'v2',
       stub,
@@ -143,7 +143,7 @@ describe('hub.payments', () => {
   it('disablePaymentsTrigger: PATCH /{version}/payments/triggers/{triggerId}/disable', async () => {
     const stub = stubRequestForPath('/{version}/payments/triggers/{triggerId}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers/{triggerId}/disable',
       version: 'v2',
       stub,
@@ -166,7 +166,7 @@ describe('hub.payments', () => {
   it('enablePaymentsTrigger: PATCH /{version}/payments/triggers/{triggerId}/enable', async () => {
     const stub = stubRequestForPath('/{version}/payments/triggers/{triggerId}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers/{triggerId}/enable',
       version: 'v2',
       stub,
@@ -189,7 +189,7 @@ describe('hub.payments', () => {
   it('getPaymentsTrigger: GET /{version}/payments/triggers/{id}', async () => {
     const stub = stubRequestForPath('/{version}/payments/triggers/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers/{id}',
       version: 'v2',
       stub,
@@ -212,7 +212,7 @@ describe('hub.payments', () => {
   it('getPaymentsTriggers: GET /{version}/payments/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers',
       version: 'v2',
       stub,
@@ -235,7 +235,7 @@ describe('hub.payments', () => {
   it('savePaymentsTrigger: POST /{version}/payments/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/triggers',
       version: 'v2',
       stub,
@@ -258,7 +258,7 @@ describe('hub.payments', () => {
   it('confirmPaymentsIntegrationHumanDelivery: POST /{version}/payments/integrations/confirm-human-delivery', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/confirm-human-delivery',
       version: 'v2',
       stub,
@@ -281,7 +281,7 @@ describe('hub.payments', () => {
   it('deletePaymentsIntegration: DELETE /{version}/payments/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/payments/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/{Id}',
       version: 'v2',
       stub,
@@ -304,7 +304,7 @@ describe('hub.payments', () => {
   it('disablePaymentsIntegration: PUT /{version}/payments/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/payments/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -327,7 +327,7 @@ describe('hub.payments', () => {
   it('enablePaymentsIntegration: PUT /{version}/payments/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/payments/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -350,7 +350,7 @@ describe('hub.payments', () => {
   it('getPaymentsIntegration: GET /{version}/payments/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/payments/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/{id}',
       version: 'v2',
       stub,
@@ -373,7 +373,7 @@ describe('hub.payments', () => {
   it('getPaymentsIntegrations: GET /{version}/payments/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations',
       version: 'v2',
       stub,
@@ -396,7 +396,7 @@ describe('hub.payments', () => {
   it('savePaymentsIntegration: POST /{version}/payments/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations',
       version: 'v2',
       stub,
@@ -419,7 +419,7 @@ describe('hub.payments', () => {
   it('testPaymentsIntegration: POST /{version}/payments/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/payments/integrations/test',
       version: 'v2',
       stub,

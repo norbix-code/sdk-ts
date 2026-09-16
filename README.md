@@ -272,7 +272,7 @@ await norbix.hub.account.getProjects({}, { region: 'nb-us-east' });
 
 **How a region affects the request.** The resolved region (per-call override → client `region` → `NORBIX_REGION`) is sent as the `nb-region` header. There is **no default region** — when nothing is set, no header is sent and the backend routes to the project's primary region. Self-hosted deployments are unaffected: no region configured means requests are byte-identical to the pre-regions behavior.
 
-**Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional URL by prefixing the region code as a subdomain — `https://api.norbix.dev` becomes `https://nb-eu-germany.api.norbix.dev` (and likewise for the Hub URL). `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the defaults. Two rules to remember:
+**Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional URL by prefixing the region code as a subdomain — `https://api.norbix.ai` becomes `https://nb-eu-germany.api.norbix.ai` (and likewise for the Hub URL). `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the defaults. Two rules to remember:
 
 - A custom `baseUrl` (or `NORBIX_API_URL` / `NORBIX_HUB_URL`) is **never rewritten** — with a region set, only the `nb-region` header is added.
 - A **per-call** `region` override affects the **header only** — it never changes the request URL.

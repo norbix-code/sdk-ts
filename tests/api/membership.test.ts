@@ -76,7 +76,7 @@ describe('api.membership', () => {
   it('blockUser: PATCH /{version}/membership/auth/block', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/block',
       version: 'v2',
       stub,
@@ -99,7 +99,7 @@ describe('api.membership', () => {
   it('saveSystemUserWithPermissions: POST /{version}/membership/auth/register/service', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/service',
       version: 'v2',
       stub,
@@ -122,7 +122,7 @@ describe('api.membership', () => {
   it('saveGuestUser: POST /{version}/membership/auth/register/guest', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/guest',
       version: 'v2',
       stub,
@@ -145,7 +145,7 @@ describe('api.membership', () => {
   it('saveUserNameUser: POST /{version}/membership/auth/register/user-name', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/user-name',
       version: 'v2',
       stub,
@@ -168,7 +168,7 @@ describe('api.membership', () => {
   it('saveEmailUser: POST /{version}/membership/auth/register/email', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/email',
       version: 'v2',
       stub,
@@ -191,7 +191,7 @@ describe('api.membership', () => {
   it('savePhoneUser: POST /{version}/membership/auth/register/phone', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/phone',
       version: 'v2',
       stub,
@@ -214,7 +214,7 @@ describe('api.membership', () => {
   it('savePhoneUserNameWithPermissions: POST /{version}/membership/auth/register/phone-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/phone-with-permissions',
       version: 'v2',
       stub,
@@ -237,7 +237,7 @@ describe('api.membership', () => {
   it('saveEmailUserNameWithPermissions: POST /{version}/membership/auth/register/email-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/email-with-permissions',
       version: 'v2',
       stub,
@@ -260,7 +260,7 @@ describe('api.membership', () => {
   it('saveUserNameWithPermissions: POST /{version}/membership/auth/register/user-name-with-permissions', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/register/user-name-with-permissions',
       version: 'v2',
       stub,
@@ -283,7 +283,7 @@ describe('api.membership', () => {
   it('deleteUser: DELETE /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth',
       version: 'v2',
       stub,
@@ -306,7 +306,7 @@ describe('api.membership', () => {
   it('getUser: GET /{version}/membership/auth/{id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/auth/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/{id}',
       version: 'v2',
       stub,
@@ -329,7 +329,7 @@ describe('api.membership', () => {
   it('getUsers: GET /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth',
       version: 'v2',
       stub,
@@ -352,7 +352,7 @@ describe('api.membership', () => {
   it('getUserPreferences: GET /{version}/membership/auth/{id}/preferences', async () => {
     const stub = stubRequestForPath('/{version}/membership/auth/{id}/preferences');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/{id}/preferences',
       version: 'v2',
       stub,
@@ -377,7 +377,7 @@ describe('api.membership', () => {
       '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
       version: 'v2',
       stub,
@@ -400,7 +400,7 @@ describe('api.membership', () => {
   it('inviteUser: POST /{version}/membership/auth/invite', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/invite',
       version: 'v2',
       stub,
@@ -423,7 +423,7 @@ describe('api.membership', () => {
   it('linkIdentity: POST /{version}/membership/auth/{userId}/link-identity', async () => {
     const stub = stubRequestForPath('/{version}/membership/auth/{userId}/link-identity');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/{userId}/link-identity',
       version: 'v2',
       stub,
@@ -446,7 +446,7 @@ describe('api.membership', () => {
   it('mapAuthToUser: POST /{version}/membership/users/{userId}/map-auth', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{userId}/map-auth');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/users/{userId}/map-auth',
       version: 'v2',
       stub,
@@ -469,7 +469,7 @@ describe('api.membership', () => {
   it('assignRolePermissions: PUT /{version}/membership/auth/assign-roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/assign-roles',
       version: 'v2',
       stub,
@@ -492,7 +492,7 @@ describe('api.membership', () => {
   it('setContactRoles: PUT /{version}/membership/users/{userId}/roles', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{userId}/roles');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/users/{userId}/roles',
       version: 'v2',
       stub,
@@ -517,7 +517,7 @@ describe('api.membership', () => {
       '/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}',
       version: 'v2',
       stub,
@@ -540,7 +540,7 @@ describe('api.membership', () => {
   it('unblockUser: PATCH /{version}/membership/auth/unblock', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/unblock',
       version: 'v2',
       stub,
@@ -565,7 +565,7 @@ describe('api.membership', () => {
       '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
       version: 'v2',
       stub,
@@ -588,7 +588,7 @@ describe('api.membership', () => {
   it('updateUser: PUT /{version}/membership/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth',
       version: 'v2',
       stub,
@@ -611,7 +611,7 @@ describe('api.membership', () => {
   it('updateUserPreferences: PUT /{version}/membership/auth/{id}/preferences', async () => {
     const stub = stubRequestForPath('/{version}/membership/auth/{id}/preferences');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/auth/{id}/preferences',
       version: 'v2',
       stub,
@@ -634,7 +634,7 @@ describe('api.membership', () => {
   it('passkeyAuthenticationOptions: POST /{version}/membership/userauth/passkey/authentication-options', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkey/authentication-options',
       version: 'v2',
       stub,
@@ -657,7 +657,7 @@ describe('api.membership', () => {
   it('verifyPasskeyAuthentication: POST /{version}/membership/userauth/passkey/verify-authentication', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkey/verify-authentication',
       version: 'v2',
       stub,
@@ -680,7 +680,7 @@ describe('api.membership', () => {
   it('listPasskeys: GET /{version}/membership/userauth/passkeys', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkeys',
       version: 'v2',
       stub,
@@ -705,7 +705,7 @@ describe('api.membership', () => {
       '/{version}/membership/userauth/passkeys/{CredentialId}/rename',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkeys/{CredentialId}/rename',
       version: 'v2',
       stub,
@@ -730,7 +730,7 @@ describe('api.membership', () => {
       '/{version}/membership/userauth/passkeys/{CredentialId}/revoke',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkeys/{CredentialId}/revoke',
       version: 'v2',
       stub,
@@ -753,7 +753,7 @@ describe('api.membership', () => {
   it('useRecoveryCode: POST /{version}/membership/userauth/recovery/use-code', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/recovery/use-code',
       version: 'v2',
       stub,
@@ -776,7 +776,7 @@ describe('api.membership', () => {
   it('requestMagicLink: POST /{version}/membership/userauth/recovery/magic-link/request', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/recovery/magic-link/request',
       version: 'v2',
       stub,
@@ -799,7 +799,7 @@ describe('api.membership', () => {
   it('consumeMagicLink: POST /{version}/membership/userauth/recovery/magic-link/consume', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/recovery/magic-link/consume',
       version: 'v2',
       stub,
@@ -822,7 +822,7 @@ describe('api.membership', () => {
   it('hasPasskey: POST /{version}/membership/userauth/has-passkey', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/has-passkey',
       version: 'v2',
       stub,
@@ -845,7 +845,7 @@ describe('api.membership', () => {
   it('startEmailVerification: POST /{version}/membership/userauth/email/start-verification', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/email/start-verification',
       version: 'v2',
       stub,
@@ -868,7 +868,7 @@ describe('api.membership', () => {
   it('confirmEmailVerification: POST /{version}/membership/userauth/email/confirm-verification', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/email/confirm-verification',
       version: 'v2',
       stub,
@@ -891,7 +891,7 @@ describe('api.membership', () => {
   it('passkeyRegistrationOptions: POST /{version}/membership/userauth/passkey/registration-options', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkey/registration-options',
       version: 'v2',
       stub,
@@ -914,7 +914,7 @@ describe('api.membership', () => {
   it('verifyPasskeyRegistration: POST /{version}/membership/userauth/passkey/verify-registration', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/passkey/verify-registration',
       version: 'v2',
       stub,
@@ -937,7 +937,7 @@ describe('api.membership', () => {
   it('refreshPasskeyToken: POST /{version}/membership/userauth/token/refresh', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/token/refresh',
       version: 'v2',
       stub,
@@ -960,7 +960,7 @@ describe('api.membership', () => {
   it('passkeyLogout: POST /{version}/membership/userauth/logout', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/logout',
       version: 'v2',
       stub,
@@ -983,7 +983,7 @@ describe('api.membership', () => {
   it('changePassword: POST /{version}/membership/userauth/password/change', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/password/change',
       version: 'v2',
       stub,
@@ -1006,7 +1006,7 @@ describe('api.membership', () => {
   it('requestPasswordReset: POST /{version}/membership/userauth/password/reset/request', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/password/reset/request',
       version: 'v2',
       stub,
@@ -1029,7 +1029,7 @@ describe('api.membership', () => {
   it('confirmPasswordReset: POST /{version}/membership/userauth/password/reset/confirm', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/membership/userauth/password/reset/confirm',
       version: 'v2',
       stub,
