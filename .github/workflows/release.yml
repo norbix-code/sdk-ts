@@ -3,10 +3,12 @@ name: Release
 # Publishes `@norbix.ai/ts` to npm via semantic-release.
 # Triggers ONLY on push to `main` (and the prerelease branches `next` / `beta`).
 #
-# Required secrets:
-#   - NPM_TOKEN     — npm Automation token with read/write on the `@norbix.ai` org.
-#   - GITHUB_TOKEN  — provided by Actions automatically; used to push the
-#                     release tag and create the GH release.
+# Authentication:
+#   - npm: trusted publishing (OIDC). No NPM_TOKEN — npmjs.com trusts this
+#     repo + workflow file (package Settings → Trusted Publisher). Requires
+#     `id-token: write` and npm >= 11.5.1.
+#   - GITHUB_TOKEN: provided by Actions automatically; used to push the
+#     release tag and create the GH release.
 #
 # `main` is protected (changes only through pull requests), so the release does
 # NOT commit back: no version bump in package.json on main and no CHANGELOG.md
@@ -75,6 +77,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: Use npm 11 (trusted publishing needs >= 11.5.1)
+        # Node 22 bundles npm 10, which cannot publish via OIDC.
+        run: |
+          npm install -g npm@^11.6.2
+          npm --version
+
       - name: Install deps
         run: npm ci --no-audit --no-fund
 
@@ -117,37 +125,33 @@ jobs:
       - name: npm audit signatures
         run: npm audit signatures
 
-      - name: Configure npm auth
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "::error::NPM_TOKEN secret is empty. Add an npm Automation token in repo Settings → Secrets → Actions."
-            exit 1
-          fi
-          npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          npm whoami
-
       - name: Republish to npm (recovery)
         if: github.event_name == 'workflow_dispatch' && inputs.republish == true
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
           HUSKY: '0'
         run: |
-          # package.json on main is not bumped by releases; take the version
-          # from the latest tag reachable from this branch and stamp it in.
+          # package.json on main is not bumped by releases; publish the latest
+          # tag, built from the tag's own tree.
           NAME=$(node -pe "require('./package.json').name")
           TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*')
           VERSION="${TAG#v}"
-          npm version "${VERSION}" --no-git-tag-version --allow-same-version
           echo "Recovery publish: ${NAME}@${VERSION} (from tag ${TAG})"
           if npm view "${NAME}@${VERSION}" version 2>/dev/null; then
             echo "Already published on npm — nothing to do."
-            exit 0
+          else
+            git checkout --detach "${TAG}"
+            npm ci --no-audit --no-fund
+            npm version "${VERSION}" --no-git-tag-version --allow-same-version
+            # Trusted publishing (OIDC): no token; needs id-token: write.
+            npm publish --access public
           fi
-          npm publish --access public
+          # semantic-release creates the GitHub Release after npm publish, so a
+          # failed publish leaves the tag without one.
+          if ! gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release create "${TAG}" --verify-tag --title "${TAG}" --generate-notes
+          fi
           for i in 1 2 3 4 5 6 7 8 9 10; do
             if npm view "${NAME}@${VERSION}" version 2>/dev/null; then
               exit 0
@@ -162,8 +166,6 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || inputs.republish != true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
           HUSKY: '0'
         run: |
