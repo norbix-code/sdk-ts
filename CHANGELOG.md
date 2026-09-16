@@ -1,3 +1,5 @@
+> Release notes after 1.2.0 are published on [GitHub Releases](https://github.com/norbix-code/sdk-ts/releases); this file is no longer updated.
+
 ## 1.2.0 (2026-06-14)
 
 * feat(webhooks): typed payloads, normalization, and onEachRaw handlers ([599bdb4](https://github.com/norbix-code/sdk-ts/commit/599bdb4))

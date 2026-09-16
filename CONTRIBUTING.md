@@ -84,11 +84,11 @@ Opens PRs for npm + GitHub Actions updates weekly (Monday 06:00 Europe/Vilnius).
 2. `npx semantic-release`:
    - Reads conventional commits since the last tag.
    - Computes the next version (or skips if no release-worthy commits).
-   - Updates `package.json` + `CHANGELOG.md`.
    - Tags the release.
    - Publishes to npm with **provenance** (`NPM_CONFIG_PROVENANCE=true`).
-   - Creates a GitHub Release with the changelog.
-   - Pushes the version-bump commit back to the branch.
+   - Creates a GitHub Release with the release notes.
+
+`main` only accepts changes through pull requests, so the release does **not** commit back: `package.json` on `main` keeps a stale `version`, and `CHANGELOG.md` stopped at 1.2.0. The git tag is the source of truth for the version, and release notes live on [GitHub Releases](https://github.com/norbix-code/sdk-ts/releases).
 
 `next` and `beta` branches publish prereleases (`1.2.0-beta.3`, etc.) and never promote to `latest` on npm.
 
@@ -96,8 +96,8 @@ Opens PRs for npm + GitHub Actions updates weekly (Monday 06:00 Europe/Vilnius).
 
 | Secret | Where to set it | What it's for |
 | --- | --- | --- |
-| `NPM_TOKEN` | GitHub repo settings → Secrets → Actions | npm Automation token, granular publish scope on `@norbix/ts`. Must be **Automation** type so npm accepts it without 2FA prompts. |
-| `GITHUB_TOKEN` | provided by Actions | Used for git push, tag, and GH Release. No setup needed. |
+| `NPM_TOKEN` | GitHub repo settings → Secrets → Actions | npm granular access token with read/write on `@norbix.ai`. Granular tokens expire (max 90 days), so renew it before it lapses — an expired token fails the release at `npm whoami` with E401. |
+| `GITHUB_TOKEN` | provided by Actions | Used to push the release tag and create the GH Release. No setup needed. |
 
 ### How to debug a failed release
 
