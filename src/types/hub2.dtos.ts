@@ -24058,7 +24058,7 @@ export class GetAccessToken implements IReturn<GetAccessTokenResponse>, IPost
         public environment?: string;
         public meta?: { [index:string]: string; };
 
-        public constructor(init?: Partial<RegenerateApiKeys>) { super(init); (Object as any).assign(this, init); }
+        public constructor(init?: Partial<RegenerateApiKeys>) { (Object as any).assign(this, init); }
         public getTypeName() { return 'RegenerateApiKeys'; }
         public getMethod() { return 'POST'; }
         public createResponse() { return new RegenerateApiKeysResponse(); }
