@@ -5,7 +5,7 @@ Version: 10.08
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
 
-//GlobalNamespace: 
+GlobalNamespace: CodeMashHub2
 //MakePropertiesOptional: False
 //AddServiceStackTypes: True
 //AddResponseStatus: False
@@ -17,6 +17,8 @@ BaseUrl: http://localhost:5001
 */
 
 
+export module CodeMashHub2
+{
 export interface IReturn<T>
 {
     createResponse(): T;
@@ -23978,6 +23980,8 @@ export class GetAccessToken implements IReturn<GetAccessTokenResponse>, IPost
     public getTypeName() { return 'GetAccessToken'; }
     public getMethod() { return 'POST'; }
     public createResponse() { return new GetAccessTokenResponse(); }
+}
+
     // @sdk-dto-patches (injected by sync-types.mjs)
     export class UserApiKey
     {

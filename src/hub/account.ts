@@ -1767,8 +1767,8 @@ export class AccountModule {
   mcp = (
     request: Partial<CodeMashHub2.McpRequest> = {} as Partial<CodeMashHub2.McpRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.string> => {
-    return this.transport.send<CodeMashHub2.string>({
+  ): Promise<string> => {
+    return this.transport.send<string>({
       target: 'hub',
       path: '/{version}/account/mcp',
       method: 'POST',
