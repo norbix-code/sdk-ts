@@ -35,7 +35,7 @@ describe('hub.resources', () => {
   it('resolveResources: POST /{version}/resources/resolve', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/resources/resolve',
       version: 'v2',
       stub,

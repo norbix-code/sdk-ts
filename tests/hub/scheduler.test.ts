@@ -42,7 +42,7 @@ describe('hub.scheduler', () => {
   it('disableScheduler: GET /{version}/scheduler/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/disable',
       version: 'v2',
       stub,
@@ -65,7 +65,7 @@ describe('hub.scheduler', () => {
   it('enableScheduler: GET /{version}/scheduler/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/enable',
       version: 'v2',
       stub,
@@ -88,7 +88,7 @@ describe('hub.scheduler', () => {
   it('deleteSchedulerTask: DELETE /{version}/scheduler/tasks/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks/{Id}',
       version: 'v2',
       stub,
@@ -111,7 +111,7 @@ describe('hub.scheduler', () => {
   it('disableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks/{Id}/disable',
       version: 'v2',
       stub,
@@ -134,7 +134,7 @@ describe('hub.scheduler', () => {
   it('enableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks/{Id}/enable',
       version: 'v2',
       stub,
@@ -157,7 +157,7 @@ describe('hub.scheduler', () => {
   it('getSchedulerTask: GET /{version}/scheduler/tasks/{id}', async () => {
     const stub = stubRequestForPath('/{version}/scheduler/tasks/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks/{id}',
       version: 'v2',
       stub,
@@ -180,7 +180,7 @@ describe('hub.scheduler', () => {
   it('getSchedulerTasks: GET /{version}/scheduler/tasks', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks',
       version: 'v2',
       stub,
@@ -203,7 +203,7 @@ describe('hub.scheduler', () => {
   it('saveSchedulerTask: POST /{version}/scheduler/tasks', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/scheduler/tasks',
       version: 'v2',
       stub,

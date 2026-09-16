@@ -82,10 +82,10 @@ describe('multi-region — regional base URL', () => {
     });
 
     await norbix.api.database.find({ collectionName: 'orders' });
-    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.ai/')).toBe(true);
 
     await norbix.hub.regions.list();
-    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.hub.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.hub.norbix.ai/')).toBe(true);
   });
 
   it('never rewrites a user-supplied custom baseUrl (header still sent)', async () => {
@@ -118,7 +118,7 @@ describe('multi-region — regional base URL', () => {
     await norbix.api.database.find({ collectionName: 'orders' }, { region: 'nb-us-east' });
 
     expect(mock.lastCall?.headers.get('nb-region')).toBe('nb-us-east');
-    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.ai/')).toBe(true);
   });
 
   it('setRegion recomposes the default URL; clearing restores the default', async () => {
@@ -127,15 +127,15 @@ describe('multi-region — regional base URL', () => {
 
     norbix.setRegion('nb-eu-germany');
     await norbix.api.database.find({ collectionName: 'orders' });
-    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.api.norbix.ai/')).toBe(true);
 
     norbix.setRegion('nb-us-east');
     await norbix.api.database.find({ collectionName: 'orders' });
-    expect(mock.lastCall?.url.startsWith('https://nb-us-east.api.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-us-east.api.norbix.ai/')).toBe(true);
 
     norbix.setRegion(undefined);
     await norbix.api.database.find({ collectionName: 'orders' });
-    expect(mock.lastCall?.url.startsWith('https://api.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://api.norbix.ai/')).toBe(true);
   });
 
   it('setRegion never rewrites a user-supplied custom baseUrl', async () => {
@@ -153,7 +153,7 @@ describe('multi-region — regional base URL', () => {
     expect(mock.lastCall?.url.startsWith('https://api.selfhosted.example/')).toBe(true);
     // The hub URL was the SDK default, so it is still composed.
     await norbix.hub.regions.list();
-    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.hub.norbix.dev/')).toBe(true);
+    expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.hub.norbix.ai/')).toBe(true);
   });
 });
 

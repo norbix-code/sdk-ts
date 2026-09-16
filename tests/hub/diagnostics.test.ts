@@ -41,7 +41,7 @@ describe('hub.diagnostics', () => {
   it('getDiagnosticPacks: GET /{version}/diagnostics/packs', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/packs',
       version: 'v2',
       stub,
@@ -64,7 +64,7 @@ describe('hub.diagnostics', () => {
   it('runDiagnosticPack: POST /{version}/diagnostics/packs/{PackName}/run', async () => {
     const stub = stubRequestForPath('/{version}/diagnostics/packs/{PackName}/run');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/packs/{PackName}/run',
       version: 'v2',
       stub,
@@ -87,7 +87,7 @@ describe('hub.diagnostics', () => {
   it('getDiagnosticEcho: GET /{version}/diagnostics/echo', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/echo',
       version: 'v2',
       stub,
@@ -110,7 +110,7 @@ describe('hub.diagnostics', () => {
   it('readDiagnosticEvents: GET /{version}/diagnostics/events', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/events',
       version: 'v2',
       stub,
@@ -133,7 +133,7 @@ describe('hub.diagnostics', () => {
   it('queryDiagnosticLogs: GET /{version}/diagnostics/logs', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/logs',
       version: 'v2',
       stub,
@@ -156,7 +156,7 @@ describe('hub.diagnostics', () => {
   it('inspectDiagnosticRedis: GET /{version}/diagnostics/redis', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/redis',
       version: 'v2',
       stub,
@@ -179,7 +179,7 @@ describe('hub.diagnostics', () => {
   it('runDiagnosticHealthCheck: POST /{version}/diagnostics/health/{CheckId}', async () => {
     const stub = stubRequestForPath('/{version}/diagnostics/health/{CheckId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/diagnostics/health/{CheckId}',
       version: 'v2',
       stub,

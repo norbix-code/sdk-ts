@@ -48,7 +48,7 @@ describe('hub.logs', () => {
   it('disableLogging: GET /{version}/logs/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/disable',
       version: 'v2',
       stub,
@@ -71,7 +71,7 @@ describe('hub.logs', () => {
   it('enableLogging: GET /{version}/logs/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/enable',
       version: 'v2',
       stub,
@@ -94,7 +94,7 @@ describe('hub.logs', () => {
   it('deleteLoggingIntegration: DELETE /{version}/logs/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/logs/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations/{Id}',
       version: 'v2',
       stub,
@@ -117,7 +117,7 @@ describe('hub.logs', () => {
   it('disableLoggingIntegration: PUT /{version}/logs/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/logs/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -140,7 +140,7 @@ describe('hub.logs', () => {
   it('enableLoggingIntegration: PUT /{version}/logs/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/logs/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -163,7 +163,7 @@ describe('hub.logs', () => {
   it('getLoggingIntegration: GET /{version}/logs/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/logs/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations/{id}',
       version: 'v2',
       stub,
@@ -186,7 +186,7 @@ describe('hub.logs', () => {
   it('getLoggingIntegrations: GET /{version}/logs/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations',
       version: 'v2',
       stub,
@@ -209,7 +209,7 @@ describe('hub.logs', () => {
   it('saveLoggingIntegration: POST /{version}/logs/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations',
       version: 'v2',
       stub,
@@ -232,7 +232,7 @@ describe('hub.logs', () => {
   it('testLoggingIntegration: POST /{version}/logs/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/integrations/test',
       version: 'v2',
       stub,
@@ -255,7 +255,7 @@ describe('hub.logs', () => {
   it('cleanLogs: POST /{version}/logs/clean', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/clean',
       version: 'v2',
       stub,
@@ -278,7 +278,7 @@ describe('hub.logs', () => {
   it('getLogsByCorrelationId: GET /{version}/logs/audit', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/audit',
       version: 'v2',
       stub,
@@ -301,7 +301,7 @@ describe('hub.logs', () => {
   it('getLogs: GET /{version}/logs', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs',
       version: 'v2',
       stub,
@@ -324,7 +324,7 @@ describe('hub.logs', () => {
   it('getLogSettings: GET /{version}/logs/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/settings',
       version: 'v2',
       stub,
@@ -347,7 +347,7 @@ describe('hub.logs', () => {
   it('saveLogSettings: POST /{version}/logs/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/logs/settings',
       version: 'v2',
       stub,

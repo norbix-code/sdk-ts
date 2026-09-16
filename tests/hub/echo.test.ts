@@ -35,7 +35,7 @@ describe('hub.echo', () => {
   it('echo: GET /{version}/echo', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/echo',
       version: 'v2',
       stub,

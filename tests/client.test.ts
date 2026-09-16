@@ -127,8 +127,8 @@ describe('Env-var auto-load', () => {
           NORBIX_API_KEY: 'env-key',
           NORBIX_PROJECT_ID: 'env-proj',
           NORBIX_ACCOUNT_ID: 'env-acc',
-          NORBIX_API_URL: 'https://api.staging.norbix.dev',
-          NORBIX_HUB_URL: 'https://hub.staging.norbix.dev',
+          NORBIX_API_URL: 'https://api.staging.norbix.io',
+          NORBIX_HUB_URL: 'https://hub.staging.norbix.io',
           NORBIX_API_VERSION: 'v3',
         },
       },
@@ -137,8 +137,8 @@ describe('Env-var auto-load', () => {
     expect(cfg.apiKey).toBe('env-key');
     expect(cfg.projectId).toBe('env-proj');
     expect(cfg.accountId).toBe('env-acc');
-    expect(cfg.baseUrl.api).toBe('https://api.staging.norbix.dev');
-    expect(cfg.baseUrl.hub).toBe('https://hub.staging.norbix.dev');
+    expect(cfg.baseUrl.api).toBe('https://api.staging.norbix.io');
+    expect(cfg.baseUrl.hub).toBe('https://hub.staging.norbix.io');
     expect(cfg.apiVersion).toBe('v3');
 
     await call(norbix, 'hub', 'account', 'getAccountStatus');

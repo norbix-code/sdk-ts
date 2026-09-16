@@ -35,7 +35,7 @@ describe('hub.internal', () => {
   it('internalsTypeGen: GET /internal/_typegen', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/internal/_typegen',
       version: 'v2',
       stub,

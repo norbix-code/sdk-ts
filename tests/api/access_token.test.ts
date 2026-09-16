@@ -35,7 +35,7 @@ describe('api.accessToken', () => {
   it('getAccessToken: POST /access-token', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/access-token',
       version: 'v2',
       stub,

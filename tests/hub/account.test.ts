@@ -128,7 +128,7 @@ describe('hub.account', () => {
   it('getAccountProfile: GET /{version}/account/profile', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/profile',
       version: 'v2',
       stub,
@@ -151,7 +151,7 @@ describe('hub.account', () => {
   it('updateAccountProfile: PUT /{version}/account/profile', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/profile',
       version: 'v2',
       stub,
@@ -174,7 +174,7 @@ describe('hub.account', () => {
   it('resendAccountVerificationToken: GET /{version}/account/verify/resend', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/verify/resend',
       version: 'v2',
       stub,
@@ -197,7 +197,7 @@ describe('hub.account', () => {
   it('getAccountStatus: GET /{version}/account/status', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/status',
       version: 'v2',
       stub,
@@ -220,7 +220,7 @@ describe('hub.account', () => {
   it('createStripeCheckoutSession: POST /{version}/account/stripe/create-checkout-session', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/stripe/create-checkout-session',
       version: 'v2',
       stub,
@@ -243,7 +243,7 @@ describe('hub.account', () => {
   it('getStripeBillingPortalUrl: POST /{version}/account/stripe/get-portal-url', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/stripe/get-portal-url',
       version: 'v2',
       stub,
@@ -266,7 +266,7 @@ describe('hub.account', () => {
   it('createTeamMemberFromInvitation: POST /{version}/account/team/member', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/member',
       version: 'v2',
       stub,
@@ -289,7 +289,7 @@ describe('hub.account', () => {
   it('getAccountUsageBilling: GET /{version}/account/usage-billing', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/usage-billing',
       version: 'v2',
       stub,
@@ -312,7 +312,7 @@ describe('hub.account', () => {
   it('verifyAccount: GET /{version}/account/verify', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/verify',
       version: 'v2',
       stub,
@@ -348,7 +348,7 @@ describe('hub.account', () => {
   it('verifyAccount: succeeds when accountId is configured', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/verify',
       version: 'v2',
       stub,
@@ -372,7 +372,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/notifications/settings/group',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/notifications/settings/group',
       version: 'v2',
       stub,
@@ -397,7 +397,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/notifications/settings/tag',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/notifications/settings/tag',
       version: 'v2',
       stub,
@@ -422,7 +422,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/notifications/settings/group/tag',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/notifications/settings/group/tag',
       version: 'v2',
       stub,
@@ -447,7 +447,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/notifications/settings/group',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/notifications/settings/group',
       version: 'v2',
       stub,
@@ -472,7 +472,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/notifications/settings/tag',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/notifications/settings/tag',
       version: 'v2',
       stub,
@@ -495,7 +495,7 @@ describe('hub.account', () => {
   it('createProject: POST /{version}/account/projects', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects',
       version: 'v2',
       stub,
@@ -518,7 +518,7 @@ describe('hub.account', () => {
   it('deleteProject: DELETE /{version}/account/projects/{projectId}', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}',
       version: 'v2',
       stub,
@@ -541,7 +541,7 @@ describe('hub.account', () => {
   it('createProjectEnvironment: POST /{version}/account/projects/environments', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments',
       version: 'v2',
       stub,
@@ -564,7 +564,7 @@ describe('hub.account', () => {
   it('deleteProjectEnvironment: DELETE /{version}/account/projects/environments/{environmentName}', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/environments/{environmentName}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments/{environmentName}',
       version: 'v2',
       stub,
@@ -589,7 +589,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/environments/{environmentName}/rank',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments/{environmentName}/rank',
       version: 'v2',
       stub,
@@ -612,7 +612,7 @@ describe('hub.account', () => {
   it('promoteEnvironment: POST /{version}/account/projects/environments/promote', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments/promote',
       version: 'v2',
       stub,
@@ -635,7 +635,7 @@ describe('hub.account', () => {
   it('rollbackPromotion: POST /{version}/account/projects/environments/promote/rollback', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments/promote/rollback',
       version: 'v2',
       stub,
@@ -658,7 +658,7 @@ describe('hub.account', () => {
   it('getProjectEnvironments: GET /{version}/account/projects/environments', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/environments',
       version: 'v2',
       stub,
@@ -681,7 +681,7 @@ describe('hub.account', () => {
   it('getProject: GET /{version}/account/projects/{projectId}', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}',
       version: 'v2',
       stub,
@@ -704,7 +704,7 @@ describe('hub.account', () => {
   it('getProjects: GET /{version}/account/projects', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects',
       version: 'v2',
       stub,
@@ -727,7 +727,7 @@ describe('hub.account', () => {
   it('getAccountRegions: GET /{version}/account/regions', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/regions',
       version: 'v2',
       stub,
@@ -750,7 +750,7 @@ describe('hub.account', () => {
   it('waitForProjectActive: GET /{version}/account/projects/{projectId}/wait-active', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/wait-active');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/wait-active',
       version: 'v2',
       stub,
@@ -773,7 +773,7 @@ describe('hub.account', () => {
   it('getProjectTokens: GET /{version}/account/projects/{projectId}/tokens', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/tokens');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/tokens',
       version: 'v2',
       stub,
@@ -798,7 +798,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/settings/admin-portal/service-user',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/admin-portal/service-user',
       version: 'v2',
       stub,
@@ -823,7 +823,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/admin-portal/structure',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/admin-portal/structure',
       version: 'v2',
       stub,
@@ -846,7 +846,7 @@ describe('hub.account', () => {
   it('updateProjectAdminUrl: PATCH /{version}/account/projects/{projectId}/settings/admin-url', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/admin-url');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/admin-url',
       version: 'v2',
       stub,
@@ -871,7 +871,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/settings/accent-color',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/accent-color',
       version: 'v2',
       stub,
@@ -894,7 +894,7 @@ describe('hub.account', () => {
   it('updateProjectIcon: PATCH /{version}/account/projects/{projectId}/settings/icon', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/icon');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/icon',
       version: 'v2',
       stub,
@@ -917,7 +917,7 @@ describe('hub.account', () => {
   it('updateProjectLogo: PATCH /{version}/account/projects/{projectId}/settings/logo', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/logo');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/logo',
       version: 'v2',
       stub,
@@ -940,7 +940,7 @@ describe('hub.account', () => {
   it('updateProjectMainColor: PATCH /{version}/account/projects/{projectId}/settings/main-color', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/main-color');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/main-color',
       version: 'v2',
       stub,
@@ -963,7 +963,7 @@ describe('hub.account', () => {
   it('updateProjectAllowedOrigins: PATCH /{version}/account/projects/{projectId}/settings/origins', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/origins');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/origins',
       version: 'v2',
       stub,
@@ -988,7 +988,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/settings/default-language',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/default-language',
       version: 'v2',
       stub,
@@ -1011,7 +1011,7 @@ describe('hub.account', () => {
   it('updateProjectDescription: PATCH /{version}/account/projects/{projectId}/settings/description', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/description');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/description',
       version: 'v2',
       stub,
@@ -1034,7 +1034,7 @@ describe('hub.account', () => {
   it('disableProject: PATCH /{version}/account/projects/{projectId}/disable', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/disable',
       version: 'v2',
       stub,
@@ -1057,7 +1057,7 @@ describe('hub.account', () => {
   it('enableProject: PATCH /{version}/account/projects/{projectId}/enable', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/enable',
       version: 'v2',
       stub,
@@ -1080,7 +1080,7 @@ describe('hub.account', () => {
   it('updateProjectLanguages: PATCH /{version}/account/projects/{projectId}/settings/languages', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/languages');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/languages',
       version: 'v2',
       stub,
@@ -1103,7 +1103,7 @@ describe('hub.account', () => {
   it('updateProjectLegalDocuments: PATCH /{version}/account/projects/{projectId}/settings/legal', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/legal');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/legal',
       version: 'v2',
       stub,
@@ -1128,7 +1128,7 @@ describe('hub.account', () => {
       '/{version}/account/projects/{projectId}/settings/legal/expose',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/legal/expose',
       version: 'v2',
       stub,
@@ -1151,7 +1151,7 @@ describe('hub.account', () => {
   it('updateProjectUrl: PATCH /{version}/account/projects/{projectId}/settings/url', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/url');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/url',
       version: 'v2',
       stub,
@@ -1174,7 +1174,7 @@ describe('hub.account', () => {
   it('updateProjectName: PATCH /{version}/account/projects/{projectId}/settings/name', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/name');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/name',
       version: 'v2',
       stub,
@@ -1197,7 +1197,7 @@ describe('hub.account', () => {
   it('updateProjectRegions: PATCH /{version}/account/projects/{projectId}/settings/regions', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/regions');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/projects/{projectId}/settings/regions',
       version: 'v2',
       stub,
@@ -1220,7 +1220,7 @@ describe('hub.account', () => {
   it('createAccount: POST /{version}/account', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account',
       version: 'v2',
       stub,
@@ -1243,7 +1243,7 @@ describe('hub.account', () => {
   it('changeTeamMemberPassword: POST /{version}/account/team/member/password', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/member/password',
       version: 'v2',
       stub,
@@ -1266,7 +1266,7 @@ describe('hub.account', () => {
   it('createTeamMember: POST /{version}/account/team/member/create', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/member/create',
       version: 'v2',
       stub,
@@ -1289,7 +1289,7 @@ describe('hub.account', () => {
   it('createAccountPolicy: POST /{version}/account/team/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/policies',
       version: 'v2',
       stub,
@@ -1312,7 +1312,7 @@ describe('hub.account', () => {
   it('createAccountRole: POST /{version}/account/team/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/roles',
       version: 'v2',
       stub,
@@ -1335,7 +1335,7 @@ describe('hub.account', () => {
   it('deleteAccountPolicy: DELETE /{version}/account/team/policies/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/account/team/policies/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/policies/{Id}',
       version: 'v2',
       stub,
@@ -1358,7 +1358,7 @@ describe('hub.account', () => {
   it('deleteAccountRole: DELETE /{version}/account/team/roles/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/account/team/roles/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/roles/{Id}',
       version: 'v2',
       stub,
@@ -1381,7 +1381,7 @@ describe('hub.account', () => {
   it('getAccountCollaborators: GET /{version}/account/collaborators', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/collaborators',
       version: 'v2',
       stub,
@@ -1404,7 +1404,7 @@ describe('hub.account', () => {
   it('getAccountPasswordPolicy: GET /{version}/account/team/password-policy', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/password-policy',
       version: 'v2',
       stub,
@@ -1427,7 +1427,7 @@ describe('hub.account', () => {
   it('getAccountTeamPolicies: GET /{version}/account/team/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/policies',
       version: 'v2',
       stub,
@@ -1450,7 +1450,7 @@ describe('hub.account', () => {
   it('getAccountTeamRoles: GET /{version}/account/team/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/roles',
       version: 'v2',
       stub,
@@ -1473,7 +1473,7 @@ describe('hub.account', () => {
   it('sendInviteToTeamMember: POST /{version}/account/team/member/invite', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/member/invite',
       version: 'v2',
       stub,
@@ -1496,7 +1496,7 @@ describe('hub.account', () => {
   it('updateAccountPolicy: PUT /{version}/account/team/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/policies',
       version: 'v2',
       stub,
@@ -1519,7 +1519,7 @@ describe('hub.account', () => {
   it('updateAccountRole: PUT /{version}/account/team/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/team/roles',
       version: 'v2',
       stub,
@@ -1542,7 +1542,7 @@ describe('hub.account', () => {
   it('accountHasPasskey: POST /{version}/account/userauth/has-passkey', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/has-passkey',
       version: 'v2',
       stub,
@@ -1565,7 +1565,7 @@ describe('hub.account', () => {
   it('accountStartEmailVerification: POST /{version}/account/userauth/email/start-verification', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/email/start-verification',
       version: 'v2',
       stub,
@@ -1588,7 +1588,7 @@ describe('hub.account', () => {
   it('accountConfirmEmailVerification: POST /{version}/account/userauth/email/confirm-verification', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/email/confirm-verification',
       version: 'v2',
       stub,
@@ -1611,7 +1611,7 @@ describe('hub.account', () => {
   it('accountPasskeyRegistrationOptions: POST /{version}/account/userauth/passkey/registration-options', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/registration-options',
       version: 'v2',
       stub,
@@ -1634,7 +1634,7 @@ describe('hub.account', () => {
   it('accountVerifyPasskeyRegistration: POST /{version}/account/userauth/passkey/verify-registration', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/verify-registration',
       version: 'v2',
       stub,
@@ -1657,7 +1657,7 @@ describe('hub.account', () => {
   it('accountPasskeyAuthenticationOptions: POST /{version}/account/userauth/passkey/authentication-options', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/authentication-options',
       version: 'v2',
       stub,
@@ -1680,7 +1680,7 @@ describe('hub.account', () => {
   it('accountVerifyPasskeyAuthentication: POST /{version}/account/userauth/passkey/verify-authentication', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/verify-authentication',
       version: 'v2',
       stub,
@@ -1703,7 +1703,7 @@ describe('hub.account', () => {
   it('listAccountPasskeys: GET /{version}/account/userauth/passkeys', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkeys',
       version: 'v2',
       stub,
@@ -1726,7 +1726,7 @@ describe('hub.account', () => {
   it('renameAccountPasskey: POST /{version}/account/userauth/passkeys/{CredentialId}/rename', async () => {
     const stub = stubRequestForPath('/{version}/account/userauth/passkeys/{CredentialId}/rename');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkeys/{CredentialId}/rename',
       version: 'v2',
       stub,
@@ -1749,7 +1749,7 @@ describe('hub.account', () => {
   it('revokeAccountPasskey: POST /{version}/account/userauth/passkeys/{CredentialId}/revoke', async () => {
     const stub = stubRequestForPath('/{version}/account/userauth/passkeys/{CredentialId}/revoke');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkeys/{CredentialId}/revoke',
       version: 'v2',
       stub,
@@ -1772,7 +1772,7 @@ describe('hub.account', () => {
   it('accountPasskeyEnrollmentOptions: POST /{version}/account/userauth/passkey/enrollment-options', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/enrollment-options',
       version: 'v2',
       stub,
@@ -1795,7 +1795,7 @@ describe('hub.account', () => {
   it('accountVerifyPasskeyEnrollment: POST /{version}/account/userauth/passkey/verify-enrollment', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/userauth/passkey/verify-enrollment',
       version: 'v2',
       stub,
@@ -1818,7 +1818,7 @@ describe('hub.account', () => {
   it('getLicenseDomainDnsStatus: GET /{version}/account/licensing/dns-status', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/licensing/dns-status',
       version: 'v2',
       stub,
@@ -1841,7 +1841,7 @@ describe('hub.account', () => {
   it('getLicenses: GET /{version}/account/licenses', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/licenses',
       version: 'v2',
       stub,
@@ -1864,7 +1864,7 @@ describe('hub.account', () => {
   it('getInstallationLicenseStatus: GET /{version}/account/licensing/status', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/licensing/status',
       version: 'v2',
       stub,
@@ -1887,7 +1887,7 @@ describe('hub.account', () => {
   it('getAiTools: GET /{version}/account/ai/tools', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/ai/tools',
       version: 'v2',
       stub,
@@ -1910,7 +1910,7 @@ describe('hub.account', () => {
   it('invokeAiTool: POST /{version}/account/ai/tools/{ToolName}', async () => {
     const stub = stubRequestForPath('/{version}/account/ai/tools/{ToolName}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/ai/tools/{ToolName}',
       version: 'v2',
       stub,
@@ -1933,7 +1933,7 @@ describe('hub.account', () => {
   it('askChat: POST /{version}/account/chat/complete', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/complete',
       version: 'v2',
       stub,
@@ -1956,7 +1956,7 @@ describe('hub.account', () => {
   it('uploadChatAttachment: POST /{version}/account/chat/attachments', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/attachments',
       version: 'v2',
       stub,
@@ -1979,7 +1979,7 @@ describe('hub.account', () => {
   it('chatAvailability: GET /{version}/account/chat/availability', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/availability',
       version: 'v2',
       stub,
@@ -2002,7 +2002,7 @@ describe('hub.account', () => {
   it('getChatMemory: GET /{version}/account/chat/memory', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/memory',
       version: 'v2',
       stub,
@@ -2025,7 +2025,7 @@ describe('hub.account', () => {
   it('forgetChatMemory: DELETE /{version}/account/chat/memory/{NoteId}', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/memory/{NoteId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/memory/{NoteId}',
       version: 'v2',
       stub,
@@ -2048,7 +2048,7 @@ describe('hub.account', () => {
   it('deleteChatSession: DELETE /{version}/account/chat/sessions/{SessionId}', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}',
       version: 'v2',
       stub,
@@ -2071,7 +2071,7 @@ describe('hub.account', () => {
   it('setChatSessionArchived: PATCH /{version}/account/chat/sessions/{SessionId}/archive', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/archive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/archive',
       version: 'v2',
       stub,
@@ -2094,7 +2094,7 @@ describe('hub.account', () => {
   it('setChatSessionPinned: PATCH /{version}/account/chat/sessions/{SessionId}/pin', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/pin');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/pin',
       version: 'v2',
       stub,
@@ -2117,7 +2117,7 @@ describe('hub.account', () => {
   it('setChatSessionSharing: PATCH /{version}/account/chat/sessions/{SessionId}/sharing', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/sharing');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/sharing',
       version: 'v2',
       stub,
@@ -2140,7 +2140,7 @@ describe('hub.account', () => {
   it('getChatSessions: GET /{version}/account/chat/sessions', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions',
       version: 'v2',
       stub,
@@ -2163,7 +2163,7 @@ describe('hub.account', () => {
   it('getChatSessionEntries: GET /{version}/account/chat/sessions/{SessionId}/entries', async () => {
     const stub = stubRequestForPath('/{version}/account/chat/sessions/{SessionId}/entries');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/entries',
       version: 'v2',
       stub,
@@ -2188,7 +2188,7 @@ describe('hub.account', () => {
       '/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
       version: 'v2',
       stub,
@@ -2213,7 +2213,7 @@ describe('hub.account', () => {
       '/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer',
       version: 'v2',
       stub,
@@ -2238,7 +2238,7 @@ describe('hub.account', () => {
       '/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision',
       version: 'v2',
       stub,
@@ -2263,7 +2263,7 @@ describe('hub.account', () => {
       '/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop',
       version: 'v2',
       stub,
@@ -2286,7 +2286,7 @@ describe('hub.account', () => {
   it('chatTurn: POST /{version}/account/chat/turn', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/chat/turn',
       version: 'v2',
       stub,
@@ -2309,7 +2309,7 @@ describe('hub.account', () => {
   it('mcp: POST /{version}/account/mcp', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/account/mcp',
       version: 'v2',
       stub,

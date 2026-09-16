@@ -67,7 +67,7 @@ describe('hub.code', () => {
   it('enableCode: GET /{version}/code/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/enable',
       version: 'v2',
       stub,
@@ -90,7 +90,7 @@ describe('hub.code', () => {
   it('disableCode: GET /{version}/code/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/disable',
       version: 'v2',
       stub,
@@ -113,7 +113,7 @@ describe('hub.code', () => {
   it('getCodeIntegrations: GET /{version}/code/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations',
       version: 'v2',
       stub,
@@ -136,7 +136,7 @@ describe('hub.code', () => {
   it('getCodeIntegration: GET /{version}/code/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/code/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/{id}',
       version: 'v2',
       stub,
@@ -159,7 +159,7 @@ describe('hub.code', () => {
   it('saveCodeIntegration: POST /{version}/code/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations',
       version: 'v2',
       stub,
@@ -182,7 +182,7 @@ describe('hub.code', () => {
   it('testCodeIntegration: POST /{version}/code/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/test',
       version: 'v2',
       stub,
@@ -205,7 +205,7 @@ describe('hub.code', () => {
   it('confirmCodeIntegrationHumanDelivery: POST /{version}/code/integrations/confirm-human-delivery', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/confirm-human-delivery',
       version: 'v2',
       stub,
@@ -228,7 +228,7 @@ describe('hub.code', () => {
   it('setCodeIntegrationAsDefault: PUT /{version}/code/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/code/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -251,7 +251,7 @@ describe('hub.code', () => {
   it('deleteCodeIntegration: DELETE /{version}/code/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/code/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/{Id}',
       version: 'v2',
       stub,
@@ -274,7 +274,7 @@ describe('hub.code', () => {
   it('enableCodeIntegration: PUT /{version}/code/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/code/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -297,7 +297,7 @@ describe('hub.code', () => {
   it('disableCodeIntegration: PUT /{version}/code/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/code/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -320,7 +320,7 @@ describe('hub.code', () => {
   it('getMarketplaceListings: GET /{version}/code/marketplace/listings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/listings',
       version: 'v2',
       stub,
@@ -345,7 +345,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/listings/{ListingViewId}/functions/{FunctionKey}/tokens',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/listings/{ListingViewId}/functions/{FunctionKey}/tokens',
       version: 'v2',
       stub,
@@ -368,7 +368,7 @@ describe('hub.code', () => {
   it('getMarketplaceIntegrations: GET /{version}/code/marketplace/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations',
       version: 'v2',
       stub,
@@ -391,7 +391,7 @@ describe('hub.code', () => {
   it('getMarketplaceIntegration: GET /{version}/code/marketplace/integrations/{IntegrationViewId}', async () => {
     const stub = stubRequestForPath('/{version}/code/marketplace/integrations/{IntegrationViewId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}',
       version: 'v2',
       stub,
@@ -414,7 +414,7 @@ describe('hub.code', () => {
   it('saveMarketplaceIntegration: POST /{version}/code/marketplace/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations',
       version: 'v2',
       stub,
@@ -437,7 +437,7 @@ describe('hub.code', () => {
   it('deleteMarketplaceIntegration: DELETE /{version}/code/marketplace/integrations/{IntegrationViewId}', async () => {
     const stub = stubRequestForPath('/{version}/code/marketplace/integrations/{IntegrationViewId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}',
       version: 'v2',
       stub,
@@ -462,7 +462,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/enable',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/enable',
       version: 'v2',
       stub,
@@ -487,7 +487,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/disable',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/disable',
       version: 'v2',
       stub,
@@ -512,7 +512,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       version: 'v2',
       stub,
@@ -537,7 +537,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       version: 'v2',
       stub,
@@ -562,7 +562,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions',
       version: 'v2',
       stub,
@@ -587,7 +587,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}',
       version: 'v2',
       stub,
@@ -612,7 +612,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/enable',
       version: 'v2',
       stub,
@@ -637,7 +637,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/disable',
       version: 'v2',
       stub,
@@ -662,7 +662,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/functions/{FunctionViewId}/tokens',
       version: 'v2',
       stub,
@@ -687,7 +687,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/functions/{FunctionViewId}/invoke',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/functions/{FunctionViewId}/invoke',
       version: 'v2',
       stub,
@@ -710,7 +710,7 @@ describe('hub.code', () => {
   it('getMarketplaceListing: GET /{version}/code/marketplace/listings/{ListingViewId}', async () => {
     const stub = stubRequestForPath('/{version}/code/marketplace/listings/{ListingViewId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/listings/{ListingViewId}',
       version: 'v2',
       stub,
@@ -735,7 +735,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
       version: 'v2',
       stub,
@@ -760,7 +760,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets',
       version: 'v2',
       stub,
@@ -785,7 +785,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal',
       version: 'v2',
       stub,
@@ -810,7 +810,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings',
       version: 'v2',
       stub,
@@ -835,7 +835,7 @@ describe('hub.code', () => {
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog',
       version: 'v2',
       stub,

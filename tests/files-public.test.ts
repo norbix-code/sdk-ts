@@ -51,7 +51,7 @@ describe('hub.files — make public / make private', () => {
 
       const call = mock.lastCall!;
       expect(call.method).toBe('POST');
-      expect(call.url).toBe(`https://hub.norbix.dev${c.path}`);
+      expect(call.url).toBe(`https://hub.norbix.io${c.path}`);
       expect(JSON.parse(call.body!)).toEqual({
         filesIntegrationId: 'nbin_42',
         path: 'invoices/2026.pdf',
@@ -105,7 +105,7 @@ describe('api.files.getPublicFile — the link anyone can open', () => {
   function publicClient(fetchImpl: typeof fetch) {
     return new Norbix({
       projectId: 'not-used-by-a-public-link',
-      baseUrl: { api: 'https://api.norbix.dev', hub: 'https://hub.norbix.dev' },
+      baseUrl: { api: 'https://api.norbix.io', hub: 'https://hub.norbix.io' },
       apiVersion: 'v3',
       hubVersion: 'v2',
       fetch: fetchImpl,
@@ -121,7 +121,7 @@ describe('api.files.getPublicFile — the link anyone can open', () => {
       name: 'invoice.pdf',
     });
 
-    expect(calls[0]!.url).toBe('https://api.norbix.dev/v3/files/public/nbpf_7hK2abc/invoice.pdf');
+    expect(calls[0]!.url).toBe('https://api.norbix.io/v3/files/public/nbpf_7hK2abc/invoice.pdf');
     expect(res).toBeInstanceOf(Uint8Array);
     expect(Array.from(res)).toEqual(Array.from(bytes));
   });
@@ -161,7 +161,7 @@ describe('api.files.getPublicFile — the link anyone can open', () => {
     });
 
     expect(calls[0]!.url).toBe(
-      'https://api.norbix.dev/v3/files/public/nbpf_folder1/2026/q1/report.pdf',
+      'https://api.norbix.io/v3/files/public/nbpf_folder1/2026/q1/report.pdf',
     );
   });
 
@@ -174,7 +174,7 @@ describe('api.files.getPublicFile — the link anyone can open', () => {
     });
 
     expect(calls[0]!.url).toBe(
-      'https://api.norbix.dev/v3/files/public/nbpf_folder1/q1%20reports/my%20invoice.pdf',
+      'https://api.norbix.io/v3/files/public/nbpf_folder1/q1%20reports/my%20invoice.pdf',
     );
   });
 
@@ -196,7 +196,7 @@ describe('api.files.getPublicFile — the link anyone can open', () => {
       () =>
         new Norbix(
           {
-            baseUrl: { api: 'https://api.norbix.dev', hub: 'https://hub.norbix.dev' },
+            baseUrl: { api: 'https://api.norbix.io', hub: 'https://hub.norbix.io' },
             fetch: binaryFetch(new Uint8Array([1])).impl,
           },
           // An empty env source, so the test does not depend on whoever runs it
@@ -226,7 +226,7 @@ describe('the two new fields on a file', () => {
               integrationId: 'nbin_42',
               path: 'invoices/invoice.pdf',
               isPublic: true,
-              publicUrl: 'https://api.norbix.dev/v3/files/public/nbpf_7hK2abc/invoice.pdf',
+              publicUrl: 'https://api.norbix.io/v3/files/public/nbpf_7hK2abc/invoice.pdf',
             },
           ],
         },
@@ -235,7 +235,7 @@ describe('the two new fields on a file', () => {
           {
             path: 'invoices',
             publicId: 'nbpf_folder1',
-            publicUrl: 'https://api.norbix.dev/v3/files/public/nbpf_folder1/',
+            publicUrl: 'https://api.norbix.io/v3/files/public/nbpf_folder1/',
             inherited: false,
           },
         ],

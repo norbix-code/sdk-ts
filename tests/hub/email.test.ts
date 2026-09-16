@@ -35,7 +35,7 @@ describe('hub.email', () => {
   it('oneClickUnsubscribe: POST /{version}/email/one-click-unsubscribe', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/email/one-click-unsubscribe',
       version: 'v2',
       stub,

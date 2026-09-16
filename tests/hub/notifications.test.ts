@@ -160,7 +160,7 @@ describe('hub.notifications', () => {
   it('disableEmail: GET /{version}/notifications/email/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/disable',
       version: 'v2',
       stub,
@@ -183,7 +183,7 @@ describe('hub.notifications', () => {
   it('getEmailDisableDependencies: GET /{version}/notifications/email/disable-dependencies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/disable-dependencies',
       version: 'v2',
       stub,
@@ -206,7 +206,7 @@ describe('hub.notifications', () => {
   it('enableEmail: GET /{version}/notifications/email/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/enable',
       version: 'v2',
       stub,
@@ -229,7 +229,7 @@ describe('hub.notifications', () => {
   it('saveEmailValidationIntegration: POST /{version}/notifications/email/validation/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/validation/integrations',
       version: 'v2',
       stub,
@@ -252,7 +252,7 @@ describe('hub.notifications', () => {
   it('testEmailValidationIntegration: POST /{version}/notifications/email/validation/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/validation/integrations/test',
       version: 'v2',
       stub,
@@ -275,7 +275,7 @@ describe('hub.notifications', () => {
   it('attachFileToTemplate: POST /{version}/notifications/email/templates/attachments', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/attachments',
       version: 'v2',
       stub,
@@ -298,7 +298,7 @@ describe('hub.notifications', () => {
   it('createEmailTemplate: POST /{version}/notifications/email/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates',
       version: 'v2',
       stub,
@@ -321,7 +321,7 @@ describe('hub.notifications', () => {
   it('deleteEmailTemplate: DELETE /{version}/notifications/email/templates/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{Id}',
       version: 'v2',
       stub,
@@ -344,7 +344,7 @@ describe('hub.notifications', () => {
   it('getEmailTemplate: GET /{version}/notifications/email/templates/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{id}',
       version: 'v2',
       stub,
@@ -367,7 +367,7 @@ describe('hub.notifications', () => {
   it('getEmailTemplates: GET /{version}/notifications/email/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates',
       version: 'v2',
       stub,
@@ -390,7 +390,7 @@ describe('hub.notifications', () => {
   it('getMjml: POST /{version}/notifications/email/templates/mjml', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/mjml',
       version: 'v2',
       stub,
@@ -413,7 +413,7 @@ describe('hub.notifications', () => {
   it('getSystemEmailTemplate: GET /{version}/notifications/email/system-templates/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/system-templates/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/system-templates/{id}',
       version: 'v2',
       stub,
@@ -436,7 +436,7 @@ describe('hub.notifications', () => {
   it('getSystemEmailTemplates: GET /{version}/notifications/email/system-templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/system-templates',
       version: 'v2',
       stub,
@@ -459,7 +459,7 @@ describe('hub.notifications', () => {
   it('getEmailTemplateAvailableTokens: GET /{version}/notifications/email/templates/{id}/tokens', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{id}/tokens');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{id}/tokens',
       version: 'v2',
       stub,
@@ -482,7 +482,7 @@ describe('hub.notifications', () => {
   it('updateEmailTemplate: PUT /{version}/notifications/email/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates',
       version: 'v2',
       stub,
@@ -505,7 +505,7 @@ describe('hub.notifications', () => {
   it('deleteEmailSignature: DELETE /{version}/notifications/email/signatures/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/signatures/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/signatures/{id}',
       version: 'v2',
       stub,
@@ -528,7 +528,7 @@ describe('hub.notifications', () => {
   it('getEmailSignature: GET /{version}/notifications/email/signatures/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/signatures/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/signatures/{id}',
       version: 'v2',
       stub,
@@ -551,7 +551,7 @@ describe('hub.notifications', () => {
   it('getEmailSignatures: GET /{version}/notifications/email/signatures', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/signatures',
       version: 'v2',
       stub,
@@ -574,7 +574,7 @@ describe('hub.notifications', () => {
   it('saveEmailSignature: POST /{version}/notifications/email/signatures', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/signatures',
       version: 'v2',
       stub,
@@ -597,7 +597,7 @@ describe('hub.notifications', () => {
   it('getEmailSettings: GET /{version}/notifications/email/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/settings',
       version: 'v2',
       stub,
@@ -620,7 +620,7 @@ describe('hub.notifications', () => {
   it('confirmEmailIntegrationHumanDelivery: POST /{version}/notifications/email/integrations/confirm-human-delivery', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/confirm-human-delivery',
       version: 'v2',
       stub,
@@ -643,7 +643,7 @@ describe('hub.notifications', () => {
   it('deleteEmailIntegration: DELETE /{version}/notifications/email/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/{Id}',
       version: 'v2',
       stub,
@@ -666,7 +666,7 @@ describe('hub.notifications', () => {
   it('disableEmailIntegration: PUT /{version}/notifications/email/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -689,7 +689,7 @@ describe('hub.notifications', () => {
   it('checkEmailIntegrationDomainHealth: POST /{version}/notifications/email/integrations/domain-health', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/domain-health',
       version: 'v2',
       stub,
@@ -712,7 +712,7 @@ describe('hub.notifications', () => {
   it('enableEmailIntegration: PUT /{version}/notifications/email/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -735,7 +735,7 @@ describe('hub.notifications', () => {
   it('getEmailIntegration: GET /{version}/notifications/email/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/{id}',
       version: 'v2',
       stub,
@@ -758,7 +758,7 @@ describe('hub.notifications', () => {
   it('getEmailIntegrations: GET /{version}/notifications/email/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations',
       version: 'v2',
       stub,
@@ -781,7 +781,7 @@ describe('hub.notifications', () => {
   it('saveEmailIntegration: POST /{version}/notifications/email/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations',
       version: 'v2',
       stub,
@@ -804,7 +804,7 @@ describe('hub.notifications', () => {
   it('setEmailsIntegrationAsDefault: PUT /{version}/notifications/email/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -827,7 +827,7 @@ describe('hub.notifications', () => {
   it('testEmailIntegration: POST /{version}/notifications/email/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/integrations/test',
       version: 'v2',
       stub,
@@ -850,7 +850,7 @@ describe('hub.notifications', () => {
   it('archiveEmailTemplate: PUT /{version}/notifications/email/templates/{Id}/archive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{Id}/archive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{Id}/archive',
       version: 'v2',
       stub,
@@ -873,7 +873,7 @@ describe('hub.notifications', () => {
   it('cloneEmailTemplate: POST /{version}/notifications/email/templates/{Id}/clone', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{Id}/clone');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{Id}/clone',
       version: 'v2',
       stub,
@@ -896,7 +896,7 @@ describe('hub.notifications', () => {
   it('unArchiveEmailTemplate: PUT /{version}/notifications/email/templates/{Id}/unarchive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/templates/{Id}/unarchive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/templates/{Id}/unarchive',
       version: 'v2',
       stub,
@@ -919,7 +919,7 @@ describe('hub.notifications', () => {
   it('deleteEmailFooter: DELETE /{version}/notifications/email/footers/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/footers/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/footers/{id}',
       version: 'v2',
       stub,
@@ -942,7 +942,7 @@ describe('hub.notifications', () => {
   it('getEmailFooter: GET /{version}/notifications/email/footers/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/footers/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/footers/{id}',
       version: 'v2',
       stub,
@@ -965,7 +965,7 @@ describe('hub.notifications', () => {
   it('getEmailFooters: GET /{version}/notifications/email/footers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/footers',
       version: 'v2',
       stub,
@@ -988,7 +988,7 @@ describe('hub.notifications', () => {
   it('saveEmailFooter: POST /{version}/notifications/email/footers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/footers',
       version: 'v2',
       stub,
@@ -1011,7 +1011,7 @@ describe('hub.notifications', () => {
   it('createEmailCampaign: POST /{version}/notifications/email/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns',
       version: 'v2',
       stub,
@@ -1034,7 +1034,7 @@ describe('hub.notifications', () => {
   it('deleteEmailCampaign: DELETE /{version}/notifications/email/campaigns/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/campaigns/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{Id}',
       version: 'v2',
       stub,
@@ -1057,7 +1057,7 @@ describe('hub.notifications', () => {
   it('getEmailCampaign: GET /{version}/notifications/email/campaigns/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/campaigns/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{id}',
       version: 'v2',
       stub,
@@ -1080,7 +1080,7 @@ describe('hub.notifications', () => {
   it('getEmailCampaigns: GET /{version}/notifications/email/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns',
       version: 'v2',
       stub,
@@ -1103,7 +1103,7 @@ describe('hub.notifications', () => {
   it('getEmailCampaignBatches: GET /{version}/notifications/email/campaigns/{id}/batches', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/campaigns/{id}/batches');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{id}/batches',
       version: 'v2',
       stub,
@@ -1128,7 +1128,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}',
       version: 'v2',
       stub,
@@ -1153,7 +1153,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/email/campaigns/{id}/batches/{batchId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{id}/batches/{batchId}',
       version: 'v2',
       stub,
@@ -1176,7 +1176,7 @@ describe('hub.notifications', () => {
   it('getEmailCampaignStatistics: GET /{version}/notifications/email/campaigns/{id}/stats', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/campaigns/{id}/stats');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{id}/stats',
       version: 'v2',
       stub,
@@ -1199,7 +1199,7 @@ describe('hub.notifications', () => {
   it('previewEmailNotification: GET /{version}/notifications/email/preview', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/preview',
       version: 'v2',
       stub,
@@ -1222,7 +1222,7 @@ describe('hub.notifications', () => {
   it('stopEmailCampaign: POST /{version}/notifications/email/campaigns/{Id}/stop', async () => {
     const stub = stubRequestForPath('/{version}/notifications/email/campaigns/{Id}/stop');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/email/campaigns/{Id}/stop',
       version: 'v2',
       stub,
@@ -1247,7 +1247,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
       version: 'v2',
       stub,
@@ -1272,7 +1272,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/emails/campaigns/{campaignId}/messages',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/emails/campaigns/{campaignId}/messages',
       version: 'v2',
       stub,
@@ -1295,7 +1295,7 @@ describe('hub.notifications', () => {
   it('disableSms: GET /{version}/notifications/sms/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/disable',
       version: 'v2',
       stub,
@@ -1318,7 +1318,7 @@ describe('hub.notifications', () => {
   it('getSmsDisableDependencies: GET /{version}/notifications/sms/disable-dependencies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/disable-dependencies',
       version: 'v2',
       stub,
@@ -1341,7 +1341,7 @@ describe('hub.notifications', () => {
   it('enableSms: GET /{version}/notifications/sms/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/enable',
       version: 'v2',
       stub,
@@ -1364,7 +1364,7 @@ describe('hub.notifications', () => {
   it('archiveSmsTemplate: PUT /{version}/notifications/sms/templates/{Id}/archive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{Id}/archive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{Id}/archive',
       version: 'v2',
       stub,
@@ -1387,7 +1387,7 @@ describe('hub.notifications', () => {
   it('cloneSmsTemplate: POST /{version}/notifications/sms/templates/{Id}/clone', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{Id}/clone');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{Id}/clone',
       version: 'v2',
       stub,
@@ -1410,7 +1410,7 @@ describe('hub.notifications', () => {
   it('createSmsTemplate: POST /{version}/notifications/sms/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates',
       version: 'v2',
       stub,
@@ -1433,7 +1433,7 @@ describe('hub.notifications', () => {
   it('deleteSmsTemplate: DELETE /{version}/notifications/sms/templates/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{Id}',
       version: 'v2',
       stub,
@@ -1456,7 +1456,7 @@ describe('hub.notifications', () => {
   it('getSmsTemplate: GET /{version}/notifications/sms/templates/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{id}',
       version: 'v2',
       stub,
@@ -1479,7 +1479,7 @@ describe('hub.notifications', () => {
   it('getSmsTemplates: GET /{version}/notifications/sms/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates',
       version: 'v2',
       stub,
@@ -1502,7 +1502,7 @@ describe('hub.notifications', () => {
   it('getSmsMessageContentTokens: GET /{version}/notifications/sms/templates/{id}/tokens', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{id}/tokens');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{id}/tokens',
       version: 'v2',
       stub,
@@ -1525,7 +1525,7 @@ describe('hub.notifications', () => {
   it('renderSms: POST /{version}/notifications/sms/templates/render', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/render',
       version: 'v2',
       stub,
@@ -1548,7 +1548,7 @@ describe('hub.notifications', () => {
   it('unArchiveSmsTemplate: PUT /{version}/notifications/sms/templates/{Id}/unarchive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/templates/{Id}/unarchive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates/{Id}/unarchive',
       version: 'v2',
       stub,
@@ -1571,7 +1571,7 @@ describe('hub.notifications', () => {
   it('updateSmsTemplate: PUT /{version}/notifications/sms/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/templates',
       version: 'v2',
       stub,
@@ -1594,7 +1594,7 @@ describe('hub.notifications', () => {
   it('getSmsSettings: GET /{version}/notifications/sms/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/settings',
       version: 'v2',
       stub,
@@ -1617,7 +1617,7 @@ describe('hub.notifications', () => {
   it('confirmSmsIntegrationHumanDelivery: POST /{version}/notifications/sms/integrations/confirm-human-delivery', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/confirm-human-delivery',
       version: 'v2',
       stub,
@@ -1640,7 +1640,7 @@ describe('hub.notifications', () => {
   it('deleteSmsIntegration: DELETE /{version}/notifications/sms/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/{Id}',
       version: 'v2',
       stub,
@@ -1663,7 +1663,7 @@ describe('hub.notifications', () => {
   it('disableSmsIntegration: PUT /{version}/notifications/sms/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -1686,7 +1686,7 @@ describe('hub.notifications', () => {
   it('enableSmsIntegration: PUT /{version}/notifications/sms/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -1709,7 +1709,7 @@ describe('hub.notifications', () => {
   it('getSmsIntegration: GET /{version}/notifications/sms/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/{id}',
       version: 'v2',
       stub,
@@ -1732,7 +1732,7 @@ describe('hub.notifications', () => {
   it('getSmsIntegrations: GET /{version}/notifications/sms/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations',
       version: 'v2',
       stub,
@@ -1755,7 +1755,7 @@ describe('hub.notifications', () => {
   it('saveSmsIntegration: POST /{version}/notifications/sms/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations',
       version: 'v2',
       stub,
@@ -1778,7 +1778,7 @@ describe('hub.notifications', () => {
   it('setSmsIntegrationAsDefault: PUT /{version}/notifications/sms/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -1801,7 +1801,7 @@ describe('hub.notifications', () => {
   it('testSmsIntegration: POST /{version}/notifications/sms/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/integrations/test',
       version: 'v2',
       stub,
@@ -1824,7 +1824,7 @@ describe('hub.notifications', () => {
   it('createSmsCampaign: POST /{version}/notifications/sms/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns',
       version: 'v2',
       stub,
@@ -1847,7 +1847,7 @@ describe('hub.notifications', () => {
   it('deleteSmsCampaign: DELETE /{version}/notifications/sms/campaigns/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}',
       version: 'v2',
       stub,
@@ -1870,7 +1870,7 @@ describe('hub.notifications', () => {
   it('getSmsCampaign: GET /{version}/notifications/sms/campaigns/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}',
       version: 'v2',
       stub,
@@ -1893,7 +1893,7 @@ describe('hub.notifications', () => {
   it('getSmsCampaigns: GET /{version}/notifications/sms/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns',
       version: 'v2',
       stub,
@@ -1916,7 +1916,7 @@ describe('hub.notifications', () => {
   it('getSmsCampaignBatches: GET /{version}/notifications/sms/campaigns/{id}/batches', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{id}/batches');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}/batches',
       version: 'v2',
       stub,
@@ -1941,7 +1941,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}',
       version: 'v2',
       stub,
@@ -1966,7 +1966,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/sms/campaigns/{id}/batches/{batchId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}/batches/{batchId}',
       version: 'v2',
       stub,
@@ -1989,7 +1989,7 @@ describe('hub.notifications', () => {
   it('getSmsCampaignStatistics: GET /{version}/notifications/sms/campaigns/{id}/stats', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{id}/stats');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{id}/stats',
       version: 'v2',
       stub,
@@ -2012,7 +2012,7 @@ describe('hub.notifications', () => {
   it('previewSmsNotification: GET /{version}/notifications/sms/preview', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/preview',
       version: 'v2',
       stub,
@@ -2035,7 +2035,7 @@ describe('hub.notifications', () => {
   it('stopSmsCampaign: POST /{version}/notifications/sms/campaigns/{Id}/stop', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{Id}/stop');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{Id}/stop',
       version: 'v2',
       stub,
@@ -2060,7 +2060,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
       version: 'v2',
       stub,
@@ -2083,7 +2083,7 @@ describe('hub.notifications', () => {
   it('getSmsCampaignMessages: GET /{version}/notifications/sms/campaigns/{campaignId}/messages', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{campaignId}/messages');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/sms/campaigns/{campaignId}/messages',
       version: 'v2',
       stub,
@@ -2106,7 +2106,7 @@ describe('hub.notifications', () => {
   it('disablePush: GET /{version}/notifications/push/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/disable',
       version: 'v2',
       stub,
@@ -2129,7 +2129,7 @@ describe('hub.notifications', () => {
   it('getPushDisableDependencies: GET /{version}/notifications/push/disable-dependencies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/disable-dependencies',
       version: 'v2',
       stub,
@@ -2152,7 +2152,7 @@ describe('hub.notifications', () => {
   it('enablePush: GET /{version}/notifications/push/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/enable',
       version: 'v2',
       stub,
@@ -2175,7 +2175,7 @@ describe('hub.notifications', () => {
   it('archivePushTemplate: PUT /{version}/notifications/push/templates/{Id}/archive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{Id}/archive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{Id}/archive',
       version: 'v2',
       stub,
@@ -2198,7 +2198,7 @@ describe('hub.notifications', () => {
   it('clonePushTemplate: POST /{version}/notifications/push/templates/{Id}/clone', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{Id}/clone');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{Id}/clone',
       version: 'v2',
       stub,
@@ -2221,7 +2221,7 @@ describe('hub.notifications', () => {
   it('createPushTemplate: POST /{version}/notifications/push/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates',
       version: 'v2',
       stub,
@@ -2244,7 +2244,7 @@ describe('hub.notifications', () => {
   it('deletePushTemplate: DELETE /{version}/notifications/push/templates/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{Id}',
       version: 'v2',
       stub,
@@ -2267,7 +2267,7 @@ describe('hub.notifications', () => {
   it('getPushTemplate: GET /{version}/notifications/push/templates/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{id}',
       version: 'v2',
       stub,
@@ -2290,7 +2290,7 @@ describe('hub.notifications', () => {
   it('getPushTemplates: GET /{version}/notifications/push/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates',
       version: 'v2',
       stub,
@@ -2313,7 +2313,7 @@ describe('hub.notifications', () => {
   it('getPushMessageContentTokens: GET /{version}/notifications/push/templates/{id}/tokens', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{id}/tokens');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{id}/tokens',
       version: 'v2',
       stub,
@@ -2336,7 +2336,7 @@ describe('hub.notifications', () => {
   it('renderPush: POST /{version}/notifications/push/templates/render', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/render',
       version: 'v2',
       stub,
@@ -2359,7 +2359,7 @@ describe('hub.notifications', () => {
   it('unArchivePushTemplate: PUT /{version}/notifications/push/templates/{Id}/unarchive', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/templates/{Id}/unarchive');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates/{Id}/unarchive',
       version: 'v2',
       stub,
@@ -2382,7 +2382,7 @@ describe('hub.notifications', () => {
   it('updatePushTemplate: PUT /{version}/notifications/push/templates', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/templates',
       version: 'v2',
       stub,
@@ -2405,7 +2405,7 @@ describe('hub.notifications', () => {
   it('getPushSettings: GET /{version}/notifications/push/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/settings',
       version: 'v2',
       stub,
@@ -2428,7 +2428,7 @@ describe('hub.notifications', () => {
   it('confirmPushIntegrationHumanDelivery: POST /{version}/notifications/push/integrations/confirm-human-delivery', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/confirm-human-delivery',
       version: 'v2',
       stub,
@@ -2451,7 +2451,7 @@ describe('hub.notifications', () => {
   it('deletePushIntegration: DELETE /{version}/notifications/push/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/{Id}',
       version: 'v2',
       stub,
@@ -2474,7 +2474,7 @@ describe('hub.notifications', () => {
   it('disablePushIntegration: PUT /{version}/notifications/push/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -2497,7 +2497,7 @@ describe('hub.notifications', () => {
   it('enablePushIntegration: PUT /{version}/notifications/push/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -2520,7 +2520,7 @@ describe('hub.notifications', () => {
   it('getPushIntegration: GET /{version}/notifications/push/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/{id}',
       version: 'v2',
       stub,
@@ -2543,7 +2543,7 @@ describe('hub.notifications', () => {
   it('getPushIntegrations: GET /{version}/notifications/push/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations',
       version: 'v2',
       stub,
@@ -2566,7 +2566,7 @@ describe('hub.notifications', () => {
   it('savePushIntegration: POST /{version}/notifications/push/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations',
       version: 'v2',
       stub,
@@ -2589,7 +2589,7 @@ describe('hub.notifications', () => {
   it('setPushIntegrationAsDefault: PUT /{version}/notifications/push/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -2612,7 +2612,7 @@ describe('hub.notifications', () => {
   it('testPushIntegration: POST /{version}/notifications/push/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/test',
       version: 'v2',
       stub,
@@ -2635,7 +2635,7 @@ describe('hub.notifications', () => {
   it('registerCodeMashAppPushIntegration: POST /{version}/notifications/push/integrations/app/request', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/app/request',
       version: 'v2',
       stub,
@@ -2671,7 +2671,7 @@ describe('hub.notifications', () => {
   it('registerCodeMashAppPushIntegration: succeeds when accountId is configured', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/integrations/app/request',
       version: 'v2',
       stub,
@@ -2693,7 +2693,7 @@ describe('hub.notifications', () => {
   it('registerDevice: POST /{version}/notifications/push/devices', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/devices',
       version: 'v2',
       stub,
@@ -2716,7 +2716,7 @@ describe('hub.notifications', () => {
   it('createPushCampaign: POST /{version}/notifications/push/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns',
       version: 'v2',
       stub,
@@ -2739,7 +2739,7 @@ describe('hub.notifications', () => {
   it('deletePushCampaign: DELETE /{version}/notifications/push/campaigns/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/campaigns/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{Id}',
       version: 'v2',
       stub,
@@ -2762,7 +2762,7 @@ describe('hub.notifications', () => {
   it('getPushCampaign: GET /{version}/notifications/push/campaigns/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/campaigns/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{id}',
       version: 'v2',
       stub,
@@ -2785,7 +2785,7 @@ describe('hub.notifications', () => {
   it('getPushCampaigns: GET /{version}/notifications/push/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns',
       version: 'v2',
       stub,
@@ -2808,7 +2808,7 @@ describe('hub.notifications', () => {
   it('getPushCampaignBatches: GET /{version}/notifications/push/campaigns/{id}/batches', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/campaigns/{id}/batches');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{id}/batches',
       version: 'v2',
       stub,
@@ -2833,7 +2833,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}',
       version: 'v2',
       stub,
@@ -2858,7 +2858,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/push/campaigns/{id}/batches/{batchId}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{id}/batches/{batchId}',
       version: 'v2',
       stub,
@@ -2881,7 +2881,7 @@ describe('hub.notifications', () => {
   it('getPushCampaignStatistics: GET /{version}/notifications/push/campaigns/{id}/stats', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/campaigns/{id}/stats');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{id}/stats',
       version: 'v2',
       stub,
@@ -2904,7 +2904,7 @@ describe('hub.notifications', () => {
   it('previewPushNotification: GET /{version}/notifications/push/preview', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/preview',
       version: 'v2',
       stub,
@@ -2927,7 +2927,7 @@ describe('hub.notifications', () => {
   it('stopPushCampaign: POST /{version}/notifications/push/campaigns/{Id}/stop', async () => {
     const stub = stubRequestForPath('/{version}/notifications/push/campaigns/{Id}/stop');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{Id}/stop',
       version: 'v2',
       stub,
@@ -2952,7 +2952,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
       version: 'v2',
       stub,
@@ -2977,7 +2977,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/push/campaigns/{campaignId}/messages',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/push/campaigns/{campaignId}/messages',
       version: 'v2',
       stub,
@@ -3000,7 +3000,7 @@ describe('hub.notifications', () => {
   it('getUserNotificationPreferences: GET /{version}/notifications/user/preferences', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/user/preferences',
       version: 'v2',
       stub,
@@ -3023,7 +3023,7 @@ describe('hub.notifications', () => {
   it('updateUserNotificationsPreferences: PUT /{version}/notifications/user/preferences', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/user/preferences',
       version: 'v2',
       stub,
@@ -3048,7 +3048,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
       version: 'v2',
       stub,
@@ -3073,7 +3073,7 @@ describe('hub.notifications', () => {
       '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
       version: 'v2',
       stub,

@@ -52,7 +52,7 @@ describe('hub.files', () => {
   it('disableFiles: GET /{version}/files/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/disable',
       version: 'v2',
       stub,
@@ -75,7 +75,7 @@ describe('hub.files', () => {
   it('enableFiles: GET /{version}/files/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/enable',
       version: 'v2',
       stub,
@@ -98,7 +98,7 @@ describe('hub.files', () => {
   it('deleteFilesTrigger: DELETE /{version}/files/triggers/{triggerId}', async () => {
     const stub = stubRequestForPath('/{version}/files/triggers/{triggerId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers/{triggerId}',
       version: 'v2',
       stub,
@@ -121,7 +121,7 @@ describe('hub.files', () => {
   it('disableFilesTrigger: PATCH /{version}/files/triggers/{triggerId}/disable', async () => {
     const stub = stubRequestForPath('/{version}/files/triggers/{triggerId}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers/{triggerId}/disable',
       version: 'v2',
       stub,
@@ -144,7 +144,7 @@ describe('hub.files', () => {
   it('enableFilesTrigger: PATCH /{version}/files/triggers/{triggerId}/enable', async () => {
     const stub = stubRequestForPath('/{version}/files/triggers/{triggerId}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers/{triggerId}/enable',
       version: 'v2',
       stub,
@@ -167,7 +167,7 @@ describe('hub.files', () => {
   it('getFilesTrigger: GET /{version}/files/triggers/{id}', async () => {
     const stub = stubRequestForPath('/{version}/files/triggers/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers/{id}',
       version: 'v2',
       stub,
@@ -190,7 +190,7 @@ describe('hub.files', () => {
   it('getFilesTriggers: GET /{version}/files/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers',
       version: 'v2',
       stub,
@@ -213,7 +213,7 @@ describe('hub.files', () => {
   it('saveFilesTrigger: POST /{version}/files/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/triggers',
       version: 'v2',
       stub,
@@ -236,7 +236,7 @@ describe('hub.files', () => {
   it('deleteFilesIntegration: DELETE /{version}/files/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/files/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/{Id}',
       version: 'v2',
       stub,
@@ -259,7 +259,7 @@ describe('hub.files', () => {
   it('disableFilesIntegration: PUT /{version}/files/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/files/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -282,7 +282,7 @@ describe('hub.files', () => {
   it('enableFilesIntegration: PUT /{version}/files/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/files/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -305,7 +305,7 @@ describe('hub.files', () => {
   it('getFilesIntegration: GET /{version}/files/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/files/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/{id}',
       version: 'v2',
       stub,
@@ -328,7 +328,7 @@ describe('hub.files', () => {
   it('getFilesIntegrations: GET /{version}/files/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations',
       version: 'v2',
       stub,
@@ -351,7 +351,7 @@ describe('hub.files', () => {
   it('saveFilesIntegration: POST /{version}/files/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations',
       version: 'v2',
       stub,
@@ -374,7 +374,7 @@ describe('hub.files', () => {
   it('setFilesIntegrationAsDefault: PUT /{version}/files/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/files/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -397,7 +397,7 @@ describe('hub.files', () => {
   it('testFilesIntegration: POST /{version}/files/integrations/test', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/integrations/test',
       version: 'v2',
       stub,
@@ -420,7 +420,7 @@ describe('hub.files', () => {
   it('getFile: GET /{version}/files/item', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/item',
       version: 'v2',
       stub,
@@ -443,7 +443,7 @@ describe('hub.files', () => {
   it('getFolderFiles: GET /{version}/files/folder', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/files/folder',
       version: 'v2',
       stub,

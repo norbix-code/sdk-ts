@@ -42,7 +42,7 @@ describe('api.files', () => {
   it('commitUpload: POST /{version}/files/{filesIntegrationId}/commit', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/commit');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/commit',
       version: 'v2',
       stub,
@@ -65,7 +65,7 @@ describe('api.files', () => {
   it('deleteFileApi: DELETE /{version}/files/{filesIntegrationId}', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}',
       version: 'v2',
       stub,
@@ -88,7 +88,7 @@ describe('api.files', () => {
   it('deleteManyFilesApi: DELETE /{version}/files/{filesIntegrationId}/bulk', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/bulk');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/bulk',
       version: 'v2',
       stub,
@@ -111,7 +111,7 @@ describe('api.files', () => {
   it('downloadFileApi: GET /{version}/files/{filesIntegrationId}/download', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/download');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/download',
       version: 'v2',
       stub,
@@ -134,7 +134,7 @@ describe('api.files', () => {
   it('getFileInfo: GET /{version}/files/{filesIntegrationId}/info', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/info');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/info',
       version: 'v2',
       stub,
@@ -157,7 +157,7 @@ describe('api.files', () => {
   it('getSignedUrl: GET /{version}/files/{filesIntegrationId}/sign', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/sign');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/sign',
       version: 'v2',
       stub,
@@ -180,7 +180,7 @@ describe('api.files', () => {
   it('listFiles: GET /{version}/files/{filesIntegrationId}', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}',
       version: 'v2',
       stub,
@@ -203,7 +203,7 @@ describe('api.files', () => {
   it('requestUploadUrl: POST /{version}/files/{filesIntegrationId}/upload-url', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/upload-url');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/files/{filesIntegrationId}/upload-url',
       version: 'v2',
       stub,

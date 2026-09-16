@@ -36,7 +36,7 @@ describe('api.public', () => {
   it('getPublicProjectConfig: GET /{version}/public/projects/{ProjectId}/config', async () => {
     const stub = stubRequestForPath('/{version}/public/projects/{ProjectId}/config');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/public/projects/{ProjectId}/config',
       version: 'v2',
       stub,
@@ -59,7 +59,7 @@ describe('api.public', () => {
   it('getPublicProjectLegal: GET /{version}/public/projects/{ProjectId}/legal/{Kind}', async () => {
     const stub = stubRequestForPath('/{version}/public/projects/{ProjectId}/legal/{Kind}');
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/{version}/public/projects/{ProjectId}/legal/{Kind}',
       version: 'v2',
       stub,

@@ -36,7 +36,7 @@ describe('api.apikeys', () => {
   it('getApiKeys: POST /apikeys', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/apikeys',
       version: 'v2',
       stub,
@@ -59,7 +59,7 @@ describe('api.apikeys', () => {
   it('regenerateApiKeys: POST /apikeys/regenerate', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/apikeys/regenerate',
       version: 'v2',
       stub,

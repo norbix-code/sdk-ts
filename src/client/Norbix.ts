@@ -14,8 +14,8 @@ import type {
   ResolvedNorbixConfig,
 } from './types.js';
 
-const DEFAULT_BASE_URL_API = 'https://api.norbix.dev';
-const DEFAULT_BASE_URL_HUB = 'https://hub.norbix.dev';
+const DEFAULT_BASE_URL_API = 'https://api.norbix.ai';
+const DEFAULT_BASE_URL_HUB = 'https://hub.norbix.ai';
 const DEFAULT_VERSION = 'v2';
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_RETRY = { maxRetries: 2, baseDelayMs: 250, maxDelayMs: 5_000 } as const;
@@ -160,8 +160,8 @@ export class Norbix {
 
   /**
    * (Re)compose the base URLs for the configured region. Only the SDK's
-   * default URLs are ever rewritten — `https://api.norbix.dev` becomes
-   * `https://nb-eu-germany.api.norbix.dev` — and clearing the region restores
+   * default URLs are ever rewritten — `https://api.norbix.ai` becomes
+   * `https://nb-eu-germany.api.norbix.ai` — and clearing the region restores
    * the defaults. A user-supplied custom base URL is never touched.
    */
   private applyRegionToBaseUrls(): void {
@@ -381,7 +381,7 @@ function assertHttpUrl(field: string, value: string): void {
 
 /**
  * Compose a regional base URL by prefixing the region code as a subdomain:
- * `https://api.norbix.dev` + `nb-eu-germany` → `https://nb-eu-germany.api.norbix.dev`.
+ * `https://api.norbix.ai` + `nb-eu-germany` → `https://nb-eu-germany.api.norbix.ai`.
  */
 function composeRegionalUrl(region: string, defaultUrl: string): string {
   return defaultUrl.replace('://', `://${region}.`);

@@ -35,7 +35,7 @@ describe('api.auth', () => {
   it('authenticate: POST /auth', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.dev',
+      baseUrl: 'https://api.norbix.io',
       path: '/auth',
       version: 'v2',
       stub,

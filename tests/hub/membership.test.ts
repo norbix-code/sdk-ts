@@ -78,7 +78,7 @@ describe('hub.membership', () => {
   it('disableMembership: GET /{version}/membership/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/disable',
       version: 'v2',
       stub,
@@ -101,7 +101,7 @@ describe('hub.membership', () => {
   it('enableMembership: GET /{version}/membership/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/enable',
       version: 'v2',
       stub,
@@ -124,7 +124,7 @@ describe('hub.membership', () => {
   it('issueServiceUserApiKey: POST /{version}/membership/users/{Id}/api-keys', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{Id}/api-keys');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{Id}/api-keys',
       version: 'v2',
       stub,
@@ -147,7 +147,7 @@ describe('hub.membership', () => {
   it('listServiceUserApiKeys: GET /{version}/membership/users/{Id}/api-keys', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{Id}/api-keys');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{Id}/api-keys',
       version: 'v2',
       stub,
@@ -170,7 +170,7 @@ describe('hub.membership', () => {
   it('deleteServiceUserApiKey: DELETE /{version}/membership/users/{Id}/api-keys/{KeyId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{Id}/api-keys/{KeyId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{Id}/api-keys/{KeyId}',
       version: 'v2',
       stub,
@@ -193,7 +193,7 @@ describe('hub.membership', () => {
   it('deleteMembershipTrigger: DELETE /{version}/membership/triggers/{triggerId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/triggers/{triggerId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers/{triggerId}',
       version: 'v2',
       stub,
@@ -216,7 +216,7 @@ describe('hub.membership', () => {
   it('disableMembershipTrigger: PATCH /{version}/membership/triggers/{triggerId}/disable', async () => {
     const stub = stubRequestForPath('/{version}/membership/triggers/{triggerId}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers/{triggerId}/disable',
       version: 'v2',
       stub,
@@ -239,7 +239,7 @@ describe('hub.membership', () => {
   it('enableMembershipTrigger: PATCH /{version}/membership/triggers/{triggerId}/enable', async () => {
     const stub = stubRequestForPath('/{version}/membership/triggers/{triggerId}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers/{triggerId}/enable',
       version: 'v2',
       stub,
@@ -262,7 +262,7 @@ describe('hub.membership', () => {
   it('getMembershipTrigger: GET /{version}/membership/triggers/{id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/triggers/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers/{id}',
       version: 'v2',
       stub,
@@ -285,7 +285,7 @@ describe('hub.membership', () => {
   it('getMembershipTriggers: GET /{version}/membership/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers',
       version: 'v2',
       stub,
@@ -308,7 +308,7 @@ describe('hub.membership', () => {
   it('saveMembershipTrigger: POST /{version}/membership/triggers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/triggers',
       version: 'v2',
       stub,
@@ -331,7 +331,7 @@ describe('hub.membership', () => {
   it('createRole: POST /{version}/membership/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/roles',
       version: 'v2',
       stub,
@@ -354,7 +354,7 @@ describe('hub.membership', () => {
   it('deleteRole: DELETE /{version}/membership/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/roles',
       version: 'v2',
       stub,
@@ -377,7 +377,7 @@ describe('hub.membership', () => {
   it('getRole: GET /{version}/membership/roles/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/roles/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/roles/{Id}',
       version: 'v2',
       stub,
@@ -400,7 +400,7 @@ describe('hub.membership', () => {
   it('getRoles: GET /{version}/membership/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/roles',
       version: 'v2',
       stub,
@@ -423,7 +423,7 @@ describe('hub.membership', () => {
   it('updateRolePolicies: PATCH /{version}/membership/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/roles',
       version: 'v2',
       stub,
@@ -446,7 +446,7 @@ describe('hub.membership', () => {
   it('createPolicy: POST /{version}/membership/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/policies',
       version: 'v2',
       stub,
@@ -469,7 +469,7 @@ describe('hub.membership', () => {
   it('deletePolicy: DELETE /{version}/membership/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/policies',
       version: 'v2',
       stub,
@@ -492,7 +492,7 @@ describe('hub.membership', () => {
   it('getPolicy: GET /{version}/membership/policies/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/policies/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/policies/{Id}',
       version: 'v2',
       stub,
@@ -515,7 +515,7 @@ describe('hub.membership', () => {
   it('getPolicies: GET /{version}/membership/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/policies',
       version: 'v2',
       stub,
@@ -538,7 +538,7 @@ describe('hub.membership', () => {
   it('updatePolicy: PUT /{version}/membership/policies', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/policies',
       version: 'v2',
       stub,
@@ -561,7 +561,7 @@ describe('hub.membership', () => {
   it('getPasskeySettings: GET /{version}/membership/passkey/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/passkey/settings',
       version: 'v2',
       stub,
@@ -584,7 +584,7 @@ describe('hub.membership', () => {
   it('savePasskeySettings: POST /{version}/membership/passkey/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/passkey/settings',
       version: 'v2',
       stub,
@@ -607,7 +607,7 @@ describe('hub.membership', () => {
   it('deleteMembershipIntegration: DELETE /{version}/membership/integrations/{Id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{Id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations/{Id}',
       version: 'v2',
       stub,
@@ -630,7 +630,7 @@ describe('hub.membership', () => {
   it('disableMembershipIntegration: PUT /{version}/membership/integrations/{Id}/disable', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{Id}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations/{Id}/disable',
       version: 'v2',
       stub,
@@ -653,7 +653,7 @@ describe('hub.membership', () => {
   it('enableMembershipIntegration: PUT /{version}/membership/integrations/{Id}/enable', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{Id}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations/{Id}/enable',
       version: 'v2',
       stub,
@@ -676,7 +676,7 @@ describe('hub.membership', () => {
   it('getMembershipIntegration: GET /{version}/membership/integrations/{id}', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{id}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations/{id}',
       version: 'v2',
       stub,
@@ -699,7 +699,7 @@ describe('hub.membership', () => {
   it('getMembershipIntegrations: GET /{version}/membership/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations',
       version: 'v2',
       stub,
@@ -722,7 +722,7 @@ describe('hub.membership', () => {
   it('saveMembershipIntegration: POST /{version}/membership/integrations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations',
       version: 'v2',
       stub,
@@ -745,7 +745,7 @@ describe('hub.membership', () => {
   it('setMembershipIntegrationAsDefault: PUT /{version}/membership/integrations/{Id}/default', async () => {
     const stub = stubRequestForPath('/{version}/membership/integrations/{Id}/default');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/integrations/{Id}/default',
       version: 'v2',
       stub,
@@ -768,7 +768,7 @@ describe('hub.membership', () => {
   it('getAuthorizationSettings: GET /{version}/membership/authorization', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/authorization',
       version: 'v2',
       stub,
@@ -791,7 +791,7 @@ describe('hub.membership', () => {
   it('updateAuthorizationSettings: PUT /{version}/membership/authorization', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/authorization',
       version: 'v2',
       stub,
@@ -814,7 +814,7 @@ describe('hub.membership', () => {
   it('updatePasswordComplexity: PUT /{version}/membership/authorization/password-complexity', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/authorization/password-complexity',
       version: 'v2',
       stub,
@@ -837,7 +837,7 @@ describe('hub.membership', () => {
   it('getAuthenticationSettings: GET /{version}/membership/authentication', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/authentication',
       version: 'v2',
       stub,
@@ -860,7 +860,7 @@ describe('hub.membership', () => {
   it('updateAuthenticationSettings: PUT /{version}/membership/authentication', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/authentication',
       version: 'v2',
       stub,
@@ -883,7 +883,7 @@ describe('hub.membership', () => {
   it('createContact: POST /{version}/membership/users', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users',
       version: 'v2',
       stub,
@@ -906,7 +906,7 @@ describe('hub.membership', () => {
   it('deleteContact: DELETE /{version}/membership/users/{contactId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{contactId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}',
       version: 'v2',
       stub,
@@ -929,7 +929,7 @@ describe('hub.membership', () => {
   it('getContact: GET /{version}/membership/users/{contactId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{contactId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}',
       version: 'v2',
       stub,
@@ -952,7 +952,7 @@ describe('hub.membership', () => {
   it('getAllContacts: GET /{version}/membership/users', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users',
       version: 'v2',
       stub,
@@ -975,7 +975,7 @@ describe('hub.membership', () => {
   it('mergeContacts: POST /{version}/membership/users/merge', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/merge',
       version: 'v2',
       stub,
@@ -998,7 +998,7 @@ describe('hub.membership', () => {
   it('updateContact: PATCH /{version}/membership/users/{contactId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{contactId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}',
       version: 'v2',
       stub,
@@ -1021,7 +1021,7 @@ describe('hub.membership', () => {
   it('addContactIdentity: POST /{version}/membership/users/{contactId}/identities', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{contactId}/identities');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}/identities',
       version: 'v2',
       stub,
@@ -1046,7 +1046,7 @@ describe('hub.membership', () => {
       '/{version}/membership/users/{contactId}/identities/{authId}/promote',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}/identities/{authId}/promote',
       version: 'v2',
       stub,
@@ -1069,7 +1069,7 @@ describe('hub.membership', () => {
   it('removeContactIdentity: DELETE /{version}/membership/users/{contactId}/identities/{authId}', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{contactId}/identities/{authId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/membership/users/{contactId}/identities/{authId}',
       version: 'v2',
       stub,

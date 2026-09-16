@@ -43,7 +43,7 @@ describe('hub.webhooks', () => {
   it('getWebhookIntegration: GET /{version}/webhooks/integration', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/integration',
       version: 'v2',
       stub,
@@ -66,7 +66,7 @@ describe('hub.webhooks', () => {
   it('revealWebhookIntegrationSecret: GET /{version}/webhooks/integration/secret', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/integration/secret',
       version: 'v2',
       stub,
@@ -89,7 +89,7 @@ describe('hub.webhooks', () => {
   it('rotateWebhookIntegrationSecret: POST /{version}/webhooks/integration/secret/rotate', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/integration/secret/rotate',
       version: 'v2',
       stub,
@@ -112,7 +112,7 @@ describe('hub.webhooks', () => {
   it('updateWebhookIntegrationExtraHeaders: PUT /{version}/webhooks/integration/extra-headers', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/integration/extra-headers',
       version: 'v2',
       stub,
@@ -135,7 +135,7 @@ describe('hub.webhooks', () => {
   it('receiveWebhook: POST /{version}/webhooks/{source}/{integrationInstanceId}', async () => {
     const stub = stubRequestForPath('/{version}/webhooks/{source}/{integrationInstanceId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/{source}/{integrationInstanceId}',
       version: 'v2',
       stub,
@@ -158,7 +158,7 @@ describe('hub.webhooks', () => {
   it('disableWebhookDestination: PUT /{version}/webhooks/destinations/{DestinationId}/disable', async () => {
     const stub = stubRequestForPath('/{version}/webhooks/destinations/{DestinationId}/disable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/destinations/{DestinationId}/disable',
       version: 'v2',
       stub,
@@ -181,7 +181,7 @@ describe('hub.webhooks', () => {
   it('enableWebhookDestination: PUT /{version}/webhooks/destinations/{DestinationId}/enable', async () => {
     const stub = stubRequestForPath('/{version}/webhooks/destinations/{DestinationId}/enable');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/destinations/{DestinationId}/enable',
       version: 'v2',
       stub,
@@ -204,7 +204,7 @@ describe('hub.webhooks', () => {
   it('removeWebhookDestination: DELETE /{version}/webhooks/destinations/{DestinationId}', async () => {
     const stub = stubRequestForPath('/{version}/webhooks/destinations/{DestinationId}');
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/destinations/{DestinationId}',
       version: 'v2',
       stub,
@@ -227,7 +227,7 @@ describe('hub.webhooks', () => {
   it('saveWebhookDestination: POST /{version}/webhooks/destinations', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/webhooks/destinations',
       version: 'v2',
       stub,

@@ -37,7 +37,7 @@ describe('hub.licensing', () => {
   it('startLicenseDomainVerification: POST /{version}/licensing/domain-verification/start', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/licensing/domain-verification/start',
       version: 'v2',
       stub,
@@ -60,7 +60,7 @@ describe('hub.licensing', () => {
   it('getLicenseDomainVerificationStatus: GET /{version}/licensing/domain-verification/status', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/licensing/domain-verification/status',
       version: 'v2',
       stub,
@@ -83,7 +83,7 @@ describe('hub.licensing', () => {
   it('postLicenseHeartbeat: POST /{version}/licensing/heartbeat', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/licensing/heartbeat',
       version: 'v2',
       stub,

@@ -52,7 +52,7 @@ describe('hub.compliance', () => {
   it('getComplianceSettings: GET /{version}/compliance/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/settings',
       version: 'v2',
       stub,
@@ -75,7 +75,7 @@ describe('hub.compliance', () => {
   it('removeRetentionWindow: DELETE /{version}/compliance/retention', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/retention',
       version: 'v2',
       stub,
@@ -98,7 +98,7 @@ describe('hub.compliance', () => {
   it('saveRetentionWindow: POST /{version}/compliance/retention', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/retention',
       version: 'v2',
       stub,
@@ -121,7 +121,7 @@ describe('hub.compliance', () => {
   it('assignRegime: POST /{version}/compliance/regimes', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/regimes',
       version: 'v2',
       stub,
@@ -144,7 +144,7 @@ describe('hub.compliance', () => {
   it('clearRegime: DELETE /{version}/compliance/regimes', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/regimes',
       version: 'v2',
       stub,
@@ -167,7 +167,7 @@ describe('hub.compliance', () => {
   it('defineConsentPurpose: POST /{version}/compliance/purposes', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/purposes',
       version: 'v2',
       stub,
@@ -190,7 +190,7 @@ describe('hub.compliance', () => {
   it('deprecateConsentPurpose: POST /{version}/compliance/purposes/deprecate', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/purposes/deprecate',
       version: 'v2',
       stub,
@@ -213,7 +213,7 @@ describe('hub.compliance', () => {
   it('getLegalHolds: GET /{version}/compliance/holds', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/holds',
       version: 'v2',
       stub,
@@ -236,7 +236,7 @@ describe('hub.compliance', () => {
   it('placeLegalHold: POST /{version}/compliance/holds', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/holds',
       version: 'v2',
       stub,
@@ -259,7 +259,7 @@ describe('hub.compliance', () => {
   it('releaseLegalHold: POST /{version}/compliance/holds/release', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/holds/release',
       version: 'v2',
       stub,
@@ -282,7 +282,7 @@ describe('hub.compliance', () => {
   it('approveDsarRequest: POST /{version}/compliance/dsar/approve', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/dsar/approve',
       version: 'v2',
       stub,
@@ -305,7 +305,7 @@ describe('hub.compliance', () => {
   it('rejectDsarRequest: POST /{version}/compliance/dsar/reject', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/dsar/reject',
       version: 'v2',
       stub,
@@ -328,7 +328,7 @@ describe('hub.compliance', () => {
   it('getDsarRequests: GET /{version}/compliance/dsar', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/dsar',
       version: 'v2',
       stub,
@@ -351,7 +351,7 @@ describe('hub.compliance', () => {
   it('openDsarRequest: POST /{version}/compliance/dsar', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/dsar',
       version: 'v2',
       stub,
@@ -374,7 +374,7 @@ describe('hub.compliance', () => {
   it('getComplianceAuditLog: GET /{version}/compliance/audit', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/audit',
       version: 'v2',
       stub,
@@ -397,7 +397,7 @@ describe('hub.compliance', () => {
   it('getAccountCompliance: GET /{version}/compliance/account', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/account',
       version: 'v2',
       stub,
@@ -420,7 +420,7 @@ describe('hub.compliance', () => {
   it('saveDsarPolicy: POST /{version}/compliance/account/dsar-policy', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/account/dsar-policy',
       version: 'v2',
       stub,
@@ -443,7 +443,7 @@ describe('hub.compliance', () => {
   it('saveIncidentRouting: POST /{version}/compliance/account/incident-routing', async () => {
     const stub = {};
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.dev',
+      baseUrl: 'https://hub.norbix.io',
       path: '/{version}/compliance/account/incident-routing',
       version: 'v2',
       stub,
