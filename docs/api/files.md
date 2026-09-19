@@ -8,17 +8,18 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 
 ## Endpoints
 
-| Method                                      | Verb     | Path                                               | Scope     |
-| ------------------------------------------- | -------- | -------------------------------------------------- | --------- |
-| [`commitUpload`](#commitupload)             | `POST`   | `/{version}/files/{filesIntegrationId}/commit`     | `project` |
-| [`deleteFileApi`](#deletefileapi)           | `DELETE` | `/{version}/files/{filesIntegrationId}`            | `project` |
-| [`deleteManyFilesApi`](#deletemanyfilesapi) | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk`       | `project` |
-| [`downloadFileApi`](#downloadfileapi)       | `GET`    | `/{version}/files/{filesIntegrationId}/download`   | `project` |
-| [`getFileInfo`](#getfileinfo)               | `GET`    | `/{version}/files/{filesIntegrationId}/info`       | `project` |
-| [`getPublicFile`](#getpublicfile)           | `GET`    | `/{version}/files/public/{publicId}/{name}`        | none      |
-| [`getSignedUrl`](#getsignedurl)             | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
-| [`listFiles`](#listfiles)                   | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
-| [`requestUploadUrl`](#requestuploadurl)     | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
+| Method                                          | Verb     | Path                                               | Scope     |
+| ----------------------------------------------- | -------- | -------------------------------------------------- | --------- |
+| [`commitUpload`](#commitupload)                 | `POST`   | `/{version}/files/{filesIntegrationId}/commit`     | `project` |
+| [`deleteFileApi`](#deletefileapi)               | `DELETE` | `/{version}/files/{filesIntegrationId}`            | `project` |
+| [`deleteManyFilesApi`](#deletemanyfilesapi)     | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk`       | `project` |
+| [`downloadFileApi`](#downloadfileapi)           | `GET`    | `/{version}/files/{filesIntegrationId}/download`   | `project` |
+| [`getFileInfo`](#getfileinfo)                   | `GET`    | `/{version}/files/{filesIntegrationId}/info`       | `project` |
+| [`getPublicFile`](#getpublicfile)               | `GET`    | `/{version}/files/public/{publicId}/{name}`        | none      |
+| [`getSignedUrl`](#getsignedurl)                 | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
+| [`listFiles`](#listfiles)                       | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
+| [`requestUploadUrl`](#requestuploadurl)         | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
+| [`testFilesIntegration`](#testfilesintegration) | `POST`   | `/{version}/files/{filesIntegrationId}/test`       | `project` |
 
 ## Reference
 
@@ -248,5 +249,52 @@ Making a file or a folder public is a dashboard operation, on the Hub side:
 > `fetch`, `curl`, an `<img>` tag — so you do not need this SDK, or a Norbix
 > client at all, to open one. The method is here for code that already has a
 > client in its hands.
+
+[↑ Top](#endpoints)
+
+### testFilesIntegration
+
+`POST` `/{version}/files/{filesIntegrationId}/test`
+
+Runs a live test against a files integration. The gateway uploads a small file,
+reads it, lists the folder and deletes the file again, and answers one item per
+step:
+
+| `operation`   | what it checks                 |
+| ------------- | ------------------------------ |
+| `UploadFile`  | the storage accepts a new file |
+| `GetFile`     | the file can be read back      |
+| `GetAllFiles` | the folder can be listed       |
+| `DeleteFile`  | the test file can be removed   |
+
+`result` is `OK`, `FAILED` (then `errors` says why) or `NOT_TESTED` (skipped,
+because an earlier step failed). The call needs the `files:create` permission,
+because the test writes to the storage.
+
+This is the API-side twin of the dashboard's
+[`hub.files.testFilesIntegration`](../hub/files.md#testfilesintegration)
+(`POST /{version}/files/integrations/test`, integration id in the body). Use
+this one from an app or a script that signs in with an API key.
+
+**Request DTO**: `CodeMashApi2.TestFilesIntegrationRequest`
+**Response**: `CodeMashApi2.TestFilesIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.files.testFilesIntegration({
+  filesIntegrationId: 'filesIntegrationId-here',
+});
+
+for (const step of result.items ?? []) {
+  console.log(step.operation, step.result, step.errors ?? []);
+}
+// → UploadFile OK []
+//   GetFile OK []
+//   GetAllFiles OK []
+//   DeleteFile OK []
+```
 
 [↑ Top](#endpoints)

@@ -2133,6 +2133,45 @@ export module CodeMashApi2 {
     }
   }
 
+  /**
+   * One step of an integration test (upload, read, list, delete …).
+   * Hand-added by 10b-files slice API-TEST, in the shape the generator
+   * produces; the Hub file carries the same class.
+   */
+  // @DataContract
+  export class IntegrationTestResultItemDto {
+    /** @description The step that ran: UploadFile, GetFile, GetAllFiles or DeleteFile. */
+    // @DataMember
+    public operation: string;
+
+    /** @description "OK", "FAILED", or "NOT_TESTED" (skipped because an earlier step failed). */
+    // @DataMember
+    public result: string;
+
+    /** @description Why the step failed. Empty or missing when it worked. */
+    // @DataMember
+    public errors?: string[];
+
+    public constructor(init?: Partial<IntegrationTestResultItemDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  /**
+   * The answer of TestFilesIntegrationRequest: one item per probe step.
+   * Hand-added by 10b-files slice API-TEST.
+   */
+  // @DataContract
+  export class TestFilesIntegrationResponse extends ResponseBase {
+    // @DataMember
+    public items?: IntegrationTestResultItemDto[];
+
+    public constructor(init?: Partial<TestFilesIntegrationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class AuthenticateResponse implements IHasSessionId, IHasBearerToken {
     // @DataMember(Order=1)
@@ -4945,6 +4984,37 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new RequestUploadUrlResponse();
+    }
+  }
+
+  /**
+   * Files — runs a live probe (upload a small file, read it, list the folder,
+   * delete it) against a files integration. Hand-added by 10b-files slice
+   * API-TEST (#39), in the shape the generator produces, so that
+   * `npm run generate-endpoints` would emit the same method.
+   */
+  // @Route("/{version}/files/{filesIntegrationId}/test", "POST")
+  // @Api(Description="Files")
+  // @DataContract
+  export class TestFilesIntegrationRequest
+    extends CodeMashRequestBase
+    implements IReturn<TestFilesIntegrationResponse>
+  {
+    // @DataMember
+    public filesIntegrationId: string;
+
+    public constructor(init?: Partial<TestFilesIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TestFilesIntegrationRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new TestFilesIntegrationResponse();
     }
   }
 

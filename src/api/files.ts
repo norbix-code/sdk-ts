@@ -204,4 +204,40 @@ export class FilesModule {
       ...options,
     });
   };
+
+  // ---------------------------------------------------------------------
+  // Integration test on the API surface (10b-files slice API-TEST, #39).
+  // Hand-added in exactly the shape `npm run generate-endpoints` emits for
+  // the TestFilesIntegrationRequest DTO, so a regeneration gives the same
+  // method back.
+  // ---------------------------------------------------------------------
+
+  /**
+   * POST /{version}/files/{filesIntegrationId}/test
+   * Request DTO: TestFilesIntegrationRequest
+   *
+   * Runs a live probe against the files integration: uploads a small file,
+   * reads it, lists the folder and deletes the file again. Answers one item
+   * per step (`UploadFile`, `GetFile`, `GetAllFiles`, `DeleteFile`) with
+   * `result` = `OK`, `FAILED` or `NOT_TESTED` (skipped after an earlier
+   * failure) and the step's `errors`. Asks the `files:create` permission,
+   * because the probe writes to the storage.
+   *
+   * Not the same endpoint as `hub.files.testFilesIntegration`
+   * (`POST /{version}/files/integrations/test`, the dashboard one).
+   */
+  testFilesIntegration = (
+    request: Partial<CodeMashApi2.TestFilesIntegrationRequest> = {} as Partial<CodeMashApi2.TestFilesIntegrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.TestFilesIntegrationResponse> => {
+    return this.transport.send<CodeMashApi2.TestFilesIntegrationResponse>({
+      target: 'api',
+      path: '/{version}/files/{filesIntegrationId}/test',
+      method: 'POST',
+      request,
+      pathParams: ['filesIntegrationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
 }

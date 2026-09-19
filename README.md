@@ -325,7 +325,7 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 | 🔐 `auth`        | Sign-in flows. Most apps prefer `norbix.login(...)`.                                          | [`docs/api/auth.md`](./docs/api/auth.md)                 |
 | 👤 `membership`  | User CRUD, registration, login, passkeys, email verification, magic links, roles, preferences | [`docs/api/membership.md`](./docs/api/membership.md)     |
 | 🗄️ `database`    | Collections, find/insert/update/delete, aggregate, taxonomies                                 | [`docs/api/database.md`](./docs/api/database.md)         |
-| 📁 `files`       | Signed upload URLs, download, file info, listing                                              | [`docs/api/files.md`](./docs/api/files.md)               |
+| 📁 `files`       | Signed upload URLs, download, file info, listing, integration test                            | [`docs/api/files.md`](./docs/api/files.md)               |
 | 🤖 `chat`        | AI chat completion                                                                            | [`docs/api/chat.md`](./docs/api/chat.md)                 |
 | 🔑 `apikeys`     | List + regenerate per-environment API keys                                                    | [`docs/api/apikeys.md`](./docs/api/apikeys.md)           |
 | 🪪 `accessToken` | Refresh-token exchange                                                                        | [`docs/api/access_token.md`](./docs/api/access_token.md) |
