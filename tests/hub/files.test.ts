@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.files (18 endpoints).
+ * Tests for hub.files (22 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.files', () => {
-  it('module exposes 18 method(s)', () => {
+  it('module exposes 22 method(s)', () => {
     const mock = createMockFetch();
     const mod = new FilesModule({} as never);
     void mod; // silence unused — we only need the type
@@ -37,6 +37,10 @@ describe('hub.files', () => {
     expect(typeof ns['getFilesTrigger']).toBe('function');
     expect(typeof ns['getFilesTriggers']).toBe('function');
     expect(typeof ns['saveFilesTrigger']).toBe('function');
+    expect(typeof ns['makeFilePrivate']).toBe('function');
+    expect(typeof ns['makeFilePublic']).toBe('function');
+    expect(typeof ns['makeFolderPrivate']).toBe('function');
+    expect(typeof ns['makeFolderPublic']).toBe('function');
     expect(typeof ns['deleteFilesIntegration']).toBe('function');
     expect(typeof ns['disableFilesIntegration']).toBe('function');
     expect(typeof ns['enableFilesIntegration']).toBe('function');
@@ -225,6 +229,98 @@ describe('hub.files', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['files']!['saveFilesTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('makeFilePrivate: POST /{version}/files/item/private', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/files/item/private',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['makeFilePrivate']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('makeFilePublic: POST /{version}/files/item/public', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/files/item/public',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['makeFilePublic']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('makeFolderPrivate: POST /{version}/files/folder/private', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/files/folder/private',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['makeFolderPrivate']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('makeFolderPublic: POST /{version}/files/folder/public', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/files/folder/public',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['makeFolderPublic']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

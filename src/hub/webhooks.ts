@@ -94,8 +94,8 @@ export class WebhooksModule {
   receiveWebhook = (
     request: Partial<CodeMashHub2.ReceiveWebhook> = {} as Partial<CodeMashHub2.ReceiveWebhook>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.HttpResult> => {
-    return this.transport.send<CodeMashHub2.HttpResult>({
+  ): Promise<void> => {
+    return this.transport.send<void>({
       target: 'hub',
       path: '/{version}/webhooks/{source}/{integrationInstanceId}',
       method: 'POST',

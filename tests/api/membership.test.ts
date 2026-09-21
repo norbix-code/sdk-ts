@@ -53,6 +53,9 @@ describe('api.membership', () => {
     expect(typeof ns['unsubscribeContact']).toBe('function');
     expect(typeof ns['updateUser']).toBe('function');
     expect(typeof ns['updateUserPreferences']).toBe('function');
+    expect(typeof ns['changePassword']).toBe('function');
+    expect(typeof ns['requestPasswordReset']).toBe('function');
+    expect(typeof ns['confirmPasswordReset']).toBe('function');
     expect(typeof ns['passkeyAuthenticationOptions']).toBe('function');
     expect(typeof ns['verifyPasskeyAuthentication']).toBe('function');
     expect(typeof ns['listPasskeys']).toBe('function');
@@ -68,9 +71,6 @@ describe('api.membership', () => {
     expect(typeof ns['verifyPasskeyRegistration']).toBe('function');
     expect(typeof ns['refreshPasskeyToken']).toBe('function');
     expect(typeof ns['passkeyLogout']).toBe('function');
-    expect(typeof ns['changePassword']).toBe('function');
-    expect(typeof ns['requestPasswordReset']).toBe('function');
-    expect(typeof ns['confirmPasswordReset']).toBe('function');
   });
 
   it('blockUser: PATCH /{version}/membership/auth/block', async () => {
@@ -631,6 +631,75 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('changePassword: POST /{version}/membership/userauth/password/change', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/userauth/password/change',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['changePassword']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('requestPasswordReset: POST /{version}/membership/userauth/password/reset/request', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/userauth/password/reset/request',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['requestPasswordReset']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('confirmPasswordReset: POST /{version}/membership/userauth/password/reset/confirm', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/userauth/password/reset/confirm',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['confirmPasswordReset']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('passkeyAuthenticationOptions: POST /{version}/membership/userauth/passkey/authentication-options', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -972,75 +1041,6 @@ describe('api.membership', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['membership']!['passkeyLogout']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('changePassword: POST /{version}/membership/userauth/password/change', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.io',
-      path: '/{version}/membership/userauth/password/change',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.api as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['changePassword']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('requestPasswordReset: POST /{version}/membership/userauth/password/reset/request', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.io',
-      path: '/{version}/membership/userauth/password/reset/request',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.api as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['requestPasswordReset']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('confirmPasswordReset: POST /{version}/membership/userauth/password/reset/confirm', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.io',
-      path: '/{version}/membership/userauth/password/reset/confirm',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.api as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['confirmPasswordReset']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

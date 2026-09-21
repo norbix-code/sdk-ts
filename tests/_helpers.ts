@@ -81,6 +81,18 @@ export function makeClient(overrides: Partial<NorbixConfig> = {}) {
 }
 
 /**
+ * The field name a `{token}` in a route reads from the request.
+ *
+ * A trailing `*` marks a catch-all segment (`{Name*}`) — it is part of the
+ * route grammar, not of the field name, so the request carries `name`, not
+ * `name*`. Leaving the star in made every catch-all route fail with
+ * "Missing path parameter".
+ */
+function tokenField(token: string): string {
+  return token.endsWith('*') ? token.slice(0, -1) : token;
+}
+
+/**
  * Walk a parameterised path template and produce a stub request object that
  * fills every `{token}` (other than `{version}`) with a deterministic value.
  * Used by generated tests to exercise path-token interpolation.
@@ -91,7 +103,8 @@ export function stubRequestForPath(path: string): Record<string, string> {
   let m: RegExpExecArray | null;
   while ((m = re.exec(path)) !== null) {
     if (m[1] === 'version') continue;
-    stub[m[1]!] = `stub-${m[1]}`;
+    const field = tokenField(m[1]!);
+    stub[field] = `stub-${field}`;
   }
   return stub;
 }
@@ -109,8 +122,9 @@ export function expectedUrl(args: {
 }): string {
   let path = args.path.replace('{version}', encodeURIComponent(args.version));
   path = path.replace(/\{([^/{}]+)\}/g, (_match, token: string) => {
-    const v = args.stub[token];
-    if (v === undefined) throw new Error(`stub missing token ${token}`);
+    const field = tokenField(token);
+    const v = args.stub[field];
+    if (v === undefined) throw new Error(`stub missing token ${field}`);
     return encodeURIComponent(v);
   });
   const base = args.baseUrl.endsWith('/') ? args.baseUrl.slice(0, -1) : args.baseUrl;

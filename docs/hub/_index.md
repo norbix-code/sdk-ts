@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**497 endpoints across 24 modules.** Click a module
+**501 endpoints across 24 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -20,7 +20,7 @@ name for the full method reference and TypeScript examples.
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`email`](./email.md)                 |         1 |                                                                                                                                          |
-| [`files`](./files.md)                 |        18 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
+| [`files`](./files.md)                 |        22 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
 | [`internal`](./internal.md)           |         1 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        14 | Logging integrations and module on/off switches.                                                                                         |

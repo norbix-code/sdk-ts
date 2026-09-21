@@ -70,90 +70,90 @@ Each item lists status, impact, and evidence.
 
 ### 3.1 Config, initialization, and runtime safety
 
-1. **Add config validation for URL/timeouts**  
-   - Status: `Open`  
-   - Impact: Medium  
+1. **Add config validation for URL/timeouts**
+   - Status: `Open`
+   - Impact: Medium
    - Evidence: constructor validates `projectId` and `fetch`, but does not validate URL shape in `src/client/Norbix.ts`.
 
-2. **Provide static factories (`Norbix.fromEnv`, `Norbix.create`)**  
-   - Status: `Open`  
-   - Impact: Low  
+2. **Provide static factories (`Norbix.fromEnv`, `Norbix.create`)**
+   - Status: `Open`
+   - Impact: Low
    - Evidence: single constructor entrypoint currently.
 
-3. **Redact sensitive fields in config inspection API**  
-   - Status: `Open`  
-   - Impact: Medium  
+3. **Redact sensitive fields in config inspection API**
+   - Status: `Open`
+   - Impact: Medium
    - Evidence: `getConfig()` returns raw resolved config including secrets.
 
-4. **Add client clone/with-scope constructor for SSR request isolation**  
-   - Status: `Open`  
-   - Impact: High  
+4. **Add client clone/with-scope constructor for SSR request isolation**
+   - Status: `Open`
+   - Impact: High
    - Evidence: mutable shared config pattern in `Norbix` + `Transport` can leak token changes across request contexts in singleton server usage.
 
 ### 3.2 API surface ergonomics and typing
 
-5. **Add a hand-written resource-style API over generated modules**  
-   - Status: `Open`  
-   - Impact: High  
+5. **Add a hand-written resource-style API over generated modules**
+   - Status: `Open`
+   - Impact: High
    - Evidence: primary call site remains endpoint-DTO shaped (`norbix.api.database.find({...})`) without narrow ergonomic layer.
 
-6. **Tighten required-field typing (reduce broad `Partial<DTO>`)**  
-   - Status: `Open`  
-   - Impact: High  
+6. **Tighten required-field typing (reduce broad `Partial<DTO>`)**
+   - Status: `Open`
+   - Impact: High
    - Evidence: many generated methods default to `Partial<DTO>`, allowing runtime-only validation failures.
 
-7. **Add pagination iterator helpers for list/find patterns**  
-   - Status: `Open`  
-   - Impact: Medium  
+7. **Add pagination iterator helpers for list/find patterns**
+   - Status: `Open`
+   - Impact: Medium
    - Evidence: no helper abstraction in client layer; users handle pagination loops manually.
 
-8. **Document subpath imports for targeted consumption**  
-   - Status: `Partial`  
-   - Impact: Low  
+8. **Document subpath imports for targeted consumption**
+   - Status: `Partial`
+   - Impact: Low
    - Evidence: package export map supports subpaths; examples are limited in top-level docs.
 
 ### 3.3 Auth and reliability
 
-9. **Support refresh-token-aware 401 retry flow**  
-   - Status: `Open`  
-   - Impact: High  
+9. **Support refresh-token-aware 401 retry flow**
+   - Status: `Open`
+   - Impact: High
    - Evidence: transport currently returns non-2xx errors directly and does not retry on 401.
 
-10. **Retry/backoff for transient failures (5xx/429 + `Retry-After`)**  
-    - Status: `Open`  
-    - Impact: High  
+10. **Retry/backoff for transient failures (5xx/429 + `Retry-After`)**
+    - Status: `Open`
+    - Impact: High
     - Evidence: no retry loop in `Transport.send`.
 
-11. **Upgrade hooks to middleware/interceptor chain**  
-    - Status: `Open`  
-    - Impact: Medium  
+11. **Upgrade hooks to middleware/interceptor chain**
+    - Status: `Open`
+    - Impact: Medium
     - Evidence: current `onRequest` / `onResponse` are observational callbacks.
 
-12. **Split error types for robust catch patterns**  
-    - Status: `Open`  
-    - Impact: Medium  
+12. **Split error types for robust catch patterns**
+    - Status: `Open`
+    - Impact: Medium
     - Evidence: single `NorbixError` class today.
 
 ### 3.4 Generation quality and docs alignment
 
-13. **Remove generated DTO `ts-nocheck` usage**  
-    - Status: `Open`  
-    - Impact: Medium  
+13. **Remove generated DTO `ts-nocheck` usage**
+    - Status: `Open`
+    - Impact: Medium
     - Evidence: generated DTO files are not fully type-checked.
 
-14. **Fix path-param casing drift at generator source**  
-    - Status: `Open`  
-    - Impact: Medium  
+14. **Fix path-param casing drift at generator source**
+    - Status: `Open`
+    - Impact: Medium
     - Evidence: case-insensitive lookup in transport currently masks inconsistent generated key casing.
 
-15. **Per-call token override in transport**  
-    - Status: `Done`  
-    - Impact: High  
+15. **Per-call token override in transport**
+    - Status: `Done`
+    - Impact: High
     - Evidence: request options include `bearerToken`/`timeoutMs` override and this is active in transport logic.
 
-16. **Refresh stale coverage/missing-action docs claims**  
-    - Status: `Partial`  
-    - Impact: Medium  
+16. **Refresh stale coverage/missing-action docs claims**
+    - Status: `Partial`
+    - Impact: Medium
     - Evidence: generated docs show current coverage; some top-level README wording still reflects old “missing actions” table style.
 
 ---

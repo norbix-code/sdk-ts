@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 8
+ * Endpoints: 12
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -26,6 +26,45 @@ export class FilesModule {
       request,
       pathParams: ['filesIntegrationId'],
       scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/{filesIntegrationId}/content
+   * Request DTO: GetFileContentRequest
+   */
+  getFileContent = (
+    request: Partial<CodeMashApi2.GetFileContentRequest> = {} as Partial<CodeMashApi2.GetFileContentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<Uint8Array> => {
+    return this.transport.send<Uint8Array>({
+      target: 'api',
+      path: '/{version}/files/{filesIntegrationId}/content',
+      method: 'GET',
+      request,
+      pathParams: ['filesIntegrationId'],
+      scope: 'unauthenticated',
+      responseType: 'binary',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/files/{filesIntegrationId}/content
+   * Request DTO: PutFileContentRequest
+   */
+  putFileContent = (
+    request: Partial<CodeMashApi2.PutFileContentRequest> = {} as Partial<CodeMashApi2.PutFileContentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/files/{filesIntegrationId}/content',
+      method: 'PUT',
+      request,
+      pathParams: ['filesIntegrationId'],
+      scope: 'unauthenticated',
       ...options,
     });
   };
@@ -75,14 +114,15 @@ export class FilesModule {
   downloadFileApi = (
     request: Partial<CodeMashApi2.DownloadFileApiRequest> = {} as Partial<CodeMashApi2.DownloadFileApiRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.Blob> => {
-    return this.transport.send<CodeMashApi2.Blob>({
+  ): Promise<Uint8Array> => {
+    return this.transport.send<Uint8Array>({
       target: 'api',
       path: '/{version}/files/{filesIntegrationId}/download',
       method: 'GET',
       request,
       pathParams: ['filesIntegrationId'],
       scope: 'project',
+      responseType: 'binary',
       ...options,
     });
   };
@@ -145,6 +185,26 @@ export class FilesModule {
   };
 
   /**
+   * GET /{version}/files/public/{PublicId}/{Name*}
+   * Request DTO: GetPublicFileRequest
+   */
+  getPublicFile = (
+    request: Partial<CodeMashApi2.GetPublicFileRequest> = {} as Partial<CodeMashApi2.GetPublicFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<Uint8Array> => {
+    return this.transport.send<Uint8Array>({
+      target: 'api',
+      path: '/{version}/files/public/{PublicId}/{Name*}',
+      method: 'GET',
+      request,
+      pathParams: ['PublicId', 'Name*'],
+      scope: 'unauthenticated',
+      responseType: 'binary',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/files/{filesIntegrationId}/upload-url
    * Request DTO: RequestUploadUrlRequest
    */
@@ -163,68 +223,9 @@ export class FilesModule {
     });
   };
 
-  // ---------------------------------------------------------------------
-  // The public file link (10b-files slice PUB). Hand-added by slice SDK-2.
-  // ---------------------------------------------------------------------
-
-  /**
-   * GET /{version}/files/public/{publicId}/{name}
-   * Request DTO: GetPublicFileRequest
-   *
-   * Reads a file somebody made public. **No sign-in and no project id**: this
-   * call deliberately goes out with no `Authorization` header (`scope:
-   * 'unauthenticated'`), because the link has to work in an e-mail, in an
-   * `<img src>`, or in a browser on a stranger's phone. The unguessable
-   * `nbpf_…` id is the whole credential.
-   *
-   * Answers with the file's raw bytes as a `Uint8Array`. When the storage
-   * provider can sign its own links (Amazon S3, Azure Blob, Google Cloud
-   * Storage) the gateway replies `302` and `fetch` follows it, so the bytes
-   * come straight from the provider and never pass through Norbix.
-   *
-   * Every miss — unknown id, wrong name, made private again, file gone — is
-   * the same plain `404`. That is deliberate: a more precise answer would
-   * tell a stranger that the file exists.
-   *
-   * `name` is the file's name for a file link, or the path inside the folder
-   * for a folder link (`2026/q1/report.pdf`); its slashes stay slashes.
-   */
-  getPublicFile = (
-    request: Partial<CodeMashApi2.GetPublicFileRequest> = {} as Partial<CodeMashApi2.GetPublicFileRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<Uint8Array> => {
-    return this.transport.send<Uint8Array>({
-      target: 'api',
-      path: '/{version}/files/public/{publicId}/{name*}',
-      method: 'GET',
-      request,
-      pathParams: ['publicId', 'name'],
-      scope: 'unauthenticated',
-      responseType: 'binary',
-      ...options,
-    });
-  };
-
-  // ---------------------------------------------------------------------
-  // Integration test on the API surface (10b-files slice API-TEST, #39).
-  // Hand-added in exactly the shape `npm run generate-endpoints` emits for
-  // the TestFilesIntegrationRequest DTO, so a regeneration gives the same
-  // method back.
-  // ---------------------------------------------------------------------
-
   /**
    * POST /{version}/files/{filesIntegrationId}/test
    * Request DTO: TestFilesIntegrationRequest
-   *
-   * Runs a live probe against the files integration: uploads a small file,
-   * reads it, lists the folder and deletes the file again. Answers one item
-   * per step (`UploadFile`, `GetFile`, `GetAllFiles`, `DeleteFile`) with
-   * `result` = `OK`, `FAILED` or `NOT_TESTED` (skipped after an earlier
-   * failure) and the step's `errors`. Asks the `files:create` permission,
-   * because the probe writes to the storage.
-   *
-   * Not the same endpoint as `hub.files.testFilesIntegration`
-   * (`POST /{version}/files/integrations/test`, the dashboard one).
    */
   testFilesIntegration = (
     request: Partial<CodeMashApi2.TestFilesIntegrationRequest> = {} as Partial<CodeMashApi2.TestFilesIntegrationRequest>,

@@ -13,13 +13,13 @@ Everything here is also asserted in `tests/hub/push-variants.test.ts`.
 `createPushCampaign` reads the audience from `campaign.source`. Send that field
 plus the audience's own fields:
 
-| audience | `source` | own fields |
-|---|---|---|
-| everyone in the project | `allUsers` | `rolesNames`, `userTags` (both optional filters) |
-| a named list of project users | `specifiedUsers` | `userRecipients` |
-| a named list of account users | `accountUsers` | `userRecipients` |
-| rows of a database collection | `collection` | `schemaName`, `fields`, `fieldType` |
-| raw device tokens | `devices` | `devices` |
+| audience                      | `source`         | own fields                                       |
+| ----------------------------- | ---------------- | ------------------------------------------------ |
+| everyone in the project       | `allUsers`       | `rolesNames`, `userTags` (both optional filters) |
+| a named list of project users | `specifiedUsers` | `userRecipients`                                 |
+| a named list of account users | `accountUsers`   | `userRecipients`                                 |
+| rows of a database collection | `collection`     | `schemaName`, `fields`, `fieldType`              |
+| raw device tokens             | `devices`        | `devices`                                        |
 
 ```ts
 await norbix.hub.notifications.createPushCampaign({
@@ -37,16 +37,16 @@ Send `source` as the name, not a number — the server reads it as a string.
 
 `savePushIntegration` works the same way, with `integration.provider`:
 
-| provider | `provider` value |
-|---|---|
-| Fake (sandbox, never sends) | `Fake` |
-| Android / Firebase | `AndroidFirebase` |
-| Apple APNs | `AppleApns` |
-| Chrome extension | `CodeMashChromePlugin` |
-| Chrome web | `ChromeWeb` |
-| Edge web | `EdgeWeb` |
-| Firefox web | `FirefoxWeb` |
-| Safari | `SafariPush` |
+| provider                    | `provider` value       |
+| --------------------------- | ---------------------- |
+| Fake (sandbox, never sends) | `Fake`                 |
+| Android / Firebase          | `AndroidFirebase`      |
+| Apple APNs                  | `AppleApns`            |
+| Chrome extension            | `CodeMashChromePlugin` |
+| Chrome web                  | `ChromeWeb`            |
+| Edge web                    | `EdgeWeb`              |
+| Firefox web                 | `FirefoxWeb`           |
+| Safari                      | `SafariPush`           |
 
 ```ts
 await norbix.hub.notifications.savePushIntegration({
@@ -63,10 +63,10 @@ These calls work at runtime — the transport reads route tokens off the request
 object — but TypeScript cannot help you fill them, because the generated
 request type is empty or does not match the route:
 
-| method | what to pass | why |
-|---|---|---|
-| `stopPushCampaign` | `{ Id: '...' }` | `StopPushCampaignRequest` has no fields |
-| `deletePushCampaign` | `{ Id: '...' }` | `DeletePushCampaignRequest` has no fields |
+| method                   | what to pass         | why                                                                        |
+| ------------------------ | -------------------- | -------------------------------------------------------------------------- |
+| `stopPushCampaign`       | `{ Id: '...' }`      | `StopPushCampaignRequest` has no fields                                    |
+| `deletePushCampaign`     | `{ Id: '...' }`      | `DeletePushCampaignRequest` has no fields                                  |
 | `getPushCampaignMessage` | `{ campaignId, id }` | the route's `{id}` token has no matching field on `GetPushCampaignMessage` |
 
 The five campaign audience shapes above are likewise absent from the generated

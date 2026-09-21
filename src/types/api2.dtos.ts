@@ -1,7 +1,7 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-04 14:57:28
-Version: 10.08
+Date: 2026-09-21 16:26:56
+Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
 
@@ -1392,6 +1392,9 @@ export module CodeMashApi2 {
     // @DataMember
     public activationCode?: string;
 
+    // @DataMember
+    public savedByAuthId?: string;
+
     public constructor(init?: Partial<TriggerDto>) {
       (Object as any).assign(this, init);
     }
@@ -1512,42 +1515,48 @@ export module CodeMashApi2 {
     // @DataMember(Order=4)
     public path: string;
 
-    /** @description The address anyone can open without signing in. Null unless the file really is public. Hand-added by 10b-files slice SDK-2. */
     // @DataMember(Order=5)
     public publicUrl?: string;
 
-    /** @description True when anyone holding publicUrl can read this file without signing in. Hand-added by 10b-files slice SDK-2. */
     // @DataMember(Order=6)
-    public isPublic?: boolean;
+    public isPublic: boolean;
 
     public constructor(init?: Partial<FileResourceRefDto>) {
       (Object as any).assign(this, init);
     }
   }
 
-  /**
-   * One folder in a listing that anyone can read from without signing in.
-   * Hand-added by 10b-files slice SDK-2.
-   */
   // @DataContract
   export class PublicFolderDto {
-    /** @description The folder prefix, exactly as it appears in the folders list. */
     // @DataMember(Order=1)
     public path: string;
 
-    /** @description The record that makes it public — its own, or a folder above it. */
     // @DataMember(Order=2)
     public publicId: string;
 
-    /** @description The base a file inside this folder is served from. Ends with a slash. */
     // @DataMember(Order=3)
     public publicUrl?: string;
 
-    /** @description True when a folder ABOVE this one is what makes it public. */
     // @DataMember(Order=4)
-    public inherited?: boolean;
+    public inherited: boolean;
 
     public constructor(init?: Partial<PublicFolderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class IntegrationTestResultItemDto {
+    // @DataMember
+    public operation: string;
+
+    // @DataMember
+    public result: string;
+
+    // @DataMember
+    public errors?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<IntegrationTestResultItemDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1892,6 +1901,13 @@ export module CodeMashApi2 {
     }
   }
 
+  export class PasskeyOkResponse extends ResponseBase {
+    public constructor(init?: Partial<PasskeyOkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class PasskeyCeremonyOptionsResponse extends ResponseBase {
     public ceremonyId: string;
     public optionsJson: string;
@@ -1918,13 +1934,6 @@ export module CodeMashApi2 {
     public passkeys: PasskeyListItemDto[] = [];
 
     public constructor(init?: Partial<PasskeyListResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PasskeyOkResponse extends ResponseBase {
-    public constructor(init?: Partial<PasskeyOkResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -2091,34 +2100,9 @@ export module CodeMashApi2 {
   export class ListFilesResponse extends ResponseBase {
     public list?: PaginatedResponse<FileResourceRefDto>;
     public folders?: string[];
-
-    /** @description The subset of folders that anyone can read from without signing in. Hand-added by 10b-files slice SDK-2. */
-    public publicFolders?: PublicFolderDto[];
+    public publicFolders?: IList<PublicFolderDto>;
 
     public constructor(init?: Partial<ListFilesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  /**
-   * The public file link. Hand-added by 10b-files slice SDK-2.
-   *
-   * It does NOT extend CodeMashRequestBase: a public link carries no project
-   * id and no session. The unguessable `nbpf_…` id is the whole credential,
-   * and the permission was checked when somebody ran "make public".
-   */
-  // @Route("/{version}/files/public/{PublicId}/{Name*}", "GET")
-  export class GetPublicFileRequest extends RequestBase {
-    /** @description The nbpf_… id from the link. */
-    // @DataMember
-    public publicId: string;
-
-    /** @description What follows the id: the file's name for a file link, or the path inside the folder for a folder link (2026/q1/report.pdf). */
-    // @DataMember
-    public name: string;
-
-    public constructor(init?: Partial<GetPublicFileRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -2133,38 +2117,10 @@ export module CodeMashApi2 {
     }
   }
 
-  /**
-   * One step of an integration test (upload, read, list, delete …).
-   * Hand-added by 10b-files slice API-TEST, in the shape the generator
-   * produces; the Hub file carries the same class.
-   */
-  // @DataContract
-  export class IntegrationTestResultItemDto {
-    /** @description The step that ran: UploadFile, GetFile, GetAllFiles or DeleteFile. */
-    // @DataMember
-    public operation: string;
-
-    /** @description "OK", "FAILED", or "NOT_TESTED" (skipped because an earlier step failed). */
-    // @DataMember
-    public result: string;
-
-    /** @description Why the step failed. Empty or missing when it worked. */
-    // @DataMember
-    public errors?: string[];
-
-    public constructor(init?: Partial<IntegrationTestResultItemDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  /**
-   * The answer of TestFilesIntegrationRequest: one item per probe step.
-   * Hand-added by 10b-files slice API-TEST.
-   */
   // @DataContract
   export class TestFilesIntegrationResponse extends ResponseBase {
     // @DataMember
-    public items?: IntegrationTestResultItemDto[];
+    public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
     public constructor(init?: Partial<TestFilesIntegrationResponse>) {
       super(init);
@@ -3625,6 +3581,110 @@ export module CodeMashApi2 {
     }
   }
 
+  /** @description Membership · Password */
+  // @Route("/{version}/membership/userauth/password/change", "POST")
+  // @Api(Description="Membership · Password")
+  // @DataContract
+  export class ChangePasswordRequest
+    extends CodeMashRequestBase
+    implements IReturn<PasskeyOkResponse>
+  {
+    /** @description The member's current password. */
+    // @DataMember
+    // @ApiMember(Description="The member's current password.", IsRequired=true)
+    public currentPassword: string;
+
+    /** @description The new password. Validated against the project's complexity policy. */
+    // @DataMember
+    // @ApiMember(Description="The new password. Validated against the project's complexity policy.", IsRequired=true)
+    public newPassword: string;
+
+    /** @description Database integration id. Optional — defaults to the request environment's default integration. */
+    // @DataMember
+    // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<ChangePasswordRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ChangePasswordRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new PasskeyOkResponse();
+    }
+  }
+
+  /** @description Membership · Password */
+  // @Route("/{version}/membership/userauth/password/reset/request", "POST")
+  // @Api(Description="Membership · Password")
+  // @DataContract
+  export class RequestPasswordResetRequest
+    extends CodeMashRequestBase
+    implements IReturn<PasskeyOkResponse>
+  {
+    /** @description Email address to send the reset link to. */
+    // @DataMember
+    // @ApiMember(Description="Email address to send the reset link to.", IsRequired=true)
+    public email: string;
+
+    public constructor(init?: Partial<RequestPasswordResetRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RequestPasswordResetRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new PasskeyOkResponse();
+    }
+  }
+
+  /** @description Membership · Password */
+  // @Route("/{version}/membership/userauth/password/reset/confirm", "POST")
+  // @Api(Description="Membership · Password")
+  // @DataContract
+  export class ConfirmPasswordResetRequest
+    extends CodeMashRequestBase
+    implements IReturn<PasskeyOkResponse>
+  {
+    /** @description One-time reset token from the email link. */
+    // @DataMember
+    // @ApiMember(Description="One-time reset token from the email link.", IsRequired=true)
+    public token: string;
+
+    /** @description The new password. Validated against the project's complexity policy. */
+    // @DataMember
+    // @ApiMember(Description="The new password. Validated against the project's complexity policy.", IsRequired=true)
+    public newPassword: string;
+
+    /** @description Database integration id. Optional — defaults to the request environment's default integration. */
+    // @DataMember
+    // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<ConfirmPasswordResetRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ConfirmPasswordResetRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new PasskeyOkResponse();
+    }
+  }
+
   /** @description Membership · Passkey */
   // @Route("/{version}/membership/userauth/passkey/authentication-options", "POST")
   // @Api(Description="Membership · Passkey")
@@ -4782,6 +4842,64 @@ export module CodeMashApi2 {
   }
 
   /** @description Files */
+  // @Route("/{version}/files/{filesIntegrationId}/content", "GET")
+  // @Api(Description="Files")
+  // @DataContract
+  export class GetFileContentRequest extends RequestBase implements IReturn<Blob> {
+    // @DataMember
+    public filesIntegrationId: string;
+
+    // @DataMember
+    public path: string;
+
+    // @DataMember
+    public token?: string;
+
+    public constructor(init?: Partial<GetFileContentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetFileContentRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new Blob();
+    }
+  }
+
+  /** @description Files */
+  // @Route("/{version}/files/{filesIntegrationId}/content", "PUT")
+  // @Api(Description="Files")
+  // @DataContract
+  export class PutFileContentRequest extends RequestBase implements IReturn<EmptyResponse> {
+    // @DataMember
+    public filesIntegrationId: string;
+
+    // @DataMember
+    public path: string;
+
+    // @DataMember
+    public token?: string;
+
+    public constructor(init?: Partial<PutFileContentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PutFileContentRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Files */
   // @Route("/{version}/files/{filesIntegrationId}", "DELETE")
   // @Api(Description="Files")
   // @DataContract
@@ -4953,6 +5071,32 @@ export module CodeMashApi2 {
   }
 
   /** @description Files */
+  // @Route("/{version}/files/public/{PublicId}/{Name*}", "GET")
+  // @Api(Description="Files")
+  // @DataContract
+  export class GetPublicFileRequest extends RequestBase implements IReturn<Blob> {
+    // @DataMember
+    public publicId?: string;
+
+    // @DataMember
+    public name?: string;
+
+    public constructor(init?: Partial<GetPublicFileRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPublicFileRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new Blob();
+    }
+  }
+
+  /** @description Files */
   // @Route("/{version}/files/{filesIntegrationId}/upload-url", "POST")
   // @Api(Description="Files")
   // @DataContract
@@ -4987,12 +5131,7 @@ export module CodeMashApi2 {
     }
   }
 
-  /**
-   * Files — runs a live probe (upload a small file, read it, list the folder,
-   * delete it) against a files integration. Hand-added by 10b-files slice
-   * API-TEST (#39), in the shape the generator produces, so that
-   * `npm run generate-endpoints` would emit the same method.
-   */
+  /** @description Files */
   // @Route("/{version}/files/{filesIntegrationId}/test", "POST")
   // @Api(Description="Files")
   // @DataContract
@@ -5398,73 +5537,6 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new RegenerateApiKeysResponse();
-    }
-  }
-  // @Route("/{version}/membership/userauth/password/change", "POST")
-  export class ChangePasswordRequest
-    extends CodeMashRequestBase
-    implements IReturn<PasskeyOkResponse>
-  {
-    public currentPassword: string = '';
-    public newPassword: string = '';
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<ChangePasswordRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ChangePasswordRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new PasskeyOkResponse();
-    }
-  }
-  // @Route("/{version}/membership/userauth/password/reset/request", "POST")
-  export class RequestPasswordResetRequest
-    extends CodeMashRequestBase
-    implements IReturn<PasskeyOkResponse>
-  {
-    public email: string = '';
-
-    public constructor(init?: Partial<RequestPasswordResetRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RequestPasswordResetRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new PasskeyOkResponse();
-    }
-  }
-  // @Route("/{version}/membership/userauth/password/reset/confirm", "POST")
-  export class ConfirmPasswordResetRequest
-    extends CodeMashRequestBase
-    implements IReturn<PasskeyOkResponse>
-  {
-    public token: string = '';
-    public newPassword: string = '';
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<ConfirmPasswordResetRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ConfirmPasswordResetRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new PasskeyOkResponse();
     }
   }
 }
