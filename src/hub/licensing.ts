@@ -63,7 +63,7 @@ export class LicensingModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };

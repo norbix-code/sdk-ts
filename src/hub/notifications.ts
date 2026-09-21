@@ -880,7 +880,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1545,7 +1545,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -2249,7 +2249,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };

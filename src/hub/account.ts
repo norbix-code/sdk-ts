@@ -139,7 +139,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -482,7 +482,7 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -881,7 +881,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -900,7 +900,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1033,7 +1033,7 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1147,7 +1147,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1166,7 +1166,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1185,7 +1185,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1204,7 +1204,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1223,7 +1223,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1242,7 +1242,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1261,7 +1261,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -1470,7 +1470,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
