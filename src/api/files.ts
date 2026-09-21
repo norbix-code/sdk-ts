@@ -64,7 +64,7 @@ export class FilesModule {
       method: 'PUT',
       request,
       pathParams: ['filesIntegrationId'],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };

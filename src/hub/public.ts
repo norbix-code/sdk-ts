@@ -25,7 +25,7 @@ export class PublicModule {
       method: 'GET',
       request,
       pathParams: ['ProjectId'],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
@@ -44,7 +44,7 @@ export class PublicModule {
       method: 'GET',
       request,
       pathParams: ['ProjectId', 'Kind'],
-      scope: 'unauthenticated',
+      scope: 'project',
       ...options,
     });
   };
