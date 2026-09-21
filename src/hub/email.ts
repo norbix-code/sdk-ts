@@ -25,7 +25,7 @@ export class EmailModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };

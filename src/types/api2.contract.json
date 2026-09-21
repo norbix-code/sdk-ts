@@ -1,0 +1,526 @@
+{
+  "AccountBlocked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountProfileUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountSetAsActive": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountSetAsInactive": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountUnregistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountUserPushDeviceCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountValidationTokenIssued": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountVerified": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AskChatRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AssignRolePermissionsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "BlockUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ChangePasswordRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ChangeResponsibilityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CommitUploadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ConfirmEmailVerificationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ConfirmPasswordResetRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ConsumeMagicLinkRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CountRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CustomerCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DeleteFileApiRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteManyFilesApiRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteManyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DistinctRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DownloadFileApiRequest": {
+    "requiresAuth": true,
+    "returnsBytes": true
+  },
+  "Echo": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ExecuteAggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindMergedTermTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindOwnRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindTaxonomyTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindTermTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindTermsChildrenRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindTermsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemasRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFileContentRequest": {
+    "requiresAuth": false,
+    "returnsBytes": true
+  },
+  "GetFileInfoRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPublicFileRequest": {
+    "requiresAuth": false,
+    "returnsBytes": true
+  },
+  "GetPublicProjectConfig": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetPublicProjectLegal": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetSignedUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetUserPreferencesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetUsersRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GrantContactConsentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "HasPasskeyRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "InsertManyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InsertOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InviteUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "LicenseCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LinkIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListFilesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListPasskeysRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MapAuthToUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PasskeyAuthenticationOptionsRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PasskeyLogoutRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PasskeyRegistrationOptionsRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAccentColorChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectActivated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAllowedOriginsChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationGroupDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationGroupSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationSet": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagFromGroupDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDefaultLanguageChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDescriptionChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectIconChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectLanguagesChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectLogoChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectMainColorChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectMarketingUrlChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectNameChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectPaymentZonesChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectRegionsChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectTimeZoneChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateUnArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PutFileContentRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RefreshPasskeyTokenRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RenamePasskeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReplaceOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RequestMagicLinkRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RequestPasswordResetRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RequestUploadUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RevokePasskeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailUser": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailUserNameWithPermissions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveGuestUser": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePhoneUser": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePhoneUserNameWithPermissions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveSystemUserWithPermissions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveUserNameUser": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveUserNameWithPermissions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetContactRolesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetContactTagSubscriptionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StartEmailVerificationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SubscriptionCanceled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SubscriptionChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TestFilesIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UnblockUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UnsubscribeContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateManyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateUserPreferencesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UseRecoveryCodeRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "VerifyPasskeyAuthenticationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "VerifyPasskeyRegistrationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  }
+}

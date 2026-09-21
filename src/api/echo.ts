@@ -25,7 +25,7 @@ export class EchoModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };

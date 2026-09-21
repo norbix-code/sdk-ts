@@ -34,6 +34,9 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`unsubscribeContact`](#unsubscribecontact)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe`              | `project` |
 | [`updateUser`](#updateuser)                                             | `PUT`    | `/{version}/membership/auth`                                                                 | `project` |
 | [`updateUserPreferences`](#updateuserpreferences)                       | `PUT`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
+| [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
+| [`requestPasswordReset`](#requestpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/request`                                      | `project` |
+| [`confirmPasswordReset`](#confirmpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/confirm`                                      | `project` |
 | [`passkeyAuthenticationOptions`](#passkeyauthenticationoptions)         | `POST`   | `/{version}/membership/userauth/passkey/authentication-options`                              | `project` |
 | [`verifyPasskeyAuthentication`](#verifypasskeyauthentication)           | `POST`   | `/{version}/membership/userauth/passkey/verify-authentication`                               | `project` |
 | [`listPasskeys`](#listpasskeys)                                         | `GET`    | `/{version}/membership/userauth/passkeys`                                                    | `project` |
@@ -49,9 +52,6 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`verifyPasskeyRegistration`](#verifypasskeyregistration)               | `POST`   | `/{version}/membership/userauth/passkey/verify-registration`                                 | `project` |
 | [`refreshPasskeyToken`](#refreshpasskeytoken)                           | `POST`   | `/{version}/membership/userauth/token/refresh`                                               | `project` |
 | [`passkeyLogout`](#passkeylogout)                                       | `POST`   | `/{version}/membership/userauth/logout`                                                      | `project` |
-| [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
-| [`requestPasswordReset`](#requestpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/request`                                      | `project` |
-| [`confirmPasswordReset`](#confirmpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/confirm`                                      | `project` |
 
 ## Reference
 
@@ -583,6 +583,66 @@ const result = await norbix.api.membership.updateUserPreferences({
 
 [↑ Top](#endpoints)
 
+### changePassword
+
+`POST` `/{version}/membership/userauth/password/change`
+
+**Request DTO**: `CodeMashApi2.ChangePasswordRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.changePassword({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### requestPasswordReset
+
+`POST` `/{version}/membership/userauth/password/reset/request`
+
+**Request DTO**: `CodeMashApi2.RequestPasswordResetRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.requestPasswordReset({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### confirmPasswordReset
+
+`POST` `/{version}/membership/userauth/password/reset/confirm`
+
+**Request DTO**: `CodeMashApi2.ConfirmPasswordResetRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.confirmPasswordReset({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
 ### passkeyAuthenticationOptions
 
 `POST` `/{version}/membership/userauth/passkey/authentication-options`
@@ -882,66 +942,6 @@ import { Norbix } from '@norbix/ts';
 const norbix = new Norbix();
 
 const result = await norbix.api.membership.passkeyLogout({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashApi2.PasskeyOkResponse
-```
-
-[↑ Top](#endpoints)
-
-### changePassword
-
-`POST` `/{version}/membership/userauth/password/change`
-
-**Request DTO**: `CodeMashApi2.ChangePasswordRequest`
-**Response**: `CodeMashApi2.PasskeyOkResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.api.membership.changePassword({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashApi2.PasskeyOkResponse
-```
-
-[↑ Top](#endpoints)
-
-### requestPasswordReset
-
-`POST` `/{version}/membership/userauth/password/reset/request`
-
-**Request DTO**: `CodeMashApi2.RequestPasswordResetRequest`
-**Response**: `CodeMashApi2.PasskeyOkResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.api.membership.requestPasswordReset({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashApi2.PasskeyOkResponse
-```
-
-[↑ Top](#endpoints)
-
-### confirmPasswordReset
-
-`POST` `/{version}/membership/userauth/password/reset/confirm`
-
-**Request DTO**: `CodeMashApi2.ConfirmPasswordResetRequest`
-**Response**: `CodeMashApi2.PasskeyOkResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.api.membership.confirmPasswordReset({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.PasskeyOkResponse

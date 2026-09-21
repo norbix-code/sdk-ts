@@ -63,7 +63,7 @@ This repo is the **TypeScript SDK** — one package on npm (`@norbix.ai/ts`) tha
 
 Norbix has two surfaces, and each is its own import path. The npm package is one (`@norbix.ai/ts`), but tree-shaking is per-subpath — pick the one that matches what your code is doing. Most apps need only the API in production code; the Hub is for admin tooling, internal dashboards, and infrastructure-as-code.
 
-|                      | **`@norbix.ai/ts/api`**                                                                                          | **`@norbix.ai/ts/hub`**                                                                                           |
+|                      | **`@norbix.ai/ts/api`**                                                                                           | **`@norbix.ai/ts/hub`**                                                                                    |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Surface**          | Runtime — what your app does at request time                                                                      | Control plane — how Norbix is configured                                                                   |
 | **Scope**            | Project-scoped data                                                                                               | Project & account configuration                                                                            |
@@ -262,10 +262,7 @@ norbix.setRegion(undefined); // clear — back to no region
 And a fourth way: every endpoint method accepts a per-call `region` override on its second argument, just like `bearerToken` and `timeoutMs`:
 
 ```ts
-await norbix.api.database.find(
-  { collectionName: 'orders' },
-  { region: 'nb-us-east' },
-);
+await norbix.api.database.find({ collectionName: 'orders' }, { region: 'nb-us-east' });
 
 await norbix.hub.account.getProjects({}, { region: 'nb-us-east' });
 ```
@@ -339,27 +336,27 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 
 Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 
-| Module             | Purpose                                                                 | Reference                                                  |
-| ------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 🏢 `account`       | Account profile, status, projects, regions, team, billing, verification | [`docs/hub/account.md`](./docs/hub/account.md)             |
-| 🌍 `regions`       | List available Norbix regions, update the regions a project spans       | [`docs/hub/regions.md`](./docs/hub/regions.md)             |
-| 🗄️ `database`      | Schemas, integrations, saved aggregates, taxonomies, triggers           | [`docs/hub/database.md`](./docs/hub/database.md)           |
-| 📁 `files`         | File-storage integrations, triggers, module settings                    | [`docs/hub/files.md`](./docs/hub/files.md)                 |
-| 📧 `notifications` | Email, push & SMS templates, integrations, campaigns, contacts, devices | [`docs/hub/notifications.md`](./docs/hub/notifications.md) |
-| 📨 `email`         | Email module switches                                                   | [`docs/hub/email.md`](./docs/hub/email.md)                 |
-| 💳 `payments`      | Payment integrations, triggers, tests, module settings                  | [`docs/hub/payments.md`](./docs/hub/payments.md)           |
-| 🤖 `ai`            | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
-| 📊 `logs`          | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
-| 👥 `membership`    | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
-| ⏰ `scheduler`     | Scheduler module and task management                                    | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
-| 🪝 `webhooks`      | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
-| 📥 `webhooks` (receiver) | Verify & handle inbound Norbix webhook POSTs at your endpoint       | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
-| 🔐 `auth`          | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
-| 🔑 `apikeys`       | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
-| 🪪 `accessToken`   | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
-| 🩺 `echo`          | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
-| 🛠️ `internal`      | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
-| 📦 `resources`     | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
+| Module                   | Purpose                                                                 | Reference                                                  |
+| ------------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
+| 🏢 `account`             | Account profile, status, projects, regions, team, billing, verification | [`docs/hub/account.md`](./docs/hub/account.md)             |
+| 🌍 `regions`             | List available Norbix regions, update the regions a project spans       | [`docs/hub/regions.md`](./docs/hub/regions.md)             |
+| 🗄️ `database`            | Schemas, integrations, saved aggregates, taxonomies, triggers           | [`docs/hub/database.md`](./docs/hub/database.md)           |
+| 📁 `files`               | File-storage integrations, triggers, module settings                    | [`docs/hub/files.md`](./docs/hub/files.md)                 |
+| 📧 `notifications`       | Email, push & SMS templates, integrations, campaigns, contacts, devices | [`docs/hub/notifications.md`](./docs/hub/notifications.md) |
+| 📨 `email`               | Email module switches                                                   | [`docs/hub/email.md`](./docs/hub/email.md)                 |
+| 💳 `payments`            | Payment integrations, triggers, tests, module settings                  | [`docs/hub/payments.md`](./docs/hub/payments.md)           |
+| 🤖 `ai`                  | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
+| 📊 `logs`                | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
+| 👥 `membership`          | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
+| ⏰ `scheduler`           | Scheduler module and task management                                    | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
+| 🪝 `webhooks`            | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
+| 📥 `webhooks` (receiver) | Verify & handle inbound Norbix webhook POSTs at your endpoint           | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
+| 🔐 `auth`                | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
+| 🔑 `apikeys`             | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
+| 🪪 `accessToken`         | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
+| 🩺 `echo`                | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
+| 🛠️ `internal`            | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
+| 📦 `resources`           | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
 
 → [Full Hub index](./docs/hub/_index.md)
 
@@ -465,7 +462,7 @@ Same modules, same method shapes, every language. Each row links to the repo for
 
 | Language          | Package                                   | Repo                                                                    | Status         |
 | ----------------- | ----------------------------------------- | ----------------------------------------------------------------------- | -------------- |
-| TypeScript / Node | `@norbix.ai/ts`                          | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)         | ✅ Stable      |
+| TypeScript / Node | `@norbix.ai/ts`                           | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)             | ✅ Stable      |
 | .NET              | `Norbix.Api` + `Norbix.Hub`               | [norbix-dev/norbix-net](https://github.com/norbix-dev/norbix-net)       | ✅ Stable      |
 | Python            | `norbix`                                  | [norbix-dev/norbix-python](https://github.com/norbix-dev/norbix-python) | 🚧 In progress |
 | Dart / Flutter    | `norbix`                                  | [norbix-dev/norbix-dart](https://github.com/norbix-dev/norbix-dart)     | 🚧 In progress |
@@ -582,6 +579,7 @@ try {
 - [**GitHub Issues**](https://github.com/norbix-code/sdk-ts/issues). Best for: bugs and reproducible errors in this SDK.
 - [**Discord**](https://norbix.ai/discord). Best for: real-time chat with the team and the community.
 - [**Email support**](mailto:support@norbix.ai). Best for: account, billing, and infrastructure issues that aren't public.
+
 <!-- END: COMMUNITY_AND_SUPPORT -->
 
 <!-- BEGIN: RESOURCES -->

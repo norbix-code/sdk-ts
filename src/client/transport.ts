@@ -325,22 +325,24 @@ function buildUrlAndBody(args: {
     // each segment is encoded on its own. Without this, `a/b.pdf` would be
     // sent as `a%2Fb.pdf` and the route would not match.
     const isWildcard = token.endsWith('*');
-    const key = isWildcard ? token.slice(0, -1) : token;
-    const value = args.request[key];
+    const token_ = isWildcard ? token.slice(0, -1) : token;
+    const key = resolveRequestKey(args.request, token_);
+    const value = key === undefined ? undefined : args.request[key];
     if (value === undefined || value === null) {
       throw new NorbixError({
-        message: `Missing path parameter "${key}" for ${args.path}`,
+        message: `Missing path parameter "${token_}" for ${args.path}`,
         status: 0,
         code: 'NORBIX_MISSING_PATH_PARAM',
       });
     }
-    consumedFromBody.add(key);
+    consumedFromBody.add(key!);
     return isWildcard
       ? String(value).split('/').map(encodeURIComponent).join('/')
       : encodeURIComponent(String(value));
   });
   for (const p of args.pathParams) {
-    if (p in args.request) consumedFromBody.add(p);
+    const key = resolveRequestKey(args.request, p.endsWith('*') ? p.slice(0, -1) : p);
+    if (key !== undefined) consumedFromBody.add(key);
   }
 
   const remaining: Record<string, unknown> = {};
@@ -358,6 +360,28 @@ function buildUrlAndBody(args: {
   }
   const body = Object.keys(remaining).length > 0 ? JSON.stringify(remaining) : undefined;
   return { url, body };
+}
+
+/**
+ * The field on the request that fills a `{token}` in a route.
+ *
+ * The routes are copied from the gateway exactly as it spells them, and the
+ * gateway spells some tokens with a capital — `{Id}`, `{PublicId}`,
+ * `{Name*}` — while the field on the request object is always camelCase
+ * (`id`, `publicId`, `name`). An exact lookup therefore misses, and the call
+ * fails with "Missing path parameter" even though the caller passed the
+ * value. Match on the exact name first, then ignoring case.
+ *
+ * Returns undefined when the request has no such field, which is the caller's
+ * signal to raise `NORBIX_MISSING_PATH_PARAM`.
+ */
+function resolveRequestKey(request: Record<string, unknown>, token: string): string | undefined {
+  if (token in request) return token;
+  const lower = token.toLowerCase();
+  for (const key of Object.keys(request)) {
+    if (key.toLowerCase() === lower) return key;
+  }
+  return undefined;
 }
 
 function joinUrl(base: string, path: string): string {
