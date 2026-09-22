@@ -80,6 +80,27 @@ await norbix.hub.notifications.registerDevice({
 });
 ```
 
+## Listing registered devices
+
+`getPushDevices` returns the devices registered in the project, each with the
+user it belongs to. Narrow it with `userId`, `deviceKey` (the provider token)
+or `platform` (`ios`, `android`, `chrome`, `safari`, `expo`); a word outside
+that list is refused rather than answered with an empty page.
+
+```ts
+const devices = await norbix.hub.notifications.getPushDevices({ platform: 'ios' });
+```
+
+Devices are stored inside their user, so a page is a page of **users** and
+carries every matching device those users hold. Follow `hasMore` rather than
+stopping at the first short page.
+
+`getPushDevice` takes one device id and answers with the device and its owner:
+
+```ts
+const device = await norbix.hub.notifications.getPushDevice({ id: 'pnd_123' });
+```
+
 ## Known gaps in the generated types
 
 These calls work at runtime — the transport reads route tokens off the request

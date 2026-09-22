@@ -20826,6 +20826,109 @@ export class RegisterDevice extends RequestBase implements IReturn<IdResponse>, 
     public createResponse() { return new IdResponse(); }
 }
 
+// @DataContract
+export class PushDeviceListProjection
+{
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public deviceOs: string;
+
+    // @DataMember
+    public token: string;
+
+    // @DataMember
+    public brand?: string;
+
+    // @DataMember
+    public manufacturer?: string;
+
+    // @DataMember
+    public modelName?: string;
+
+    // @DataMember
+    public deviceName?: string;
+
+    // @DataMember
+    public deviceType?: string;
+
+    // @DataMember
+    public osName?: string;
+
+    // @DataMember
+    public osVersion?: string;
+
+    // @DataMember
+    public platformApiLevel?: number;
+
+    public constructor(init?: Partial<PushDeviceListProjection>) { (Object as any).assign(this, init); }
+}
+
+export class GetPushDeviceResponse extends ResponseBase
+{
+    public item?: PushDeviceDto;
+    public userId?: string;
+
+    public constructor(init?: Partial<GetPushDeviceResponse>) { super(init); (Object as any).assign(this, init); }
+}
+
+export class GetPushDevicesResponse extends ResponseBase
+{
+    public list?: PaginatedResponse<PushDeviceListProjection>;
+
+    public constructor(init?: Partial<GetPushDevicesResponse>) { super(init); (Object as any).assign(this, init); }
+}
+
+/** @description Gets a registered push device */
+// @Route("/{version}/notifications/push/devices/{id}", "GET")
+// @Api(Description="Gets a registered push device")
+export class GetPushDevice extends CodeMashRequestBase implements IReturn<GetPushDeviceResponse>
+{
+    /** @description The device id to fetch. Get it from get_push_devices. */
+    // @ApiMember(Description="The device id to fetch. Get it from get_push_devices.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushDevice>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'GetPushDevice'; }
+    public getMethod() { return 'GET'; }
+    public createResponse() { return new GetPushDeviceResponse(); }
+}
+
+/** @description Gets registered push devices */
+// @Route("/{version}/notifications/push/devices", "GET")
+// @Api(Description="Gets registered push devices")
+export class GetPushDevices extends CodeMashListPaginationRequestBase implements IReturn<GetPushDevicesResponse>
+{
+    /** @description Optional: only the devices of this user. */
+    // @ApiMember(Description="Optional: only the devices of this user.")
+    public userId?: string;
+
+    /** @description Optional: only the device registered with this provider token. */
+    // @ApiMember(Description="Optional: only the device registered with this provider token.")
+    public deviceKey?: string;
+
+    /** @description Optional: only devices of this platform — ios, android, chrome, safari or expo. */
+    // @ApiMember(Description="Optional: only devices of this platform — ios, android, chrome, safari or expo.")
+    public platform?: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushDevices>) { super(init); (Object as any).assign(this, init); }
+    public getTypeName() { return 'GetPushDevices'; }
+    public getMethod() { return 'GET'; }
+    public createResponse() { return new GetPushDevicesResponse(); }
+}
+
 /** @description Create push campaign */
 // @Route("/{version}/notifications/push/campaigns", "POST")
 // @Api(Description="Create push campaign")

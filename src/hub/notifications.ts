@@ -2084,6 +2084,49 @@ export class NotificationsModule {
   };
 
   /**
+   * GET /{version}/notifications/push/devices
+   * Request DTO: GetPushDevices
+   *
+   * Narrow the list with userId, deviceKey (the provider token) or platform
+   * (ios, android, chrome, safari, expo). Devices are stored inside their
+   * user, so a page is a page of users carrying every matching device they
+   * hold — follow hasMore rather than stopping at the first short page.
+   */
+  getPushDevices = (
+    request: Partial<CodeMashHub2.GetPushDevices> = {} as Partial<CodeMashHub2.GetPushDevices>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushDevicesResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushDevicesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/devices',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/push/devices/{id}
+   * Request DTO: GetPushDevice
+   */
+  getPushDevice = (
+    request: Partial<CodeMashHub2.GetPushDevice> = {} as Partial<CodeMashHub2.GetPushDevice>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushDeviceResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushDeviceResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/devices/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/notifications/push/campaigns
    * Request DTO: CreatePushCampaignRequest
    */
