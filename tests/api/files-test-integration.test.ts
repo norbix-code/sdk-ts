@@ -138,12 +138,12 @@ describe('api.files.testFilesIntegration', () => {
   });
 
   /**
-   * Pins today's behaviour of the whole SDK, not only of this method: the
-   * transport throws on a non-2xx status only. A gateway error answered with
-   * `200` and `responseStatus.isSuccess = false` (how the gateway's own
-   * service tests show "unknown integration") comes back as a value.
+   * The gateway answers a business refusal — here an unknown integration id —
+   * with HTTP 200 and `responseStatus.isSuccess = false`. That is a failure,
+   * so the call must reject with the gateway's own text (slice ERRORS, #67).
+   * Until then this test pinned the opposite ("comes back as a value").
    */
-  it('a 200 with isSuccess=false comes back as a value, errors readable', async () => {
+  it('a 200 with isSuccess=false fails with the gateway message', async () => {
     const { norbix } = clientAnswering({
       body: {
         responseStatus: {
@@ -158,11 +158,14 @@ describe('api.files.testFilesIntegration', () => {
       },
     });
 
-    const res = await norbix.api.files.testFilesIntegration({ filesIntegrationId: 'int_42' });
+    const call = norbix.api.files.testFilesIntegration({ filesIntegrationId: 'int_42' });
 
-    expect(res.items).toBeUndefined();
-    expect(res.responseStatus.isSuccess).toBe(false);
-    expect(res.responseStatus.errors?.[0]?.errorCode).toBe('CM-ERRORS-INTEGRATIONS-001');
+    await expect(call).rejects.toBeInstanceOf(NorbixError);
+    await expect(call).rejects.toMatchObject({
+      status: 200,
+      code: 'CM-ERRORS-INTEGRATIONS-001',
+      message: 'Integration with id int_42 not found',
+    });
   });
 
   it('a 404 is a NorbixError with the status (POST is never retried)', async () => {

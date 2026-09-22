@@ -555,11 +555,22 @@ try {
   await norbix.api.database.find({ collectionName: 'orders' });
 } catch (err) {
   if (err instanceof NorbixError) {
-    console.log(err.status, err.code, err.fieldErrors);
+    // httpStatus / errorCode / errors are the names every Norbix SDK uses.
+    // status / code / fieldErrors are the same values, kept for older code.
+    console.log(err.httpStatus, err.errorCode, err.message);
+    for (const e of err.errors) console.log(e.errorCode, e.fieldName, e.message);
+    console.log(err.body); // the answer exactly as it arrived
   }
   throw err;
 }
 ```
+
+`message` and `errorCode` are the gateway's own. The gateway puts them inside
+`responseStatus.errors[]`, so a `NorbixError` reads that list first, takes the
+first entry for `message` / `errorCode`, and keeps every entry in `errors`.
+Only when the body has no `responseStatus` are the top-level `message` and
+`errorCode` read. `Request failed (HTTP <status>)` is the last fallback, used
+when the body says nothing (for example a 500 page that is not JSON).
 
 | Code                            | Meaning                                                           |
 | ------------------------------- | ----------------------------------------------------------------- |
@@ -567,6 +578,34 @@ try {
 | `NORBIX_ACCOUNT_SCOPE_REQUIRED` | Account-scoped Hub endpoint called without `accountId`.           |
 | `NORBIX_MISSING_PATH_PARAM`     | A `{token}` in the route was not provided on the request.         |
 | `NORBIX_NETWORK_ERROR`          | Fetch failed (network, CORS, timeout).                            |
+
+### Breaking change in 2.0.0 — a refused call now throws
+
+The gateway answers a business refusal (an unknown id, a rule that says no)
+with **HTTP 200** and `responseStatus.isSuccess = false`. Until 2.0.0 the SDK
+handed that answer back as a normal value, so code carried on as if the call
+had worked. From 2.0.0 such an answer throws a `NorbixError` with
+`httpStatus = 200` and the gateway's message and error code.
+
+If your code checked `res.responseStatus.isSuccess` itself, move that check
+into a `try / catch`:
+
+```ts
+// before
+const res = await norbix.api.files.getFileInfo({ filesIntegrationId, path });
+if (!res.responseStatus.isSuccess) handleFailure(res.responseStatus.errors);
+
+// after
+try {
+  const res = await norbix.api.files.getFileInfo({ filesIntegrationId, path });
+} catch (err) {
+  if (err instanceof NorbixError) handleFailure(err.errors);
+}
+```
+
+Endpoints that answer with raw bytes rather than a document — `download`, the
+public file link, the upload and download content links — are not JSON and are
+unchanged.
 
 <!-- END: ERROR_HANDLING -->
 

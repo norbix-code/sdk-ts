@@ -1,4 +1,11 @@
-import { fromResponse, NorbixError, NorbixNetworkError, NorbixTimeoutError } from './errors.js';
+import {
+  errorFromBody,
+  fromResponse,
+  isFailedBody,
+  NorbixError,
+  NorbixNetworkError,
+  NorbixTimeoutError,
+} from './errors.js';
 import type { ResolvedNorbixConfig } from './types.js';
 
 export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -221,7 +228,13 @@ export class Transport {
           }
           const text = await res.text();
           if (!text) return undefined as TResponse;
-          return JSON.parse(text) as TResponse;
+          const parsed: unknown = JSON.parse(text);
+          // A 2xx does not mean the call worked. The gateway answers a
+          // business refusal with HTTP 200 and
+          // `responseStatus.isSuccess = false`; that is a failure and the
+          // caller must see it as one (10b-files, issue #67).
+          if (isFailedBody(parsed)) throw errorFromBody({ status: res.status, raw: parsed, url });
+          return parsed as TResponse;
         }
 
         // Non-OK: retry transient codes for idempotent methods.
