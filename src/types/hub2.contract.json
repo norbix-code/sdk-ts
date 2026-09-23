@@ -1,0 +1,3294 @@
+{
+  "AccountBlocked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountConfirmEmailVerificationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountHasPasskeyRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountPasskeyAuthenticationOptionsRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountPasskeyEnrollmentOptionsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AccountPasskeyRegistrationOptionsRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountProfileUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountSetAsActive": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountSetAsInactive": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountStartEmailVerificationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamPolicyCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamPolicyDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamPolicyUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamRoleCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamRoleDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountTeamRoleUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountUnregistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountValidationTokenIssued": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountVerified": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountVerifyPasskeyAuthenticationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AccountVerifyPasskeyEnrollmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AccountVerifyPasskeyRegistrationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AddContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AggregateRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AnalyzeImportFileRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AnswerChatQuestionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AppendSupportCaseMessageRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ApplyDatabaseSchemaBundleRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ApproveDsarRequestRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ArchiveEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ArchivePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ArchiveSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AskChatRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AssignAdminPortalServiceUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AssignRegimeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AtlasUsageRecorded": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AttachFileToTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ChangeRecordResponsibility": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ChangeTeamMemberPassword": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ChatAvailabilityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ChatTurnRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CheckEmailIntegrationDomainHealthRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CleanLogs": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ClearRegimeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CloneEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ClonePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CloneSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CloseSupportCaseRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CodeIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationHumanDeliveryConfirmed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CodeIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ConfirmCodeIntegrationHumanDeliveryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ConfirmEmailIntegrationHumanDeliveryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ConfirmPaymentsIntegrationHumanDeliveryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ConfirmPushIntegrationHumanDeliveryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ConfirmSmsIntegrationHumanDeliveryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CountRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateAccount": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CreateAccountPolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateAccountRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateCollectionImport": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateEmailCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreatePolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateProjectEnvironmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateProjectRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreatePushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreatePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateSmsCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateStripeCheckoutSession": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateTeamMember": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateTeamMemberFromInvitation": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "CustomerCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationDeprovisioned": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationProvisioningCompleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationProvisioningFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationProvisioningStarted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DatabaseTriggerMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "DecideChatPlanRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DefineConsentPurposeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteAccountPolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteAccountRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteChatSessionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteCodeIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteCollectionImportRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteContact": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteDatabaseAggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteDatabaseIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteDatabaseSchemaRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteDatabaseTaxonomyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteDatabaseTaxonomyTermRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailFooter": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailSignature": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteFilesIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteFilesTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteLlmIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteLoggingIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteManyDatabaseTaxonomyTermsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteManyRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteMcpIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteMembershipIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteMembershipTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteNotificationsGroup": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteNotificationsTag": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePaymentsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePaymentsTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteProject": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteProjectEnvironmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePushIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteRecord": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSchedulerTask": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSchemaTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteServiceUserApiKeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSmsCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSmsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeprecateConsentPurposeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableCode": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableCodeIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableDatabase": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableDatabaseIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableEmail": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableEmailIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableFiles": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableFilesIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableFilesTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableLlmIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableLogging": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableLoggingIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMcpIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMembership": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMembershipIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableMembershipTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisablePayments": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisablePaymentsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisablePaymentsTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableProject": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisablePush": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisablePushIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableScheduler": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableSchedulerTask": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableSchemaTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableSms": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableSmsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableWebhookDestinationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DiscardDatabaseSchemaDraftRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DistinctRecordValues": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "Echo": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailBatchRegistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailCampaignCompleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailCampaignFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailCampaignStarted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailCampaignStopped": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailCampaignTriggered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailDeliveryEventReceived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailFooterDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailFooterMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailFooterSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationHumanDeliveryConfirmed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailNotificationClicked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailNotificationRead": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailServiceDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailServiceEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailServiceEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailSignatureDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailSignatureMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailSignatureSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateBackfilled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateUnArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailTemplateUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailValidationIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailValidationIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailValidationIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailValidationIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailValidationIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EmailVerificationCodeRequested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "EnableCode": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableCodeIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableDatabase": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableDatabaseIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableEmail": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableEmailIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableFiles": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableFilesIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableFilesTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableLlmIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableLogging": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableLoggingIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMcpIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMembership": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMembershipIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableMembershipTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnablePayments": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnablePaymentsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnablePaymentsTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableProject": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnablePush": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnablePushIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableScheduler": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableSchedulerTask": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableSchemaTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableSms": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableSmsIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableWebhookDestinationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ExecuteRecordsAggregate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ExportWorkItemRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FileDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FileUploaded": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesTriggerDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesTriggerDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesTriggerEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesTriggerMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FilesTriggerSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "FindOneRecord": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "FindRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ForgetChatMemoryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountCollaborators": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountCompliance": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountPasswordPolicy": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetAccountProfile": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountRegions": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetAccountStatus": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountTeamPolicies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountTeamRoles": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountUsageBilling": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAdminPortalStructure": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAiToolsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAllContacts": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAllowedFlexTiers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAuthenticationSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAuthorizationSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetChatMemoryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetChatSessionEntriesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetChatSessionsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCollectionImport": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCollectionImports": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCollectionIndexes": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetComplianceAuditLog": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetComplianceSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetContact": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseAggregate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseAggregates": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseMergedTermTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchema": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaDraft": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaListSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaVersionDiff": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaVersions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemas": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseTaxonomies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseTaxonomy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseTaxonomyTermRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseTaxonomyTermTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseTaxonomyTreeRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDiagnosticEcho": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDiagnosticPacks": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDsarRequests": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignMessage": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaigns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailDisableDependencies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailFooter": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailFooters": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailSignature": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailSignatures": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailTemplate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailTemplateAvailableTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailTemplates": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFile": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFilesIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFilesIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFilesTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFilesTriggers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFolderFiles": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetInstallationLicenseStatus": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLegalHolds": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLicenseDomainDnsStatus": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLicenseDomainVerificationStatus": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLicenses": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLlmIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLlmIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLogSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLoggingIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLoggingIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLogs": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetLogsByCorrelationId": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceFunctionCatalog": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceFunctionTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceFunctions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceListing": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceListingFunctionTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMarketplaceListings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMcpIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMcpIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMembershipIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMembershipIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMembershipTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMembershipTriggers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetMjml": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPasskeySettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsTriggers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsWebhookLog": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPolicies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetProject": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetProjectBriefRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetProjectEnvironments": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetProjectTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetProjects": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPublicProjectConfig": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetPublicProjectLegal": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "GetPushCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignMessage": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaigns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushDisableDependencies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushMessageContentTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushTemplate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushTemplates": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetRoles": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSchedulerTask": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSchedulerTasks": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSchemaTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSchemaTriggers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignMessage": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaigns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsDisableDependencies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsMessageContentTokens": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsTemplate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsTemplates": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetStripeBillingPortalUrl": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSupportCase": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSupportCases": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSystemEmailTemplate": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSystemEmailTemplates": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetWebhookIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetWorkItemRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetWorkItemsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InsertManyRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InsertRecord": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InspectDiagnosticRedisRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InternalsTypeGen": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "InvokeAiToolRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InvokeMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "IssueServiceUserApiKeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "LicenseCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ListAccountPasskeysRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListServiceUserApiKeysRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "LlmIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LlmIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSecretsCleared": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSecretsClearingFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "LoggingIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MagicLinkRequested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MakeFilePrivateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFilePublicRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFolderPrivateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFolderPublicRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MarkNeedsYouDoneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MarketplaceFunctionDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceFunctionDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceFunctionEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceFunctionSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceFunctionTriggered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MarketplaceIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "McpRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MembershipDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipTriggerDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipTriggerDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipTriggerEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipTriggerMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MembershipTriggerSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MergeContactsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MongoDbAggregateCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MongoDbAggregateDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "MongoDbAggregateUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "NorbixLoggingLogsWipeRequested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "OneClickUnsubscribeRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "OpenDsarRequestRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "OpenSupportCaseRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PasswordChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PasswordResetRequested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentTriggerMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationHumanDeliveryConfirmed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsTriggerDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsTriggerDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsTriggerEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PaymentsTriggerSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PlaceLegalHoldRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PolicyCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PolicyDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PolicyUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PostLicenseHeartbeat": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PreviewEmailNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PreviewPushNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PreviewSmsNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProcessCollectionImport": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAccentColorChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectActivated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAdminPortalServiceUserAssigned": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAdminUrlChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectAllowedOriginsChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationGroupDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationGroupSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationSet": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagFromGroupDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCommunicationTagSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDatabaseConnected": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDefaultLanguageChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDescriptionChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectEnvironmentCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectEnvironmentDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectEnvironmentRanksChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectExposeLegalToAdminPortalChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectIconChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectLanguagesChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectLegalDocumentsChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectLogoChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectMainColorChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectMarketingUrlChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectNameChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectPaymentZonesChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectRegionsChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectResumedFromLicenseSuspension": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectStatusChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectSuspendedByLicense": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ProjectTimeZoneChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PromoteContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PromoteEnvironmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PublishDatabaseSchemaRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "PushBatchRegistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushCampaignCompleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushCampaignFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushCampaignStarted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushCampaignStopped": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushCampaignTriggered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationHumanDeliveryConfirmed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushModuleTagDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushModuleTagSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushNotificationClicked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushNotificationRead": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushServiceEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateUnArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PushTemplateUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "QueryDiagnosticLogsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReadDiagnosticEventsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReceiveWebhook": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordInserted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordReplaced": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordResponsibilityChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordsDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordsInserted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RecordsUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RegisterCodeMashAppPushIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RegisterDevice": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RejectDsarRequestRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReleaseLegalHoldRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RemoveContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RemoveRetentionWindowRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RemoveTagFromNotificationsGroup": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RemoveWebhookDestinationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RenameAccountPasskeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RenameDatabaseSchemaRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RenderPush": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RenderSms": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReopenSupportCaseRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReplaceMarketplaceIntegrationSecretsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ReplaceRecord": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RequestImportUploadUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResendAccountVerificationToken": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResolveResources": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResolveSupportCaseRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RevealManagedFlexConnectionString": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RevealMarketplaceIntegrationSecretsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RevealWebhookIntegrationSecretRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RevokeAccountPasskeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RoleCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RoleDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RoleUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RollbackPromotionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RotateWebhookIntegrationSecretRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RunDiagnosticHealthCheckRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RunDiagnosticPackRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveCodeIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDatabaseAggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDatabaseIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDatabaseSchemaRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDatabaseTaxonomyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDatabaseTaxonomyTermRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveDsarPolicyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailFooterRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailSignatureRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveEmailValidationIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveFilesIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveFilesTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveIncidentRoutingRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveLlmIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveLogSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveLoggingIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveMcpIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveMembershipIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveMembershipTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveNotificationsGroup": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveNotificationsTag": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePasskeySettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePaymentsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePaymentsTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SavePushIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveRetentionWindowRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveSchedulerTaskRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveSchemaTrigger": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveSmsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveWebhookDestinationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SchedulerDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchedulerEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchedulerTaskDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchedulerTaskDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchedulerTaskEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchedulerTaskSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaDataCleared": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaDraftDiscarded": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaDraftUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaSettingsUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaTriggerDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaTriggerDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaTriggerEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaTriggerSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SchemaVersionPublished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SeedCollectionRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SendInviteToTeamMember": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ServerlessDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "ServerlessEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SetChatEntryFeedbackRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetChatSessionArchivedRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetChatSessionPinnedRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetChatSessionSharingRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetCodeIntegrationAsDefault": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetDatabaseIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetEmailsIntegrationAsDefault": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetEnvironmentRankRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetFilesIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetMarketplaceIntegrationTokenMappingsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetMembershipIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetPushIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetSmsIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetUserRegistersAsRole": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsBatchRegistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsCampaignCompleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsCampaignFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsCampaignStarted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsCampaignStopped": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsCampaignTriggered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationHumanDeliveryConfirmed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationRenamed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationSetAsDefault": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsIntegrationTested": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsNotificationClicked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsNotificationRead": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsServiceDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsServiceEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsServiceEstablished": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateMirrored": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateUnArchived": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SmsTemplateUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SseCallTriggered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "StartLicenseDomainVerificationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopChatRunStepRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopEmailCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopPushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopSmsCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SubscriptionCanceled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SubscriptionChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseAttachmentLinked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseClosed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseMessageAppended": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseOpened": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseReopened": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseResolved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseStatusChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseTriaged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "SupportCaseWaitingReminderSent": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TaxonomyCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TaxonomyDataCleared": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TaxonomyDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TaxonomyUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TestCodeIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestDatabaseAggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestDatabaseIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestEmailIntegration": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "TestEmailValidationIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestFilesIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestLlmIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestLoggingIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestMcpIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestPaymentsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestPushIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestSmsIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UnArchiveEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UnArchivePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UnArchiveSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAccountPolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAccountProfile": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAccountRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAuthenticationSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAuthorizationSettings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateDatabaseSchemaDraftRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateDatabaseSchemaListSettingsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateDatabaseSchemaSettingsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateDatabaseTaxonomyTermRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateManyRecords": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateOneRecord": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdatePasswordComplexity": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdatePolicy": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectAccentColor": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectAdminUrl": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectAllowedOrigins": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectDefaultLanguage": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectDescription": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectExposeLegal": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectIcon": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectLanguages": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectLegalDocuments": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectLogo": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectMainColor": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectName": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectRegions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectUrl": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdatePushTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateRolePolicies": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateWebhookIntegrationExtraHeadersRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UploadChatAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UsageBillingIngestionFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserBlocked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserCreated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserDeleted": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserInvited": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserRegistered": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserUnblocked": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserUpdated": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "UserVerified": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "VerifyAccount": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WaitForProjectActiveRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "WebhookDestinationDisabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookDestinationEnabled": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookDestinationRemoved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookDestinationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookIntegrationExtraHeadersChanged": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookIntegrationSaved": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookIntegrationSecretsCleared": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookIntegrationSecretsConfigurationFailed": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WebhookIntegrationSecretsConfigured": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  }
+}

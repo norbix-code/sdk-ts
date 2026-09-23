@@ -24,7 +24,7 @@ Run the internal DTO maintenance workflow used by the team to regenerate SDK mod
 
 This rewrites generated files under `src/api/`, `src/hub/`, `tests/api/`, `tests/hub/`, `docs/api/`, `docs/hub/`, and `docs/README.md`. Commit regenerated output together with DTO changes so source, tests, and docs stay in sync.
 
-If you need to add behavior to the SDK that *isn't* per-endpoint (e.g. a new auth helper, a transport feature), edit `src/client/*` by hand. Those files are not regenerated.
+If you need to add behavior to the SDK that _isn't_ per-endpoint (e.g. a new auth helper, a transport feature), edit `src/client/*` by hand. Those files are not regenerated.
 
 ## Conventional commits
 
@@ -32,15 +32,15 @@ Every commit message must follow [Conventional Commits](https://www.conventional
 
 The commit type maps to the version bump:
 
-| Type | Version bump | Example |
-| --- | --- | --- |
-| `feat:` | minor | `feat(database): add aggregate helper` |
-| `fix:` | patch | `fix(transport): retry on idempotent 5xx` |
-| `perf:` | patch | `perf(codegen): skip unchanged files` |
-| `refactor:` | patch | `refactor(client): split errors module` |
-| `docs(readme):` | patch | `docs(readme): clarify env loading` |
-| `chore:` `test:` `ci:` `style:` | none | maintenance, no release |
-| any with `!` or `BREAKING CHANGE:` footer | major | `feat!: drop Node 16 support` |
+| Type                                      | Version bump | Example                                   |
+| ----------------------------------------- | ------------ | ----------------------------------------- |
+| `feat:`                                   | minor        | `feat(database): add aggregate helper`    |
+| `fix:`                                    | patch        | `fix(transport): retry on idempotent 5xx` |
+| `perf:`                                   | patch        | `perf(codegen): skip unchanged files`     |
+| `refactor:`                               | patch        | `refactor(client): split errors module`   |
+| `docs(readme):`                           | patch        | `docs(readme): clarify env loading`       |
+| `chore:` `test:` `ci:` `style:`           | none         | maintenance, no release                   |
+| any with `!` or `BREAKING CHANGE:` footer | major        | `feat!: drop Node 16 support`             |
 
 You can preview what a PR would release. PRs to `main` get a sticky comment from the `release-preview` workflow showing the computed next version before you merge.
 
@@ -98,8 +98,8 @@ npm publishing uses **trusted publishing (OIDC)**: there is no `NPM_TOKEN`. npm 
 
 One-time setup on npmjs.com: package `@norbix.ai/ts` → Settings → Trusted Publisher → GitHub Actions, organization `norbix-code`, repository `sdk-ts`, workflow `release.yml` (no environment).
 
-| Secret | Where to set it | What it's for |
-| --- | --- | --- |
+| Secret         | Where to set it     | What it's for                                                            |
+| -------------- | ------------------- | ------------------------------------------------------------------------ |
 | `GITHUB_TOKEN` | provided by Actions | Used to push the release tag and create the GH Release. No setup needed. |
 
 ### How to debug a failed release

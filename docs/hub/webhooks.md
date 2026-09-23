@@ -113,7 +113,7 @@ const result = await norbix.hub.webhooks.updateWebhookIntegrationExtraHeaders({
 `POST` `/{version}/webhooks/{source}/{integrationInstanceId}`
 
 **Request DTO**: `CodeMashHub2.ReceiveWebhook`
-**Response**: `CodeMashHub2.HttpResult`
+**Response**: `void`
 
 ```ts
 import { Norbix } from '@norbix/ts';
@@ -125,7 +125,7 @@ const result = await norbix.hub.webhooks.receiveWebhook({
   integrationInstanceId: 'integrationInstanceId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.HttpResult
+// returns void
 ```
 
 [↑ Top](#endpoints)

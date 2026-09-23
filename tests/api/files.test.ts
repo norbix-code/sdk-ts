@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for api.files (8 endpoints).
+ * Tests for api.files (12 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('api.files', () => {
-  it('module exposes 8 method(s)', () => {
+  it('module exposes 12 method(s)', () => {
     const mock = createMockFetch();
     const mod = new FilesModule({} as never);
     void mod; // silence unused — we only need the type
@@ -30,13 +30,17 @@ describe('api.files', () => {
     expect(ns).toBeDefined();
     void mock;
     expect(typeof ns['commitUpload']).toBe('function');
+    expect(typeof ns['getFileContent']).toBe('function');
+    expect(typeof ns['putFileContent']).toBe('function');
     expect(typeof ns['deleteFileApi']).toBe('function');
     expect(typeof ns['deleteManyFilesApi']).toBe('function');
     expect(typeof ns['downloadFileApi']).toBe('function');
     expect(typeof ns['getFileInfo']).toBe('function');
     expect(typeof ns['getSignedUrl']).toBe('function');
     expect(typeof ns['listFiles']).toBe('function');
+    expect(typeof ns['getPublicFile']).toBe('function');
     expect(typeof ns['requestUploadUrl']).toBe('function');
+    expect(typeof ns['testFilesIntegration']).toBe('function');
   });
 
   it('commitUpload: POST /{version}/files/{filesIntegrationId}/commit', async () => {
@@ -57,6 +61,52 @@ describe('api.files', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getFileContent: GET /{version}/files/{filesIntegrationId}/content', async () => {
+    const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/content');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/files/{filesIntegrationId}/content',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['getFileContent']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('putFileContent: PUT /{version}/files/{filesIntegrationId}/content', async () => {
+    const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/content');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/files/{filesIntegrationId}/content',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['putFileContent']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -200,6 +250,29 @@ describe('api.files', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('getPublicFile: GET /{version}/files/public/{PublicId}/{Name*}', async () => {
+    const stub = stubRequestForPath('/{version}/files/public/{PublicId}/{Name*}');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/files/public/{PublicId}/{Name*}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['getPublicFile']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('requestUploadUrl: POST /{version}/files/{filesIntegrationId}/upload-url', async () => {
     const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/upload-url');
     const expected = expectedUrl({
@@ -215,6 +288,29 @@ describe('api.files', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['files']!['requestUploadUrl']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('testFilesIntegration: POST /{version}/files/{filesIntegrationId}/test', async () => {
+    const stub = stubRequestForPath('/{version}/files/{filesIntegrationId}/test');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/files/{filesIntegrationId}/test',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['files']!['testFilesIntegration']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

@@ -468,6 +468,63 @@ export class MembershipModule {
   };
 
   /**
+   * POST /{version}/membership/userauth/password/change
+   * Request DTO: ChangePasswordRequest
+   */
+  changePassword = (
+    request: Partial<CodeMashApi2.ChangePasswordRequest> = {} as Partial<CodeMashApi2.ChangePasswordRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/change',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/password/reset/request
+   * Request DTO: RequestPasswordResetRequest
+   */
+  requestPasswordReset = (
+    request: Partial<CodeMashApi2.RequestPasswordResetRequest> = {} as Partial<CodeMashApi2.RequestPasswordResetRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/reset/request',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/password/reset/confirm
+   * Request DTO: ConfirmPasswordResetRequest
+   */
+  confirmPasswordReset = (
+    request: Partial<CodeMashApi2.ConfirmPasswordResetRequest> = {} as Partial<CodeMashApi2.ConfirmPasswordResetRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/reset/confirm',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/membership/userauth/passkey/authentication-options
    * Request DTO: PasskeyAuthenticationOptionsRequest
    */
@@ -744,63 +801,6 @@ export class MembershipModule {
     return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
       target: 'api',
       path: '/{version}/membership/userauth/logout',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/membership/userauth/password/change
-   * Request DTO: ChangePasswordRequest
-   */
-  changePassword = (
-    request: Partial<CodeMashApi2.ChangePasswordRequest> = {} as Partial<CodeMashApi2.ChangePasswordRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
-    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
-      target: 'api',
-      path: '/{version}/membership/userauth/password/change',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/membership/userauth/password/reset/request
-   * Request DTO: RequestPasswordResetRequest
-   */
-  requestPasswordReset = (
-    request: Partial<CodeMashApi2.RequestPasswordResetRequest> = {} as Partial<CodeMashApi2.RequestPasswordResetRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
-    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
-      target: 'api',
-      path: '/{version}/membership/userauth/password/reset/request',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/membership/userauth/password/reset/confirm
-   * Request DTO: ConfirmPasswordResetRequest
-   */
-  confirmPasswordReset = (
-    request: Partial<CodeMashApi2.ConfirmPasswordResetRequest> = {} as Partial<CodeMashApi2.ConfirmPasswordResetRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
-    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
-      target: 'api',
-      path: '/{version}/membership/userauth/password/reset/confirm',
       method: 'POST',
       request,
       pathParams: [],
