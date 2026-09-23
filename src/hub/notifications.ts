@@ -1,4 +1,5 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
+import type { CodeMashApi2 } from '../types/api2.dtos.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
@@ -2355,54 +2356,20 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/user/preferences
-   * Request DTO: GetUserNotificationPreferences
-   */
-  getUserNotificationPreferences = (
-    request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetUserEmailPreferencesResponse> => {
-    return this.transport.send<CodeMashHub2.GetUserEmailPreferencesResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/user/preferences',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PUT /{version}/notifications/user/preferences
-   * Request DTO: UpdateUserNotificationsPreferences
-   */
-  updateUserNotificationsPreferences = (
-    request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/user/preferences',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent
    * Request DTO: GrantContactConsentRequest
+   *
+   * On the API surface, not the Hub: the gateway serves this from
+   * Api.Membership. It used to be sent to the Hub at a
+   * `/notifications/contacts/…` path that no host has ever routed.
    */
   grantContactConsent = (
-    request: Partial<CodeMashHub2.GrantContactConsentRequest> = {} as Partial<CodeMashHub2.GrantContactConsentRequest>,
+    request: Partial<CodeMashApi2.GrantContactConsentRequest> = {} as Partial<CodeMashApi2.GrantContactConsentRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],
@@ -2412,16 +2379,18 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe
    * Request DTO: UnsubscribeContactRequest
+   *
+   * On the API surface, not the Hub — see grantContactConsent.
    */
   unsubscribeContact = (
-    request: Partial<CodeMashHub2.UnsubscribeContactRequest> = {} as Partial<CodeMashHub2.UnsubscribeContactRequest>,
+    request: Partial<CodeMashApi2.UnsubscribeContactRequest> = {} as Partial<CodeMashApi2.UnsubscribeContactRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],

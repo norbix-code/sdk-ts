@@ -3,7 +3,6 @@ import type { Transport } from '../client/transport.js';
 import { AccessTokenModule } from './access_token.js';
 import { AccountModule } from './account.js';
 import { AiModule } from './ai.js';
-import { ApikeysModule } from './apikeys.js';
 import { AuthModule } from './auth.js';
 import { CodeModule } from './code.js';
 import { ComplianceModule } from './compliance.js';
@@ -35,7 +34,6 @@ export class HubNamespace {
   public readonly accessToken: AccessTokenModule;
   public readonly account: AccountModule;
   public readonly ai: AiModule;
-  public readonly apikeys: ApikeysModule;
   public readonly auth: AuthModule;
   public readonly code: CodeModule;
   public readonly compliance: ComplianceModule;
@@ -63,7 +61,6 @@ export class HubNamespace {
     this.accessToken = new AccessTokenModule(transport);
     this.account = new AccountModule(transport);
     this.ai = new AiModule(transport);
-    this.apikeys = new ApikeysModule(transport);
     this.auth = new AuthModule(transport);
     this.code = new CodeModule(transport);
     this.compliance = new ComplianceModule(transport);
