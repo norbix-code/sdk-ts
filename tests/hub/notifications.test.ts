@@ -139,6 +139,8 @@ describe('hub.notifications', () => {
     expect(typeof ns['testPushIntegration']).toBe('function');
     expect(typeof ns['registerCodeMashAppPushIntegration']).toBe('function');
     expect(typeof ns['registerDevice']).toBe('function');
+    expect(typeof ns['getPushDevices']).toBe('function');
+    expect(typeof ns['getPushDevice']).toBe('function');
     expect(typeof ns['createPushCampaign']).toBe('function');
     expect(typeof ns['deletePushCampaign']).toBe('function');
     expect(typeof ns['getPushCampaign']).toBe('function');
@@ -1242,13 +1244,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getEmailCampaignMessage: GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getEmailCampaignMessage: GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });
@@ -2055,13 +2057,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getSmsCampaignMessage: GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getSmsCampaignMessage: GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });
@@ -2713,6 +2715,52 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('getPushDevices: GET /{version}/notifications/push/devices', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/notifications/push/devices',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['notifications']!['getPushDevices']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getPushDevice: GET /{version}/notifications/push/devices/{id}', async () => {
+    const stub = { id: 'pnd_1' };
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/notifications/push/devices/{id}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['notifications']!['getPushDevice']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
   it('createPushCampaign: POST /{version}/notifications/push/campaigns', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -2947,13 +2995,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getPushCampaignMessage: GET /{version}/notifications/push/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getPushCampaignMessage: GET /{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });

@@ -29,83 +29,161 @@ function sentBody(raw: string | undefined): Record<string, unknown> {
   return JSON.parse(raw!) as Record<string, unknown>;
 }
 
-describe('hub.notifications push campaign audiences', () => {
-  const audiences = [
-    {
-      source: 'allUsers',
-      campaign: { source: 'allUsers', templateId: 'tpl_1', userTags: ['beta'] },
-      expectField: 'userTags',
-    },
-    {
-      source: 'specifiedUsers',
-      campaign: { source: 'specifiedUsers', templateId: 'tpl_1', userRecipients: ['user_1'] },
-      expectField: 'userRecipients',
-    },
-    {
-      source: 'accountUsers',
-      campaign: { source: 'accountUsers', templateId: 'tpl_1', userRecipients: ['acct_user_1'] },
-      expectField: 'userRecipients',
-    },
-    {
-      source: 'collection',
-      campaign: { source: 'collection', templateId: 'tpl_1', schemaName: 'subscribers' },
-      expectField: 'schemaName',
-    },
-    {
-      source: 'devices',
-      campaign: {
-        source: 'devices',
-        templateId: 'tpl_1',
-        devices: [{ token: 'device_1', deliveryFamily: 'ios' }],
-      },
-      expectField: 'devices',
-    },
-  ];
+/**
+ * The five campaign targets, with the fields the gateway reads for each one.
+ * Source of truth: gateway Hub.Push/Campaigns/Create.PushTo*.cs (field names)
+ * and Create_.cs (PushCampaignRequestDtoJsonConverter picks the record from
+ * `source`, case-insensitive). Note `rolesNames` on allUsers but `roleNames`
+ * on collection — the gateway spells them differently.
+ */
+const campaignTargets: { source: string; fields: Record<string, unknown> }[] = [
+  { source: 'allUsers', fields: { rolesNames: ['admin'], userTags: ['beta'] } },
+  { source: 'specifiedUsers', fields: { userRecipients: ['user_1'] } },
+  { source: 'accountUsers', fields: { userRecipients: ['acct_user_1'] } },
+  {
+    source: 'collection',
+    fields: { schemaName: 'subscribers', fields: ['owner'], fieldType: 'User' },
+  },
+  { source: 'devices', fields: { devices: [{ token: 'device_1', deliveryFamily: 'Ios' }] } },
+];
 
-  for (const audience of audiences) {
-    it(`createPushCampaign carries the ${audience.source} shape`, async () => {
+/** PushCampaignRecipientsSourceTypes in the gateway — exactly these five. */
+const gatewayTargets = ['allusers', 'specifiedusers', 'accountusers', 'collection', 'devices'];
+
+describe('hub.notifications push campaign targets', () => {
+  for (const target of campaignTargets) {
+    it(`createPushCampaign sends the ${target.source} shape`, async () => {
       const { ns, mock } = pushModule();
 
-      await ns['createPushCampaign']!({ campaign: audience.campaign });
-
-      expect(mock.lastCall?.method).toBe('POST');
-      const body = sentBody(mock.lastCall?.body);
-      const campaign = body['campaign'] as Record<string, unknown>;
-      // The discriminator must reach the wire as the name, not a number —
-      // the server reads it with a string parse.
-      expect(campaign['source']).toBe(audience.source);
-      expect(campaign['templateId']).toBe('tpl_1');
-      expect(campaign[audience.expectField]).toBeDefined();
-    });
-  }
-});
-
-describe('hub.notifications push integration providers', () => {
-  const providers = [
-    'Fake',
-    'AndroidFirebase',
-    'AppleApns',
-    'CodeMashChromePlugin',
-    'ChromeWeb',
-    'EdgeWeb',
-    'FirefoxWeb',
-    'SafariPush',
-  ];
-
-  for (const provider of providers) {
-    it(`savePushIntegration carries the ${provider} shape`, async () => {
-      const { ns, mock } = pushModule();
-
-      await ns['savePushIntegration']!({
-        integration: { provider, integrationName: `test-${provider}`, isEnabled: true },
+      await ns['createPushCampaign']!({
+        campaign: { source: target.source, templateId: 'tpl_1', ...target.fields },
       });
 
       expect(mock.lastCall?.method).toBe('POST');
-      const integration = sentBody(mock.lastCall?.body)['integration'] as Record<string, unknown>;
-      expect(integration['provider']).toBe(provider);
-      expect(integration['integrationName']).toBe(`test-${provider}`);
+      const campaign = sentBody(mock.lastCall?.body)['campaign'] as Record<string, unknown>;
+      // The discriminator must reach the wire as the name, not a number —
+      // the server reads it with GetString().
+      expect(campaign).toMatchObject({
+        source: target.source,
+        templateId: 'tpl_1',
+        ...target.fields,
+      });
     });
   }
+
+  it('covers exactly the targets the gateway accepts', () => {
+    expect(campaignTargets.map((t) => t.source.toLowerCase()).sort()).toEqual(
+      [...gatewayTargets].sort(),
+    );
+  });
+});
+
+/**
+ * The eight providers the gateway's save converter accepts, with the fields
+ * each one validates. Source of truth: gateway Hub.Push/Integrations/Save_.cs
+ * (the switch arms of PushIntegrationRequestDtoJsonConverter) and
+ * Save.<Provider>.cs (the fields). The Chrome extension is `ChromePush`:
+ * `CodeMashChromePlugin` also exists in the generated enum, but no switch arm
+ * takes it, so the gateway answers "Unsupported provider".
+ *
+ * Every value is a dummy; nothing here leaves the process.
+ */
+const vapid = { vapidPublicKey: 'vapid-public', vapidPrivateKey: 'vapid-private' };
+const integrationProviders: { provider: string; fields: Record<string, unknown> }[] = [
+  { provider: 'Fake', fields: {} },
+  {
+    provider: 'AndroidFirebase',
+    fields: {
+      projectId: 'firebase-project',
+      clientEmail: 'push@firebase-project.iam.example.com',
+      serviceAccountJson: '{"type":"service_account"}',
+    },
+  },
+  {
+    provider: 'AppleApns',
+    fields: {
+      teamId: 'TEAM123456',
+      appBundleId: 'com.example.app',
+      keyId: 'KEY1234567',
+      privateKey: '-----BEGIN PRIVATE KEY-----dummy',
+      isProduction: false,
+    },
+  },
+  {
+    provider: 'ChromePush',
+    fields: {
+      extensionId: '3f2504e0-4f89-11d3-9a0c-0305e82c3301',
+      ...vapid,
+      subject: 'mailto:push@example.com',
+    },
+  },
+  { provider: 'ChromeWeb', fields: { ...vapid, subject: 'mailto:push@example.com' } },
+  { provider: 'EdgeWeb', fields: { ...vapid } },
+  { provider: 'FirefoxWeb', fields: { ...vapid } },
+  {
+    provider: 'SafariPush',
+    fields: {
+      websitePushId: 'web.com.example',
+      certificateP12Base64: 'ZHVtbXk=',
+      certificatePassword: 'dummy',
+    },
+  },
+];
+
+/** The switch arms of PushIntegrationRequestDtoJsonConverter.Read. */
+const gatewayProviders = [
+  'AppleApns',
+  'AndroidFirebase',
+  'SafariPush',
+  'ChromeWeb',
+  'FirefoxWeb',
+  'EdgeWeb',
+  'ChromePush',
+  'Fake',
+];
+
+describe('hub.notifications push integration providers', () => {
+  for (const p of integrationProviders) {
+    it(`savePushIntegration sends the ${p.provider} shape`, async () => {
+      const { ns, mock } = pushModule();
+      const integration = {
+        provider: p.provider,
+        integrationName: `test-${p.provider}`,
+        isEnabled: true,
+        ...p.fields,
+      };
+
+      await ns['savePushIntegration']!({ integration });
+
+      expect(mock.lastCall?.method).toBe('POST');
+      expect(sentBody(mock.lastCall?.body)['integration']).toMatchObject(integration);
+    });
+  }
+
+  it('covers exactly the providers the gateway accepts', () => {
+    expect(integrationProviders.map((p) => p.provider).sort()).toEqual(
+      [...gatewayProviders].sort(),
+    );
+  });
+});
+
+describe('hub.notifications push device registration', () => {
+  // Source of truth: gateway Hub.Push/Devices/Create.cs and
+  // Contracts/Notifications/Push/Devices/PushDeviceDto.cs (`deviceOs` and
+  // `token` are required).
+  it('registerDevice sends the device under pushDeviceDto with its user', async () => {
+    const { ns, mock } = pushModule();
+    const request = {
+      userId: 'user_1',
+      pushDeviceDto: { deviceOs: 'iOS', token: 'device_1', modelName: 'iPhone' },
+    };
+
+    await ns['registerDevice']!(request);
+
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toContain('/v2/notifications/push/devices');
+    expect(sentBody(mock.lastCall?.body)).toMatchObject(request);
+  });
 });
 
 describe('hub.notifications push route tokens', () => {
