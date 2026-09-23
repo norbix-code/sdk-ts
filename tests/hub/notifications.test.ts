@@ -1244,13 +1244,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getEmailCampaignMessage: GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getEmailCampaignMessage: GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });
@@ -2057,13 +2057,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getSmsCampaignMessage: GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getSmsCampaignMessage: GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });
@@ -2995,13 +2995,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getPushCampaignMessage: GET /{version}/notifications/push/campaigns/{campaignId}/messages/{id}', async () => {
+  it('getPushCampaignMessage: GET /{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
+      '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
     );
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
       version: 'v2',
       stub,
     });

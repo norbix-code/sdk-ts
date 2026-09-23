@@ -18499,6 +18499,12 @@ export class CreateEmailCampaignRequest extends CodeMashRequestBase implements I
 export class DeleteEmailCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
 {
 
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public databaseIntegrationId?: string;
+
     public constructor(init?: Partial<DeleteEmailCampaignRequest>) { super(init); (Object as any).assign(this, init); }
     public getTypeName() { return 'DeleteEmailCampaignRequest'; }
     public getMethod() { return 'DELETE'; }
@@ -18693,7 +18699,7 @@ export class StopEmailCampaignRequest extends CodeMashRequestBase implements IRe
 }
 
 /** @description Get an email campaign message */
-// @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}", "GET")
+// @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}", "GET")
 // @Api(Description="Get an email campaign message")
 export class GetEmailCampaignMessage extends CodeMashRequestBase implements IReturn<GetEmailCampaignMessageResponse>
 {
@@ -19790,7 +19796,7 @@ export class StopSmsCampaignRequest extends CodeMashRequestBase implements IRetu
 }
 
 /** @description Gets campaign sms message details */
-// @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}", "GET")
+// @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}", "GET")
 // @Api(Description="Gets campaign sms message details")
 export class GetSmsCampaignMessage extends CodeMashRequestBase implements IReturn<GetSmsCampaignMessageResponse>
 {
@@ -20954,6 +20960,16 @@ export class CreatePushCampaignRequest extends CodeMashRequestBase implements IR
 export class DeletePushCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
 {
 
+    /** @description The push campaign id to delete. Get it from get_push_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The push campaign id to delete. Get it from get_push_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @DataMember
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
     public constructor(init?: Partial<DeletePushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
     public getTypeName() { return 'DeletePushCampaignRequest'; }
     public getMethod() { return 'DELETE'; }
@@ -21120,6 +21136,16 @@ export class PreviewPushNotification extends RequestBase implements IReturn<Prev
 export class StopPushCampaignRequest extends CodeMashRequestBase implements IReturn<EmptyResponse>
 {
 
+    /** @description The campaign id to stop. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id to stop.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @DataMember
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
     public constructor(init?: Partial<StopPushCampaignRequest>) { super(init); (Object as any).assign(this, init); }
     public getTypeName() { return 'StopPushCampaignRequest'; }
     public getMethod() { return 'POST'; }
@@ -21127,7 +21153,7 @@ export class StopPushCampaignRequest extends CodeMashRequestBase implements IRet
 }
 
 /** @description Gets campaign push notification details */
-// @Route("/{version}/notifications/push/campaigns/{campaignId}/messages/{id}", "GET")
+// @Route("/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}", "GET")
 // @Api(Description="Gets campaign push notification details")
 export class GetPushCampaignMessage extends CodeMashRequestBase implements IReturn<GetPushCampaignMessageResponse>
 {

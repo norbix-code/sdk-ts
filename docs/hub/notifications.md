@@ -57,7 +57,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailCampaignStatistics`](#getemailcampaignstatistics)                     | `GET`    | `/{version}/notifications/email/campaigns/{id}/stats`                                 | `project` |
 | [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                              | `project` |
 | [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                                  | `project` |
-| [`getEmailCampaignMessage`](#getemailcampaignmessage)                           | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}`                | `project` |
+| [`getEmailCampaignMessage`](#getemailcampaignmessage)                           | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}`    | `project` |
 | [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                     | `project` |
 | [`disableSms`](#disablesms)                                                     | `GET`    | `/{version}/notifications/sms/disable`                                                | `project` |
 | [`getSmsDisableDependencies`](#getsmsdisabledependencies)                       | `GET`    | `/{version}/notifications/sms/disable-dependencies`                                   | `project` |
@@ -92,7 +92,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getSmsCampaignStatistics`](#getsmscampaignstatistics)                         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/stats`                                   | `project` |
 | [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                                | `project` |
 | [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                    | `project` |
-| [`getSmsCampaignMessage`](#getsmscampaignmessage)                               | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}`                   | `project` |
+| [`getSmsCampaignMessage`](#getsmscampaignmessage)                               | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}`       | `project` |
 | [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                        | `project` |
 | [`disablePush`](#disablepush)                                                   | `GET`    | `/{version}/notifications/push/disable`                                               | `project` |
 | [`getPushDisableDependencies`](#getpushdisabledependencies)                     | `GET`    | `/{version}/notifications/push/disable-dependencies`                                  | `project` |
@@ -131,7 +131,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getPushCampaignStatistics`](#getpushcampaignstatistics)                       | `GET`    | `/{version}/notifications/push/campaigns/{id}/stats`                                  | `project` |
 | [`previewPushNotification`](#previewpushnotification)                           | `GET`    | `/{version}/notifications/push/preview`                                               | `project` |
 | [`stopPushCampaign`](#stoppushcampaign)                                         | `POST`   | `/{version}/notifications/push/campaigns/{Id}/stop`                                   | `project` |
-| [`getPushCampaignMessage`](#getpushcampaignmessage)                             | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}`                  | `project` |
+| [`getPushCampaignMessage`](#getpushcampaignmessage)                             | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}`      | `project` |
 | [`getPushCampaignMessages`](#getpushcampaignmessages)                           | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages`                       | `project` |
 | [`getUserNotificationPreferences`](#getusernotificationpreferences)             | `GET`    | `/{version}/notifications/user/preferences`                                           | `project` |
 | [`updateUserNotificationsPreferences`](#updateusernotificationspreferences)     | `PUT`    | `/{version}/notifications/user/preferences`                                           | `project` |
@@ -1192,7 +1192,7 @@ const result = await norbix.hub.notifications.stopEmailCampaign({
 
 ### getEmailCampaignMessage
 
-`GET` `/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}`
+`GET` `/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}`
 
 Fetch a single item by ID.
 
@@ -1976,7 +1976,7 @@ const result = await norbix.hub.notifications.stopSmsCampaign({
 
 ### getSmsCampaignMessage
 
-`GET` `/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}`
+`GET` `/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}`
 
 Fetch a single item by ID.
 
@@ -2850,7 +2850,7 @@ const result = await norbix.hub.notifications.stopPushCampaign({
 
 ### getPushCampaignMessage
 
-`GET` `/{version}/notifications/push/campaigns/{campaignId}/messages/{id}`
+`GET` `/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}`
 
 Fetch a single item by ID.
 

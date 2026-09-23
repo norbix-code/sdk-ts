@@ -905,7 +905,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{id}
+   * GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}
    * Request DTO: GetEmailCampaignMessage
    */
   getEmailCampaignMessage = (
@@ -914,10 +914,10 @@ export class NotificationsModule {
   ): Promise<CodeMashHub2.GetEmailCampaignMessageResponse> => {
     return this.transport.send<CodeMashHub2.GetEmailCampaignMessageResponse>({
       target: 'hub',
-      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
       method: 'GET',
       request,
-      pathParams: ['campaignId', 'id'],
+      pathParams: ['campaignId', 'notificationId'],
       scope: 'project',
       ...options,
     });
@@ -1570,7 +1570,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{id}
+   * GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}
    * Request DTO: GetSmsCampaignMessage
    */
   getSmsCampaignMessage = (
@@ -1579,10 +1579,10 @@ export class NotificationsModule {
   ): Promise<CodeMashHub2.GetSmsCampaignMessageResponse> => {
     return this.transport.send<CodeMashHub2.GetSmsCampaignMessageResponse>({
       target: 'hub',
-      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
       method: 'GET',
       request,
-      pathParams: ['campaignId', 'id'],
+      pathParams: ['campaignId', 'notificationId'],
       scope: 'project',
       ...options,
     });
@@ -2317,7 +2317,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/push/campaigns/{campaignId}/messages/{id}
+   * GET /{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}
    * Request DTO: GetPushCampaignMessage
    */
   getPushCampaignMessage = (
@@ -2326,10 +2326,10 @@ export class NotificationsModule {
   ): Promise<CodeMashHub2.GetPushCampaignMessageResponse> => {
     return this.transport.send<CodeMashHub2.GetPushCampaignMessageResponse>({
       target: 'hub',
-      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{id}',
+      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
       method: 'GET',
       request,
-      pathParams: ['campaignId', 'id'],
+      pathParams: ['campaignId', 'notificationId'],
       scope: 'project',
       ...options,
     });
