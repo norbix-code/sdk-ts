@@ -18,7 +18,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.notifications', () => {
-  it('module exposes 125 method(s)', () => {
+  it('module exposes 123 method(s)', () => {
     const mock = createMockFetch();
     const mod = new NotificationsModule({} as never);
     void mod; // silence unused — we only need the type
@@ -153,8 +153,6 @@ describe('hub.notifications', () => {
     expect(typeof ns['stopPushCampaign']).toBe('function');
     expect(typeof ns['getPushCampaignMessage']).toBe('function');
     expect(typeof ns['getPushCampaignMessages']).toBe('function');
-    expect(typeof ns['getUserNotificationPreferences']).toBe('function');
-    expect(typeof ns['updateUserNotificationsPreferences']).toBe('function');
     expect(typeof ns['grantContactConsent']).toBe('function');
     expect(typeof ns['unsubscribeContact']).toBe('function');
   });
@@ -3045,59 +3043,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('getUserNotificationPreferences: GET /{version}/notifications/user/preferences', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/user/preferences',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['getUserNotificationPreferences']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('updateUserNotificationsPreferences: PUT /{version}/notifications/user/preferences', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/user/preferences',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['updateUserNotificationsPreferences']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('grantContactConsent: POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent', async () => {
+  it('grantContactConsent: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
       version: 'v2',
       stub,
     });
@@ -3116,13 +3068,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('unsubscribeContact: POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe', async () => {
+  it('unsubscribeContact: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
       version: 'v2',
       stub,
     });
