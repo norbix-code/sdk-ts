@@ -432,7 +432,7 @@ export module CodeMashHub2 {
   export class FilesTriggerRequest extends SaveTriggerRequest {
     public type: TriggerType;
     public when: FilesTriggerType;
-    public fileRef: FileResourceRefDto;
+    public folder?: string;
 
     public constructor(init?: Partial<FilesTriggerRequest>) {
       super(init);
@@ -7174,6 +7174,9 @@ export module CodeMashHub2 {
     // @DataMember
     public when: FilesTriggerType;
 
+    // @DataMember
+    public folder?: string;
+
     public constructor(init?: Partial<FilesTriggerDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -8670,6 +8673,9 @@ export module CodeMashHub2 {
   export class FilesTriggerProjectionList extends TriggerProjectionList {
     // @DataMember
     public type: FilesTriggerType;
+
+    // @DataMember
+    public folder?: string;
 
     public constructor(init?: Partial<FilesTriggerProjectionList>) {
       super(init);
