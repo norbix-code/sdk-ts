@@ -1,9 +1,9 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-23 18:30:39
+Date: 2026-09-26 16:50:48
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://127.0.0.1:60200
+BaseUrl: http://localhost:5001
 
 GlobalNamespace: CodeMashHub2
 //MakePropertiesOptional: False
@@ -357,84 +357,10 @@ export module CodeMashHub2 {
     OnFileDeleted = 'OnFileDeleted',
   }
 
-  // @DataContract
-  export class FileChecksumDto {
-    // @DataMember(Order=1)
-    public algorithm: string;
-
-    // @DataMember(Order=2)
-    public hash: string;
-
-    public constructor(init?: Partial<FileChecksumDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class FileResourceDto {
-    // @DataMember(Order=1)
-    public id: string;
-
-    // @DataMember(Order=2)
-    public originalFileName: string;
-
-    // @DataMember(Order=3)
-    public extension: string;
-
-    // @DataMember(Order=4)
-    public storedFileName: string;
-
-    // @DataMember(Order=5)
-    public sizeBytes?: number;
-
-    // @DataMember(Order=6)
-    public checksum?: FileChecksumDto;
-
-    public constructor(init?: Partial<FileResourceDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export enum FileProvider {
-    Local = 'Local',
-    AwsS3 = 'AwsS3',
-    AzureBlobStorage = 'AzureBlobStorage',
-    GoogleCloudStorage = 'GoogleCloudStorage',
-    Ftp = 'Ftp',
-    AppleICloud = 'AppleICloud',
-    DropBox = 'DropBox',
-    GoogleDrive = 'GoogleDrive',
-  }
-
-  // @DataContract
-  export class FileResourceRefDto {
-    // @DataMember(Order=1)
-    public resource: FileResourceDto;
-
-    // @DataMember(Order=2)
-    public integrationId: string;
-
-    // @DataMember(Order=3)
-    public provider: FileProvider;
-
-    // @DataMember(Order=4)
-    public path: string;
-
-    // @DataMember(Order=5)
-    public publicUrl?: string;
-
-    // @DataMember(Order=6)
-    public isPublic: boolean;
-
-    public constructor(init?: Partial<FileResourceRefDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class FilesTriggerRequest extends SaveTriggerRequest {
     public type: TriggerType;
     public when: FilesTriggerType;
-    public fileRef: FileResourceRefDto;
+    public folder?: string;
 
     public constructor(init?: Partial<FilesTriggerRequest>) {
       super(init);
@@ -495,6 +421,17 @@ export module CodeMashHub2 {
       super(init);
       (Object as any).assign(this, init);
     }
+  }
+
+  export enum FileProvider {
+    Local = 'Local',
+    AwsS3 = 'AwsS3',
+    AzureBlobStorage = 'AzureBlobStorage',
+    GoogleCloudStorage = 'GoogleCloudStorage',
+    Ftp = 'Ftp',
+    AppleICloud = 'AppleICloud',
+    DropBox = 'DropBox',
+    GoogleDrive = 'GoogleDrive',
   }
 
   export class FilesIntegrationRequest {
@@ -1631,6 +1568,69 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class FileChecksumDto {
+    // @DataMember(Order=1)
+    public algorithm: string;
+
+    // @DataMember(Order=2)
+    public hash: string;
+
+    public constructor(init?: Partial<FileChecksumDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class FileResourceDto {
+    // @DataMember(Order=1)
+    public id: string;
+
+    // @DataMember(Order=2)
+    public originalFileName: string;
+
+    // @DataMember(Order=3)
+    public extension: string;
+
+    // @DataMember(Order=4)
+    public storedFileName: string;
+
+    // @DataMember(Order=5)
+    public sizeBytes?: number;
+
+    // @DataMember(Order=6)
+    public checksum?: FileChecksumDto;
+
+    public constructor(init?: Partial<FileResourceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class FileResourceRefDto {
+    // @DataMember(Order=1)
+    public resource: FileResourceDto;
+
+    // @DataMember(Order=2)
+    public integrationId: string;
+
+    // @DataMember(Order=3)
+    public provider: FileProvider;
+
+    // @DataMember(Order=4)
+    public path: string;
+
+    // @DataMember(Order=5)
+    public publicUrl?: string;
+
+    // @DataMember(Order=6)
+    public isPublic: boolean;
+
+    public constructor(init?: Partial<FileResourceRefDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class EmailMessageContentDto implements IHasRazorTemplateCode {
     // @DataMember
     public subject: string;
@@ -2288,8 +2288,22 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum PushDeviceDeliveryFamily {
+    Ios = 'Ios',
+    Android = 'Android',
+    Chrome = 'Chrome',
+    Safari = 'Safari',
+    Expo = 'Expo',
+  }
+
   // @DataContract
   export class PushDeviceDeliveryTokenDto {
+    // @DataMember
+    public pushDeviceToken: string;
+
+    // @DataMember
+    public deliveryFamily: PushDeviceDeliveryFamily;
+
     public constructor(init?: Partial<PushDeviceDeliveryTokenDto>) {
       (Object as any).assign(this, init);
     }
@@ -5294,6 +5308,9 @@ export module CodeMashHub2 {
     // @DataMember
     public when: FilesTriggerType;
 
+    // @DataMember
+    public folder?: string;
+
     public constructor(init?: Partial<FilesTriggerDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -6824,6 +6841,9 @@ export module CodeMashHub2 {
   export class FilesTriggerProjectionList extends TriggerProjectionList {
     // @DataMember
     public type: FilesTriggerType;
+
+    // @DataMember
+    public folder?: string;
 
     public constructor(init?: Partial<FilesTriggerProjectionList>) {
       super(init);
