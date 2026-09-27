@@ -1,9 +1,9 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-23 18:30:40
+Date: 2026-09-26 16:50:48
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://127.0.0.1:60085
+BaseUrl: http://localhost:5002
 
 GlobalNamespace: CodeMashApi2
 //MakePropertiesOptional: False
