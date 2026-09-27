@@ -117,7 +117,6 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`savePushIntegration`](#savepushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations`                                          | `project` |
 | [`setPushIntegrationAsDefault`](#setpushintegrationasdefault)                   | `PUT`    | `/{version}/notifications/push/integrations/{Id}/default`                             | `project` |
 | [`testPushIntegration`](#testpushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations/test`                                     | `project` |
-| [`registerCodeMashAppPushIntegration`](#registercodemashapppushintegration)     | `POST`   | `/{version}/notifications/push/integrations/app/request`                              | `account` |
 | [`registerDevice`](#registerdevice)                                             | `POST`   | `/{version}/notifications/push/devices`                                               | `project` |
 | [`getPushDevices`](#getpushdevices)                                             | `GET`    | `/{version}/notifications/push/devices`                                               | `project` |
 | [`getPushDevice`](#getpushdevice)                                               | `GET`    | `/{version}/notifications/push/devices/{id}`                                          | `project` |
@@ -2526,30 +2525,6 @@ const result = await norbix.hub.notifications.testPushIntegration({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestEmailIntegrationResponse
-```
-
-[↑ Top](#endpoints)
-
-### registerCodeMashAppPushIntegration
-
-`POST` `/{version}/notifications/push/integrations/app/request`
-
-Register a new entry.
-
-> ⚠️ **Account-scoped.** This call requires `accountId` on the client. Construct with `new Norbix({ accountId, ... })` or set `NORBIX_ACCOUNT_ID`. Calling without it throws `NORBIX_ACCOUNT_SCOPE_REQUIRED`.
-
-**Request DTO**: `CodeMashHub2.RegisterCodeMashAppPushIntegration`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.registerCodeMashAppPushIntegration({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)

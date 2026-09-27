@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import { NotificationsModule } from '../../src/hub/notifications.js';
-import { NorbixError } from '../../src/index.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
@@ -137,7 +136,6 @@ describe('hub.notifications', () => {
     expect(typeof ns['savePushIntegration']).toBe('function');
     expect(typeof ns['setPushIntegrationAsDefault']).toBe('function');
     expect(typeof ns['testPushIntegration']).toBe('function');
-    expect(typeof ns['registerCodeMashAppPushIntegration']).toBe('function');
     expect(typeof ns['registerDevice']).toBe('function');
     expect(typeof ns['getPushDevices']).toBe('function');
     expect(typeof ns['getPushDevice']).toBe('function');
@@ -2630,64 +2628,6 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('registerCodeMashAppPushIntegration: POST /{version}/notifications/push/integrations/app/request', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/push/integrations/app/request',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({ accountId: 'acc-1' });
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['registerCodeMashAppPushIntegration']!;
-    await fn({ ...stub, accountId: 'acc-1' });
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('registerCodeMashAppPushIntegration: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId', async () => {
-    const stub = {};
-    const { norbix } = makeClient();
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['registerCodeMashAppPushIntegration']!;
-    await expect(fn(stub)).rejects.toBeInstanceOf(NorbixError);
-    await expect(fn(stub)).rejects.toMatchObject({ code: 'NORBIX_ACCOUNT_SCOPE_REQUIRED' });
-  });
-
-  it('registerCodeMashAppPushIntegration: succeeds when accountId is configured', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/push/integrations/app/request',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({ accountId: 'acc-1' });
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['registerCodeMashAppPushIntegration']!;
-    await fn({ ...stub, accountId: 'acc-1' });
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('X-CM-AccountId')).toBe('acc-1');
   });
 
   it('registerDevice: POST /{version}/notifications/push/devices', async () => {

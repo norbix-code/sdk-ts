@@ -2046,26 +2046,6 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/push/integrations/app/request
-   * Account-scoped — requires `accountId` on the Norbix client.
-   * Request DTO: RegisterCodeMashAppPushIntegration
-   */
-  registerCodeMashAppPushIntegration = (
-    request: Partial<CodeMashHub2.RegisterCodeMashAppPushIntegration> = {} as Partial<CodeMashHub2.RegisterCodeMashAppPushIntegration>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/push/integrations/app/request',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'account',
-      ...options,
-    });
-  };
-
-  /**
    * POST /{version}/notifications/push/devices
    * Request DTO: RegisterDevice
    */
