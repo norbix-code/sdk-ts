@@ -26,21 +26,30 @@ This rewrites generated files under `src/api/`, `src/hub/`, `tests/api/`, `tests
 
 If you need to add behavior to the SDK that _isn't_ per-endpoint (e.g. a new auth helper, a transport feature), edit `src/client/*` by hand. Those files are not regenerated.
 
+## Versioning
+
+The major version is frozen at **v4** until the public launch.
+
+- A breaking change is released as a **minor** (for example v4.2.0 → v4.3.0), never as a new major.
+- Write it as `feat(<scope>): <what>` and add a line `Breaking: <what changed and what callers must do>` in plain words, in the pull-request body and in the commit message.
+- Never mark it the conventional-commits way: no `!` in the title (`feat!:`), no BREAKING CHANGE footer. The `PR title` check fails a pull request that does.
+- As a safety net, the release config (`.releaserc.json` → `releaseRules`) maps breaking commits to a minor, so one that slips through still does not bump the major.
+
 ## Conventional commits
 
 Every commit message must follow [Conventional Commits](https://www.conventionalcommits.org/). `commitlint` runs as a Husky `commit-msg` hook and rejects messages that don't conform.
 
 The commit type maps to the version bump:
 
-| Type                                      | Version bump | Example                                   |
-| ----------------------------------------- | ------------ | ----------------------------------------- |
-| `feat:`                                   | minor        | `feat(database): add aggregate helper`    |
-| `fix:`                                    | patch        | `fix(transport): retry on idempotent 5xx` |
-| `perf:`                                   | patch        | `perf(codegen): skip unchanged files`     |
-| `refactor:`                               | patch        | `refactor(client): split errors module`   |
-| `docs(readme):`                           | patch        | `docs(readme): clarify env loading`       |
-| `chore:` `test:` `ci:` `style:`           | none         | maintenance, no release                   |
-| any with `!` or `BREAKING CHANGE:` footer | major        | `feat!: drop Node 16 support`             |
+| Type                                     | Version bump | Example                                   |
+| ---------------------------------------- | ------------ | ----------------------------------------- |
+| `feat:`                                  | minor        | `feat(database): add aggregate helper`    |
+| `fix:`                                   | patch        | `fix(transport): retry on idempotent 5xx` |
+| `perf:`                                  | patch        | `perf(codegen): skip unchanged files`     |
+| `refactor:`                              | patch        | `refactor(client): split errors module`   |
+| `docs(readme):`                          | patch        | `docs(readme): clarify env loading`       |
+| `chore:` `test:` `ci:` `style:`          | none         | maintenance, no release                   |
+| breaking: `feat(...)` + `Breaking:` note | minor        | `feat(node): drop Node 16 support`        |
 
 You can preview what a PR would release. PRs to `main` get a sticky comment from the `release-preview` workflow showing the computed next version before you merge.
 
@@ -104,7 +113,7 @@ One-time setup on npmjs.com: package `@norbix.ai/ts` → Settings → Trusted Pu
 
 ### How to debug a failed release
 
-- **`semantic-release` says "no release-worthy commits"** — your commits don't bump anything. Use `feat:` / `fix:` / `feat!:` for the bump you want. Squash merging? Make sure the squash subject also follows conventional commits.
+- **`semantic-release` says "no release-worthy commits"** — your commits don't bump anything. Use `feat:` / `fix:` for the bump you want (a breaking change is a `feat:` too — see Versioning). Squash merging? Make sure the squash subject also follows conventional commits.
 - **`npm publish` fails with E401 / EOTP, or `OIDC token exchange ... 404`**: trusted publishing is not configured on npmjs.com, or no longer matches the repository / workflow file name. Fix the Trusted Publisher settings; do not add a token.
 - **Tag exists but npm or the GitHub Release is missing**: publishing failed after tagging. Run the Release workflow manually with `republish=true`. It publishes the latest tag from the tag's own tree and creates the missing GitHub Release.
 - **`audit` failure mid-release** — a CVE landed between the PR's CI run and the merge. Land a fix or wait for the patched version (Dependabot usually opens a PR within minutes).
