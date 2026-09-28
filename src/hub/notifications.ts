@@ -881,7 +881,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
       ...options,
     });
   };
@@ -1546,7 +1546,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
       ...options,
     });
   };
@@ -2273,7 +2273,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
       ...options,
     });
   };
