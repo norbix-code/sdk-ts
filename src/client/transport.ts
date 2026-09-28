@@ -15,8 +15,13 @@ export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
  * code passes `'account'` for any DTO implementing `IHasAccountId`. The
  * special `'unauthenticated'` scope bypasses the auth header check, used by
  * the login flow which has no token yet.
+ *
+ * `'optional'`: auth is sent when the client has a token, never required —
+ * used by the signed notification preview links. With a token the
+ * `Authorization` header is set as usual; without one the request goes out
+ * with no `Authorization` header and nothing is thrown.
  */
-export type Scope = 'project' | 'account' | 'public' | 'unauthenticated';
+export type Scope = 'project' | 'account' | 'public' | 'unauthenticated' | 'optional';
 
 export interface RequestOptions<TBody = unknown> {
   /** Which gateway (api2 or hub) the call targets. */
@@ -126,7 +131,12 @@ export class Transport {
       ...this.cfg.defaultHeaders,
     });
 
-    if (opts.scope !== 'unauthenticated') {
+    if (opts.scope === 'optional') {
+      // Signed-link endpoints: the link itself is the key. Send a token when
+      // there is one (a signed-in member), never demand one.
+      const token = opts.bearerToken ?? this.cfg.bearerToken ?? this.cfg.apiKey;
+      if (token) headers.set('Authorization', `Bearer ${token}`);
+    } else if (opts.scope !== 'unauthenticated') {
       const token = opts.bearerToken ?? this.cfg.bearerToken ?? this.cfg.apiKey;
       if (!token) {
         throw new NorbixError({
@@ -206,10 +216,13 @@ export class Transport {
         this.cfg.onResponse?.({ url, status: res.status, durationMs: Date.now() - startedAt });
 
         // Optional 401 refresh flow: refresh once, then retry the original request.
+        // An `'optional'` call sent without a token got its 401 from the link
+        // (bad or expired), not from a stale token — refreshing cannot fix it.
         if (
           res.status === 401 &&
           !didRefresh &&
           opts.scope !== 'unauthenticated' &&
+          (opts.scope !== 'optional' || headers.has('Authorization')) &&
           typeof this.cfg.refreshBearerToken === 'function'
         ) {
           const nextToken = await this.cfg.refreshBearerToken({ url, status: 401 });

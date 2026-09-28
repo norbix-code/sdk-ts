@@ -101,6 +101,41 @@ stopping at the first short page.
 const device = await norbix.hub.notifications.getPushDevice({ id: 'pnd_123' });
 ```
 
+## Preview a notification with its signed link (no sign-in)
+
+The gateway opens the three preview routes without sign-in when it gets a
+valid signed link as `hash`. The hash alone is the key: no API key, no
+project id. A signed-in member can instead pass `projectId` +
+`notificationId` (no hash) and needs the read permission.
+
+| method                     | route                                        |
+| -------------------------- | -------------------------------------------- |
+| `previewPushNotification`  | `GET /{version}/notifications/push/preview`  |
+| `previewEmailNotification` | `GET /{version}/notifications/email/preview` |
+| `previewSmsNotification`   | `GET /{version}/notifications/sms/preview`   |
+
+These routes use the transport scope `'optional'`: a token is sent when the
+client has one, and never demanded. With no token the request goes out with
+no `Authorization` header instead of failing with `NORBIX_NOT_AUTHENTICATED`.
+
+```ts
+// Someone who holds only the link — no apiKey, no bearerToken.
+const norbix = new Norbix({ projectId: 'any' }); // the constructor still asks for one
+const preview = await norbix.hub.notifications.previewPushNotification({
+  hash: linkFromTheEmail,
+});
+```
+
+A bad or expired link answers `401`; a signed-in member without the read
+permission gets `403`; a malformed request gets `400`. The SDK does not try a
+token refresh on a `401` it got without sending a token — a new token cannot
+fix a bad link.
+
+> The preview methods in `src/hub/notifications.ts` switch to `'optional'`
+> when that generated module is next refreshed. Until then they are still
+> marked `'project'` and need a token. The transport side is covered by
+> `tests/transport-optional-scope.test.ts`.
+
 ## Known gaps in the generated types
 
 These calls work at runtime — the transport reads route tokens off the request
