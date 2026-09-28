@@ -22,6 +22,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { Transport } from '../src/client/transport.js';
 import type { Scope } from '../src/client/transport.js';
 import type { ResolvedNorbixConfig } from '../src/client/types.js';
+import { NotificationsModule } from '../src/hub/notifications.js';
 
 import { createMockFetch } from './_helpers.js';
 
@@ -179,4 +180,28 @@ describe('transport — the other scopes are unchanged', () => {
 
     expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
   });
+});
+
+describe('the generated preview methods use the optional scope', () => {
+  it.each([
+    ['previewPushNotification', 'push'],
+    ['previewEmailNotification', 'email'],
+    ['previewSmsNotification', 'sms'],
+  ] as const)(
+    '%s with only the signed link: no sign-in, no Authorization',
+    async (method, channel) => {
+      const { t, mock } = transport();
+      const notifications = new NotificationsModule(t);
+
+      await notifications[method]({ hash: 'abc.def' });
+
+      expect({
+        url: mock.lastCall?.url,
+        authorization: mock.lastCall?.headers.get('Authorization'),
+      }).toEqual({
+        url: `https://hub.norbix.io/v2/notifications/${channel}/preview?hash=abc.def`,
+        authorization: null,
+      });
+    },
+  );
 });
