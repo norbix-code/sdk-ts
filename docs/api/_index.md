@@ -4,7 +4,7 @@
 
 Project-scoped data operations: database collections, users, AI chat, auth, API keys.
 
-**84 endpoints across 9 modules.** Click a module
+**83 endpoints across 8 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                             | Endpoints | Description                                                                                                                              |
@@ -12,7 +12,6 @@ name for the full method reference and TypeScript examples.
 | [`accessToken`](./access_token.md) |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
 | [`apikeys`](./apikeys.md)          |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
-| [`chat`](./chat.md)                |         1 |                                                                                                                                          |
 | [`database`](./database.md)        |        22 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`echo`](./echo.md)                |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`files`](./files.md)              |        12 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |

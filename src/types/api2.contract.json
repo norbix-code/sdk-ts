@@ -1,46 +1,6 @@
 {
-  "AccountBlocked": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountCreated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountProfileUpdated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountSetAsActive": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountSetAsInactive": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountUnregistered": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountUserPushDeviceCreated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountValidationTokenIssued": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "AccountVerified": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
   "AggregateRequest": {
     "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "AskChatRequest": {
-    "requiresAuth": false,
     "returnsBytes": false
   },
   "AssignRolePermissionsRequest": {
@@ -77,10 +37,6 @@
   },
   "CountRequest": {
     "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "CustomerCreated": {
-    "requiresAuth": false,
     "returnsBytes": false
   },
   "DeleteFileApiRequest": {
@@ -215,10 +171,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "LicenseCreated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
   "LinkIdentityRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -244,158 +196,6 @@
     "returnsBytes": false
   },
   "PasskeyRegistrationOptionsRequest": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectAccentColorChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectActivated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectAllowedOriginsChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationGroupDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationGroupSaved": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationSet": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationTagDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationTagFromGroupDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCommunicationTagSaved": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectCreated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectDefaultLanguageChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectDescriptionChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectDisabled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectIconChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectLanguagesChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectLogoChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectMainColorChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectMarketingUrlChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectNameChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectPaymentZonesChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectRegionsChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProjectTimeZoneChanged": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationDisabled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationEnabled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationRenamed": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationSaved": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushIntegrationSetAsDefault": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushServiceDisabled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushServiceEnabled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushServiceEstablished": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateArchived": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateCreated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateMirrored": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateUnArchived": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "PushTemplateUpdated": {
     "requiresAuth": false,
     "returnsBytes": false
   },
@@ -472,14 +272,6 @@
     "returnsBytes": false
   },
   "StartEmailVerificationRequest": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "SubscriptionCanceled": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "SubscriptionChanged": {
     "requiresAuth": false,
     "returnsBytes": false
   },

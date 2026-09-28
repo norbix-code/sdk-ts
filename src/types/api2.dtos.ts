@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-26 16:50:48
+Date: 2026-09-28 20:39:28
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -17,8 +17,6 @@ GlobalNamespace: CodeMashApi2
 */
 
 export module CodeMashApi2 {
-  // @ts-nocheck
-
   export interface IReturn<T> {
     createResponse(): T;
   }
@@ -304,6 +302,18 @@ export module CodeMashApi2 {
     public hubUrl: string;
 
     public constructor(init?: Partial<EchoRegionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoAgentDto {
+    public mcpUrl: string;
+    public oAuthMetadataUrl?: string;
+    public installationType: string;
+    public onboardingDocsUrl: string;
+    public toolsUrl: string;
+
+    public constructor(init?: Partial<EchoAgentDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1121,6 +1131,7 @@ export module CodeMashApi2 {
     public graceDaysLeft?: number;
     public installationDomain?: string;
     public licensingDocsUrl?: string;
+    public agent?: EchoAgentDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -1145,15 +1156,6 @@ export module CodeMashApi2 {
     public available: boolean;
 
     public constructor(init?: Partial<PublicLegalDocumentDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class AskChatResponse extends ResponseBase {
-    public result?: string;
-
-    public constructor(init?: Partial<AskChatResponse>) {
-      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -1404,7 +1406,7 @@ export module CodeMashApi2 {
 
   export class ListFilesResponse extends ResponseBase {
     public list?: PaginatedResponse<FileResourceRefDto>;
-    public folders?: IList<string>;
+    public folders?: string[];
     public publicFolders?: IList<PublicFolderDto>;
 
     public constructor(init?: Partial<ListFilesResponse>) {
@@ -1557,29 +1559,6 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new PublicLegalDocumentDto();
-    }
-  }
-
-  /** @description AI */
-  // @Route("/{version}/chat/complete", "POST")
-  // @Api(Description="AI")
-  // @DataContract
-  export class AskChatRequest extends CodeMashRequestBase implements IReturn<AskChatResponse> {
-    // @DataMember
-    public prompt: string;
-
-    public constructor(init?: Partial<AskChatRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'AskChatRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new AskChatResponse();
     }
   }
 
@@ -3988,6 +3967,74 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new GetAccessTokenResponse();
+    }
+  }
+
+  // @sdk-dto-patches (injected by sync-types.mjs)
+  export class UserApiKey {
+    public key?: string;
+    public keyType?: string;
+    public expiryDate?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<UserApiKey>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  export class GetApiKeysResponse {
+    public results?: UserApiKey[];
+    public meta?: { [index: string]: string };
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<GetApiKeysResponse>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  export class RegenerateApiKeysResponse {
+    public results?: UserApiKey[];
+    public meta?: { [index: string]: string };
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<RegenerateApiKeysResponse>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  // @Route("/apikeys")
+  // @Route("/apikeys/{Environment}")
+  export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet {
+    public environment?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<GetApiKeys>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetApiKeys';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetApiKeysResponse();
+    }
+  }
+  // @Route("/apikeys/regenerate")
+  // @Route("/apikeys/regenerate/{Environment}")
+  export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost {
+    public environment?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<RegenerateApiKeys>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RegenerateApiKeys';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RegenerateApiKeysResponse();
     }
   }
 }

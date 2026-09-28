@@ -84,9 +84,14 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getLicenseDomainDnsStatus`](#getlicensedomaindnsstatus)                     | `GET`    | `/{version}/account/licensing/dns-status`                                    | `project` |
 | [`getLicenses`](#getlicenses)                                                 | `GET`    | `/{version}/account/licenses`                                                | `project` |
 | [`getInstallationLicenseStatus`](#getinstallationlicensestatus)               | `GET`    | `/{version}/account/licensing/status`                                        | `project` |
+| [`createAiServiceUser`](#createaiserviceuser)                                 | `POST`   | `/{version}/account/ai/service-users`                                        | `project` |
+| [`listAiServiceUsers`](#listaiserviceusers)                                   | `GET`    | `/{version}/account/ai/service-users`                                        | `project` |
+| [`rotateAiServiceUserKey`](#rotateaiserviceuserkey)                           | `POST`   | `/{version}/account/ai/service-users/{Id}/keys`                              | `project` |
+| [`revokeAiServiceUserKey`](#revokeaiserviceuserkey)                           | `DELETE` | `/{version}/account/ai/service-users/{Id}/keys/{KeyId}`                      | `project` |
+| [`deleteAiServiceUser`](#deleteaiserviceuser)                                 | `DELETE` | `/{version}/account/ai/service-users/{Id}`                                   | `project` |
+| [`getAgentOnboarding`](#getagentonboarding)                                   | `GET`    | `/{version}/account/agent/onboarding`                                        | `project` |
 | [`getAiTools`](#getaitools)                                                   | `GET`    | `/{version}/account/ai/tools`                                                | `project` |
 | [`invokeAiTool`](#invokeaitool)                                               | `POST`   | `/{version}/account/ai/tools/{ToolName}`                                     | `project` |
-| [`askChat`](#askchat)                                                         | `POST`   | `/{version}/account/chat/complete`                                           | `project` |
 | [`uploadChatAttachment`](#uploadchatattachment)                               | `POST`   | `/{version}/account/chat/attachments`                                        | `project` |
 | [`chatAvailability`](#chatavailability)                                       | `GET`    | `/{version}/account/chat/availability`                                       | `project` |
 | [`getChatMemory`](#getchatmemory)                                             | `GET`    | `/{version}/account/chat/memory`                                             | `project` |
@@ -1731,6 +1736,138 @@ const result = await norbix.hub.account.getInstallationLicenseStatus({
 
 [↑ Top](#endpoints)
 
+### createAiServiceUser
+
+`POST` `/{version}/account/ai/service-users`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateAiServiceUserRequest`
+**Response**: `CodeMashHub2.CreateAiServiceUserResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createAiServiceUser({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.CreateAiServiceUserResponse
+```
+
+[↑ Top](#endpoints)
+
+### listAiServiceUsers
+
+`GET` `/{version}/account/ai/service-users`
+
+**Request DTO**: `CodeMashHub2.ListAiServiceUsersRequest`
+**Response**: `CodeMashHub2.ListAiServiceUsersResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.listAiServiceUsers({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ListAiServiceUsersResponse
+```
+
+[↑ Top](#endpoints)
+
+### rotateAiServiceUserKey
+
+`POST` `/{version}/account/ai/service-users/{Id}/keys`
+
+Rotate the secret / token.
+
+**Request DTO**: `CodeMashHub2.RotateAiServiceUserKeyRequest`
+**Response**: `CodeMashHub2.RotateAiServiceUserKeyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.rotateAiServiceUserKey({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RotateAiServiceUserKeyResponse
+```
+
+[↑ Top](#endpoints)
+
+### revokeAiServiceUserKey
+
+`DELETE` `/{version}/account/ai/service-users/{Id}/keys/{KeyId}`
+
+**Request DTO**: `CodeMashHub2.RevokeAiServiceUserKeyRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.revokeAiServiceUserKey({
+  Id: 'Id-here',
+  KeyId: 'KeyId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAiServiceUser
+
+`DELETE` `/{version}/account/ai/service-users/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAiServiceUserRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteAiServiceUser({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAgentOnboarding
+
+`GET` `/{version}/account/agent/onboarding`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAgentOnboardingRequest`
+**Response**: `CodeMashHub2.GetAgentOnboardingResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAgentOnboarding({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAgentOnboardingResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getAiTools
 
 `GET` `/{version}/account/ai/tools`
@@ -1770,28 +1907,6 @@ const result = await norbix.hub.account.invokeAiTool({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.InvokeAiToolResponse
-```
-
-[↑ Top](#endpoints)
-
-### askChat
-
-`POST` `/{version}/account/chat/complete`
-
-Send a chat / inference request.
-
-**Request DTO**: `CodeMashHub2.AskChatRequest`
-**Response**: `CodeMashHub2.AskChatResponse`
-
-```ts
-import { Norbix } from '@norbix/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.askChat({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.AskChatResponse
 ```
 
 [↑ Top](#endpoints)

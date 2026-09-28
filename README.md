@@ -146,20 +146,7 @@ const order = await norbix.api.database.insertOne({
 console.log(order.id);
 ```
 
-#### 3. Ask the AI
-
-```ts
-const answer = await norbix.api.chat.askChat({
-  messages: [
-    { role: 'system', content: 'You are a concise sales assistant.' },
-    { role: 'user', content: `Summarise order ${order.id} in one sentence.` },
-  ],
-});
-
-console.log(answer.content);
-```
-
-That's the loop — auth, data, AI — using three real modules behind one client. The same modules are exposed as MCP tools, so any MCP-native agent can drive the same flow. Email/push/payments and other configurable surfaces live on the **Hub** — see [Hub example](#hub-example).
+That's the loop — auth and data — using two real modules behind one client. The same modules are exposed as MCP tools, so any MCP-native agent can drive the same flow. Email/push/payments and other configurable surfaces live on the **Hub** — see [Hub example](#hub-example).
 
 > **Want it in your language?** See the [Norbix SDKs](#norbix-sdks) family below — every SDK exposes the same module names and method shapes.
 
@@ -323,7 +310,6 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 | 👤 `membership`  | User CRUD, registration, login, passkeys, email verification, magic links, roles, preferences | [`docs/api/membership.md`](./docs/api/membership.md)     |
 | 🗄️ `database`    | Collections, find/insert/update/delete, aggregate, taxonomies                                 | [`docs/api/database.md`](./docs/api/database.md)         |
 | 📁 `files`       | Signed upload URLs, download, file info, listing, integration test                            | [`docs/api/files.md`](./docs/api/files.md)               |
-| 🤖 `chat`        | AI chat completion                                                                            | [`docs/api/chat.md`](./docs/api/chat.md)                 |
 | 🔑 `apikeys`     | List + regenerate per-environment API keys                                                    | [`docs/api/apikeys.md`](./docs/api/apikeys.md)           |
 | 🪪 `accessToken` | Refresh-token exchange                                                                        | [`docs/api/access_token.md`](./docs/api/access_token.md) |
 | 🩺 `echo`        | Gateway smoke check                                                                           | [`docs/api/echo.md`](./docs/api/echo.md)                 |

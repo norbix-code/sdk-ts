@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 93
+ * Endpoints: 98
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -1419,6 +1419,120 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/ai/service-users
+   * Request DTO: CreateAiServiceUserRequest
+   */
+  createAiServiceUser = (
+    request: Partial<CodeMashHub2.CreateAiServiceUserRequest> = {} as Partial<CodeMashHub2.CreateAiServiceUserRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CreateAiServiceUserResponse> => {
+    return this.transport.send<CodeMashHub2.CreateAiServiceUserResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/ai/service-users
+   * Request DTO: ListAiServiceUsersRequest
+   */
+  listAiServiceUsers = (
+    request: Partial<CodeMashHub2.ListAiServiceUsersRequest> = {} as Partial<CodeMashHub2.ListAiServiceUsersRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ListAiServiceUsersResponse> => {
+    return this.transport.send<CodeMashHub2.ListAiServiceUsersResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/ai/service-users/{Id}/keys
+   * Request DTO: RotateAiServiceUserKeyRequest
+   */
+  rotateAiServiceUserKey = (
+    request: Partial<CodeMashHub2.RotateAiServiceUserKeyRequest> = {} as Partial<CodeMashHub2.RotateAiServiceUserKeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RotateAiServiceUserKeyResponse> => {
+    return this.transport.send<CodeMashHub2.RotateAiServiceUserKeyResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users/{Id}/keys',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/ai/service-users/{Id}/keys/{KeyId}
+   * Request DTO: RevokeAiServiceUserKeyRequest
+   */
+  revokeAiServiceUserKey = (
+    request: Partial<CodeMashHub2.RevokeAiServiceUserKeyRequest> = {} as Partial<CodeMashHub2.RevokeAiServiceUserKeyRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users/{Id}/keys/{KeyId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id', 'KeyId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/ai/service-users/{Id}
+   * Request DTO: DeleteAiServiceUserRequest
+   */
+  deleteAiServiceUser = (
+    request: Partial<CodeMashHub2.DeleteAiServiceUserRequest> = {} as Partial<CodeMashHub2.DeleteAiServiceUserRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/agent/onboarding
+   * Request DTO: GetAgentOnboardingRequest
+   */
+  getAgentOnboarding = (
+    request: Partial<CodeMashHub2.GetAgentOnboardingRequest> = {} as Partial<CodeMashHub2.GetAgentOnboardingRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAgentOnboardingResponse> => {
+    return this.transport.send<CodeMashHub2.GetAgentOnboardingResponse>({
+      target: 'hub',
+      path: '/{version}/account/agent/onboarding',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/account/ai/tools
    * Request DTO: GetAiToolsRequest
    */
@@ -1451,25 +1565,6 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: ['ToolName'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/account/chat/complete
-   * Request DTO: AskChatRequest
-   */
-  askChat = (
-    request: Partial<CodeMashHub2.AskChatRequest> = {} as Partial<CodeMashHub2.AskChatRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.AskChatResponse> => {
-    return this.transport.send<CodeMashHub2.AskChatResponse>({
-      target: 'hub',
-      path: '/{version}/account/chat/complete',
-      method: 'POST',
-      request,
-      pathParams: [],
       scope: 'project',
       ...options,
     });
