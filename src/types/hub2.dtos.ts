@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-26 16:50:48
+Date: 2026-09-27 09:59:32
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -4488,10 +4488,6 @@ export module CodeMashHub2 {
       super(init);
       (Object as any).assign(this, init);
     }
-  }
-
-  export interface IHasAccountId {
-    accountId: string;
   }
 
   export enum DeviceType {
@@ -21161,33 +21157,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new TestEmailIntegrationResponse();
-    }
-  }
-
-  // @Route("/{version}/notifications/push/integrations/app/request", "POST")
-  export class RegisterCodeMashAppPushIntegration
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>, IHasAccountId
-  {
-    public accountId: string;
-    public userId: string;
-    public requestId: string;
-    public pin: number;
-    public validTill: string;
-    public publicKey: string;
-
-    public constructor(init?: Partial<RegisterCodeMashAppPushIntegration>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RegisterCodeMashAppPushIntegration';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
     }
   }
 

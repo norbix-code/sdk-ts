@@ -2427,10 +2427,6 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
-  "RegisterCodeMashAppPushIntegration": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "RegisterDevice": {
     "requiresAuth": true,
     "returnsBytes": false
