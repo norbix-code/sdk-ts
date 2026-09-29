@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-27 09:59:32
+Date: 2026-09-28 20:39:28
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -17,8 +17,6 @@ GlobalNamespace: CodeMashHub2
 */
 
 export module CodeMashHub2 {
-  // @ts-nocheck
-
   export interface IReturn<T> {
     createResponse(): T;
   }
@@ -4215,6 +4213,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class AiScopeDto {
+    // @DataMember
+    public reach: string;
+
+    // @DataMember
+    public projectId?: string;
+
+    // @DataMember
+    public rights: string;
+
+    // @DataMember
+    public envs: string[] = [];
+
+    public constructor(init?: Partial<AiScopeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class DeleteTrigger extends CodeMashRequestBase {
     // @DataMember
     public triggerId: string;
@@ -4677,6 +4694,18 @@ export module CodeMashHub2 {
     public hubUrl: string;
 
     public constructor(init?: Partial<EchoRegionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoAgentDto {
+    public mcpUrl: string;
+    public oAuthMetadataUrl?: string;
+    public installationType: string;
+    public onboardingDocsUrl: string;
+    public toolsUrl: string;
+
+    public constructor(init?: Partial<EchoAgentDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -5935,6 +5964,44 @@ export module CodeMashHub2 {
     public message?: string;
 
     public constructor(init?: Partial<InstallationLicenseStatusDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiServiceUserKeyDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public hint: string;
+
+    // @DataMember
+    public issuedAt: string;
+
+    public constructor(init?: Partial<AiServiceUserKeyDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiServiceUserDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public scope: AiScopeDto;
+
+    // @DataMember
+    public createdAt: string;
+
+    // @DataMember
+    public keys: AiServiceUserKeyDto[] = [];
+
+    public constructor(init?: Partial<AiServiceUserDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7845,6 +7912,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class AgentOnboardingSnippet {
+    public client: string;
+    public config: string;
+
+    public constructor(init?: Partial<AgentOnboardingSnippet>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class AiToolManifestParameter {
     public name: string;
     public type: string;
@@ -8240,13 +8316,13 @@ export module CodeMashHub2 {
     contentType?: string;
     isLocal: boolean;
     userAgent?: string;
-    cookies?: { [index: string]: Cookie };
+    cookies?: { [index: string]: any };
     responseContentType?: string;
     hasExplicitResponseContentType: boolean;
     items?: { [index: string]: Object };
-    headers?: NameValueCollection;
-    queryString?: NameValueCollection;
-    formData?: NameValueCollection;
+    headers?: any;
+    queryString?: any;
+    formData?: any;
     useBufferedStream: boolean;
     rawUrl?: string;
     absoluteUri?: string;
@@ -9207,6 +9283,7 @@ export module CodeMashHub2 {
     public graceDaysLeft?: number;
     public installationDomain?: string;
     public licensingDocsUrl?: string;
+    public agent?: EchoAgentDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -9539,6 +9616,48 @@ export module CodeMashHub2 {
     public status?: InstallationLicenseStatusDto;
 
     public constructor(init?: Partial<GetInstallationLicenseStatusResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CreateAiServiceUserResponse extends ResponseBase {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public keyId: string;
+
+    // @DataMember
+    public key: string;
+
+    public constructor(init?: Partial<CreateAiServiceUserResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ListAiServiceUsersResponse extends ResponseBase {
+    // @DataMember
+    public items: AiServiceUserDto[] = [];
+
+    public constructor(init?: Partial<ListAiServiceUsersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RotateAiServiceUserKeyResponse extends ResponseBase {
+    // @DataMember
+    public keyId: string;
+
+    // @DataMember
+    public key: string;
+
+    public constructor(init?: Partial<RotateAiServiceUserKeyResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -10068,7 +10187,7 @@ export module CodeMashHub2 {
 
   export class GetFolderFilesResponse extends ResponseBase {
     public list?: PaginatedResponse<FileResourceRefDto>;
-    public folders?: IList<string>;
+    public folders?: string[];
     public publicFolders?: IList<PublicFolderDto>;
 
     public constructor(init?: Partial<GetFolderFilesResponse>) {
@@ -10928,6 +11047,21 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetAgentOnboardingResponse extends ResponseBase {
+    public prompt?: string;
+    public hubUrl?: string;
+    public apiUrl?: string;
+    public mcpUrl?: string;
+    public docsUrl?: string;
+    public installationType?: string;
+    public snippets?: AgentOnboardingSnippet[];
+
+    public constructor(init?: Partial<GetAgentOnboardingResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetAiToolsResponse extends ResponseBase {
     public tools?: AiToolManifestItem[];
 
@@ -10941,15 +11075,6 @@ export module CodeMashHub2 {
     public result?: string;
 
     public constructor(init?: Partial<InvokeAiToolResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class AskChatResponse extends ResponseBase {
-    public result?: string;
-
-    public constructor(init?: Partial<AskChatResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -11144,22 +11269,22 @@ export module CodeMashHub2 {
   export class HttpResult {
     public responseText?: string;
     public responseStream?: string;
-    public fileInfo?: FileInfo;
+    public fileInfo?: any;
     public virtualFile?: IVirtualFile;
     public contentType?: string;
     public headers?: { [index: string]: string };
-    public cookies?: Cookie[];
+    public cookies?: any;
     public eTag?: string;
     public age?: string;
     public maxAge?: string;
     public expires?: string;
     public lastModified?: string;
     public cacheControl: CacheControl;
-    public resultScope?: Func<IDisposable>;
+    public resultScope?: any;
     public allowsPartialResponse: boolean;
     public options?: { [index: string]: string };
     public status: number;
-    public statusCode: HttpStatusCode;
+    public statusCode: any;
     public statusDescription?: string;
     public response?: Object;
     public responseFilter?: IContentTypeWriter;
@@ -13356,6 +13481,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The complete new list of allowed origin URLs, e.g. [\"https://app.example.com\", \"https://example.com\"]. An entry with no scheme (e.g. \"example.com\") defaults to https. Whatever is not in this list stops being allowed.")
     public origins?: string[];
 
+    /** @description Optional. true removes the project's own Admin Portal origin (pr_{projectId}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API. */
+    // @ApiMember(Description="Optional. true removes the project's own Admin Portal origin (pr_{projectId}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API.")
+    public removeAdminPortalOrigin?: boolean;
+
     public constructor(init?: Partial<UpdateProjectAllowedOrigins>) {
       super(init);
       (Object as any).assign(this, init);
@@ -14422,6 +14551,128 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetInstallationLicenseStatusResponse();
+    }
+  }
+
+  // @Route("/{version}/account/ai/service-users", "POST")
+  export class CreateAiServiceUserRequest
+    extends RequestBase
+    implements IReturn<CreateAiServiceUserResponse>
+  {
+    /** @description A name people recognise, e.g. "Claude Code on my laptop". */
+    // @ApiMember(Description="A name people recognise, e.g. \"Claude Code on my laptop\".", IsRequired=true)
+    public name: string;
+
+    /** @description Reach (account | project + projectId), rights (read | admin), envs (["TEST"] or ["TEST","PROD"]). */
+    // @ApiMember(Description="Reach (account | project + projectId), rights (read | admin), envs ([\"TEST\"] or [\"TEST\",\"PROD\"]).", IsRequired=true)
+    public scope: AiScopeDto;
+
+    public constructor(init?: Partial<CreateAiServiceUserRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateAiServiceUserRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CreateAiServiceUserResponse();
+    }
+  }
+
+  // @Route("/{version}/account/ai/service-users", "GET")
+  export class ListAiServiceUsersRequest
+    extends RequestBase
+    implements IReturn<ListAiServiceUsersResponse>
+  {
+    public constructor(init?: Partial<ListAiServiceUsersRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ListAiServiceUsersRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new ListAiServiceUsersResponse();
+    }
+  }
+
+  // @Route("/{version}/account/ai/service-users/{Id}/keys", "POST")
+  export class RotateAiServiceUserKeyRequest
+    extends RequestBase
+    implements IReturn<RotateAiServiceUserKeyResponse>
+  {
+    /** @description The service user id (aisu_…). */
+    // @ApiMember(Description="The service user id (aisu_…).", IsRequired=true)
+    public id: string;
+
+    /** @description Optional key id (aisk_…) to revoke in the same change — a rotation. */
+    // @ApiMember(Description="Optional key id (aisk_…) to revoke in the same change — a rotation.")
+    public revokeKeyId?: string;
+
+    public constructor(init?: Partial<RotateAiServiceUserKeyRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RotateAiServiceUserKeyRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RotateAiServiceUserKeyResponse();
+    }
+  }
+
+  // @Route("/{version}/account/ai/service-users/{Id}/keys/{KeyId}", "DELETE")
+  export class RevokeAiServiceUserKeyRequest extends RequestBase implements IReturn<EmptyResponse> {
+    /** @description The service user id (aisu_…). */
+    // @ApiMember(Description="The service user id (aisu_…).", IsRequired=true)
+    public id: string;
+
+    /** @description The key id (aisk_…) to revoke. */
+    // @ApiMember(Description="The key id (aisk_…) to revoke.", IsRequired=true)
+    public keyId: string;
+
+    public constructor(init?: Partial<RevokeAiServiceUserKeyRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RevokeAiServiceUserKeyRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/account/ai/service-users/{Id}", "DELETE")
+  export class DeleteAiServiceUserRequest extends RequestBase implements IReturn<EmptyResponse> {
+    /** @description The service user id (aisu_…). */
+    // @ApiMember(Description="The service user id (aisu_…).", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<DeleteAiServiceUserRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteAiServiceUserRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
     }
   }
 
@@ -19083,6 +19334,11 @@ export module CodeMashHub2 {
     // @DataMember
     public databaseIntegrationId?: string;
 
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
     public constructor(init?: Partial<CreateEmailCampaignRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -19350,9 +19606,17 @@ export module CodeMashHub2 {
     extends RequestBase
     implements IReturn<PreviewEmailNotificationResponse>
   {
-    /** @description The opaque, pre-signed preview hash identifying the project and notification to preview. */
-    // @ApiMember(Description="The opaque, pre-signed preview hash identifying the project and notification to preview.", IsRequired=true)
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
     public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash.")
+    public notificationId?: string;
 
     public constructor(init?: Partial<PreviewEmailNotification>) {
       super(init);
@@ -20096,6 +20360,11 @@ export module CodeMashHub2 {
     // @ApiMember(Description="For deliveryType 'PhoneNumbers'. JSON object: {\"recipientsSourceType\":\"PhoneNumbers\",\"phoneNumbers\":[\"+37060000000\"],\"campaignTime\":<unix seconds UTC>}. Numbers in international format.")
     public phoneNumbers?: SmsToPhoneNumbersDeliverySettingsDto;
 
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
     public constructor(init?: Partial<CreateSmsCampaignRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -20345,9 +20614,17 @@ export module CodeMashHub2 {
     extends RequestBase
     implements IReturn<PreviewSmsNotificationResponse>
   {
-    /** @description Signed preview hash identifying the notification to render. */
-    // @ApiMember(Description="Signed preview hash identifying the notification to render.")
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
     public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash.")
+    public notificationId?: string;
 
     public constructor(init?: Partial<PreviewSmsNotification>) {
       super(init);
@@ -21282,6 +21559,11 @@ export module CodeMashHub2 {
     // @DataMember
     public databaseIntegrationId?: string;
 
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
     public constructor(init?: Partial<CreatePushCampaignRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -21541,9 +21823,17 @@ export module CodeMashHub2 {
     extends RequestBase
     implements IReturn<PreviewPushNotificationResponse>
   {
-    /** @description The encrypted preview hash identifying the project and notification. */
-    // @ApiMember(Description="The encrypted preview hash identifying the project and notification.")
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
     public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash.")
+    public notificationId?: string;
 
     public constructor(init?: Partial<PreviewPushNotification>) {
       super(init);
@@ -22428,6 +22718,28 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Paste-ready prompt and client snippets to connect an AI tool to this installation. */
+  // @Route("/{version}/account/agent/onboarding", "GET")
+  // @Api(Description="Paste-ready prompt and client snippets to connect an AI tool to this installation.")
+  export class GetAgentOnboardingRequest
+    extends RequestBase
+    implements IReturn<GetAgentOnboardingResponse>
+  {
+    public constructor(init?: Partial<GetAgentOnboardingRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAgentOnboardingRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAgentOnboardingResponse();
+    }
+  }
+
   /** @description Lists the AI tools this host exposes (external-agent bridge). */
   // @Route("/{version}/account/ai/tools", "GET")
   // @Api(Description="Lists the AI tools this host exposes (external-agent bridge).")
@@ -22468,28 +22780,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new InvokeAiToolResponse();
-    }
-  }
-
-  /** @description Gets account info. */
-  // @Route("/{version}/account/chat/complete", "POST")
-  // @Api(Description="Gets account info.")
-  export class AskChatRequest extends RequestBase implements IReturn<AskChatResponse> {
-    public prompt: string;
-    public profile?: string;
-
-    public constructor(init?: Partial<AskChatRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'AskChatRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new AskChatResponse();
     }
   }
 
@@ -24832,6 +25122,177 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetAccessTokenResponse();
+    }
+  }
+
+  // @sdk-dto-patches (injected by sync-types.mjs)
+  export class UserApiKey {
+    public key?: string;
+    public keyType?: string;
+    public expiryDate?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<UserApiKey>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  export class GetUserEmailPreferencesResponse extends ResponseBase {
+    public defaultLanguage: string;
+    public projectLanguages: string[] = [];
+    public blockAllMarketingMessages: boolean;
+    public subscribedTags?: { [index: string]: HashSet<string> };
+
+    public constructor(init?: Partial<GetUserEmailPreferencesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+  export class GetApiKeysResponse {
+    public results?: UserApiKey[];
+    public meta?: { [index: string]: string };
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<GetApiKeysResponse>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  export class RegenerateApiKeysResponse {
+    public results?: UserApiKey[];
+    public meta?: { [index: string]: string };
+    public responseStatus?: ResponseStatus;
+
+    public constructor(init?: Partial<RegenerateApiKeysResponse>) {
+      (Object as any).assign(this, init);
+    }
+  }
+  // @Route("/{version}/notifications/user/preferences", "GET")
+  export class GetUserNotificationPreferences
+    extends CodeMashRequestBase
+    implements IReturn<GetUserEmailPreferencesResponse>
+  {
+    public userId: string;
+
+    public constructor(init?: Partial<GetUserNotificationPreferences>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetUserNotificationPreferences';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetUserEmailPreferencesResponse();
+    }
+  }
+  // @Route("/{version}/notifications/user/preferences", "PUT")
+  export class UpdateUserNotificationsPreferences
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public userId: string;
+    public blockAllMarketingMessages: boolean;
+    public subscribedToTags?: { [index: string]: HashSet<string> };
+
+    public constructor(init?: Partial<UpdateUserNotificationsPreferences>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateUserNotificationsPreferences';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+  // @Route("/apikeys")
+  // @Route("/apikeys/{Environment}")
+  export class GetApiKeys implements IReturn<GetApiKeysResponse>, IGet {
+    public environment?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<GetApiKeys>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetApiKeys';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetApiKeysResponse();
+    }
+  }
+  // @Route("/apikeys/regenerate")
+  // @Route("/apikeys/regenerate/{Environment}")
+  export class RegenerateApiKeys implements IReturn<RegenerateApiKeysResponse>, IPost {
+    public environment?: string;
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<RegenerateApiKeys>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RegenerateApiKeys';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RegenerateApiKeysResponse();
+    }
+  }
+  // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent", "POST")
+  export class GrantContactConsentRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public contactId: string;
+    public channel: string;
+    public lawfulBasis: string;
+    declare source: string;
+    public evidenceRef?: string;
+
+    public constructor(init?: Partial<GrantContactConsentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GrantContactConsentRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+  // @Route("/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe", "POST")
+  export class UnsubscribeContactRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public contactId: string;
+    public channel: string;
+    public reason?: string;
+
+    public constructor(init?: Partial<UnsubscribeContactRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UnsubscribeContactRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
     }
   }
 }
