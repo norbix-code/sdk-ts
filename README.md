@@ -350,6 +350,49 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 
 <!-- BEGIN: HUB_EXAMPLE -->
 
+## End-user AI chat (`norbix.api.ai`) and project AI settings (`norbix.hub.ai`, `norbix.hub.account`)
+
+A signed-in project user (`bearerToken` from `norbix.login`) can talk to the
+project's AI assistant. The turn call answers at once with a `turnId`; the
+answer streams over SSE on the user's own channel `ai-chat:{projectId}:{authId}`.
+
+```ts
+const { isAvailable } = await norbix.api.ai.getEndUserChatAvailability();
+const { id: sessionId } = await norbix.api.ai.createEndUserChatSession({ title: 'Help' });
+
+const stream = norbix.aiChat({ authId }); // API host, this user's channel
+stream.on('ai.chat.turn.token', (e) => process.stdout.write(String(e.payload?.text ?? '')));
+stream.on('ai.chat.turn.completed', () => stream.close());
+await stream.connect(); // rejects with code "AiChatChannelRefused" if the channel is not yours — no retry
+
+await norbix.api.ai.startEndUserChatTurn({ sessionId, message: 'What can you do?' });
+```
+
+Sessions, entries, feedback, attachments and memory: `listEndUserChatSessions`,
+`getEndUserChatEntries`, `setEndUserChatEntryFeedback`, `uploadEndUserChatAttachment`,
+`listEndUserChatMemory`, `forgetEndUserChatMemory` — see [`docs/api/ai.md`](./docs/api/ai.md).
+
+Project owners configure the assistant and the providers on the Hub:
+
+```ts
+await norbix.hub.account.updateProjectAiSettings({ projectId, ...settings });
+await norbix.hub.account.createProjectAiAssistant({
+  projectId,
+  name: 'Support bot',
+  instructions: '…',
+});
+const usage = await norbix.hub.account.getProjectAiUsage({ projectId }); // wallet usage
+await norbix.hub.ai.saveEmbeddingIntegration({
+  provider: 'OpenAi',
+  model: 'text-embedding-3-small',
+  apiKey,
+});
+await norbix.hub.ai.setLlmIntegrationAsDefault({ id: llmIntegrationId });
+await norbix.hub.account.setAdminPortalEnabled({ projectId, enabled: true });
+```
+
+Full lists: [`docs/hub/ai.md`](./docs/hub/ai.md), [`docs/hub/account.md`](./docs/hub/account.md).
+
 ## Hub example
 
 The Hub surface follows the same shape as the API surface — same constructor, same auth, same client. Use it from admin tooling, internal dashboards, or IaC scripts.

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-09-28 20:39:28
+Date: 2026-10-02 13:21:53
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1276,6 +1276,15 @@ export module CodeMashHub2 {
     NorbixHosted = 'NorbixHosted',
   }
 
+  export class LlmModelOptionRequest {
+    public id: string;
+    public displayName?: string;
+
+    public constructor(init?: Partial<LlmModelOptionRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class LlmIntegrationRequest {
     public integrationId?: string;
     public provider: LlmProvider;
@@ -1283,6 +1292,8 @@ export module CodeMashHub2 {
     public isEnabled: boolean;
     public endpoint?: string;
     public defaultModel?: string;
+    public isDefault: boolean;
+    public models?: LlmModelOptionRequest[];
 
     public constructor(init?: Partial<LlmIntegrationRequest>) {
       (Object as any).assign(this, init);
@@ -2227,6 +2238,14 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum PushDeviceDeliveryFamily {
+    Ios = 'Ios',
+    Android = 'Android',
+    Chrome = 'Chrome',
+    Safari = 'Safari',
+    Expo = 'Expo',
+  }
+
   // @DataContract
   export class PushToAllUsersDeliverySettingsDto extends PushCampaignDeliverySettingsDto {
     // @DataMember
@@ -2234,6 +2253,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public userTags?: string[];
+
+    // @DataMember
+    public platforms?: PushDeviceDeliveryFamily[];
 
     public constructor(init?: Partial<PushToAllUsersDeliverySettingsDto>) {
       super(init);
@@ -2256,6 +2278,9 @@ export module CodeMashHub2 {
   export class PushToAccountUsersDeliverySettingsDto extends PushCampaignDeliverySettingsDto {
     // @DataMember
     public recipients: string[] = [];
+
+    // @DataMember
+    public platforms?: PushDeviceDeliveryFamily[];
 
     public constructor(init?: Partial<PushToAccountUsersDeliverySettingsDto>) {
       super(init);
@@ -2284,14 +2309,6 @@ export module CodeMashHub2 {
       super(init);
       (Object as any).assign(this, init);
     }
-  }
-
-  export enum PushDeviceDeliveryFamily {
-    Ios = 'Ios',
-    Android = 'Android',
-    Chrome = 'Chrome',
-    Safari = 'Safari',
-    Expo = 'Expo',
   }
 
   // @DataContract
@@ -2393,12 +2410,25 @@ export module CodeMashHub2 {
     }
   }
 
+  export class LlmModelOptionDto {
+    public id: string;
+    public displayName: string;
+    public inputCreditRate: number;
+    public outputCreditRate: number;
+
+    public constructor(init?: Partial<LlmModelOptionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class LlmIntegrationDto extends IntegrationDto {
     public provider: LlmProvider;
     public baseUrl?: string;
     public defaultModel?: string;
     public isConfigured: boolean;
     public isSystemOwned: boolean;
+    public isDefault: boolean;
+    public models: LlmModelOptionDto[] = [];
 
     public constructor(init?: Partial<LlmIntegrationDto>) {
       super(init);
@@ -4192,6 +4222,53 @@ export module CodeMashHub2 {
     }
   }
 
+  export class ProjectAiAssistantRequestBase extends CodeMashRequestBase {
+    /** @description Name shown to end users. Required, at most 100 characters, unique in the project. */
+    // @ApiMember(Description="Name shown to end users. Required, at most 100 characters, unique in the project.")
+    public name?: string;
+
+    /** @description First message end users see. Public. At most 2 000 characters. */
+    // @ApiMember(Description="First message end users see. Public. At most 2 000 characters.")
+    public welcomeMessage?: string;
+
+    /** @description Instructions for the model. Never shown to end users. At most 20 000 characters. */
+    // @ApiMember(Description="Instructions for the model. Never shown to end users. At most 20 000 characters.")
+    public systemPrompt?: string;
+
+    /** @description Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences). Any other name is refused. */
+    // @ApiMember(Description="Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences). Any other name is refused.")
+    public toolsets?: string[];
+
+    /** @description The assistant's own LLM integration id (int_…). Empty = the project's default LLM. */
+    // @ApiMember(Description="The assistant's own LLM integration id (int_…). Empty = the project's default LLM.")
+    public llmIntegrationId?: string;
+
+    /** @description Model name. Empty = the integration's default model. */
+    // @ApiMember(Description="Model name. Empty = the integration's default model.")
+    public model?: string;
+
+    /** @description True to let the assistant remember facts about the end user across chats. */
+    // @ApiMember(Description="True to let the assistant remember facts about the end user across chats.")
+    public memoryEnabled: boolean;
+
+    /** @description RAG source ids. Not available yet — must be empty. */
+    // @ApiMember(Description="RAG source ids. Not available yet — must be empty.")
+    public ragSourceIds?: string[];
+
+    /** @description AI plan (quota) id. Optional. */
+    // @ApiMember(Description="AI plan (quota) id. Optional.")
+    public planId?: string;
+
+    /** @description True to make this the project's default assistant; the previous default stops being default. */
+    // @ApiMember(Description="True to make this the project's default assistant; the previous default stops being default.")
+    public isDefault: boolean;
+
+    public constructor(init?: Partial<ProjectAiAssistantRequestBase>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class CursorArgs implements ICursorArgs {
     public field: string;
     public order: number;
@@ -4374,6 +4451,38 @@ export module CodeMashHub2 {
     public dontImportOnError: boolean;
 
     public constructor(init?: Partial<ImportColumnMappingDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AggregateId {
+    public value: string;
+    public get viewId(): string {
+      return this.value;
+    }
+
+    public constructor(init?: Partial<AggregateId>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ProjectId extends AggregateId implements IHasDomainEntityId {
+    public constructor(init?: Partial<ProjectId>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class IntegrationId extends AggregateId implements IHasDomainEntityId {
+    public constructor(init?: Partial<IntegrationId>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TaxonomyId extends AggregateId implements IHasDomainEntityId {
+    public constructor(init?: Partial<TaxonomyId>) {
+      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -4582,6 +4691,26 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum EmbeddingProvider {
+    Voyage = 'Voyage',
+    OpenAI = 'OpenAI',
+  }
+
+  export class EmbeddingIntegrationRequest {
+    public integrationId?: string;
+    public provider: EmbeddingProvider;
+    public integrationName: string;
+    public isEnabled: boolean;
+    public endpoint?: string;
+    public model: string;
+    public dimension: number;
+    public apiKey: string;
+
+    public constructor(init?: Partial<EmbeddingIntegrationRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class SchedulerTaskRequest {
     public type: SchedulerTaskType;
 
@@ -4743,6 +4872,25 @@ export module CodeMashHub2 {
     public passwordPolicy?: PublicPasswordPolicyDto;
 
     public constructor(init?: Partial<PublicAuthDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PublicAiAssistantDto {
+    public id: string;
+    public name: string;
+    public welcome?: string;
+
+    public constructor(init?: Partial<PublicAiAssistantDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PublicAiChatDto {
+    public enabled: boolean;
+    public assistants: PublicAiAssistantDto[] = [];
+
+    public constructor(init?: Partial<PublicAiChatDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -5084,6 +5232,65 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class AiAssistantDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public welcomeMessage?: string;
+
+    // @DataMember
+    public systemPrompt?: string;
+
+    // @DataMember
+    public toolsets: string[] = [];
+
+    // @DataMember
+    public llmIntegrationId?: string;
+
+    // @DataMember
+    public model?: string;
+
+    // @DataMember
+    public memoryEnabled: boolean;
+
+    // @DataMember
+    public ragSourceIds: string[] = [];
+
+    // @DataMember
+    public planId?: string;
+
+    // @DataMember
+    public isDefault: boolean;
+
+    public constructor(init?: Partial<AiAssistantDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectAiSettingsDto {
+    // @DataMember
+    public enabled: boolean;
+
+    // @DataMember
+    public defaultLlmIntegrationId?: string;
+
+    // @DataMember
+    public defaultModel?: string;
+
+    // @DataMember
+    public assistants: AiAssistantDto[] = [];
+
+    public constructor(init?: Partial<ProjectAiSettingsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class TriggerDto implements IHasViewId {
     // @DataMember
     public type: TriggerType;
@@ -5164,6 +5371,9 @@ export module CodeMashHub2 {
   export class AiDto {
     // @DataMember
     public isEnabled: boolean;
+
+    // @DataMember
+    public defaultIntegrationViewIds: { [index: string]: string } = {};
 
     // @DataMember
     public defaultIntegrationViewId?: string;
@@ -5485,6 +5695,9 @@ export module CodeMashHub2 {
     public exposeLegalToAdminPortal: boolean;
 
     // @DataMember
+    public aiChat?: ProjectAiSettingsDto;
+
+    // @DataMember
     public legalTermsMarkdown?: string;
 
     // @DataMember
@@ -5600,6 +5813,62 @@ export module CodeMashHub2 {
     public additionalRegions?: ProjectRegionDto[];
 
     public constructor(init?: Partial<ProjectListItemDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiUsageGroupDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public llmInputTokens: number;
+
+    // @DataMember
+    public llmOutputTokens: number;
+
+    // @DataMember
+    public embeddingTokens: number;
+
+    // @DataMember
+    public rerankCalls: number;
+
+    // @DataMember
+    public totalTokens: number;
+
+    // @DataMember
+    public chargeableTokens: number;
+
+    // @DataMember
+    public chargeableRerankCalls: number;
+
+    // @DataMember
+    public credits: number;
+
+    public constructor(init?: Partial<AiUsageGroupDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectAiUsageDto {
+    // @DataMember
+    public period: string;
+
+    // @DataMember
+    public totals: AiUsageGroupDto;
+
+    // @DataMember
+    public assistants: AiUsageGroupDto[] = [];
+
+    // @DataMember
+    public topUsers: AiUsageGroupDto[] = [];
+
+    // @DataMember
+    public models: AiUsageGroupDto[] = [];
+
+    public constructor(init?: Partial<ProjectAiUsageDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7742,6 +8011,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class PushAudienceCountDto {
+    // @DataMember
+    public devices: number;
+
+    // @DataMember
+    public recipients: number;
+
+    // @DataMember
+    public skippedUserIds: number;
+
+    // @DataMember
+    public isCapped: boolean;
+
+    public constructor(init?: Partial<PushAudienceCountDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class PushCampaignDto extends CampaignDto {
     // @DataMember
     public recipients: PushCampaignDeliverySettingsDto;
@@ -7915,6 +8203,7 @@ export module CodeMashHub2 {
   export class AgentOnboardingSnippet {
     public client: string;
     public config: string;
+    public auth: string;
 
     public constructor(init?: Partial<AgentOnboardingSnippet>) {
       (Object as any).assign(this, init);
@@ -7982,6 +8271,78 @@ export module CodeMashHub2 {
     public isPinned: boolean;
 
     public constructor(init?: Partial<ChatSessionListItem>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ScaffoldStep {
+    public order: number;
+    public kind: string;
+    public title: string;
+    public tool: string;
+    public arguments: JsonObject;
+    public checkTool?: string;
+    public templateRef?: string;
+
+    public constructor(init?: Partial<ScaffoldStep>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ScaffoldIssue {
+    public where: string;
+    public code: string;
+    public message: string;
+
+    public constructor(init?: Partial<ScaffoldIssue>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ScaffoldStepReportWithLink {
+    public order: number;
+    public title: string;
+    public tool: string;
+    public status: string;
+    public id?: string;
+    public dashboardUrl?: string;
+    public note?: string;
+    public errors?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<ScaffoldStepReportWithLink>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ScaffoldApplyReport {
+    public completed: boolean;
+    public projectId?: string;
+    public projectUrl?: string;
+    public summary?: string;
+    public steps: ScaffoldStepReportWithLink[] = [];
+
+    public constructor(init?: Partial<ScaffoldApplyReport>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TemplatePreviewPartResult {
+    public name: string;
+    public rendered?: string;
+    public errors: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<TemplatePreviewPartResult>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TemplatePreview {
+    public channel: string;
+    public ok: boolean;
+    public parts: IReadOnlyList<TemplatePreviewPartResult>;
+    public errors: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<TemplatePreview>) {
       (Object as any).assign(this, init);
     }
   }
@@ -8194,10 +8555,37 @@ export module CodeMashHub2 {
     }
   }
 
+  export class EmbeddingIntegrationDto extends IntegrationDto {
+    public provider: EmbeddingProvider;
+    public model: string;
+    public dimension: number;
+    public baseUrl?: string;
+    public isConfigured: boolean;
+
+    public constructor(init?: Partial<EmbeddingIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EmbeddingIntegrationListProjection extends IntegrationListProjection {
+    public embeddingProvider: EmbeddingProvider;
+    public model: string;
+    public dimension: number;
+    public isConfigured: boolean;
+
+    public constructor(init?: Partial<EmbeddingIntegrationListProjection>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class LlmIntegrationListProjection extends IntegrationListProjection {
     public llmProvider: LlmProvider;
     public baseUrl?: string;
     public defaultModel?: string;
+    public isDefault: boolean;
+    public models: LlmModelOptionDto[] = [];
 
     public constructor(init?: Partial<LlmIntegrationListProjection>) {
       super(init);
@@ -9081,6 +9469,10 @@ export module CodeMashHub2 {
 
   export interface IHasRazorTemplateCode {}
 
+  export interface IHasDomainEntityId {
+    viewId: string;
+  }
+
   export interface IHasResponsibleUserId {
     userId: string;
   }
@@ -9295,6 +9687,7 @@ export module CodeMashHub2 {
     public adminPortalEnabled: boolean;
     public branding?: PublicBrandDto;
     public auth: PublicAuthDto;
+    public aiChat: PublicAiChatDto;
 
     public constructor(init?: Partial<PublicProjectConfigDto>) {
       (Object as any).assign(this, init);
@@ -9460,6 +9853,24 @@ export module CodeMashHub2 {
     public modules: AdminPortalModuleDto[] = [];
 
     public constructor(init?: Partial<AdminPortalStructureDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetProjectAiSettingsResponse extends ResponseBase {
+    public result?: ProjectAiSettingsDto;
+
+    public constructor(init?: Partial<GetProjectAiSettingsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetProjectAiUsageResponse extends ResponseBase {
+    public result?: ProjectAiUsageDto;
+
+    public constructor(init?: Partial<GetProjectAiUsageResponse>) {
+      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -10834,6 +11245,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetPushCampaignAudienceCountResponse extends ResponseBase {
+    public result?: PushAudienceCountDto;
+
+    public constructor(init?: Partial<GetPushCampaignAudienceCountResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetPushCampaignResponse extends ResponseBase {
     public item?: PushCampaignDto;
 
@@ -11147,6 +11567,41 @@ export module CodeMashHub2 {
     }
   }
 
+  export class ScaffoldProjectResponse extends ResponseBase {
+    public mode?: string;
+    public env?: string;
+    public valid: boolean;
+    public plan?: ScaffoldStep[];
+    public defaults?: string[];
+    public issues?: ScaffoldIssue[];
+    public report?: ScaffoldApplyReport;
+
+    public constructor(init?: Partial<ScaffoldProjectResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ValidateSchemaResponse extends ResponseBase {
+    public valid: boolean;
+    public issues?: ScaffoldIssue[];
+    public collections?: string[];
+
+    public constructor(init?: Partial<ValidateSchemaResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RenderTemplatePreviewResponse extends ResponseBase {
+    public preview?: TemplatePreview;
+
+    public constructor(init?: Partial<RenderTemplatePreviewResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetProjectBriefResponse extends ResponseBase {
     public projectId?: string;
     public snapshot?: ProjectBriefSnapshotWireDto;
@@ -11185,6 +11640,41 @@ export module CodeMashHub2 {
     public markdown?: string;
 
     public constructor(init?: Partial<ExportWorkItemResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmbeddingIntegrationResponse extends ResponseBase {
+    public item?: EmbeddingIntegrationDto;
+
+    public constructor(init?: Partial<GetEmbeddingIntegrationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmbeddingIntegrationsResponse extends ResponseBase {
+    public list?: PaginatedResponse<EmbeddingIntegrationListProjection>;
+
+    public constructor(init?: Partial<GetEmbeddingIntegrationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TestEmbeddingIntegrationResponse extends ResponseBase {
+    // @DataMember
+    public dimension?: number;
+
+    // @DataMember
+    public latencyMs?: number;
+
+    // @DataMember
+    public totalTokens?: number;
+
+    public constructor(init?: Partial<TestEmbeddingIntegrationResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13305,6 +13795,32 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Turns the project's managed Admin Portal on or off */
+  // @Route("/{version}/account/projects/{projectId}/admin-portal/enabled", "PUT")
+  // @Api(Description="Turns the project's managed Admin Portal on or off")
+  export class SetAdminPortalEnabledRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description true turns the managed Admin Portal on; false turns it off. */
+    // @ApiMember(Description="true turns the managed Admin Portal on; false turns it off.", IsRequired=true)
+    public enabled: boolean;
+
+    public constructor(init?: Partial<SetAdminPortalEnabledRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetAdminPortalEnabledRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Assigns the project's Admin Portal service user */
   // @Route("/{version}/account/projects/{projectId}/settings/admin-portal/service-user", "PUT")
   // @Api(Description="Assigns the project's Admin Portal service user")
@@ -13373,6 +13889,162 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Reads the project's AI chat settings for end users: on/off, default LLM and assistants */
+  // @Route("/{version}/account/projects/{projectId}/ai/settings", "GET")
+  // @Api(Description="Reads the project's AI chat settings for end users: on/off, default LLM and assistants")
+  export class GetProjectAiSettings
+    extends CodeMashRequestBase
+    implements IReturn<GetProjectAiSettingsResponse>
+  {
+    public constructor(init?: Partial<GetProjectAiSettings>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetProjectAiSettings';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetProjectAiSettingsResponse();
+    }
+  }
+
+  /** @description Saves the project's AI chat settings: on/off and the default LLM */
+  // @Route("/{version}/account/projects/{projectId}/ai/settings", "PUT")
+  // @Api(Description="Saves the project's AI chat settings: on/off and the default LLM")
+  export class UpdateProjectAiSettings
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to show end-user AI chat in the Admin Portal, false to hide it. */
+    // @ApiMember(Description="True to show end-user AI chat in the Admin Portal, false to hide it.")
+    public enabled: boolean;
+
+    /** @description Default LLM integration id (int_…) for assistants without their own. Empty clears it. */
+    // @ApiMember(Description="Default LLM integration id (int_…) for assistants without their own. Empty clears it.")
+    public defaultLlmIntegrationId?: string;
+
+    /** @description Model of the default LLM. Empty = the integration's default model. */
+    // @ApiMember(Description="Model of the default LLM. Empty = the integration's default model.")
+    public defaultModel?: string;
+
+    public constructor(init?: Partial<UpdateProjectAiSettings>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectAiSettings';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Adds an end-user AI assistant to the project */
+  // @Route("/{version}/account/projects/{projectId}/ai/assistants", "POST")
+  // @Api(Description="Adds an end-user AI assistant to the project")
+  export class CreateProjectAiAssistant
+    extends ProjectAiAssistantRequestBase
+    implements IReturn<IdResponse>
+  {
+    public constructor(init?: Partial<CreateProjectAiAssistant>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateProjectAiAssistant';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Updates an end-user AI assistant of the project (full replace) */
+  // @Route("/{version}/account/projects/{projectId}/ai/assistants/{assistantId}", "PUT")
+  // @Api(Description="Updates an end-user AI assistant of the project (full replace)")
+  export class UpdateProjectAiAssistant
+    extends ProjectAiAssistantRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Id of the assistant (ast_…). */
+    // @ApiMember(Description="Id of the assistant (ast_…).", IsRequired=true)
+    public assistantId: string;
+
+    public constructor(init?: Partial<UpdateProjectAiAssistant>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectAiAssistant';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Removes an end-user AI assistant from the project */
+  // @Route("/{version}/account/projects/{projectId}/ai/assistants/{assistantId}", "DELETE")
+  // @Api(Description="Removes an end-user AI assistant from the project")
+  export class DeleteProjectAiAssistant
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Id of the assistant (ast_…). */
+    // @ApiMember(Description="Id of the assistant (ast_…).", IsRequired=true)
+    public assistantId: string;
+
+    public constructor(init?: Partial<DeleteProjectAiAssistant>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteProjectAiAssistant';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Reads the project's AI usage this month: totals, per assistant, top users and per model */
+  // @Route("/{version}/account/projects/{projectId}/ai/usage", "GET")
+  // @Api(Description="Reads the project's AI usage this month: totals, per assistant, top users and per model")
+  export class GetProjectAiUsage
+    extends CodeMashRequestBase
+    implements IReturn<GetProjectAiUsageResponse>
+  {
+    /** @description How many users to list, biggest first. 1–100, default 10. */
+    // @ApiMember(Description="How many users to list, biggest first. 1–100, default 10.")
+    public top?: number;
+
+    public constructor(init?: Partial<GetProjectAiUsage>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetProjectAiUsage';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetProjectAiUsageResponse();
     }
   }
 
@@ -17845,6 +18517,83 @@ export module CodeMashHub2 {
     public createResponse() {}
   }
 
+  export class TermInserted {
+    public projectId: ProjectId;
+    public databaseIntegrationId: IntegrationId;
+    public taxonomyId: TaxonomyId;
+    public id: string;
+    public document: Object;
+
+    public constructor(init?: Partial<TermInserted>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TermInserted';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
+  }
+
+  export class TermUpdated {
+    public projectId: ProjectId;
+    public databaseIntegrationId: IntegrationId;
+    public taxonomyId: TaxonomyId;
+    public id: string;
+    public from: Object;
+    public to: Object;
+
+    public constructor(init?: Partial<TermUpdated>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TermUpdated';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
+  }
+
+  export class TermDeleted {
+    public projectId: ProjectId;
+    public databaseIntegrationId: IntegrationId;
+    public taxonomyId: TaxonomyId;
+    public id: string;
+    public document: Object;
+
+    public constructor(init?: Partial<TermDeleted>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TermDeleted';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
+  }
+
+  export class TermsDeleted {
+    public projectId: ProjectId;
+    public databaseIntegrationId: IntegrationId;
+    public taxonomyId: TaxonomyId;
+    public deletedCount: number;
+    public filter: Object;
+
+    public constructor(init?: Partial<TermsDeleted>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TermsDeleted';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
+  }
+
   // @Route("/{version}/files/disable", "GET")
   export class DisableFiles extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableFiles>) {
@@ -21417,9 +22166,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional device token to send the test notification to. Requires DeliveryFamily when set.")
     public testToken?: string;
 
-    /** @description Optional delivery family for the test token (e.g. Ios, Android, Chrome, Safari, Expo). Requires TestToken when set. */
+    /** @description Optional delivery family for the test token (ios, android, chrome or safari). Requires TestToken when set. */
     // @DataMember
-    // @ApiMember(Description="Optional delivery family for the test token (e.g. Ios, Android, Chrome, Safari, Expo). Requires TestToken when set.")
+    // @ApiMember(Description="Optional delivery family for the test token (ios, android, chrome or safari). Requires TestToken when set.")
     public deliveryFamily?: string;
 
     public constructor(init?: Partial<TestPushIntegration>) {
@@ -21522,8 +22271,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional: only the device registered with this provider token.")
     public deviceKey?: string;
 
-    /** @description Optional: only devices of this platform — ios, android, chrome, safari or expo. */
-    // @ApiMember(Description="Optional: only devices of this platform — ios, android, chrome, safari or expo.")
+    /** @description Optional: only devices of this platform — ios, android, chrome or safari. */
+    // @ApiMember(Description="Optional: only devices of this platform — ios, android, chrome or safari.")
     public platform?: string;
 
     /** @description Optional database integration id; omit to use the project's default. */
@@ -21542,6 +22291,39 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetPushDevicesResponse();
+    }
+  }
+
+  /** @description Count the devices a push campaign audience would reach */
+  // @Route("/{version}/notifications/push/campaigns/audience-count", "POST")
+  // @Api(Description="Count the devices a push campaign audience would reach")
+  // @DataContract
+  export class GetPushCampaignAudienceCountRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetPushCampaignAudienceCountResponse>
+  {
+    /** @description The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored. */
+    // @DataMember
+    // @ApiMember(Description="The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored.")
+    public campaign: PushCampaignRequest;
+
+    /** @description Optional. When omitted, the default database integration for the request's environment is used. */
+    // @DataMember
+    // @ApiMember(Description="Optional. When omitted, the default database integration for the request's environment is used.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignAudienceCountRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignAudienceCountRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new GetPushCampaignAudienceCountResponse();
     }
   }
 
@@ -23139,11 +23921,119 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description MCP server endpoint — JSON-RPC 2.0 over HTTP POST exposing the AI tool catalog. */
+  /** @description Plans (preview) or builds (apply) a whole project from one spec. */
+  // @Route("/{version}/account/ai/scaffold", "POST")
+  // @Api(Description="Plans (preview) or builds (apply) a whole project from one spec.")
+  export class ScaffoldProjectRequest
+    extends RequestBase
+    implements IReturn<ScaffoldProjectResponse>
+  {
+    /** @description The project spec (a JSON object) — see the tool description. */
+    // @ApiMember(Description="The project spec (a JSON object) — see the tool description.", IsRequired=true)
+    public spec: string;
+
+    /** @description 'preview' (writes nothing) or 'apply' (builds the project). */
+    // @ApiMember(Description="'preview' (writes nothing) or 'apply' (builds the project).", IsRequired=true)
+    public mode: string;
+
+    public env?: string;
+
+    public constructor(init?: Partial<ScaffoldProjectRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ScaffoldProjectRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new ScaffoldProjectResponse();
+    }
+  }
+
+  /** @description Validates a collection schema without saving it. */
+  // @Route("/{version}/account/ai/schemas/validate", "POST")
+  // @Api(Description="Validates a collection schema without saving it.")
+  export class ValidateSchemaRequest
+    extends RequestBase
+    implements IReturn<ValidateSchemaResponse>
+  {
+    /** @description The schema as JSON — see the tool description. */
+    // @ApiMember(Description="The schema as JSON — see the tool description.", IsRequired=true)
+    public schemaJson: string;
+
+    public constructor(init?: Partial<ValidateSchemaRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ValidateSchemaRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new ValidateSchemaResponse();
+    }
+  }
+
+  /** @description Renders an email, push or SMS template with sample data. */
+  // @Route("/{version}/account/ai/templates/render-preview", "POST")
+  // @Api(Description="Renders an email, push or SMS template with sample data.")
+  export class RenderTemplatePreviewRequest
+    extends RequestBase
+    implements IReturn<RenderTemplatePreviewResponse>, IHasEnv
+  {
+    /** @description The project of templateId. Not needed to render a body. */
+    // @ApiMember(Description="The project of templateId. Not needed to render a body.")
+    public projectId: string;
+
+    public env?: string;
+    /** @description email | push | sms */
+    // @ApiMember(Description="email | push | sms", IsRequired=true)
+    public channel: string;
+
+    /** @description An existing template id (tmpl_…). Needs projectId. Leave empty to render body instead. */
+    // @ApiMember(Description="An existing template id (tmpl_…). Needs projectId. Leave empty to render body instead.")
+    public templateId?: string;
+
+    /** @description Razor template text to render when there is no templateId. */
+    // @ApiMember(Description="Razor template text to render when there is no templateId.")
+    public body?: string;
+
+    /** @description Email subject / push title / SMS subject to render with body. Optional. */
+    // @ApiMember(Description="Email subject / push title / SMS subject to render with body. Optional.")
+    public subject?: string;
+
+    /** @description Sample data as a JSON object, read by the template as @Model. */
+    // @ApiMember(Description="Sample data as a JSON object, read by the template as @Model.")
+    public sampleData?: string;
+
+    public constructor(init?: Partial<RenderTemplatePreviewRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RenderTemplatePreviewRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RenderTemplatePreviewResponse();
+    }
+  }
+
+  /** @description MCP server endpoint (Streamable HTTP): JSON-RPC 2.0 over POST, server stream over GET, session end over DELETE. */
   // @Route("/{version}/account/mcp", "POST")
-  // @Api(Description="MCP server endpoint — JSON-RPC 2.0 over HTTP POST exposing the AI tool catalog.")
+  // @Route("/{version}/account/mcp", "GET")
+  // @Route("/{version}/account/mcp", "DELETE")
+  // @Api(Description="MCP server endpoint (Streamable HTTP): JSON-RPC 2.0 over POST, server stream over GET, session end over DELETE.")
   export class McpRequest implements IReturn<string> {
     public version?: string;
+    public toolsets?: string;
     public requestStream: string;
 
     public constructor(init?: Partial<McpRequest>) {
@@ -23285,6 +24175,262 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description OAuth protected-resource metadata (RFC 9728) for the Hub MCP endpoint. */
+  // @Route("/.well-known/oauth-protected-resource", "GET")
+  // @Route("/.well-known/oauth-protected-resource/{Path*}", "GET")
+  // @Api(Description="OAuth protected-resource metadata (RFC 9728) for the Hub MCP endpoint.")
+  export class OAuthProtectedResourceMetadataRequest implements IReturn<string> {
+    public path?: string;
+
+    public constructor(init?: Partial<OAuthProtectedResourceMetadataRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthProtectedResourceMetadataRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description OAuth authorization-server metadata (RFC 8414). */
+  // @Route("/.well-known/oauth-authorization-server", "GET")
+  // @Route("/.well-known/oauth-authorization-server/{Path*}", "GET")
+  // @Api(Description="OAuth authorization-server metadata (RFC 8414).")
+  export class OAuthAuthorizationServerMetadataRequest implements IReturn<string> {
+    public path?: string;
+
+    public constructor(init?: Partial<OAuthAuthorizationServerMetadataRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthAuthorizationServerMetadataRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description Registers an MCP client for OAuth (RFC 7591). Public clients only: PKCE, no secret. */
+  // @Route("/{version}/oauth/register", "POST")
+  // @Api(Description="Registers an MCP client for OAuth (RFC 7591). Public clients only: PKCE, no secret.")
+  export class OAuthRegisterRequest implements IReturn<string> {
+    public version?: string;
+    public requestStream: string;
+
+    public constructor(init?: Partial<OAuthRegisterRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthRegisterRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description OAuth authorization endpoint: sign-in hint or the consent page (HTML). */
+  // @Route("/{version}/oauth/authorize", "GET")
+  // @Api(Description="OAuth authorization endpoint: sign-in hint or the consent page (HTML).")
+  export class OAuthAuthorizeRequest implements IReturn<string> {
+    public version?: string;
+
+    public constructor(init?: Partial<OAuthAuthorizeRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthAuthorizeRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description OAuth authorization endpoint: the person's decision from the consent page. */
+  // @Route("/{version}/oauth/authorize", "POST")
+  // @Api(Description="OAuth authorization endpoint: the person's decision from the consent page.")
+  export class OAuthAuthorizeDecisionRequest implements IReturn<string> {
+    public version?: string;
+
+    public constructor(init?: Partial<OAuthAuthorizeDecisionRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthAuthorizeDecisionRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description OAuth token endpoint: authorization code (PKCE S256) or refresh token → access token. */
+  // @Route("/{version}/oauth/token", "POST")
+  // @Api(Description="OAuth token endpoint: authorization code (PKCE S256) or refresh token → access token.")
+  export class OAuthTokenRequest implements IReturn<string> {
+    public version?: string;
+
+    public constructor(init?: Partial<OAuthTokenRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthTokenRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  /** @description OAuth token revocation (RFC 7009): revokes the grant behind a refresh or access token. */
+  // @Route("/{version}/oauth/revoke", "POST")
+  // @Api(Description="OAuth token revocation (RFC 7009): revokes the grant behind a refresh or access token.")
+  export class OAuthRevokeRequest implements IReturn<string> {
+    public version?: string;
+
+    public constructor(init?: Partial<OAuthRevokeRequest>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthRevokeRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return '';
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/embeddings/{Id}", "DELETE")
+  export class DeleteEmbeddingIntegrationRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Id of the embedding integration to delete. */
+    // @ApiMember(Description="Id of the embedding integration to delete.")
+    public id: string;
+
+    public constructor(init?: Partial<DeleteEmbeddingIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteEmbeddingIntegrationRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/embeddings/{Id}", "GET")
+  export class GetEmbeddingIntegration
+    extends CodeMashRequestBase
+    implements IReturn<GetEmbeddingIntegrationResponse>
+  {
+    /** @description Id of the embedding integration to fetch. */
+    // @ApiMember(Description="Id of the embedding integration to fetch.")
+    public id: string;
+
+    public constructor(init?: Partial<GetEmbeddingIntegration>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmbeddingIntegration';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmbeddingIntegrationResponse();
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/embeddings", "GET")
+  export class GetEmbeddingIntegrations
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmbeddingIntegrationsResponse>
+  {
+    public constructor(init?: Partial<GetEmbeddingIntegrations>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmbeddingIntegrations';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmbeddingIntegrationsResponse();
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/embeddings", "POST")
+  // @DataContract
+  export class SaveEmbeddingIntegration extends CodeMashRequestBase implements IReturn<IdResponse> {
+    // @DataMember(Name="integration")
+    public integration: EmbeddingIntegrationRequest;
+
+    public constructor(init?: Partial<SaveEmbeddingIntegration>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SaveEmbeddingIntegration';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/embeddings/{Id}/test", "POST")
+  export class TestEmbeddingIntegration
+    extends CodeMashRequestBase
+    implements IReturn<TestEmbeddingIntegrationResponse>
+  {
+    /** @description Id of the embedding integration to test. */
+    // @ApiMember(Description="Id of the embedding integration to test.")
+    public id: string;
+
+    public constructor(init?: Partial<TestEmbeddingIntegration>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TestEmbeddingIntegration';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new TestEmbeddingIntegrationResponse();
+    }
+  }
+
   // @Route("/{version}/ai/integrations/llms/{Id}", "DELETE")
   export class DeleteLlmIntegrationRequest
     extends CodeMashRequestBase
@@ -23419,6 +24565,30 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/ai/integrations/llms/{Id}/default", "PUT")
+  export class SetLlmIntegrationAsDefaultRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Id of the LLM integration to make the default. */
+    // @ApiMember(Description="Id of the LLM integration to make the default.")
+    public id: string;
+
+    public constructor(init?: Partial<SetLlmIntegrationAsDefaultRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetLlmIntegrationAsDefaultRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
     }
   }
 

@@ -1,6 +1,7 @@
 import type { Transport } from '../client/transport.js';
 
 import { AccessTokenModule } from './access_token.js';
+import { AiModule } from './ai.js';
 import { ApikeysModule } from './apikeys.js';
 import { AuthModule } from './auth.js';
 import { DatabaseModule } from './database.js';
@@ -15,6 +16,7 @@ import { PublicModule } from './public.js';
  */
 export class ApiNamespace {
   public readonly accessToken: AccessTokenModule;
+  public readonly ai: AiModule;
   public readonly apikeys: ApikeysModule;
   public readonly auth: AuthModule;
   public readonly database: DatabaseModule;
@@ -25,6 +27,7 @@ export class ApiNamespace {
 
   constructor(transport: Transport) {
     this.accessToken = new AccessTokenModule(transport);
+    this.ai = new AiModule(transport);
     this.apikeys = new ApikeysModule(transport);
     this.auth = new AuthModule(transport);
     this.database = new DatabaseModule(transport);

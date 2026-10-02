@@ -37,9 +37,16 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getAccountRegions`](#getaccountregions)                                     | `GET`    | `/{version}/account/regions`                                                 | `project` |
 | [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project` |
 | [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project` |
+| [`setAdminPortalEnabled`](#setadminportalenabled)                             | `PUT`    | `/{version}/account/projects/{projectId}/admin-portal/enabled`               | `project` |
 | [`assignAdminPortalServiceUser`](#assignadminportalserviceuser)               | `PUT`    | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project` |
 | [`getAdminPortalStructure`](#getadminportalstructure)                         | `GET`    | `/{version}/account/projects/{projectId}/admin-portal/structure`             | `project` |
 | [`updateProjectAdminUrl`](#updateprojectadminurl)                             | `PATCH`  | `/{version}/account/projects/{projectId}/settings/admin-url`                 | `project` |
+| [`getProjectAiSettings`](#getprojectaisettings)                               | `GET`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
+| [`updateProjectAiSettings`](#updateprojectaisettings)                         | `PUT`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
+| [`createProjectAiAssistant`](#createprojectaiassistant)                       | `POST`   | `/{version}/account/projects/{projectId}/ai/assistants`                      | `project` |
+| [`updateProjectAiAssistant`](#updateprojectaiassistant)                       | `PUT`    | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project` |
+| [`deleteProjectAiAssistant`](#deleteprojectaiassistant)                       | `DELETE` | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project` |
+| [`getProjectAiUsage`](#getprojectaiusage)                                     | `GET`    | `/{version}/account/projects/{projectId}/ai/usage`                           | `project` |
 | [`updateProjectAccentColor`](#updateprojectaccentcolor)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/accent-color`              | `project` |
 | [`updateProjectIcon`](#updateprojecticon)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/icon`                      | `project` |
 | [`updateProjectLogo`](#updateprojectlogo)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/logo`                      | `project` |
@@ -107,6 +114,9 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`decideChatPlan`](#decidechatplan)                                           | `POST`   | `/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision`      | `project` |
 | [`stopChatRunStep`](#stopchatrunstep)                                         | `POST`   | `/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop`          | `project` |
 | [`chatTurn`](#chatturn)                                                       | `POST`   | `/{version}/account/chat/turn`                                               | `project` |
+| [`scaffoldProject`](#scaffoldproject)                                         | `POST`   | `/{version}/account/ai/scaffold`                                             | `project` |
+| [`validateSchema`](#validateschema)                                           | `POST`   | `/{version}/account/ai/schemas/validate`                                     | `project` |
+| [`renderTemplatePreview`](#rendertemplatepreview)                             | `POST`   | `/{version}/account/ai/templates/render-preview`                             | `project` |
 | [`mcp`](#mcp)                                                                 | `POST`   | `/{version}/account/mcp`                                                     | `project` |
 
 ## Reference
@@ -706,6 +716,27 @@ const result = await norbix.hub.account.getProjectTokens({
 
 [↑ Top](#endpoints)
 
+### setAdminPortalEnabled
+
+`PUT` `/{version}/account/projects/{projectId}/admin-portal/enabled`
+
+**Request DTO**: `CodeMashHub2.SetAdminPortalEnabledRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.setAdminPortalEnabled({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### assignAdminPortalServiceUser
 
 `PUT` `/{version}/account/projects/{projectId}/settings/admin-portal/service-user`
@@ -771,6 +802,146 @@ const result = await norbix.hub.account.updateProjectAdminUrl({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getProjectAiSettings
+
+`GET` `/{version}/account/projects/{projectId}/ai/settings`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetProjectAiSettings`
+**Response**: `CodeMashHub2.GetProjectAiSettingsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getProjectAiSettings({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetProjectAiSettingsResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectAiSettings
+
+`PUT` `/{version}/account/projects/{projectId}/ai/settings`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectAiSettings`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectAiSettings({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### createProjectAiAssistant
+
+`POST` `/{version}/account/projects/{projectId}/ai/assistants`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateProjectAiAssistant`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.createProjectAiAssistant({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectAiAssistant
+
+`PUT` `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectAiAssistant`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectAiAssistant({
+  projectId: 'projectId-here',
+  assistantId: 'assistantId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteProjectAiAssistant
+
+`DELETE` `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteProjectAiAssistant`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.deleteProjectAiAssistant({
+  projectId: 'projectId-here',
+  assistantId: 'assistantId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getProjectAiUsage
+
+`GET` `/{version}/account/projects/{projectId}/ai/usage`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetProjectAiUsage`
+**Response**: `CodeMashHub2.GetProjectAiUsageResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getProjectAiUsage({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetProjectAiUsageResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2229,6 +2400,66 @@ const result = await norbix.hub.account.chatTurn({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.ChatTurnResponse
+```
+
+[↑ Top](#endpoints)
+
+### scaffoldProject
+
+`POST` `/{version}/account/ai/scaffold`
+
+**Request DTO**: `CodeMashHub2.ScaffoldProjectRequest`
+**Response**: `CodeMashHub2.ScaffoldProjectResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.scaffoldProject({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ScaffoldProjectResponse
+```
+
+[↑ Top](#endpoints)
+
+### validateSchema
+
+`POST` `/{version}/account/ai/schemas/validate`
+
+**Request DTO**: `CodeMashHub2.ValidateSchemaRequest`
+**Response**: `CodeMashHub2.ValidateSchemaResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.validateSchema({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ValidateSchemaResponse
+```
+
+[↑ Top](#endpoints)
+
+### renderTemplatePreview
+
+`POST` `/{version}/account/ai/templates/render-preview`
+
+**Request DTO**: `CodeMashHub2.RenderTemplatePreviewRequest`
+**Response**: `CodeMashHub2.RenderTemplatePreviewResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.renderTemplatePreview({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RenderTemplatePreviewResponse
 ```
 
 [↑ Top](#endpoints)

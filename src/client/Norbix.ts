@@ -1,7 +1,7 @@
 import { ApiNamespace } from '../api/index.js';
 import { HubNamespace } from '../hub/index.js';
 import { CollectionResource } from '../resources/collection.js';
-import { NorbixSseClient } from '../sse/client.js';
+import { NorbixSseClient, aiChatClient } from '../sse/client.js';
 import { NorbixInboxClient } from '../sse/inbox.js';
 import type { NorbixSseClientOptions } from '../sse/types.js';
 
@@ -298,6 +298,39 @@ export class Norbix {
       projectId: this.cfg.projectId,
       fetchImpl: this.cfg.fetch,
       ...options,
+    });
+  }
+
+  /**
+   * Realtime stream for the end-user AI chat (`norbix.api.ai.*`). The turn
+   * call answers at once with a `turnId`; tokens, tool calls and the final
+   * answer arrive here as `ai.chat.turn.*` events, session changes as
+   * `ai.chat.session.*`. The stream is served by the **API** host with the
+   * signed-in project user's token. `authId` is that user's auth id; the
+   * channel is `ai-chat:{projectId}:{authId}`. A channel that is not yours
+   * is refused (403, `AiChatChannelRefused`) and the client does not retry.
+   *
+   * ```ts
+   * const { turnId } = await norbix.api.ai.startEndUserChatTurn({ sessionId, message: 'Hi' });
+   * const stream = norbix.aiChat({ authId });
+   * stream.on('ai.chat.turn.token', (e) => process.stdout.write(String(e.payload?.text ?? '')));
+   * stream.on('ai.chat.turn.completed', () => stream.close());
+   * await stream.connect();
+   * ```
+   */
+  aiChat(
+    options: Partial<Omit<NorbixSseClientOptions, 'hubUrl' | 'channels'>> & { authId: string },
+  ): NorbixSseClient {
+    const projectId = options.projectId ?? this.cfg.projectId;
+    if (!projectId)
+      throw new Error('Norbix.aiChat: projectId is required (client config or options)');
+    return aiChatClient({
+      hubUrl: this.cfg.baseUrl.api,
+      hubVersion: this.cfg.apiVersion,
+      token: this.cfg.bearerToken ?? this.cfg.apiKey,
+      fetchImpl: this.cfg.fetch,
+      ...options,
+      projectId,
     });
   }
 
