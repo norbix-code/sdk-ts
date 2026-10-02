@@ -6,10 +6,34 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: email
- * Endpoints: 1
+ * Endpoints: 2
  */
 export class EmailModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/email/preferences
+   * Request DTO: GetEmailPreferencesByLinkRequest
+   *
+   * Reads the marketing e-mail preferences of the person a signed
+   * unsubscribe link belongs to. Pass the link's `token`. No sign-in is
+   * needed: the signed token is the key, so the call also works on a client
+   * with no apiKey / bearerToken.
+   */
+  getEmailPreferencesByLink = (
+    request: Partial<CodeMashHub2.GetEmailPreferencesByLinkRequest> = {} as Partial<CodeMashHub2.GetEmailPreferencesByLinkRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmailPreferencesByLinkResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmailPreferencesByLinkResponse>({
+      target: 'hub',
+      path: '/{version}/email/preferences',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'optional', // signed unsubscribe link: no sign-in needed (hand-set, see PR)
+      ...options,
+    });
+  };
 
   /**
    * POST /{version}/email/one-click-unsubscribe

@@ -19,7 +19,7 @@ name for the full method reference and TypeScript examples.
 | [`database`](./database.md)           |        72 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
-| [`email`](./email.md)                 |         1 |                                                                                                                                          |
+| [`email`](./email.md)                 |         2 |                                                                                                                                          |
 | [`files`](./files.md)                 |        22 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
 | [`internal`](./internal.md)           |         1 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
