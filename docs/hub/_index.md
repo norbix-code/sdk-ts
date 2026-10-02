@@ -25,7 +25,7 @@ name for the full method reference and TypeScript examples.
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        14 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        44 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
-| [`notifications`](./notifications.md) |       127 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`notifications`](./notifications.md) |       124 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
 | [`oauth`](./oauth.md)                 |         5 |                                                                                                                                          |
 | [`payments`](./payments.md)           |        17 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |

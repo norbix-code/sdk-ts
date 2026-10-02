@@ -899,10 +899,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "GetEmailCampaignMessage": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "GetEmailCampaignMessagesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -933,6 +929,10 @@
   },
   "GetEmailIntegrations": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailPreferencesByLinkRequest": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "GetEmailSettings": {
@@ -1171,10 +1171,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "GetPushCampaignMessage": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "GetPushCampaignMessagesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1260,10 +1256,6 @@
     "returnsBytes": false
   },
   "GetSmsCampaignBatches": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetSmsCampaignMessage": {
     "requiresAuth": true,
     "returnsBytes": false
   },

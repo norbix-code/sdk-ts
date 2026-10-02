@@ -142,11 +142,10 @@ These calls work at runtime — the transport reads route tokens off the request
 object — but TypeScript cannot help you fill them, because the generated
 request type is empty or does not match the route:
 
-| method                   | what to pass         | why                                                                        |
-| ------------------------ | -------------------- | -------------------------------------------------------------------------- |
-| `stopPushCampaign`       | `{ Id: '...' }`      | `StopPushCampaignRequest` has no fields                                    |
-| `deletePushCampaign`     | `{ Id: '...' }`      | `DeletePushCampaignRequest` has no fields                                  |
-| `getPushCampaignMessage` | `{ campaignId, id }` | the route's `{id}` token has no matching field on `GetPushCampaignMessage` |
+| method               | what to pass    | why                                       |
+| -------------------- | --------------- | ----------------------------------------- |
+| `stopPushCampaign`   | `{ Id: '...' }` | `StopPushCampaignRequest` has no fields   |
+| `deletePushCampaign` | `{ Id: '...' }` | `DeletePushCampaignRequest` has no fields |
 
 The five campaign audience shapes above are likewise absent from the generated
 types, so pass them as plain objects for now.
