@@ -9,7 +9,7 @@ Accessed as `norbix.hub.email` on the [`Norbix`](../../README.md#authentication)
 | Method                                                    | Verb   | Path                                     | Scope      |
 | --------------------------------------------------------- | ------ | ---------------------------------------- | ---------- |
 | [`getEmailPreferencesByLink`](#getemailpreferencesbylink) | `GET`  | `/{version}/email/preferences`           | `optional` |
-| [`oneClickUnsubscribe`](#oneclickunsubscribe)             | `POST` | `/{version}/email/one-click-unsubscribe` | `project`  |
+| [`oneClickUnsubscribe`](#oneclickunsubscribe)             | `POST` | `/{version}/email/one-click-unsubscribe` | `optional` |
 
 ## Reference
 
@@ -42,6 +42,9 @@ const result = await norbix.hub.email.getEmailPreferencesByLink({
 ### oneClickUnsubscribe
 
 `POST` `/{version}/email/one-click-unsubscribe`
+
+Public one-click unsubscribe from a signed e-mail link. No sign-in is needed
+(scope `optional`: a token is sent only when the client has one).
 
 **Request DTO**: `CodeMashHub2.OneClickUnsubscribeRequest`
 **Response**: `CodeMashHub2.EmptyResponse`

@@ -84,4 +84,12 @@ describe('hub.email', () => {
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
+
+  it('oneClickUnsubscribe: works with no apiKey / bearerToken and sends no Authorization', async () => {
+    const { norbix, mock } = makeClient({ bearerToken: undefined, apiKey: undefined });
+    await norbix.hub.email.oneClickUnsubscribe({});
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe('https://hub.norbix.io/v2/email/one-click-unsubscribe');
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+  });
 });

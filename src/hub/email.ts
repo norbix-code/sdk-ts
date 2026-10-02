@@ -38,6 +38,10 @@ export class EmailModule {
   /**
    * POST /{version}/email/one-click-unsubscribe
    * Request DTO: OneClickUnsubscribeRequest
+   *
+   * Public: the gateway does not authenticate it (requiresAuth false). The
+   * signed link in the e-mail is the key, so the call works on a client with
+   * no apiKey / bearerToken and then sends no Authorization header.
    */
   oneClickUnsubscribe = (
     request: Partial<CodeMashHub2.OneClickUnsubscribeRequest> = {} as Partial<CodeMashHub2.OneClickUnsubscribeRequest>,
@@ -49,7 +53,7 @@ export class EmailModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional', // public one-click unsubscribe (RFC 8058): no sign-in needed (hand-set, see PR)
       ...options,
     });
   };
