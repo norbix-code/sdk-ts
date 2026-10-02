@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import type { NorbixError } from '../../src/client/errors.js';
 import { NorbixSseClient } from '../../src/sse/client.js';
 import { agentChannel, inAppChannel, projectChannel } from '../../src/sse/events.js';
 import { readSse } from '../../src/sse/stream.js';
@@ -140,5 +141,83 @@ describe('NorbixSseClient', () => {
     await client.connect();
 
     expect(all).toHaveLength(0);
+  });
+});
+
+describe('NorbixSseClient — refused connections', () => {
+  const refusedBody = {
+    responseStatus: {
+      isSuccess: false,
+      errors: [{ errorCode: 'AiChatChannelRefused', message: 'Channel is not yours' }],
+    },
+  };
+
+  it('403 on connect: exactly one request, status "refused", connect() rejects with the errorCode', async () => {
+    const fakeFetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(refusedBody), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    const client = new NorbixSseClient({
+      hubUrl: 'https://hub.test',
+      token: 'user-jwt',
+      channels: ['ai-chat:p1:someone-else'],
+      reconnect: { enabled: true, baseDelayMs: 1, maxDelayMs: 2 },
+      fetchImpl: fakeFetch as unknown as typeof fetch,
+    });
+    const statuses: string[] = [];
+    const errors: unknown[] = [];
+    client.onStatus((s) => statuses.push(s));
+    client.onError((e) => errors.push(e));
+
+    await expect(client.connect()).rejects.toMatchObject({
+      status: 403,
+      code: 'AiChatChannelRefused',
+    });
+
+    expect(fakeFetch).toHaveBeenCalledTimes(1);
+    expect(statuses).toEqual(['connecting', 'refused']);
+    expect(errors).toHaveLength(1);
+    expect((errors[0] as NorbixError).code).toBe('AiChatChannelRefused');
+  });
+
+  it.each([401, 404])('%s on connect is final too (no retry)', async (status) => {
+    const fakeFetch = vi.fn().mockResolvedValue(new Response('', { status, statusText: 'Nope' }));
+    const client = new NorbixSseClient({
+      hubUrl: 'https://hub.test',
+      reconnect: { enabled: true, baseDelayMs: 1, maxDelayMs: 2 },
+      fetchImpl: fakeFetch as unknown as typeof fetch,
+    });
+    await expect(client.connect()).rejects.toMatchObject({ status });
+    expect(fakeFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('a 5xx on connect still reconnects (second attempt opens the stream)', async () => {
+    const fakeFetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 503, statusText: 'Busy' }))
+      .mockResolvedValueOnce(sseResponse(`event: cmd.x\ndata: ${JSON.stringify(ENV)}\n\n`, 64));
+    const client = new NorbixSseClient({
+      hubUrl: 'https://hub.test',
+      reconnect: { enabled: true, baseDelayMs: 1, maxDelayMs: 2 },
+      fetchImpl: fakeFetch as unknown as typeof fetch,
+    });
+    const statuses: string[] = [];
+    const got: NorbixRealtimeEnvelope[] = [];
+    client.onStatus((s) => {
+      statuses.push(s);
+      // stop after the first successful stream ends, so the test does not loop
+      if (s === 'open') setTimeout(() => client.close(), 0);
+    });
+    client.onMessage((e) => {
+      got.push(e);
+    });
+
+    await client.connect();
+
+    expect(fakeFetch).toHaveBeenCalledTimes(2);
+    expect(statuses.slice(0, 3)).toEqual(['connecting', 'reconnecting', 'open']);
+    expect(got).toHaveLength(1);
   });
 });

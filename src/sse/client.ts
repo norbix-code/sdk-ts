@@ -1,3 +1,5 @@
+import { NorbixError } from '../client/errors.js';
+
 import { inAppChannel } from './events.js';
 import { readSse, type SseMessage } from './stream.js';
 import type {
@@ -26,8 +28,13 @@ const DEFAULT_RECONNECT = { baseDelayMs: 500, maxDelayMs: 10_000, enabled: true 
  *  - Pass NO channels and connect with a user token to receive only the
  *    events the gateway routes to that user (NotifyUserId). The two combine.
  *
- * Reconnect: on a dropped stream the client reconnects with exponential
- * backoff + jitter. SSE has no server replay, so on (re)connect you should
+ * Reconnect: on a dropped stream (network error, 5xx, clean server close)
+ * the client reconnects with exponential backoff + jitter. A **401 / 403 /
+ * 404 on connect is final**: the gateway refused the subscription (bad
+ * token, a channel that is not yours, unknown route). The client sets the
+ * status to `refused`, calls `onError` once, and `connect()` rejects with a
+ * `NorbixError` whose `code` is the gateway's `responseStatus.errorCode`
+ * (e.g. `AiChatChannelRefused`). It never retries a refusal. SSE has no server replay, so on (re)connect you should
  * ALSO fetch unread from the inbox (see the example) to catch up on anything
  * missed while disconnected — `Last-Event-Id` is sent as a hint but the
  * gateway does not replay a per-user backlog.
@@ -98,7 +105,8 @@ export class NorbixSseClient {
   }
 
   /** Open the stream. Resolves once the first connection is established;
-   *  keeps running (with reconnect) until `close()`. */
+   *  keeps running (with reconnect) until `close()`. Rejects — without any
+   *  retry — when the gateway refuses the subscription (401 / 403 / 404). */
   async connect(): Promise<void> {
     this.closed = false;
     await this.runLoop();
@@ -156,6 +164,13 @@ export class NorbixSseClient {
       } catch (err) {
         if (this.closed) break;
         this.errorHandler?.(err);
+        if (isRefusal(err)) {
+          // The gateway said no before the stream started. Retrying would
+          // only repeat the same 401 / 403 / 404 forever.
+          this.closed = true;
+          this.setStatus('refused');
+          throw err;
+        }
         if (!firstConnectSettled) {
           // Surface the very first failure to the caller of connect().
           // Still reconnect afterwards if enabled.
@@ -200,6 +215,13 @@ export class NorbixSseClient {
   private setStatus(s: NorbixSseStatus): void {
     this.statusHandler?.(s);
   }
+}
+
+/** 401 / 403 / 404 on connect: the subscription was refused, not interrupted. */
+function isRefusal(err: unknown): err is NorbixError {
+  return (
+    err instanceof NorbixError && (err.status === 401 || err.status === 403 || err.status === 404)
+  );
 }
 
 /** Convenience: build a client already subscribed to a project's in-app channel. */
