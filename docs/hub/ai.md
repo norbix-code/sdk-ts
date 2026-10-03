@@ -6,24 +6,143 @@ Accessed as `norbix.hub.ai` on the [`Norbix`](../../README.md#authentication) cl
 
 ## Endpoints
 
-| Method                                            | Verb     | Path                                           | Scope     |
-| ------------------------------------------------- | -------- | ---------------------------------------------- | --------- |
-| [`deleteLlmIntegration`](#deletellmintegration)   | `DELETE` | `/{version}/ai/integrations/llms/{Id}`         | `project` |
-| [`disableLlmIntegration`](#disablellmintegration) | `PUT`    | `/{version}/ai/integrations/llms/{Id}/disable` | `project` |
-| [`enableLlmIntegration`](#enablellmintegration)   | `PUT`    | `/{version}/ai/integrations/llms/{Id}/enable`  | `project` |
-| [`getLlmIntegration`](#getllmintegration)         | `GET`    | `/{version}/ai/integrations/llms/{id}`         | `project` |
-| [`getLlmIntegrations`](#getllmintegrations)       | `GET`    | `/{version}/ai/integrations/llms/integrations` | `project` |
-| [`saveLlmIntegration`](#savellmintegration)       | `POST`   | `/{version}/ai/integrations/llms/`             | `project` |
-| [`testLlmIntegration`](#testllmintegration)       | `POST`   | `/{version}/ai/integrations/llms/test`         | `project` |
-| [`deleteMcpIntegration`](#deletemcpintegration)   | `DELETE` | `/{version}/ai/integrations/mcp/{Id}`          | `project` |
-| [`disableMcpIntegration`](#disablemcpintegration) | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/disable`  | `project` |
-| [`enableMcpIntegration`](#enablemcpintegration)   | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/enable`   | `project` |
-| [`getMcpIntegration`](#getmcpintegration)         | `GET`    | `/{version}/ai/integrations/mcp/{id}`          | `project` |
-| [`getMcpIntegrations`](#getmcpintegrations)       | `GET`    | `/{version}/ai/integrations/mcp/integrations`  | `project` |
-| [`saveMcpIntegration`](#savemcpintegration)       | `POST`   | `/{version}/ai/integrations/mcp/`              | `project` |
-| [`testMcpIntegration`](#testmcpintegration)       | `POST`   | `/{version}/ai/integrations/mcp/test`          | `project` |
+| Method                                                      | Verb     | Path                                              | Scope     |
+| ----------------------------------------------------------- | -------- | ------------------------------------------------- | --------- |
+| [`deleteEmbeddingIntegration`](#deleteembeddingintegration) | `DELETE` | `/{version}/ai/integrations/embeddings/{Id}`      | `project` |
+| [`getEmbeddingIntegration`](#getembeddingintegration)       | `GET`    | `/{version}/ai/integrations/embeddings/{Id}`      | `project` |
+| [`getEmbeddingIntegrations`](#getembeddingintegrations)     | `GET`    | `/{version}/ai/integrations/embeddings`           | `project` |
+| [`saveEmbeddingIntegration`](#saveembeddingintegration)     | `POST`   | `/{version}/ai/integrations/embeddings`           | `project` |
+| [`testEmbeddingIntegration`](#testembeddingintegration)     | `POST`   | `/{version}/ai/integrations/embeddings/{Id}/test` | `project` |
+| [`deleteLlmIntegration`](#deletellmintegration)             | `DELETE` | `/{version}/ai/integrations/llms/{Id}`            | `project` |
+| [`disableLlmIntegration`](#disablellmintegration)           | `PUT`    | `/{version}/ai/integrations/llms/{Id}/disable`    | `project` |
+| [`enableLlmIntegration`](#enablellmintegration)             | `PUT`    | `/{version}/ai/integrations/llms/{Id}/enable`     | `project` |
+| [`getLlmIntegration`](#getllmintegration)                   | `GET`    | `/{version}/ai/integrations/llms/{id}`            | `project` |
+| [`getLlmIntegrations`](#getllmintegrations)                 | `GET`    | `/{version}/ai/integrations/llms/integrations`    | `project` |
+| [`saveLlmIntegration`](#savellmintegration)                 | `POST`   | `/{version}/ai/integrations/llms/`                | `project` |
+| [`setLlmIntegrationAsDefault`](#setllmintegrationasdefault) | `PUT`    | `/{version}/ai/integrations/llms/{Id}/default`    | `project` |
+| [`testLlmIntegration`](#testllmintegration)                 | `POST`   | `/{version}/ai/integrations/llms/test`            | `project` |
+| [`deleteMcpIntegration`](#deletemcpintegration)             | `DELETE` | `/{version}/ai/integrations/mcp/{Id}`             | `project` |
+| [`disableMcpIntegration`](#disablemcpintegration)           | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/disable`     | `project` |
+| [`enableMcpIntegration`](#enablemcpintegration)             | `PUT`    | `/{version}/ai/integrations/mcp/{Id}/enable`      | `project` |
+| [`getMcpIntegration`](#getmcpintegration)                   | `GET`    | `/{version}/ai/integrations/mcp/{id}`             | `project` |
+| [`getMcpIntegrations`](#getmcpintegrations)                 | `GET`    | `/{version}/ai/integrations/mcp/integrations`     | `project` |
+| [`saveMcpIntegration`](#savemcpintegration)                 | `POST`   | `/{version}/ai/integrations/mcp/`                 | `project` |
+| [`testMcpIntegration`](#testmcpintegration)                 | `POST`   | `/{version}/ai/integrations/mcp/test`             | `project` |
 
 ## Reference
+
+### deleteEmbeddingIntegration
+
+`DELETE` `/{version}/ai/integrations/embeddings/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteEmbeddingIntegrationRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.deleteEmbeddingIntegration({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmbeddingIntegration
+
+`GET` `/{version}/ai/integrations/embeddings/{Id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmbeddingIntegration`
+**Response**: `CodeMashHub2.GetEmbeddingIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.getEmbeddingIntegration({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmbeddingIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmbeddingIntegrations
+
+`GET` `/{version}/ai/integrations/embeddings`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmbeddingIntegrations`
+**Response**: `CodeMashHub2.GetEmbeddingIntegrationsResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.getEmbeddingIntegrations({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmbeddingIntegrationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveEmbeddingIntegration
+
+`POST` `/{version}/ai/integrations/embeddings`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveEmbeddingIntegration`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.saveEmbeddingIntegration({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### testEmbeddingIntegration
+
+`POST` `/{version}/ai/integrations/embeddings/{Id}/test`
+
+Run a connection / delivery test against the integration.
+
+**Request DTO**: `CodeMashHub2.TestEmbeddingIntegration`
+**Response**: `CodeMashHub2.TestEmbeddingIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.testEmbeddingIntegration({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.TestEmbeddingIntegrationResponse
+```
+
+[↑ Top](#endpoints)
 
 ### deleteLlmIntegration
 
@@ -157,6 +276,27 @@ const result = await norbix.hub.ai.saveLlmIntegration({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### setLlmIntegrationAsDefault
+
+`PUT` `/{version}/ai/integrations/llms/{Id}/default`
+
+**Request DTO**: `CodeMashHub2.SetLlmIntegrationAsDefaultRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.setLlmIntegrationAsDefault({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)

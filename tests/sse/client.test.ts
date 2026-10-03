@@ -1,8 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import type { NorbixError } from '../../src/client/errors.js';
-import { NorbixSseClient } from '../../src/sse/client.js';
-import { agentChannel, inAppChannel, projectChannel } from '../../src/sse/events.js';
+import { Norbix } from '../../src/index.js';
+import { NorbixSseClient, aiChatClient } from '../../src/sse/client.js';
+import {
+  NorbixRealtimeEvents,
+  agentChannel,
+  aiChatChannel,
+  inAppChannel,
+  projectChannel,
+} from '../../src/sse/events.js';
+
 import { readSse } from '../../src/sse/stream.js';
 import type { NorbixRealtimeEnvelope } from '../../src/sse/types.js';
 
@@ -219,5 +227,54 @@ describe('NorbixSseClient — refused connections', () => {
     expect(fakeFetch).toHaveBeenCalledTimes(2);
     expect(statuses.slice(0, 3)).toEqual(['connecting', 'reconnecting', 'open']);
     expect(got).toHaveLength(1);
+  });
+});
+
+
+describe('end-user AI chat stream', () => {
+  it('aiChatChannel builds "ai-chat:{projectId}:{authId}"', () => {
+    expect(aiChatChannel('pr_x', 'usr_y')).toBe('ai-chat:pr_x:usr_y');
+    expect(NorbixRealtimeEvents.AiChat.TurnToken).toBe('ai.chat.turn.token');
+    expect(NorbixRealtimeEvents.AiChat.SessionRenamed).toBe('ai.chat.session.renamed');
+  });
+
+  it('aiChatClient subscribes to exactly that channel', () => {
+    const client = aiChatClient({
+      hubUrl: 'https://api.test',
+      projectId: 'pr_x',
+      authId: 'usr_y',
+      fetchImpl: (async () => new Response(null)) as unknown as typeof fetch,
+    });
+    const url = new URL(client.streamUrl());
+    expect(url.origin).toBe('https://api.test');
+    expect(url.searchParams.get('channels')).toBe('ai-chat:pr_x:usr_y');
+  });
+
+  it('norbix.aiChat() streams from the API host with the client token and project', async () => {
+    const fakeFetch = vi
+      .fn()
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({ responseStatus: { errors: [{ errorCode: 'AiChatChannelRefused' }] } }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } },
+        ),
+      );
+    const norbix = new Norbix({
+      bearerToken: 'user-jwt',
+      projectId: 'pr_x',
+      baseUrl: { api: 'https://api.test', hub: 'https://hub.test' },
+      fetch: fakeFetch as unknown as typeof fetch,
+    });
+    const stream = norbix.aiChat({
+      authId: 'usr_other',
+      reconnect: { enabled: true, baseDelayMs: 1 },
+    });
+    await expect(stream.connect()).rejects.toMatchObject({ code: 'AiChatChannelRefused' });
+
+    expect(fakeFetch).toHaveBeenCalledTimes(1);
+    const [url, init] = fakeFetch.mock.calls[0]! as [string, RequestInit];
+    expect(new URL(url).origin).toBe('https://api.test');
+    expect(new URL(url).searchParams.get('channels')).toBe('ai-chat:pr_x:usr_other');
+    expect((init.headers as Record<string, string>).Authorization).toBe('Bearer user-jwt');
   });
 });

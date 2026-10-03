@@ -1,8 +1,9 @@
-export { NorbixSseClient, inAppClient } from './client.js';
+export { NorbixSseClient, aiChatClient, inAppClient } from './client.js';
 export {
   NorbixChannelFamily,
   NorbixRealtimeEvents,
   agentChannel,
+  aiChatChannel,
   inAppChannel,
   projectChannel,
 } from './events.js';

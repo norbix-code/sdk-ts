@@ -1,6 +1,5 @@
 import { NorbixError } from '../client/errors.js';
-
-import { inAppChannel } from './events.js';
+import { aiChatChannel, inAppChannel } from './events.js';
 import { readSse, type SseMessage } from './stream.js';
 import type {
   NorbixRealtimeEnvelope,
@@ -231,5 +230,19 @@ export function inAppClient(
   return new NorbixSseClient({
     ...options,
     channels: [inAppChannel(options.projectId)],
+  });
+}
+
+/**
+ * Convenience: a client subscribed to one user's end-user AI chat channel.
+ * `hubUrl` here is the **API** host (the chat stream is served there with the
+ * project user's token); `norbix.aiChat(...)` fills it in for you.
+ */
+export function aiChatClient(
+  options: Omit<NorbixSseClientOptions, 'channels'> & { projectId: string; authId: string },
+): NorbixSseClient {
+  return new NorbixSseClient({
+    ...options,
+    channels: [aiChatChannel(options.projectId, options.authId)],
   });
 }

@@ -1,5 +1,4 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
-import type { CodeMashApi2 } from '../types/api2.dtos.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
 /**
@@ -7,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 125
+ * Endpoints: 127
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -881,7 +880,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
+      scope: 'optional',
       ...options,
     });
   };
@@ -1546,7 +1545,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
+      scope: 'optional',
       ...options,
     });
   };
@@ -2065,13 +2064,27 @@ export class NotificationsModule {
   };
 
   /**
+   * GET /{version}/notifications/push/devices/{id}
+   * Request DTO: GetPushDevice
+   */
+  getPushDevice = (
+    request: Partial<CodeMashHub2.GetPushDevice> = {} as Partial<CodeMashHub2.GetPushDevice>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPushDeviceResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushDeviceResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/devices/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/notifications/push/devices
    * Request DTO: GetPushDevices
-   *
-   * Narrow the list with userId, deviceKey (the provider token) or platform
-   * (ios, android, chrome, safari, expo). Devices are stored inside their
-   * user, so a page is a page of users carrying every matching device they
-   * hold — follow hasMore rather than stopping at the first short page.
    */
   getPushDevices = (
     request: Partial<CodeMashHub2.GetPushDevices> = {} as Partial<CodeMashHub2.GetPushDevices>,
@@ -2089,19 +2102,19 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/push/devices/{id}
-   * Request DTO: GetPushDevice
+   * POST /{version}/notifications/push/campaigns/audience-count
+   * Request DTO: GetPushCampaignAudienceCountRequest
    */
-  getPushDevice = (
-    request: Partial<CodeMashHub2.GetPushDevice> = {} as Partial<CodeMashHub2.GetPushDevice>,
+  getPushCampaignAudienceCount = (
+    request: Partial<CodeMashHub2.GetPushCampaignAudienceCountRequest> = {} as Partial<CodeMashHub2.GetPushCampaignAudienceCountRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetPushDeviceResponse> => {
-    return this.transport.send<CodeMashHub2.GetPushDeviceResponse>({
+  ): Promise<CodeMashHub2.GetPushCampaignAudienceCountResponse> => {
+    return this.transport.send<CodeMashHub2.GetPushCampaignAudienceCountResponse>({
       target: 'hub',
-      path: '/{version}/notifications/push/devices/{id}',
-      method: 'GET',
+      path: '/{version}/notifications/push/campaigns/audience-count',
+      method: 'POST',
       request,
-      pathParams: ['id'],
+      pathParams: [],
       scope: 'project',
       ...options,
     });
@@ -2273,7 +2286,7 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'optional', // signed preview link: no sign-in needed (hand-set, see PR)
+      scope: 'optional',
       ...options,
     });
   };
@@ -2336,20 +2349,54 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent
+   * GET /{version}/notifications/user/preferences
+   * Request DTO: GetUserNotificationPreferences
+   */
+  getUserNotificationPreferences = (
+    request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetUserEmailPreferencesResponse> => {
+    return this.transport.send<CodeMashHub2.GetUserEmailPreferencesResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/user/preferences',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/notifications/user/preferences
+   * Request DTO: UpdateUserNotificationsPreferences
+   */
+  updateUserNotificationsPreferences = (
+    request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/user/preferences',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent
    * Request DTO: GrantContactConsentRequest
-   *
-   * On the API surface, not the Hub: the gateway serves this from
-   * Api.Membership. It used to be sent to the Hub at a
-   * `/notifications/contacts/…` path that no host has ever routed.
    */
   grantContactConsent = (
-    request: Partial<CodeMashApi2.GrantContactConsentRequest> = {} as Partial<CodeMashApi2.GrantContactConsentRequest>,
+    request: Partial<CodeMashHub2.GrantContactConsentRequest> = {} as Partial<CodeMashHub2.GrantContactConsentRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.EmptyResponse> => {
-    return this.transport.send<CodeMashApi2.EmptyResponse>({
-      target: 'api',
-      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],
@@ -2359,18 +2406,16 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe
+   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe
    * Request DTO: UnsubscribeContactRequest
-   *
-   * On the API surface, not the Hub — see grantContactConsent.
    */
   unsubscribeContact = (
-    request: Partial<CodeMashApi2.UnsubscribeContactRequest> = {} as Partial<CodeMashApi2.UnsubscribeContactRequest>,
+    request: Partial<CodeMashHub2.UnsubscribeContactRequest> = {} as Partial<CodeMashHub2.UnsubscribeContactRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.EmptyResponse> => {
-    return this.transport.send<CodeMashApi2.EmptyResponse>({
-      target: 'api',
-      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],

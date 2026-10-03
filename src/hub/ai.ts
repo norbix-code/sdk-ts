@@ -6,10 +6,105 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: ai
- * Endpoints: 14
+ * Endpoints: 20
  */
 export class AiModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * DELETE /{version}/ai/integrations/embeddings/{Id}
+   * Request DTO: DeleteEmbeddingIntegrationRequest
+   */
+  deleteEmbeddingIntegration = (
+    request: Partial<CodeMashHub2.DeleteEmbeddingIntegrationRequest> = {} as Partial<CodeMashHub2.DeleteEmbeddingIntegrationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/embeddings/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/ai/integrations/embeddings/{Id}
+   * Request DTO: GetEmbeddingIntegration
+   */
+  getEmbeddingIntegration = (
+    request: Partial<CodeMashHub2.GetEmbeddingIntegration> = {} as Partial<CodeMashHub2.GetEmbeddingIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmbeddingIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmbeddingIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/embeddings/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/ai/integrations/embeddings
+   * Request DTO: GetEmbeddingIntegrations
+   */
+  getEmbeddingIntegrations = (
+    request: Partial<CodeMashHub2.GetEmbeddingIntegrations> = {} as Partial<CodeMashHub2.GetEmbeddingIntegrations>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEmbeddingIntegrationsResponse> => {
+    return this.transport.send<CodeMashHub2.GetEmbeddingIntegrationsResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/embeddings',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/ai/integrations/embeddings
+   * Request DTO: SaveEmbeddingIntegration
+   */
+  saveEmbeddingIntegration = (
+    request: Partial<CodeMashHub2.SaveEmbeddingIntegration> = {} as Partial<CodeMashHub2.SaveEmbeddingIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/embeddings',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/ai/integrations/embeddings/{Id}/test
+   * Request DTO: TestEmbeddingIntegration
+   */
+  testEmbeddingIntegration = (
+    request: Partial<CodeMashHub2.TestEmbeddingIntegration> = {} as Partial<CodeMashHub2.TestEmbeddingIntegration>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestEmbeddingIntegrationResponse> => {
+    return this.transport.send<CodeMashHub2.TestEmbeddingIntegrationResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/embeddings/{Id}/test',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * DELETE /{version}/ai/integrations/llms/{Id}
@@ -120,6 +215,25 @@ export class AiModule {
       method: 'POST',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/ai/integrations/llms/{Id}/default
+   * Request DTO: SetLlmIntegrationAsDefaultRequest
+   */
+  setLlmIntegrationAsDefault = (
+    request: Partial<CodeMashHub2.SetLlmIntegrationAsDefaultRequest> = {} as Partial<CodeMashHub2.SetLlmIntegrationAsDefaultRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/ai/integrations/llms/{Id}/default',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

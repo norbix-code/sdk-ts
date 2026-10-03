@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 98
+ * Endpoints: 108
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -526,6 +526,25 @@ export class AccountModule {
   };
 
   /**
+   * PUT /{version}/account/projects/{projectId}/admin-portal/enabled
+   * Request DTO: SetAdminPortalEnabledRequest
+   */
+  setAdminPortalEnabled = (
+    request: Partial<CodeMashHub2.SetAdminPortalEnabledRequest> = {} as Partial<CodeMashHub2.SetAdminPortalEnabledRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/admin-portal/enabled',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/account/projects/{projectId}/settings/admin-portal/service-user
    * Request DTO: AssignAdminPortalServiceUserRequest
    */
@@ -575,6 +594,120 @@ export class AccountModule {
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/settings/admin-url',
       method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/ai/settings
+   * Request DTO: GetProjectAiSettings
+   */
+  getProjectAiSettings = (
+    request: Partial<CodeMashHub2.GetProjectAiSettings> = {} as Partial<CodeMashHub2.GetProjectAiSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetProjectAiSettingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetProjectAiSettingsResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/settings',
+      method: 'GET',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/projects/{projectId}/ai/settings
+   * Request DTO: UpdateProjectAiSettings
+   */
+  updateProjectAiSettings = (
+    request: Partial<CodeMashHub2.UpdateProjectAiSettings> = {} as Partial<CodeMashHub2.UpdateProjectAiSettings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/settings',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/projects/{projectId}/ai/assistants
+   * Request DTO: CreateProjectAiAssistant
+   */
+  createProjectAiAssistant = (
+    request: Partial<CodeMashHub2.CreateProjectAiAssistant> = {} as Partial<CodeMashHub2.CreateProjectAiAssistant>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/assistants',
+      method: 'POST',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/projects/{projectId}/ai/assistants/{assistantId}
+   * Request DTO: UpdateProjectAiAssistant
+   */
+  updateProjectAiAssistant = (
+    request: Partial<CodeMashHub2.UpdateProjectAiAssistant> = {} as Partial<CodeMashHub2.UpdateProjectAiAssistant>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/assistants/{assistantId}',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId', 'assistantId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/projects/{projectId}/ai/assistants/{assistantId}
+   * Request DTO: DeleteProjectAiAssistant
+   */
+  deleteProjectAiAssistant = (
+    request: Partial<CodeMashHub2.DeleteProjectAiAssistant> = {} as Partial<CodeMashHub2.DeleteProjectAiAssistant>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/assistants/{assistantId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['projectId', 'assistantId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/ai/usage
+   * Request DTO: GetProjectAiUsage
+   */
+  getProjectAiUsage = (
+    request: Partial<CodeMashHub2.GetProjectAiUsage> = {} as Partial<CodeMashHub2.GetProjectAiUsage>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetProjectAiUsageResponse> => {
+    return this.transport.send<CodeMashHub2.GetProjectAiUsageResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/usage',
+      method: 'GET',
       request,
       pathParams: ['projectId'],
       scope: 'project',
@@ -1856,7 +1989,67 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/ai/scaffold
+   * Request DTO: ScaffoldProjectRequest
+   */
+  scaffoldProject = (
+    request: Partial<CodeMashHub2.ScaffoldProjectRequest> = {} as Partial<CodeMashHub2.ScaffoldProjectRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ScaffoldProjectResponse> => {
+    return this.transport.send<CodeMashHub2.ScaffoldProjectResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/scaffold',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/ai/schemas/validate
+   * Request DTO: ValidateSchemaRequest
+   */
+  validateSchema = (
+    request: Partial<CodeMashHub2.ValidateSchemaRequest> = {} as Partial<CodeMashHub2.ValidateSchemaRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ValidateSchemaResponse> => {
+    return this.transport.send<CodeMashHub2.ValidateSchemaResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/schemas/validate',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/ai/templates/render-preview
+   * Request DTO: RenderTemplatePreviewRequest
+   */
+  renderTemplatePreview = (
+    request: Partial<CodeMashHub2.RenderTemplatePreviewRequest> = {} as Partial<CodeMashHub2.RenderTemplatePreviewRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RenderTemplatePreviewResponse> => {
+    return this.transport.send<CodeMashHub2.RenderTemplatePreviewResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/templates/render-preview',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/mcp
+   * Aliases:
+   *   - GET /{version}/account/mcp
+   *   - DELETE /{version}/account/mcp
    * Request DTO: McpRequest
    */
   mcp = (

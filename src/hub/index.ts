@@ -18,6 +18,7 @@ import { LicensingModule } from './licensing.js';
 import { LogsModule } from './logs.js';
 import { MembershipModule } from './membership.js';
 import { NotificationsModule } from './notifications.js';
+import { OauthModule } from './oauth.js';
 import { PaymentsModule } from './payments.js';
 import { ProjectsModule } from './projects.js';
 import { PublicModule } from './public.js';
@@ -26,6 +27,7 @@ import { ResourcesModule } from './resources.js';
 import { SchedulerModule } from './scheduler.js';
 import { SupportModule } from './support.js';
 import { WebhooksModule } from './webhooks.js';
+import { WellKnownModule } from './well_known.js';
 
 /**
  * Auto-generated namespace exposing every hub endpoint group.
@@ -50,6 +52,7 @@ export class HubNamespace {
   public readonly logs: LogsModule;
   public readonly membership: MembershipModule;
   public readonly notifications: NotificationsModule;
+  public readonly oauth: OauthModule;
   public readonly payments: PaymentsModule;
   public readonly projects: ProjectsModule;
   public readonly public: PublicModule;
@@ -58,6 +61,7 @@ export class HubNamespace {
   public readonly scheduler: SchedulerModule;
   public readonly support: SupportModule;
   public readonly webhooks: WebhooksModule;
+  public readonly wellKnown: WellKnownModule;
 
   constructor(transport: Transport) {
     this.accessToken = new AccessTokenModule(transport);
@@ -78,6 +82,7 @@ export class HubNamespace {
     this.logs = new LogsModule(transport);
     this.membership = new MembershipModule(transport);
     this.notifications = new NotificationsModule(transport);
+    this.oauth = new OauthModule(transport);
     this.payments = new PaymentsModule(transport);
     this.projects = new ProjectsModule(transport);
     this.public = new PublicModule(transport);
@@ -86,5 +91,6 @@ export class HubNamespace {
     this.scheduler = new SchedulerModule(transport);
     this.support = new SupportModule(transport);
     this.webhooks = new WebhooksModule(transport);
+    this.wellKnown = new WellKnownModule(transport);
   }
 }

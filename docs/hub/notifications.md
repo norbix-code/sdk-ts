@@ -118,8 +118,9 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`setPushIntegrationAsDefault`](#setpushintegrationasdefault)                   | `PUT`    | `/{version}/notifications/push/integrations/{Id}/default`                             | `project` |
 | [`testPushIntegration`](#testpushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations/test`                                     | `project` |
 | [`registerDevice`](#registerdevice)                                             | `POST`   | `/{version}/notifications/push/devices`                                               | `project` |
-| [`getPushDevices`](#getpushdevices)                                             | `GET`    | `/{version}/notifications/push/devices`                                               | `project` |
 | [`getPushDevice`](#getpushdevice)                                               | `GET`    | `/{version}/notifications/push/devices/{id}`                                          | `project` |
+| [`getPushDevices`](#getpushdevices)                                             | `GET`    | `/{version}/notifications/push/devices`                                               | `project` |
+| [`getPushCampaignAudienceCount`](#getpushcampaignaudiencecount)                 | `POST`   | `/{version}/notifications/push/campaigns/audience-count`                              | `project` |
 | [`createPushCampaign`](#createpushcampaign)                                     | `POST`   | `/{version}/notifications/push/campaigns`                                             | `project` |
 | [`deletePushCampaign`](#deletepushcampaign)                                     | `DELETE` | `/{version}/notifications/push/campaigns/{Id}`                                        | `project` |
 | [`getPushCampaign`](#getpushcampaign)                                           | `GET`    | `/{version}/notifications/push/campaigns/{id}`                                        | `project` |
@@ -1205,7 +1206,7 @@ const norbix = new Norbix();
 
 const result = await norbix.hub.notifications.getEmailCampaignMessage({
   campaignId: 'campaignId-here',
-  id: 'id-here',
+  notificationId: 'notificationId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetEmailCampaignMessageResponse
@@ -1989,7 +1990,7 @@ const norbix = new Norbix();
 
 const result = await norbix.hub.notifications.getSmsCampaignMessage({
   campaignId: 'campaignId-here',
-  id: 'id-here',
+  notificationId: 'notificationId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetSmsCampaignMessageResponse
@@ -2551,13 +2552,34 @@ const result = await norbix.hub.notifications.registerDevice({
 
 [↑ Top](#endpoints)
 
+### getPushDevice
+
+`GET` `/{version}/notifications/push/devices/{id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPushDevice`
+**Response**: `CodeMashHub2.GetPushDeviceResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getPushDevice({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPushDeviceResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getPushDevices
 
 `GET` `/{version}/notifications/push/devices`
 
-List the devices registered for push in this project, each with the user it
-belongs to. Narrow it with `userId`, `deviceKey` (the provider token) or
-`platform` (`ios`, `android`, `chrome`, `safari`, `expo`).
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashHub2.GetPushDevices`
 **Response**: `CodeMashHub2.GetPushDevicesResponse`
@@ -2568,29 +2590,31 @@ import { Norbix } from '@norbix/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.notifications.getPushDevices({
-  platform: 'ios',
+  // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetPushDevicesResponse
 ```
 
 [↑ Top](#endpoints)
 
-### getPushDevice
+### getPushCampaignAudienceCount
 
-`GET` `/{version}/notifications/push/devices/{id}`
+`POST` `/{version}/notifications/push/campaigns/audience-count`
 
-Read one registered device, with the user it belongs to.
+Fetch a single item by ID.
 
-**Request DTO**: `CodeMashHub2.GetPushDevice`
-**Response**: `CodeMashHub2.GetPushDeviceResponse`
+**Request DTO**: `CodeMashHub2.GetPushCampaignAudienceCountRequest`
+**Response**: `CodeMashHub2.GetPushCampaignAudienceCountResponse`
 
 ```ts
 import { Norbix } from '@norbix/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.notifications.getPushDevice({ id: 'pnd_123' });
-// → typed as CodeMashHub2.GetPushDeviceResponse
+const result = await norbix.hub.notifications.getPushCampaignAudienceCount({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPushCampaignAudienceCountResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2839,7 +2863,7 @@ const norbix = new Norbix();
 
 const result = await norbix.hub.notifications.getPushCampaignMessage({
   campaignId: 'campaignId-here',
-  id: 'id-here',
+  notificationId: 'notificationId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetPushCampaignMessageResponse
