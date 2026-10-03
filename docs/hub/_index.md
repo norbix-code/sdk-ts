@@ -10,7 +10,7 @@ name for the full method reference and TypeScript examples.
 | Module                                | Endpoints | Description                                                                                                                              |
 | ------------------------------------- | --------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | [`accessToken`](./access_token.md)    |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
-| [`account`](./account.md)             |       108 | Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client.  |
+| [`account`](./account.md)             |       110 | Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client.  |
 | [`ai`](./ai.md)                       |        20 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |

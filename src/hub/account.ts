@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 108
+ * Endpoints: 110
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -935,6 +935,44 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/settings/legal/expose',
+      method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/projects/{projectId}/settings/brand/expose
+   * Request DTO: UpdateProjectExposeBrand
+   */
+  updateProjectExposeBrand = (
+    request: Partial<CodeMashHub2.UpdateProjectExposeBrand> = {} as Partial<CodeMashHub2.UpdateProjectExposeBrand>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/settings/brand/expose',
+      method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/projects/{projectId}/settings/auth/expose
+   * Request DTO: UpdateProjectExposeAuth
+   */
+  updateProjectExposeAuth = (
+    request: Partial<CodeMashHub2.UpdateProjectExposeAuth> = {} as Partial<CodeMashHub2.UpdateProjectExposeAuth>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/settings/auth/expose',
       method: 'PATCH',
       request,
       pathParams: ['projectId'],

@@ -1927,6 +1927,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "UpdateProjectExposeAuth": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateProjectExposeBrand": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "UpdateProjectExposeLegal": {
     "requiresAuth": true,
     "returnsBytes": false
