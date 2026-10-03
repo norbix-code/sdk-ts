@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 127
+ * Endpoints: 124
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -905,25 +905,6 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}
-   * Request DTO: GetEmailCampaignMessage
-   */
-  getEmailCampaignMessage = (
-    request: Partial<CodeMashHub2.GetEmailCampaignMessage> = {} as Partial<CodeMashHub2.GetEmailCampaignMessage>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetEmailCampaignMessageResponse> => {
-    return this.transport.send<CodeMashHub2.GetEmailCampaignMessageResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}',
-      method: 'GET',
-      request,
-      pathParams: ['campaignId', 'notificationId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * GET /{version}/notifications/emails/campaigns/{campaignId}/messages
    * Request DTO: GetEmailCampaignMessagesRequest
    */
@@ -1564,25 +1545,6 @@ export class NotificationsModule {
       method: 'POST',
       request,
       pathParams: ['Id'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}
-   * Request DTO: GetSmsCampaignMessage
-   */
-  getSmsCampaignMessage = (
-    request: Partial<CodeMashHub2.GetSmsCampaignMessage> = {} as Partial<CodeMashHub2.GetSmsCampaignMessage>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetSmsCampaignMessageResponse> => {
-    return this.transport.send<CodeMashHub2.GetSmsCampaignMessageResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}',
-      method: 'GET',
-      request,
-      pathParams: ['campaignId', 'notificationId'],
       scope: 'project',
       ...options,
     });
@@ -2305,25 +2267,6 @@ export class NotificationsModule {
       method: 'POST',
       request,
       pathParams: ['Id'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}
-   * Request DTO: GetPushCampaignMessage
-   */
-  getPushCampaignMessage = (
-    request: Partial<CodeMashHub2.GetPushCampaignMessage> = {} as Partial<CodeMashHub2.GetPushCampaignMessage>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetPushCampaignMessageResponse> => {
-    return this.transport.send<CodeMashHub2.GetPushCampaignMessageResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}',
-      method: 'GET',
-      request,
-      pathParams: ['campaignId', 'notificationId'],
       scope: 'project',
       ...options,
     });

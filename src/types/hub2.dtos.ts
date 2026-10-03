@@ -7429,6 +7429,16 @@ export module CodeMashHub2 {
     }
   }
 
+  export class EmailLinkPreferencesDto {
+    public emailAddress?: string;
+    public unsubscribedFromMarketing: boolean;
+    public blockReasons: string[] = [];
+
+    public constructor(init?: Partial<EmailLinkPreferencesDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export enum CampaignStatus {
     Pending = 'Pending',
     Registered = 'Registered',
@@ -10772,6 +10782,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetEmailPreferencesByLinkResponse extends ResponseBase {
+    public item?: EmailLinkPreferencesDto;
+
+    public constructor(init?: Partial<GetEmailPreferencesByLinkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetEmailCampaignResponse extends ResponseBase {
     public item?: EmailCampaignDto;
 
@@ -10832,15 +10851,6 @@ export module CodeMashHub2 {
     public body?: string;
 
     public constructor(init?: Partial<PreviewEmailNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignMessageResponse extends ResponseBase {
-    public emailMessageEntity?: EmailCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetEmailCampaignMessageResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -10990,15 +11000,6 @@ export module CodeMashHub2 {
     public body?: string;
 
     public constructor(init?: Partial<PreviewSmsNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignMessageResponse extends ResponseBase {
-    public smsMessageEntity?: SmsCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetSmsCampaignMessageResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -11315,15 +11316,6 @@ export module CodeMashHub2 {
     public subtitle?: string;
 
     public constructor(init?: Partial<PreviewPushNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignMessageResponse extends ResponseBase {
-    public pushMessageEntity?: PushCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetPushCampaignMessageResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -20069,6 +20061,34 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Read the marketing e-mail preferences of the person a signed unsubscribe link belongs to. No sign-in: the link is the key. */
+  // @Route("/{version}/email/preferences", "GET")
+  // @Api(Description="Read the marketing e-mail preferences of the person a signed unsubscribe link belongs to. No sign-in: the link is the key.")
+  // @DataContract
+  export class GetEmailPreferencesByLinkRequest
+    extends RequestBase
+    implements IReturn<GetEmailPreferencesByLinkResponse>
+  {
+    /** @description The signed unsubscribe link token from the e-mail's Preferences or Unsubscribe link. */
+    // @DataMember
+    // @ApiMember(Description="The signed unsubscribe link token from the e-mail's Preferences or Unsubscribe link.", IsRequired=true, Name="token", ParameterType="query")
+    public token: string;
+
+    public constructor(init?: Partial<GetEmailPreferencesByLinkRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailPreferencesByLinkRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailPreferencesByLinkResponse();
+    }
+  }
+
   /** @description Create email campaign */
   // @Route("/{version}/notifications/email/campaigns", "POST")
   // @Api(Description="Create email campaign")
@@ -20412,44 +20432,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
-    }
-  }
-
-  /** @description Get an email campaign message */
-  // @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages/{notificationId}", "GET")
-  // @Api(Description="Get an email campaign message")
-  export class GetEmailCampaignMessage
-    extends CodeMashRequestBase
-    implements IReturn<GetEmailCampaignMessageResponse>
-  {
-    /** @description The email campaign id. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_all_email_campaigns.", IsRequired=true)
-    public campaignId: string;
-
-    /** @description The campaign batch id. Get it from get_email_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_email_campaign_batches.", IsRequired=true)
-    public campaignBatchId: string;
-
-    /** @description The notification (message) id to fetch. Get it from get_email_campaign_messages. */
-    // @ApiMember(Description="The notification (message) id to fetch. Get it from get_email_campaign_messages.", IsRequired=true)
-    public notificationId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignMessage>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignMessage';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignMessageResponse();
     }
   }
 
@@ -21417,44 +21399,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets campaign sms message details */
-  // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages/{notificationId}", "GET")
-  // @Api(Description="Gets campaign sms message details")
-  export class GetSmsCampaignMessage
-    extends CodeMashRequestBase
-    implements IReturn<GetSmsCampaignMessageResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public campaignId: string;
-
-    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
-    public campaignBatchId: string;
-
-    /** @description The notification (message) id. Get it from get_sms_campaign_messages. */
-    // @ApiMember(Description="The notification (message) id. Get it from get_sms_campaign_messages.", IsRequired=true)
-    public notificationId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignMessage>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignMessage';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignMessageResponse();
     }
   }
 
@@ -22662,44 +22606,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets campaign push notification details */
-  // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages/{notificationId}", "GET")
-  // @Api(Description="Gets campaign push notification details")
-  export class GetPushCampaignMessage
-    extends CodeMashRequestBase
-    implements IReturn<GetPushCampaignMessageResponse>
-  {
-    /** @description The push campaign id. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
-    public campaignId: string;
-
-    /** @description The batch id. Get it from get_push_campaign_batches. */
-    // @ApiMember(Description="The batch id. Get it from get_push_campaign_batches.")
-    public campaignBatchId: string;
-
-    /** @description The notification id within the batch. */
-    // @ApiMember(Description="The notification id within the batch.")
-    public notificationId: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignMessage>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignMessage';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignMessageResponse();
     }
   }
 

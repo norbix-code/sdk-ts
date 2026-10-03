@@ -19,13 +19,13 @@ name for the full method reference and TypeScript examples.
 | [`database`](./database.md)           |        72 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
-| [`email`](./email.md)                 |         1 |                                                                                                                                          |
+| [`email`](./email.md)                 |         2 |                                                                                                                                          |
 | [`files`](./files.md)                 |        22 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
 | [`internal`](./internal.md)           |         1 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        14 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        44 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
-| [`notifications`](./notifications.md) |       127 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`notifications`](./notifications.md) |       124 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
 | [`oauth`](./oauth.md)                 |         5 |                                                                                                                                          |
 | [`payments`](./payments.md)           |        17 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |
