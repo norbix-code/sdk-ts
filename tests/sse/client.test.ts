@@ -10,6 +10,7 @@ import {
   inAppChannel,
   projectChannel,
 } from '../../src/sse/events.js';
+
 import { readSse } from '../../src/sse/stream.js';
 import type { NorbixRealtimeEnvelope } from '../../src/sse/types.js';
 
@@ -228,6 +229,7 @@ describe('NorbixSseClient — refused connections', () => {
     expect(got).toHaveLength(1);
   });
 });
+
 
 describe('end-user AI chat stream', () => {
   it('aiChatChannel builds "ai-chat:{projectId}:{authId}"', () => {
