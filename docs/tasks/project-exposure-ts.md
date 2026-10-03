@@ -18,6 +18,8 @@ any change to `ProjectDto` (it already has `exposeBrandToAdminPortal` /
    methods, tests and docs — done (types added by hand, see Findings; methods,
    tests and docs from `generate-endpoints`)
 3. chore: build, typecheck, lint, prettier, tests; push; open the pull request — doing
+   (branch pushed; `gh pr create` refused: active `gh` account `codemash-io` is not a
+   collaborator on `norbix-code/sdk-ts`)
    (build, `tsc --noEmit`, lint, prettier clean; vitest 46 files, 822 passed)
 
 ## Changes
@@ -54,6 +56,10 @@ any change to `ProjectDto` (it already has `exposeBrandToAdminPortal` /
   no row for `updateProjectExposeLegal` either.
 
 ## Needs you
+
+- [ ] Open the pull request `audit/project` → `main` titled
+      `feat(project): expose brand and expose auth switches for the Admin Portal`
+      with an account that has write access (`gh auth switch`), or give `codemash-io` access.
 
 - [ ] Review and merge the pull request (do not merge before gateway `audit/project`
       with item B1 is deployed, or the two calls answer 404).
