@@ -14336,6 +14336,58 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Sets whether the project's brand is returned by the public Admin Portal config */
+  // @Route("/{version}/account/projects/{projectId}/settings/brand/expose", "PATCH")
+  // @Api(Description="Sets whether the project's brand is returned by the public Admin Portal config")
+  export class UpdateProjectExposeBrand
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to return the brand in the public Admin Portal config, false to hide it. */
+    // @ApiMember(Description="True to return the brand in the public Admin Portal config, false to hide it.")
+    public exposed: boolean;
+
+    public constructor(init?: Partial<UpdateProjectExposeBrand>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectExposeBrand';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config */
+  // @Route("/{version}/account/projects/{projectId}/settings/auth/expose", "PATCH")
+  // @Api(Description="Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config")
+  export class UpdateProjectExposeAuth
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to return sign-in methods and password policy in the public Admin Portal config, false to hide them. */
+    // @ApiMember(Description="True to return sign-in methods and password policy in the public Admin Portal config, false to hide them.")
+    public exposed: boolean;
+
+    public constructor(init?: Partial<UpdateProjectExposeAuth>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectExposeAuth';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Updates project marketing url */
   // @Route("/{version}/account/projects/{projectId}/settings/url", "PATCH")
   // @Api(Description="Updates project marketing url")

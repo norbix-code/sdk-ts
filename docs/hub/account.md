@@ -59,6 +59,8 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`updateProjectLanguages`](#updateprojectlanguages)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/languages`                 | `project` |
 | [`updateProjectLegalDocuments`](#updateprojectlegaldocuments)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal`                     | `project` |
 | [`updateProjectExposeLegal`](#updateprojectexposelegal)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal/expose`              | `project` |
+| [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
+| [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project` |
 | [`updateProjectUrl`](#updateprojecturl)                                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/url`                       | `project` |
 | [`updateProjectName`](#updateprojectname)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/name`                      | `project` |
 | [`updateProjectRegions`](#updateprojectregions)                               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/regions`                   | `project` |
@@ -1214,6 +1216,52 @@ import { Norbix } from '@norbix/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.account.updateProjectExposeLegal({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectExposeBrand
+
+`PATCH` `/{version}/account/projects/{projectId}/settings/brand/expose`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectExposeBrand`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectExposeBrand({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateProjectExposeAuth
+
+`PATCH` `/{version}/account/projects/{projectId}/settings/auth/expose`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateProjectExposeAuth`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateProjectExposeAuth({
   projectId: 'projectId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
