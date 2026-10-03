@@ -1,3 +1,5 @@
+import { fromResponse } from '../client/errors.js';
+
 /**
  * Minimal SSE wire parser over a `fetch` ReadableStream. Portable across
  * Node 18+ and browsers, and (unlike the browser `EventSource`) lets us send
@@ -48,7 +50,12 @@ export async function readSse(
   });
 
   if (!res.ok) {
-    throw new Error(`SSE connect failed: HTTP ${res.status} ${res.statusText}`);
+    // The gateway answers a refused subscription (401 / 403 / 404) with a JSON
+    // body BEFORE the stream starts — e.g. `responseStatus.errorCode =
+    // "AiChatChannelRefused"` for a chat channel that is not the caller's.
+    // Keep that body: the client decides from `status` whether to retry, and
+    // the caller reads `code` to learn why.
+    throw await fromResponse(res, url);
   }
   if (!res.body) {
     throw new Error('SSE connect failed: response has no body stream');

@@ -63,8 +63,10 @@ export interface NorbixRealtimeAction {
   ref?: string;
 }
 
-/** Connection state, surfaced via `onStatus`. */
-export type NorbixSseStatus = 'connecting' | 'open' | 'reconnecting' | 'closed';
+/** Connection state, surfaced via `onStatus`.
+ *  `refused` = the gateway answered 401 / 403 / 404 on connect; the client
+ *  stops and does NOT reconnect (see `NorbixSseClient.connect`). */
+export type NorbixSseStatus = 'connecting' | 'open' | 'reconnecting' | 'refused' | 'closed';
 
 export interface NorbixSseClientOptions {
   /** Hub base URL, e.g. https://hub.norbix.ai. */
