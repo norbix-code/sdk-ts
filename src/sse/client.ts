@@ -1,4 +1,5 @@
 import { NorbixError } from '../client/errors.js';
+
 import { aiChatChannel, inAppChannel } from './events.js';
 import { readSse, type SseMessage } from './stream.js';
 import type {
