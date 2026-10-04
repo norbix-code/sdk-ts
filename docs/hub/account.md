@@ -57,6 +57,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`disableProject`](#disableproject)                                           | `PATCH`  | `/{version}/account/projects/{projectId}/disable`                            | `project` |
 | [`enableProject`](#enableproject)                                             | `PATCH`  | `/{version}/account/projects/{projectId}/enable`                             | `project` |
 | [`updateProjectLanguages`](#updateprojectlanguages)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/languages`                 | `project` |
+| [`checkProjectLanguages`](#checkprojectlanguages)                             | `POST`   | `/{version}/account/projects/{projectId}/settings/languages/check`           | `project` |
 | [`updateProjectLegalDocuments`](#updateprojectlegaldocuments)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal`                     | `project` |
 | [`updateProjectExposeLegal`](#updateprojectexposelegal)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal/expose`              | `project` |
 | [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
@@ -1174,6 +1175,29 @@ const result = await norbix.hub.account.updateProjectLanguages({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### checkProjectLanguages
+
+`POST` `/{version}/account/projects/{projectId}/settings/languages/check`
+
+Run a runtime check.
+
+**Request DTO**: `CodeMashHub2.CheckProjectLanguages`
+**Response**: `CodeMashHub2.CheckProjectLanguagesResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.checkProjectLanguages({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.CheckProjectLanguagesResponse
 ```
 
 [↑ Top](#endpoints)

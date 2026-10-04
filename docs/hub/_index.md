@@ -4,13 +4,13 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**531 endpoints across 26 modules.** Click a module
+**533 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
 | ------------------------------------- | --------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | [`accessToken`](./access_token.md)    |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
-| [`account`](./account.md)             |       110 | Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client.  |
+| [`account`](./account.md)             |       111 | Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client.  |
 | [`ai`](./ai.md)                       |        20 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
@@ -33,5 +33,6 @@ name for the full method reference and TypeScript examples.
 | [`resources`](./resources.md)         |         1 |                                                                                                                                          |
 | [`scheduler`](./scheduler.md)         |         8 |                                                                                                                                          |
 | [`support`](./support.md)             |         7 |                                                                                                                                          |
+| [`triggers`](./triggers.md)           |         1 |                                                                                                                                          |
 | [`webhooks`](./webhooks.md)           |         9 |                                                                                                                                          |
 | [`wellKnown`](./well_known.md)        |         2 |                                                                                                                                          |

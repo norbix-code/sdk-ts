@@ -343,6 +343,7 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 | 🩺 `echo`                | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
 | 🛠️ `internal`            | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
 | 📦 `resources`           | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
+| 🚦 `triggers`            | Triggers that need attention (for example a missing provider)           | [`docs/hub/triggers.md`](./docs/hub/triggers.md)           |
 
 → [Full Hub index](./docs/hub/_index.md)
 
@@ -421,6 +422,51 @@ await norbix.hub.database.saveDatabaseSchema({
 await norbix.hub.account.sendInviteToTeamMember({
   email: 'maya@team.io',
   role: 'developer',
+});
+```
+
+## Campaigns and triggers (`norbix.hub.notifications`, `norbix.hub.triggers`)
+
+A campaign is sent through one provider integration, and the gateway requires
+its id. Pick it with `getEmailIntegrations` / `getPushIntegrations` /
+`getSmsIntegrations`. For Email and Push it goes inside `campaign`; for SMS it
+is a top-level `integrationId` (not the same field as `databaseIntegrationId`).
+
+```ts
+await norbix.hub.notifications.createEmailCampaign({
+  campaign: {
+    source: 'Email',
+    templateId: emailTemplateId,
+    integrationId: emailIntegrationId, // required
+    recipients: ['ann@example.com'],
+  },
+});
+
+await norbix.hub.notifications.createPushCampaign({
+  campaign: { source: 'AllUsers', templateId: pushTemplateId, integrationId: pushIntegrationId },
+});
+
+await norbix.hub.notifications.createSmsCampaign({
+  templateId: smsTemplateId,
+  integrationId: smsIntegrationId, // required: the SMS provider
+  deliveryType: 'PhoneNumbers',
+  phoneNumbers: { phoneNumbers: ['+37060000000'] },
+});
+```
+
+An Email / Push / SMS trigger action needs `integrationId` too, and can set
+`language` (one template translation for every recipient) and `initiatorId`.
+Two helpers show what to fix before it fails:
+
+```ts
+// Triggers of one type that need attention, with the reason
+const { items } = await norbix.hub.triggers.getTriggersNeedingAttention({ triggerType: 'Schema' });
+
+// Templates that would miss a translation if the project languages changed
+const { templates } = await norbix.hub.account.checkProjectLanguages({
+  projectId,
+  defaultLanguage: 'en',
+  languages: ['en', 'lt'],
 });
 ```
 

@@ -26,6 +26,7 @@ import { RegionsModule } from './regions.js';
 import { ResourcesModule } from './resources.js';
 import { SchedulerModule } from './scheduler.js';
 import { SupportModule } from './support.js';
+import { TriggersModule } from './triggers.js';
 import { WebhooksModule } from './webhooks.js';
 import { WellKnownModule } from './well_known.js';
 
@@ -67,6 +68,7 @@ export class HubNamespace {
   public readonly resources: ResourcesModule;
   public readonly scheduler: SchedulerModule;
   public readonly support: SupportModule;
+  public readonly triggers: TriggersModule;
   public readonly webhooks: WebhooksModule;
   public readonly wellKnown: WellKnownModule;
 
@@ -97,6 +99,7 @@ export class HubNamespace {
     this.resources = new ResourcesModule(transport);
     this.scheduler = new SchedulerModule(transport);
     this.support = new SupportModule(transport);
+    this.triggers = new TriggersModule(transport);
     this.webhooks = new WebhooksModule(transport);
     this.wellKnown = new WellKnownModule(transport);
   }

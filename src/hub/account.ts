@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 110
+ * Endpoints: 111
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -898,6 +898,25 @@ export class AccountModule {
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/settings/languages',
       method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/projects/{projectId}/settings/languages/check
+   * Request DTO: CheckProjectLanguages
+   */
+  checkProjectLanguages = (
+    request: Partial<CodeMashHub2.CheckProjectLanguages> = {} as Partial<CodeMashHub2.CheckProjectLanguages>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CheckProjectLanguagesResponse> => {
+    return this.transport.send<CodeMashHub2.CheckProjectLanguagesResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/settings/languages/check',
+      method: 'POST',
       request,
       pathParams: ['projectId'],
       scope: 'project',
