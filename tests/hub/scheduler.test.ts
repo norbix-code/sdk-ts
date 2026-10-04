@@ -1,225 +1,200 @@
 import { describe, expect, it } from 'vitest';
 
-import { SchedulerModule } from '../../src/hub/scheduler.js';
-import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
+import type { SaveSchedulerTaskInput } from '../../src/hub/index.js';
+import { CodeMashHub2 } from '../../src/types/hub2.dtos.js';
+import { makeClient } from '../_helpers.js';
 
 /**
- * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
- * to refresh this file from the DTO definitions.
- *
  * Tests for hub.scheduler (8 endpoints).
  *
  * Each method is asserted against:
- *   - presence on the module (smoke check)
- *   - issued HTTP verb + URL with version segment substituted and path
- *     tokens interpolated from a stubbed request
- *   - auth, project, and (when applicable) account headers
- *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
+ *   - the HTTP verb and the full URL (version segment + path tokens)
+ *   - where the request fields go: path, query string or JSON body
+ *   - auth and project headers
+ *
+ * `saveSchedulerTask` also checks the JSON body: the gateway picks the task
+ * subtype from `task.type` (only `EmailCampaign` today) and the campaign
+ * audience from `task.campaign.source`. Every call goes to a mock fetch.
  */
+const HUB = 'https://hub.norbix.io/v2';
+
+function client() {
+  const { norbix, mock } = makeClient({});
+  return { scheduler: norbix.hub.scheduler, mock };
+}
+
+function expectAuthHeaders(headers: Headers | undefined) {
+  expect(headers?.get('Authorization')).toBe('Bearer test-token');
+  expect(headers?.get('X-CM-ProjectId')).toBe('test-project');
+}
+
+function sentBody(raw: string | undefined): Record<string, unknown> {
+  expect(raw).toBeDefined();
+  return JSON.parse(raw!) as Record<string, unknown>;
+}
+
 describe('hub.scheduler', () => {
   it('module exposes 8 method(s)', () => {
-    const mock = createMockFetch();
-    const mod = new SchedulerModule({} as never);
-    void mod; // silence unused — we only need the type
-    // Sanity check the auto-mapped surface exists on the namespaced client.
-    const { norbix } = makeClient();
-    const ns = (norbix.hub as unknown as Record<string, unknown>)['scheduler'] as Record<
-      string,
-      unknown
-    >;
-    expect(ns).toBeDefined();
-    void mock;
-    expect(typeof ns['disableScheduler']).toBe('function');
-    expect(typeof ns['enableScheduler']).toBe('function');
-    expect(typeof ns['deleteSchedulerTask']).toBe('function');
-    expect(typeof ns['disableSchedulerTask']).toBe('function');
-    expect(typeof ns['enableSchedulerTask']).toBe('function');
-    expect(typeof ns['getSchedulerTask']).toBe('function');
-    expect(typeof ns['getSchedulerTasks']).toBe('function');
-    expect(typeof ns['saveSchedulerTask']).toBe('function');
+    const { scheduler } = client();
+    const methods = Object.entries(scheduler)
+      .filter(([, v]) => typeof v === 'function')
+      .map(([k]) => k);
+    expect(methods.sort()).toEqual(
+      [
+        'deleteSchedulerTask',
+        'disableScheduler',
+        'disableSchedulerTask',
+        'enableScheduler',
+        'enableSchedulerTask',
+        'getSchedulerTask',
+        'getSchedulerTasks',
+        'saveSchedulerTask',
+      ].sort(),
+    );
   });
 
-  it('disableScheduler: GET /{version}/scheduler/disable', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/disable',
-      version: 'v2',
-      stub,
+  it('enableScheduler: PUT /{version}/scheduler/enable, no body', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.enableScheduler();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/enable`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('disableScheduler: PUT /{version}/scheduler/disable, no body', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.disableScheduler();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/disable`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('getSchedulerTasks: GET /{version}/scheduler/tasks, filters in the query string', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.getSchedulerTasks({
+      type: CodeMashHub2.SchedulerTaskType.EmailCampaign,
+      enabled: true,
     });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['disableScheduler']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    const url = new URL(mock.lastCall!.url);
+    expect(`${url.origin}${url.pathname}`).toBe(`${HUB}/scheduler/tasks`);
+    expect(url.searchParams.get('type')).toBe('EmailCampaign');
+    expect(url.searchParams.get('enabled')).toBe('true');
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
   });
 
-  it('enableScheduler: GET /{version}/scheduler/enable', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/enable',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['enableScheduler']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
+  it('getSchedulerTask: GET /{version}/scheduler/tasks/{id}, id in the path', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.getSchedulerTask({ id: 'tsk_123' });
     expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
   });
 
-  it('deleteSchedulerTask: DELETE /{version}/scheduler/tasks/{Id}', async () => {
-    const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks/{Id}',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['deleteSchedulerTask']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
+  it('enableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/enable, id in the path', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.enableSchedulerTask({ id: 'tsk_123' });
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123/enable`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('disableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/disable, id in the path', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.disableSchedulerTask({ id: 'tsk_123' });
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123/disable`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('deleteSchedulerTask: DELETE /{version}/scheduler/tasks/{Id}, id in the path', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.deleteSchedulerTask({ id: 'tsk_123' });
     expect(mock.lastCall?.method).toBe('DELETE');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
   });
 
-  it('disableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/disable', async () => {
-    const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}/disable');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks/{Id}/disable',
-      version: 'v2',
-      stub,
+  it('saveSchedulerTask: POST /{version}/scheduler/tasks, typed EmailCampaign task in the JSON body', async () => {
+    const { scheduler, mock } = client();
+    // Plain string literals for `type` and `source`, no cast: this call is
+    // also the type-check that the typed task body is accepted.
+    await scheduler.saveSchedulerTask({
+      name: 'Weekly digest',
+      cron: '0 9 * * 1',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: false,
+      task: {
+        type: 'EmailCampaign',
+        campaign: {
+          source: 'AllUsers',
+          templateId: 'tpl_123',
+          rolesNames: ['subscriber'],
+        },
+      },
     });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['disableSchedulerTask']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('enableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/enable', async () => {
-    const stub = stubRequestForPath('/{version}/scheduler/tasks/{Id}/enable');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks/{Id}/enable',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['enableSchedulerTask']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('getSchedulerTask: GET /{version}/scheduler/tasks/{id}', async () => {
-    const stub = stubRequestForPath('/{version}/scheduler/tasks/{id}');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks/{id}',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['getSchedulerTask']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('getSchedulerTasks: GET /{version}/scheduler/tasks', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['getSchedulerTasks']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
-  });
-
-  it('saveSchedulerTask: POST /{version}/scheduler/tasks', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/scheduler/tasks',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['scheduler']!['saveSchedulerTask']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks`);
+    expect(mock.lastCall?.headers.get('Content-Type')).toBe('application/json');
+    expectAuthHeaders(mock.lastCall?.headers);
+    expect(sentBody(mock.lastCall?.body)).toEqual({
+      name: 'Weekly digest',
+      cron: '0 9 * * 1',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: false,
+      task: {
+        type: 'EmailCampaign',
+        campaign: {
+          source: 'AllUsers',
+          templateId: 'tpl_123',
+          rolesNames: ['subscriber'],
+        },
+      },
+    });
+  });
+
+  it('saveSchedulerTask: update sends taskId in the body; DTO class instances are accepted', async () => {
+    const { scheduler, mock } = client();
+    const request: SaveSchedulerTaskInput = {
+      taskId: 'tsk_123',
+      name: 'Weekly digest',
+      cron: '0 9 * * 1',
+      initiatorUserId: 'usr_123',
+      isEnabled: false,
+      stopOnError: true,
+      task: new CodeMashHub2.EmailCampaignSchedulerTaskRequest({
+        type: CodeMashHub2.SchedulerTaskType.EmailCampaign,
+        databaseIntegrationId: 'int_db',
+        campaign: new CodeMashHub2.EmailToAllUsersDeliverySettingsRequest({
+          source: CodeMashHub2.EmailCampaignRecipientsSourceTypes.AllUsers,
+          templateId: 'tpl_123',
+        }),
+      }),
+    };
+    await scheduler.saveSchedulerTask(request);
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks`);
+    expect(sentBody(mock.lastCall?.body)).toEqual({
+      taskId: 'tsk_123',
+      name: 'Weekly digest',
+      cron: '0 9 * * 1',
+      initiatorUserId: 'usr_123',
+      isEnabled: false,
+      stopOnError: true,
+      task: {
+        type: 'EmailCampaign',
+        databaseIntegrationId: 'int_db',
+        campaign: { source: 'AllUsers', templateId: 'tpl_123' },
+      },
+    });
   });
 });

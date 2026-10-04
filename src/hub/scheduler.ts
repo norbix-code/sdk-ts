@@ -1,6 +1,50 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
+/** A string enum, or the same value written as a plain string literal. */
+type EnumOrLiteral<E extends string> = E | `${E}`;
+
+type WithCampaignSource<T> = Omit<Partial<T>, 'source'> & {
+  source: EnumOrLiteral<CodeMashHub2.EmailCampaignRecipientsSourceTypes>;
+};
+
+/**
+ * The email campaign a scheduled task sends: `source` picks the audience,
+ * the other fields are the ones of that audience's campaign request
+ * (`templateId` is always required by the gateway).
+ */
+export type SchedulerEmailCampaignInput =
+  | WithCampaignSource<CodeMashHub2.EmailToAllUsersDeliverySettingsRequest>
+  | WithCampaignSource<CodeMashHub2.EmailToUsersDeliverySettingsRequest>
+  | WithCampaignSource<CodeMashHub2.EmailToAccountUsersDeliverySettingsRequest>
+  | WithCampaignSource<CodeMashHub2.EmailToEmailsDeliverySettingsRequest>
+  | WithCampaignSource<CodeMashHub2.EmailToCollectionRecordsDeliverySettingsRequest>;
+
+/** Task body of type `EmailCampaign` — sends an email campaign each time the cron fires. */
+export type EmailCampaignSchedulerTaskInput = Omit<
+  Partial<CodeMashHub2.EmailCampaignSchedulerTaskRequest>,
+  'type' | 'campaign'
+> & {
+  type: CodeMashHub2.SchedulerTaskType.EmailCampaign | 'EmailCampaign';
+  campaign?: SchedulerEmailCampaignInput;
+};
+
+/**
+ * The `task` of {@link SchedulerModule.saveSchedulerTask}. Only `EmailCampaign`
+ * is supported by the gateway today. A `SchedulerTaskRequest` /
+ * `EmailCampaignSchedulerTaskRequest` class instance is accepted too.
+ */
+export type SchedulerTaskInput =
+  EmailCampaignSchedulerTaskInput | CodeMashHub2.SchedulerTaskRequest;
+
+/** Request of {@link SchedulerModule.saveSchedulerTask} with a typed `task`. */
+export type SaveSchedulerTaskInput = Omit<
+  Partial<CodeMashHub2.SaveSchedulerTaskRequest>,
+  'task'
+> & {
+  task?: SchedulerTaskInput;
+};
+
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
@@ -12,7 +56,7 @@ export class SchedulerModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/scheduler/disable
+   * PUT /{version}/scheduler/disable
    * Request DTO: DisableScheduler
    */
   disableScheduler = (
@@ -22,7 +66,7 @@ export class SchedulerModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/scheduler/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +75,7 @@ export class SchedulerModule {
   };
 
   /**
-   * GET /{version}/scheduler/enable
+   * PUT /{version}/scheduler/enable
    * Request DTO: EnableScheduler
    */
   enableScheduler = (
@@ -41,7 +85,7 @@ export class SchedulerModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/scheduler/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -147,9 +191,12 @@ export class SchedulerModule {
   /**
    * POST /{version}/scheduler/tasks
    * Request DTO: SaveSchedulerTaskRequest
+   *
+   * Creates a task, or updates it when `taskId` is set. `task` is typed
+   * (hand-set): `{ type: 'EmailCampaign', campaign: { source, templateId, … } }`.
    */
   saveSchedulerTask = (
-    request: Partial<CodeMashHub2.SaveSchedulerTaskRequest> = {} as Partial<CodeMashHub2.SaveSchedulerTaskRequest>,
+    request: SaveSchedulerTaskInput = {} as SaveSchedulerTaskInput,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.IdResponse> => {
     return this.transport.send<CodeMashHub2.IdResponse>({

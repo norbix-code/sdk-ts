@@ -29,6 +29,13 @@ import { SupportModule } from './support.js';
 import { WebhooksModule } from './webhooks.js';
 import { WellKnownModule } from './well_known.js';
 
+export type {
+  EmailCampaignSchedulerTaskInput,
+  SaveSchedulerTaskInput,
+  SchedulerEmailCampaignInput,
+  SchedulerTaskInput,
+} from './scheduler.js';
+
 /**
  * Auto-generated namespace exposing every hub endpoint group.
  * Refreshed by `npm run generate-endpoints`.
