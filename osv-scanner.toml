@@ -1,0 +1,66 @@
+# OSV-Scanner config (CI "Security scan" and the nightly scan read this file).
+#
+# Every entry is a development-only package that cannot be upgraded today.
+# Each one expires (ignoreUntil): when it does, the scan fails again and the
+# entry must be re-checked — drop it once a fixed version can be installed.
+# Checked 2026-10-04 with osv-scanner v2.6.0 (google/osv-scanner-action).
+
+[[IgnoredVulns]]
+id = "GHSA-6j4f-fj2g-mc7p"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "brace-expansion 5.0.9 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-q2hr-2g5m-vwhr"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "brace-expansion 5.0.9 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-qhr7-859c-m2p7"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "brace-expansion 5.0.9 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-ch52-4w7c-c8xp"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "http-cache-semantics 4.2.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-2vr4-cq9g-pvrc"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "ip-address 10.5.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-h3mg-xc3c-68pw"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "ip-address 10.5.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-j6r3-76f7-8jcv"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "ip-address 10.5.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-rpw4-54j3-4h4q"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "ip-address 10.5.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-3wwx-pv8p-q78v"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-r53p-7pc4-xj5r"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-rfgv-xxqx-mfg5"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+ignoreUntil = 2027-01-04T00:00:00Z
+reason = "braces 3.0.3 is the latest release and the advisory lists no fixed version. Dev-only (build / test tooling via micromatch), never shipped in @norbix.ai/ts."
