@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 111
+ * Endpoints: 113
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -1544,6 +1544,44 @@ export class AccountModule {
       target: 'hub',
       path: '/{version}/account/userauth/passkey/verify-enrollment',
       method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/me
+   * Request DTO: GetMyAccountUserProfile
+   */
+  getMyAccountUserProfile = (
+    request: Partial<CodeMashHub2.GetMyAccountUserProfile> = {} as Partial<CodeMashHub2.GetMyAccountUserProfile>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMyAccountUserProfileResponse> => {
+    return this.transport.send<CodeMashHub2.GetMyAccountUserProfileResponse>({
+      target: 'hub',
+      path: '/{version}/account/me',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/me/phone
+   * Request DTO: UpdateMyAccountUserPhone
+   */
+  updateMyAccountUserPhone = (
+    request: Partial<CodeMashHub2.UpdateMyAccountUserPhone> = {} as Partial<CodeMashHub2.UpdateMyAccountUserPhone>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/me/phone',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
