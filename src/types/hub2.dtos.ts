@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-02 13:21:53
+Date: 2026-10-04 10:49:00
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -272,6 +272,7 @@ export module CodeMashHub2 {
     Schema = 'Schema',
     Files = 'Files',
     Payments = 'Payments',
+    Ai = 'Ai',
   }
 
   export enum TriggerActionType {
@@ -3489,6 +3490,25 @@ export module CodeMashHub2 {
     }
   }
 
+  export class SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+
+    public constructor(init?: Partial<SchedulerTaskRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EmailCampaignSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public campaign?: EmailCampaignRequest;
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<EmailCampaignSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class MongoDbAggregateDto implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -3902,6 +3922,11 @@ export module CodeMashHub2 {
     public artifactId?: string;
     public label?: string;
     public step?: number;
+    public number?: number;
+    public sourceKind?: string;
+    public sourceId?: string;
+    public score?: number;
+    public cited?: boolean;
 
     public constructor(init?: Partial<AiChatEntrySourceWireDto>) {
       (Object as any).assign(this, init);
@@ -4222,6 +4247,85 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class AiPlanModelDto {
+    // @DataMember
+    public llmIntegrationId: string;
+
+    // @DataMember
+    public model?: string;
+
+    public constructor(init?: Partial<AiPlanModelDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum AiPlanQuotaUnit {
+    None = 'None',
+    Credits = 'Credits',
+    Tokens = 'Tokens',
+  }
+
+  // @DataContract
+  export class AiPlanFeaturesDto {
+    // @DataMember
+    public attachments: boolean;
+
+    // @DataMember
+    public rag: boolean;
+
+    // @DataMember
+    public memory: boolean;
+
+    public constructor(init?: Partial<AiPlanFeaturesDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiPlanDto {
+    // @DataMember
+    public id?: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public allowedAssistantIds: string[] = [];
+
+    // @DataMember
+    public allowedModels: AiPlanModelDto[] = [];
+
+    // @DataMember
+    public quotaUnit: AiPlanQuotaUnit;
+
+    // @DataMember
+    public monthlyQuota: number;
+
+    // @DataMember
+    public features: AiPlanFeaturesDto;
+
+    // @DataMember
+    public quotaReachedMessage?: string;
+
+    public constructor(init?: Partial<AiPlanDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiPlanRoleAssignmentDto {
+    // @DataMember
+    public roleId: string;
+
+    // @DataMember
+    public planId: string;
+
+    public constructor(init?: Partial<AiPlanRoleAssignmentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class ProjectAiAssistantRequestBase extends CodeMashRequestBase {
     /** @description Name shown to end users. Required, at most 100 characters, unique in the project. */
     // @ApiMember(Description="Name shown to end users. Required, at most 100 characters, unique in the project.")
@@ -4235,8 +4339,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Instructions for the model. Never shown to end users. At most 20 000 characters.")
     public systemPrompt?: string;
 
-    /** @description Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences). Any other name is refused. */
-    // @ApiMember(Description="Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences). Any other name is refused.")
+    /** @description Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (search_knowledge — the user's own and the project-wide knowledge). Any other name is refused. */
+    // @ApiMember(Description="Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (search_knowledge — the user's own and the project-wide knowledge). Any other name is refused.")
     public toolsets?: string[];
 
     /** @description The assistant's own LLM integration id (int_…). Empty = the project's default LLM. */
@@ -4251,9 +4355,13 @@ export module CodeMashHub2 {
     // @ApiMember(Description="True to let the assistant remember facts about the end user across chats.")
     public memoryEnabled: boolean;
 
-    /** @description RAG source ids. Not available yet — must be empty. */
-    // @ApiMember(Description="RAG source ids. Not available yet — must be empty.")
+    /** @description Knowledge the assistant retrieves from before each answer and cites as [n]: record (records of schemas with embed on), file (uploaded files, when the project embeds them), message (the user's earlier chats, assistants with memory). Empty = no automatic retrieval. */
+    // @ApiMember(Description="Knowledge the assistant retrieves from before each answer and cites as [n]: record (records of schemas with embed on), file (uploaded files, when the project embeds them), message (the user's earlier chats, assistants with memory). Empty = no automatic retrieval.")
     public ragSourceIds?: string[];
+
+    /** @description Best relevance (0–1) below which the answer says the knowledge does not match strongly. Empty = 0.5; 0 = never. */
+    // @ApiMember(Description="Best relevance (0–1) below which the answer says the knowledge does not match strongly. Empty = 0.5; 0 = never.")
+    public weakMatchThreshold?: number;
 
     /** @description AI plan (quota) id. Optional. */
     // @ApiMember(Description="AI plan (quota) id. Optional.")
@@ -4400,6 +4508,24 @@ export module CodeMashHub2 {
     public description?: string;
 
     public constructor(init?: Partial<SchemaSettingsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SchemaEmbedSettingsDto {
+    // @DataMember
+    public enabled: boolean;
+
+    // @DataMember
+    public fields: string[] = [];
+
+    // @DataMember
+    public embeddingIntegrationId?: string;
+
+    // @DataMember
+    public perUser: boolean;
+
+    public constructor(init?: Partial<SchemaEmbedSettingsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -4707,14 +4833,6 @@ export module CodeMashHub2 {
     public apiKey: string;
 
     public constructor(init?: Partial<EmbeddingIntegrationRequest>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class SchedulerTaskRequest {
-    public type: SchedulerTaskType;
-
-    public constructor(init?: Partial<SchedulerTaskRequest>) {
       (Object as any).assign(this, init);
     }
   }
@@ -5261,6 +5379,9 @@ export module CodeMashHub2 {
     public ragSourceIds: string[] = [];
 
     // @DataMember
+    public weakMatchThreshold?: number;
+
+    // @DataMember
     public planId?: string;
 
     // @DataMember
@@ -5284,6 +5405,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public assistants: AiAssistantDto[] = [];
+
+    // @DataMember
+    public embedFiles: boolean;
+
+    // @DataMember
+    public plans: AiPlanDto[] = [];
+
+    // @DataMember
+    public planRoleAssignments: AiPlanRoleAssignmentDto[] = [];
+
+    // @DataMember
+    public defaultPlanId?: string;
 
     public constructor(init?: Partial<ProjectAiSettingsDto>) {
       (Object as any).assign(this, init);
@@ -5818,6 +5951,70 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class AiCreditPackCheckoutDto {
+    // @DataMember
+    public url: string;
+
+    // @DataMember
+    public sessionId: string;
+
+    // @DataMember
+    public pack: string;
+
+    // @DataMember
+    public credits: number;
+
+    // @DataMember
+    public priceEuroCents: number;
+
+    // @DataMember
+    public purchaseId: string;
+
+    public constructor(init?: Partial<AiCreditPackCheckoutDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectAiPlansDto {
+    // @DataMember
+    public plans: AiPlanDto[] = [];
+
+    // @DataMember
+    public roles: AiPlanRoleAssignmentDto[] = [];
+
+    // @DataMember
+    public defaultPlanId?: string;
+
+    public constructor(init?: Partial<ProjectAiPlansDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiUserPlanAssignmentDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public planId: string;
+
+    public constructor(init?: Partial<AiUserPlanAssignmentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiUserPlansDto {
+    // @DataMember
+    public users: AiUserPlanAssignmentDto[] = [];
+
+    public constructor(init?: Partial<AiUserPlansDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AiUsageGroupDto {
     // @DataMember
     public id: string;
@@ -5852,6 +6049,62 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class AiWalletLineDto {
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public credits: number;
+
+    // @DataMember
+    public reference?: string;
+
+    // @DataMember
+    public purchasedBalance: number;
+
+    // @DataMember
+    public includedUsed?: number;
+
+    // @DataMember
+    public purchasedUsed?: number;
+
+    // @DataMember
+    public atUtc: string;
+
+    public constructor(init?: Partial<AiWalletLineDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectAiWalletDto {
+    // @DataMember
+    public period: string;
+
+    // @DataMember
+    public includedCredits: number;
+
+    // @DataMember
+    public purchasedCredits: number;
+
+    // @DataMember
+    public consumedCredits: number;
+
+    // @DataMember
+    public remainingCredits: number;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public lines: AiWalletLineDto[] = [];
+
+    public constructor(init?: Partial<ProjectAiWalletDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class ProjectAiUsageDto {
     // @DataMember
     public period: string;
@@ -5867,6 +6120,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public models: AiUsageGroupDto[] = [];
+
+    // @DataMember
+    public wallet: ProjectAiWalletDto;
 
     public constructor(init?: Partial<ProjectAiUsageDto>) {
       (Object as any).assign(this, init);
@@ -6848,6 +7104,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public settings?: SchemaSettingsDto;
+
+    // @DataMember
+    public embed?: SchemaEmbedSettingsDto;
 
     // @DataMember
     public triggers?: TriggerDto[];
@@ -8565,6 +8824,35 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum AiTriggerType {
+    OnCreditsWarning = 'OnCreditsWarning',
+    OnCreditsExhausted = 'OnCreditsExhausted',
+    OnQuotaWarning = 'OnQuotaWarning',
+    OnQuotaExhausted = 'OnQuotaExhausted',
+  }
+
+  // @DataContract
+  export class AiTriggerProjectionList extends TriggerProjectionList {
+    // @DataMember
+    public type: AiTriggerType;
+
+    public constructor(init?: Partial<AiTriggerProjectionList>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiTriggerDto extends TriggerDto {
+    // @DataMember
+    public when: AiTriggerType;
+
+    public constructor(init?: Partial<AiTriggerDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class EmbeddingIntegrationDto extends IntegrationDto {
     public provider: EmbeddingProvider;
     public model: string;
@@ -9863,6 +10151,42 @@ export module CodeMashHub2 {
     public modules: AdminPortalModuleDto[] = [];
 
     public constructor(init?: Partial<AdminPortalStructureDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CreateAiCreditPackCheckoutResponse extends ResponseBase {
+    public result?: AiCreditPackCheckoutDto;
+
+    public constructor(init?: Partial<CreateAiCreditPackCheckoutResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetProjectAiPlansResponse extends ResponseBase {
+    public result?: ProjectAiPlansDto;
+
+    public constructor(init?: Partial<GetProjectAiPlansResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class UpdateProjectAiPlansResponse extends ResponseBase {
+    public planIds: string[] = [];
+
+    public constructor(init?: Partial<UpdateProjectAiPlansResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetProjectAiUserPlansResponse extends ResponseBase {
+    public result?: AiUserPlansDto;
+
+    public constructor(init?: Partial<GetProjectAiUserPlansResponse>) {
+      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -11637,6 +11961,24 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetAiTriggersResponse extends GetTriggersResponse {
+    public list?: PaginatedResponse<AiTriggerProjectionList>;
+
+    public constructor(init?: Partial<GetAiTriggersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetAiTriggerResponse extends GetTriggerResponse {
+    public trigger?: AiTriggerDto;
+
+    public constructor(init?: Partial<GetAiTriggerResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetEmbeddingIntegrationResponse extends ResponseBase {
     public item?: EmbeddingIntegrationDto;
 
@@ -12948,6 +13290,7 @@ export module CodeMashHub2 {
     public typegen_192_WebhookIntegrationDto?: WebhookIntegrationDto;
     public typegen_193_WebhookDestinationDto?: WebhookDestinationDto;
     public typegen_194_SchedulerTaskDto?: SchedulerTaskDto;
+    public typegen_249_EmailCampaignSchedulerTaskRequest?: EmailCampaignSchedulerTaskRequest;
     public typegen_195_MongoDbAggregateDto?: MongoDbAggregateDto;
     public typegen_196_MarketplaceIntegrationDto?: MarketplaceIntegrationDto;
     public typegen_197_MarketplaceFunctionDto?: MarketplaceFunctionDto;
@@ -13024,6 +13367,27 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EchoResponse();
+    }
+  }
+
+  // @Route("/{version}/public/projects/{ProjectId}/brand/{Kind}", "GET")
+  export class GetPublicProjectBrandAsset extends RequestBase implements IReturn<Blob> {
+    public projectId?: string;
+    public kind?: string;
+    public v?: string;
+
+    public constructor(init?: Partial<GetPublicProjectBrandAsset>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPublicProjectBrandAsset';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new Blob();
     }
   }
 
@@ -13813,6 +14177,58 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Sets whether the project's brand is returned by the public Admin Portal config */
+  // @Route("/{version}/account/projects/{projectId}/settings/brand/expose", "PATCH")
+  // @Api(Description="Sets whether the project's brand is returned by the public Admin Portal config")
+  export class UpdateProjectExposeBrand
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to return the brand in the public Admin Portal config, false to hide it. */
+    // @ApiMember(Description="True to return the brand in the public Admin Portal config, false to hide it.")
+    public exposed: boolean;
+
+    public constructor(init?: Partial<UpdateProjectExposeBrand>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectExposeBrand';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config */
+  // @Route("/{version}/account/projects/{projectId}/settings/auth/expose", "PATCH")
+  // @Api(Description="Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config")
+  export class UpdateProjectExposeAuth
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to return sign-in methods and password policy in the public Admin Portal config, false to hide them. */
+    // @ApiMember(Description="True to return sign-in methods and password policy in the public Admin Portal config, false to hide them.")
+    public exposed: boolean;
+
+    public constructor(init?: Partial<UpdateProjectExposeAuth>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectExposeAuth';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Assigns the project's Admin Portal service user */
   // @Route("/{version}/account/projects/{projectId}/settings/admin-portal/service-user", "PUT")
   // @Api(Description="Assigns the project's Admin Portal service user")
@@ -13884,6 +14300,136 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Creates a Stripe Checkout session for one AI credit pack of the project and returns its URL */
+  // @Route("/{version}/account/projects/{projectId}/ai/credits/checkout", "POST")
+  // @Api(Description="Creates a Stripe Checkout session for one AI credit pack of the project and returns its URL")
+  export class CreateAiCreditPackCheckoutRequest
+    extends CodeMashRequestBase
+    implements IReturn<CreateAiCreditPackCheckoutResponse>
+  {
+    /** @description The pack to buy: pack-10 (€10 = 1 000 credits), pack-50 (€50 = 5 000), pack-200 (€200 = 20 000). Net prices; 1 credit = €0.01. */
+    // @ApiMember(Description="The pack to buy: pack-10 (€10 = 1 000 credits), pack-50 (€50 = 5 000), pack-200 (€200 = 20 000). Net prices; 1 credit = €0.01.", IsRequired=true)
+    public pack: string;
+
+    /** @description Dashboard path the browser returns to after Stripe (aiCredits=paid or aiCredits=cancelled is added). Default: the dashboard root. */
+    // @ApiMember(Description="Dashboard path the browser returns to after Stripe (aiCredits=paid or aiCredits=cancelled is added). Default: the dashboard root.")
+    public returnUrl?: string;
+
+    public constructor(init?: Partial<CreateAiCreditPackCheckoutRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateAiCreditPackCheckoutRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CreateAiCreditPackCheckoutResponse();
+    }
+  }
+
+  /** @description Reads the project's end-user AI plans, the role → plan map and the default plan */
+  // @Route("/{version}/account/projects/{projectId}/ai/plans", "GET")
+  // @Api(Description="Reads the project's end-user AI plans, the role → plan map and the default plan")
+  export class GetProjectAiPlans
+    extends CodeMashRequestBase
+    implements IReturn<GetProjectAiPlansResponse>
+  {
+    public constructor(init?: Partial<GetProjectAiPlans>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetProjectAiPlans';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetProjectAiPlansResponse();
+    }
+  }
+
+  /** @description Saves the project's end-user AI plans (the whole list) */
+  // @Route("/{version}/account/projects/{projectId}/ai/plans", "PUT")
+  // @Api(Description="Saves the project's end-user AI plans (the whole list)")
+  export class UpdateProjectAiPlans
+    extends CodeMashRequestBase
+    implements IReturn<UpdateProjectAiPlansResponse>
+  {
+    /** @description The complete list of plans (full replace). */
+    // @ApiMember(Description="The complete list of plans (full replace).")
+    public plans?: AiPlanDto[];
+
+    public constructor(init?: Partial<UpdateProjectAiPlans>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectAiPlans';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new UpdateProjectAiPlansResponse();
+    }
+  }
+
+  /** @description Saves which end-user AI plan each project role gets, and the default plan */
+  // @Route("/{version}/account/projects/{projectId}/ai/plans/assignments", "PUT")
+  // @Api(Description="Saves which end-user AI plan each project role gets, and the default plan")
+  export class UpdateProjectAiPlanAssignments
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Role → plan rows, in order; the first row whose role the user has wins. */
+    // @ApiMember(Description="Role → plan rows, in order; the first row whose role the user has wins.")
+    public roles?: AiPlanRoleAssignmentDto[];
+
+    /** @description Plan id (aip_…) of users with no per-user plan and no mapped role. Empty = no default. */
+    // @ApiMember(Description="Plan id (aip_…) of users with no per-user plan and no mapped role. Empty = no default.")
+    public defaultPlanId?: string;
+
+    public constructor(init?: Partial<UpdateProjectAiPlanAssignments>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectAiPlanAssignments';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Lists the users that have their own end-user AI plan */
+  // @Route("/{version}/account/projects/{projectId}/ai/plans/users", "GET")
+  // @Api(Description="Lists the users that have their own end-user AI plan")
+  export class GetProjectAiUserPlans
+    extends CodeMashRequestBase
+    implements IReturn<GetProjectAiUserPlansResponse>
+  {
+    public constructor(init?: Partial<GetProjectAiUserPlans>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetProjectAiUserPlans';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetProjectAiUserPlansResponse();
+    }
+  }
+
   /** @description Reads the project's AI chat settings for end users: on/off, default LLM and assistants */
   // @Route("/{version}/account/projects/{projectId}/ai/settings", "GET")
   // @Api(Description="Reads the project's AI chat settings for end users: on/off, default LLM and assistants")
@@ -13931,6 +14477,32 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'UpdateProjectAiSettings';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Saves the project's AI knowledge switches: embed uploaded files */
+  // @Route("/{version}/account/projects/{projectId}/ai/knowledge", "PUT")
+  // @Api(Description="Saves the project's AI knowledge switches: embed uploaded files")
+  export class UpdateProjectAiKnowledge
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description True to put uploaded text files into the project's AI knowledge, false to stop. */
+    // @ApiMember(Description="True to put uploaded text files into the project's AI knowledge, false to stop.")
+    public embedFiles: boolean;
+
+    public constructor(init?: Partial<UpdateProjectAiKnowledge>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateProjectAiKnowledge';
     }
     public getMethod() {
       return 'PUT';
@@ -14014,9 +14586,9 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Reads the project's AI usage this month: totals, per assistant, top users and per model */
+  /** @description Reads the project's AI usage this month: totals, per assistant, top users, per model, and the credit wallet */
   // @Route("/{version}/account/projects/{projectId}/ai/usage", "GET")
-  // @Api(Description="Reads the project's AI usage this month: totals, per assistant, top users and per model")
+  // @Api(Description="Reads the project's AI usage this month: totals, per assistant, top users, per model, and the credit wallet")
   export class GetProjectAiUsage
     extends CodeMashRequestBase
     implements IReturn<GetProjectAiUsageResponse>
@@ -14327,58 +14899,6 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'UpdateProjectExposeLegal';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Sets whether the project's brand is returned by the public Admin Portal config */
-  // @Route("/{version}/account/projects/{projectId}/settings/brand/expose", "PATCH")
-  // @Api(Description="Sets whether the project's brand is returned by the public Admin Portal config")
-  export class UpdateProjectExposeBrand
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description True to return the brand in the public Admin Portal config, false to hide it. */
-    // @ApiMember(Description="True to return the brand in the public Admin Portal config, false to hide it.")
-    public exposed: boolean;
-
-    public constructor(init?: Partial<UpdateProjectExposeBrand>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UpdateProjectExposeBrand';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config */
-  // @Route("/{version}/account/projects/{projectId}/settings/auth/expose", "PATCH")
-  // @Api(Description="Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config")
-  export class UpdateProjectExposeAuth
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description True to return sign-in methods and password policy in the public Admin Portal config, false to hide them. */
-    // @ApiMember(Description="True to return sign-in methods and password policy in the public Admin Portal config, false to hide them.")
-    public exposed: boolean;
-
-    public constructor(init?: Partial<UpdateProjectExposeAuth>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UpdateProjectExposeAuth';
     }
     public getMethod() {
       return 'PATCH';
@@ -17357,6 +17877,39 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Saves a database schema's embed setting: which records go into the project's AI knowledge */
+  // @Route("/{version}/database/schemas/{Id}/embed", "PUT")
+  // @Api(Description="Saves a database schema's embed setting: which records go into the project's AI knowledge")
+  // @DataContract
+  export class UpdateDatabaseSchemaEmbedRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Schema id whose embed setting to save, from get_database_schemas. */
+    // @DataMember
+    // @ApiMember(Description="Schema id whose embed setting to save, from get_database_schemas.", IsRequired=true)
+    public id: string;
+
+    /** @description The complete embed setting (full replace): enabled, fields, embeddingIntegrationId (empty = the project's default), perUser. */
+    // @DataMember
+    // @ApiMember(Description="The complete embed setting (full replace): enabled, fields, embeddingIntegrationId (empty = the project's default), perUser.", IsRequired=true)
+    public embed: SchemaEmbedSettingsDto;
+
+    public constructor(init?: Partial<UpdateDatabaseSchemaEmbedRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateDatabaseSchemaEmbedRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Updates database schema records-list display settings */
   // @Route("/{version}/database/schemas/{Id}/list-settings", "PUT")
   // @Api(Description="Updates database schema records-list display settings")
@@ -20155,9 +20708,9 @@ export module CodeMashHub2 {
     // @DataMember
     public databaseIntegrationId?: string;
 
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
     // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
     public sendNow?: boolean;
 
     public constructor(init?: Partial<CreateEmailCampaignRequest>) {
@@ -21143,9 +21696,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="For deliveryType 'PhoneNumbers'. JSON object: {\"recipientsSourceType\":\"PhoneNumbers\",\"phoneNumbers\":[\"+37060000000\"],\"campaignTime\":<unix seconds UTC>}. Numbers in international format.")
     public phoneNumbers?: SmsToPhoneNumbersDeliverySettingsDto;
 
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
     // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
     public sendNow?: boolean;
 
     public constructor(init?: Partial<CreateSmsCampaignRequest>) {
@@ -22337,9 +22890,9 @@ export module CodeMashHub2 {
     // @DataMember
     public databaseIntegrationId?: string;
 
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now. */
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
     // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-016. Set it only when the user explicitly asked to send now.")
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
     public sendNow?: boolean;
 
     public constructor(init?: Partial<CreatePushCampaignRequest>) {
@@ -24133,6 +24686,124 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Save a trigger on an AI project event */
+  // @Route("/{version}/ai/triggers", "POST")
+  // @Api(Description="Save a trigger on an AI project event")
+  // @DataContract
+  export class SaveAiProjectTrigger extends SaveTrigger implements IReturn<IdResponse> {
+    public constructor(init?: Partial<SaveAiProjectTrigger>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SaveAiProjectTrigger';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Gets the triggers on AI project events */
+  // @Route("/{version}/ai/triggers", "GET")
+  // @Api(Description="Gets the triggers on AI project events")
+  export class GetAiProjectTriggers extends GetTriggers implements IReturn<GetAiTriggersResponse> {
+    public constructor(init?: Partial<GetAiProjectTriggers>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAiProjectTriggers';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAiTriggersResponse();
+    }
+  }
+
+  /** @description Gets one trigger on an AI project event */
+  // @Route("/{version}/ai/triggers/{id}", "GET")
+  // @Api(Description="Gets one trigger on an AI project event")
+  export class GetAiProjectTrigger extends GetTrigger implements IReturn<GetAiTriggerResponse> {
+    public constructor(init?: Partial<GetAiProjectTrigger>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAiProjectTrigger';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAiTriggerResponse();
+    }
+  }
+
+  /** @description Enable a trigger on an AI project event */
+  // @Route("/{version}/ai/triggers/{triggerId}/enable", "PATCH")
+  // @Api(Description="Enable a trigger on an AI project event")
+  // @DataContract
+  export class EnableAiProjectTrigger extends EnableTrigger implements IReturn<EmptyResponse> {
+    public constructor(init?: Partial<EnableAiProjectTrigger>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'EnableAiProjectTrigger';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Disable a trigger on an AI project event */
+  // @Route("/{version}/ai/triggers/{triggerId}/disable", "PATCH")
+  // @Api(Description="Disable a trigger on an AI project event")
+  // @DataContract
+  export class DisableAiProjectTrigger extends DisableTrigger implements IReturn<EmptyResponse> {
+    public constructor(init?: Partial<DisableAiProjectTrigger>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DisableAiProjectTrigger';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Delete a trigger on an AI project event */
+  // @Route("/{version}/ai/triggers/{triggerId}", "DELETE")
+  // @Api(Description="Delete a trigger on an AI project event")
+  // @DataContract
+  export class DeleteAiProjectTrigger extends DeleteTrigger implements IReturn<EmptyResponse> {
+    public constructor(init?: Partial<DeleteAiProjectTrigger>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteAiProjectTrigger';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description OAuth protected-resource metadata (RFC 9728) for the Hub MCP endpoint. */
   // @Route("/.well-known/oauth-protected-resource", "GET")
   // @Route("/.well-known/oauth-protected-resource/{Path*}", "GET")
@@ -24735,6 +25406,32 @@ export module CodeMashHub2 {
     }
   }
 
+  export class IngestSourceMessage {
+    public projectId: string;
+    public env?: string;
+    public ownerAuthId?: string;
+    public sourceKind: string;
+    public sourceId: string;
+    public title?: string;
+    public contentType?: string;
+    public content?: string;
+    public embeddingIntegrationId?: string;
+    public removed: boolean;
+    public metadata?: { [index: string]: string };
+    public ownerRequired: boolean;
+
+    public constructor(init?: Partial<IngestSourceMessage>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'IngestSourceMessage';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
+  }
+
   /** @description Gets the project's webhook integration */
   // @Route("/{version}/webhooks/integration", "GET")
   // @Api(Description="Gets the project's webhook integration")
@@ -24955,7 +25652,7 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/scheduler/disable", "GET")
+  // @Route("/{version}/scheduler/disable", "PUT")
   export class DisableScheduler extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableScheduler>) {
       super(init);
@@ -24965,14 +25662,14 @@ export module CodeMashHub2 {
       return 'DisableScheduler';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/scheduler/enable", "GET")
+  // @Route("/{version}/scheduler/enable", "PUT")
   export class EnableScheduler extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableScheduler>) {
       super(init);
@@ -24982,7 +25679,7 @@ export module CodeMashHub2 {
       return 'EnableScheduler';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -25163,6 +25860,37 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new ResolveResourcesResponse();
+    }
+  }
+
+  /** @description Sets or removes one user's own end-user AI plan */
+  // @Route("/{version}/membership/users/{userId}/ai-plan", "PUT")
+  // @Api(Description="Sets or removes one user's own end-user AI plan")
+  export class SetUserAiPlan extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    /** @description The human user id (ct_…). */
+    // @ApiMember(Description="The human user id (ct_…).", IsRequired=true)
+    public userId: string;
+
+    /** @description The plan id (aip_…). Empty removes the user's own plan. */
+    // @ApiMember(Description="The plan id (aip_…). Empty removes the user's own plan.")
+    public planId?: string;
+
+    /** @description Database integration id. Optional — defaults to the request environment's default integration. */
+    // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<SetUserAiPlan>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetUserAiPlan';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
     }
   }
 
