@@ -91,6 +91,8 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`revokeAccountPasskey`](#revokeaccountpasskey)                               | `POST`   | `/{version}/account/userauth/passkeys/{CredentialId}/revoke`                 | `project` |
 | [`accountPasskeyEnrollmentOptions`](#accountpasskeyenrollmentoptions)         | `POST`   | `/{version}/account/userauth/passkey/enrollment-options`                     | `project` |
 | [`accountVerifyPasskeyEnrollment`](#accountverifypasskeyenrollment)           | `POST`   | `/{version}/account/userauth/passkey/verify-enrollment`                      | `project` |
+| [`getMyAccountUserProfile`](#getmyaccountuserprofile)                         | `GET`    | `/{version}/account/me`                                                      | `project` |
+| [`updateMyAccountUserPhone`](#updatemyaccountuserphone)                       | `PUT`    | `/{version}/account/me/phone`                                                | `project` |
 | [`getLicenseDomainDnsStatus`](#getlicensedomaindnsstatus)                     | `GET`    | `/{version}/account/licensing/dns-status`                                    | `project` |
 | [`getLicenses`](#getlicenses)                                                 | `GET`    | `/{version}/account/licenses`                                                | `project` |
 | [`getInstallationLicenseStatus`](#getinstallationlicensestatus)               | `GET`    | `/{version}/account/licensing/status`                                        | `project` |
@@ -1909,6 +1911,50 @@ const result = await norbix.hub.account.accountVerifyPasskeyEnrollment({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.AccountPasskeyEnrollmentResponse
+```
+
+[↑ Top](#endpoints)
+
+### getMyAccountUserProfile
+
+`GET` `/{version}/account/me`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetMyAccountUserProfile`
+**Response**: `CodeMashHub2.GetMyAccountUserProfileResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getMyAccountUserProfile({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetMyAccountUserProfileResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateMyAccountUserPhone
+
+`PUT` `/{version}/account/me/phone`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateMyAccountUserPhone`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateMyAccountUserPhone({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)

@@ -8,7 +8,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (111 endpoints).
+ * Tests for hub.account (113 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -18,7 +18,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 111 method(s)', () => {
+  it('module exposes 113 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -111,6 +111,8 @@ describe('hub.account', () => {
     expect(typeof ns['revokeAccountPasskey']).toBe('function');
     expect(typeof ns['accountPasskeyEnrollmentOptions']).toBe('function');
     expect(typeof ns['accountVerifyPasskeyEnrollment']).toBe('function');
+    expect(typeof ns['getMyAccountUserProfile']).toBe('function');
+    expect(typeof ns['updateMyAccountUserPhone']).toBe('function');
     expect(typeof ns['getLicenseDomainDnsStatus']).toBe('function');
     expect(typeof ns['getLicenses']).toBe('function');
     expect(typeof ns['getInstallationLicenseStatus']).toBe('function');
@@ -2066,6 +2068,52 @@ describe('hub.account', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('getMyAccountUserProfile: GET /{version}/account/me', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/me',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getMyAccountUserProfile']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+  });
+
+  it('updateMyAccountUserPhone: PUT /{version}/account/me/phone', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/me/phone',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['updateMyAccountUserPhone']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
