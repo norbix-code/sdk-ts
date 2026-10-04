@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-04 14:16:22
+Date: 2026-10-04 18:34:30
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1729,9 +1729,6 @@ export module CodeMashHub2 {
   // @DataContract
   export class SmsMessageContentDto implements IHasRazorTemplateCode {
     // @DataMember
-    public subject: string;
-
-    // @DataMember
     public body: string;
 
     public constructor(init?: Partial<SmsMessageContentDto>) {
@@ -2374,6 +2371,17 @@ export module CodeMashHub2 {
     public recipients: string[] = [];
 
     public constructor(init?: Partial<SmsToUsersDeliverySettingsDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsToAccountUsersDeliverySettingsDto extends SmsCampaignDeliverySettingsDto {
+    // @DataMember
+    public recipients: string[] = [];
+
+    public constructor(init?: Partial<SmsToAccountUsersDeliverySettingsDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -4395,26 +4403,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class CursorArgs implements ICursorArgs {
-    public field: string;
-    public order: number;
-
-    public constructor(init?: Partial<CursorArgs>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PagingArgs {
-    public cursorArgs?: CursorArgs;
-    public pageSize?: number;
-    public startingAfter?: string;
-    public endingBefore?: string;
-
-    public constructor(init?: Partial<PagingArgs>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export class AiScopeDto {
     // @DataMember
@@ -4511,6 +4499,26 @@ export module CodeMashHub2 {
     public logoutUrl?: string;
 
     public constructor(init?: Partial<CredentialsSettingsModeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CursorArgs implements ICursorArgs {
+    public field: string;
+    public order: number;
+
+    public constructor(init?: Partial<CursorArgs>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PagingArgs {
+    public cursorArgs?: CursorArgs;
+    public pageSize?: number;
+    public startingAfter?: string;
+    public endingBefore?: string;
+
+    public constructor(init?: Partial<PagingArgs>) {
       (Object as any).assign(this, init);
     }
   }
@@ -8015,9 +8023,6 @@ export module CodeMashHub2 {
     public refNotificationId?: string;
 
     // @DataMember
-    public subject?: string;
-
-    // @DataMember
     public body?: string;
 
     // @DataMember
@@ -8036,6 +8041,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class EmailCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
+    // @DataMember
+    public subject?: string;
+
     // @DataMember
     public recipients: EmailRecipientsDto;
 
@@ -8101,6 +8109,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public template: SmsTemplateDto;
+
+    // @DataMember
+    public createdById?: string;
 
     public constructor(init?: Partial<SmsCampaignDto>) {
       super(init);
@@ -8449,6 +8460,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class PushCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
+    // @DataMember
+    public subject?: string;
+
     // @DataMember
     public recipients: PushRecipientsDto;
 
@@ -10412,6 +10426,15 @@ export module CodeMashHub2 {
     public recoveryCodes?: string[];
 
     public constructor(init?: Partial<AccountPasskeyEnrollmentResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetMyAccountUserProfileResponse extends ResponseBase {
+    public item?: AuthDto;
+
+    public constructor(init?: Partial<GetMyAccountUserProfileResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13305,6 +13328,7 @@ export module CodeMashHub2 {
     public typegen_98_PushToDevicesDeliverySettingsDto?: PushToDevicesDeliverySettingsDto;
     public typegen_99_SmsToAllUsersDeliverySettingsDto?: SmsToAllUsersDeliverySettingsDto;
     public typegen_100_SmsToUsersDeliverySettingsDto?: SmsToUsersDeliverySettingsDto;
+    public typegen_249_SmsToAccountUsersDeliverySettingsDto?: SmsToAccountUsersDeliverySettingsDto;
     public typegen_101_SmsToCollectionRecordsDeliverySettingsDto?: SmsToCollectionRecordsDeliverySettingsDto;
     public typegen_102_SmsToPhoneNumbersDeliverySettingsDto?: SmsToPhoneNumbersDeliverySettingsDto;
     public typegen_103_OpenAiLlmIntegrationDto?: OpenAiLlmIntegrationDto;
@@ -15349,7 +15373,17 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional filter: only members having one of these role names.")
     public roleNames?: string[];
 
-    public pagingArgs?: PagingArgs;
+    /** @description Cursor token — fetch the page AFTER this member (the list's startingAfter). */
+    // @ApiMember(DataType="string", Description="Cursor token — fetch the page AFTER this member (the list's startingAfter).", Name="startingAfter", ParameterType="query")
+    public startingAfter?: string;
+
+    /** @description Cursor token — fetch the page BEFORE this member. */
+    // @ApiMember(DataType="string", Description="Cursor token — fetch the page BEFORE this member.", Name="endingBefore", ParameterType="query")
+    public endingBefore?: string;
+
+    /** @description Members per page (default 20). */
+    // @ApiMember(DataType="integer", Description="Members per page (default 20).", Format="int32", Name="pageSize", ParameterType="query")
+    public pageSize?: number;
 
     public constructor(init?: Partial<GetAccountCollaborators>) {
       super(init);
@@ -15822,6 +15856,49 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new AccountPasskeyEnrollmentResponse();
+    }
+  }
+
+  // @Route("/{version}/account/me", "GET")
+  export class GetMyAccountUserProfile
+    extends RequestBase
+    implements IReturn<GetMyAccountUserProfileResponse>
+  {
+    public constructor(init?: Partial<GetMyAccountUserProfile>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMyAccountUserProfile';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMyAccountUserProfileResponse();
+    }
+  }
+
+  // @Route("/{version}/account/me/phone", "PUT")
+  // @DataContract
+  export class UpdateMyAccountUserPhone extends RequestBase implements IReturn<EmptyResponse> {
+    /** @description Your phone number in E.164 format (+ and the country code, then digits, e.g. +37060000000). Empty clears it. Used by "Account users" SMS campaigns. */
+    // @DataMember
+    // @ApiMember(Description="Your phone number in E.164 format (+ and the country code, then digits, e.g. +37060000000). Empty clears it. Used by \"Account users\" SMS campaigns.")
+    public phone?: string;
+
+    public constructor(init?: Partial<UpdateMyAccountUserPhone>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateMyAccountUserPhone';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
     }
   }
 
@@ -21859,6 +21936,11 @@ export module CodeMashHub2 {
     // @ApiMember(Description="For deliveryType 'SpecifiedUsers'. JSON object: {\"recipientsSourceType\":\"SpecifiedUsers\",\"recipients\":[<member ids>],\"campaignTime\":<unix seconds UTC>}.")
     public specifiedUsers?: SmsToUsersDeliverySettingsDto;
 
+    /** @description For deliveryType 'AccountUsers'. JSON object: {"recipientsSourceType":"AccountUsers","recipients":[<account owner / team member ids>],"campaignTime":<unix seconds UTC>}. Members without a phone number are skipped. */
+    // @DataMember
+    // @ApiMember(Description="For deliveryType 'AccountUsers'. JSON object: {\"recipientsSourceType\":\"AccountUsers\",\"recipients\":[<account owner / team member ids>],\"campaignTime\":<unix seconds UTC>}. Members without a phone number are skipped.")
+    public accountUsers?: SmsToAccountUsersDeliverySettingsDto;
+
     // @DataMember
     public collection?: SmsToCollectionRecordsDeliverySettingsDto;
 
@@ -21954,6 +22036,10 @@ export module CodeMashHub2 {
     /** @description Optional. Omit to use the project default database integration (resolved per environment). */
     // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
     public databaseIntegrationId?: string;
+
+    /** @description Optional: return only the campaign with this id. */
+    // @ApiMember(Description="Optional: return only the campaign with this id.")
+    public campaignId?: string;
 
     /** @description Optional: only campaigns built on this SMS template id. */
     // @ApiMember(Description="Optional: only campaigns built on this SMS template id.")
