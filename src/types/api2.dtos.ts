@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-02 13:21:52
+Date: 2026-10-04 14:16:23
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -404,6 +404,115 @@ export module CodeMashApi2 {
     }
   }
 
+  export class EndUserChatAttachment {
+    public id: string;
+    public sessionId: string;
+    public fileName: string;
+    public contentType: string;
+    public kind: string;
+    public size: number;
+    public summary?: string;
+    public createdAtUtc: string;
+
+    public constructor(init?: Partial<EndUserChatAttachment>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserChatMemoryNote {
+    public id: string;
+    public sessionId: string;
+    public kind: string;
+    public text: string;
+    public createdAtUtc: string;
+
+    public constructor(init?: Partial<EndUserChatMemoryNote>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserChatAssistant {
+    public id: string;
+    public name: string;
+    public welcomeMessage?: string;
+    public isDefault: boolean;
+    public memoryEnabled: boolean;
+
+    public constructor(init?: Partial<EndUserChatAssistant>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserChatPlan {
+    public id: string;
+    public name: string;
+    public quotaUnit: string;
+    public monthlyQuota: number;
+    public used: number;
+    public remaining: number;
+    public attachments: boolean;
+    public rag: boolean;
+    public memory: boolean;
+
+    public constructor(init?: Partial<EndUserChatPlan>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserChatSession {
+    public id: string;
+    public assistantId?: string;
+    public title?: string;
+    public isPinned: boolean;
+    public isArchived: boolean;
+    public lastSeq: number;
+    public createdAtUtc: string;
+    public updatedAtUtc: string;
+
+    public constructor(init?: Partial<EndUserChatSession>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AiChatEntryWireDto {
+    public kind: string;
+    public id: string;
+    public seq: number;
+    public atUtc: string;
+    public refEntryId?: string;
+    public workItemId?: string;
+    public feedback?: string;
+    public feedbackAtUtc?: string;
+    public feedbackByUserAuthId?: string;
+
+    public constructor(init?: Partial<AiChatEntryWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserAiToolParameter {
+    public name: string;
+    public type: string;
+    public required: boolean;
+    public description?: string;
+
+    public constructor(init?: Partial<EndUserAiToolParameter>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserAiTool {
+    public name: string;
+    public description: string;
+    public toolsets: string[] = [];
+    public requiresConfirmation: boolean;
+    public parameters: EndUserAiToolParameter[] = [];
+
+    public constructor(init?: Partial<EndUserAiTool>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export enum AuthType {
     Service = 'Service',
     Email = 'Email',
@@ -672,11 +781,30 @@ export module CodeMashApi2 {
     }
   }
 
+  export class SchemaEmbedSettingsDto {
+    // @DataMember
+    public enabled: boolean;
+
+    // @DataMember
+    public fields: string[] = [];
+
+    // @DataMember
+    public embeddingIntegrationId?: string;
+
+    // @DataMember
+    public perUser: boolean;
+
+    public constructor(init?: Partial<SchemaEmbedSettingsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export enum TriggerType {
     Membership = 'Membership',
     Schema = 'Schema',
     Files = 'Files',
     Payments = 'Payments',
+    Ai = 'Ai',
   }
 
   export enum TriggerActionType {
@@ -760,6 +888,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public settings?: SchemaSettingsDto;
+
+    // @DataMember
+    public embed?: SchemaEmbedSettingsDto;
 
     // @DataMember
     public triggers?: TriggerDto[];
@@ -901,99 +1032,6 @@ export module CodeMashApi2 {
     public errors?: IReadOnlyList<string>;
 
     public constructor(init?: Partial<IntegrationTestResultItemDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserChatAttachment {
-    public id: string;
-    public sessionId: string;
-    public fileName: string;
-    public contentType: string;
-    public kind: string;
-    public size: number;
-    public summary?: string;
-    public createdAtUtc: string;
-
-    public constructor(init?: Partial<EndUserChatAttachment>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserChatMemoryNote {
-    public id: string;
-    public sessionId: string;
-    public kind: string;
-    public text: string;
-    public createdAtUtc: string;
-
-    public constructor(init?: Partial<EndUserChatMemoryNote>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserChatAssistant {
-    public id: string;
-    public name: string;
-    public welcomeMessage?: string;
-    public isDefault: boolean;
-    public memoryEnabled: boolean;
-
-    public constructor(init?: Partial<EndUserChatAssistant>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserChatSession {
-    public id: string;
-    public assistantId?: string;
-    public title?: string;
-    public isPinned: boolean;
-    public isArchived: boolean;
-    public lastSeq: number;
-    public createdAtUtc: string;
-    public updatedAtUtc: string;
-
-    public constructor(init?: Partial<EndUserChatSession>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class AiChatEntryWireDto {
-    public kind: string;
-    public id: string;
-    public seq: number;
-    public atUtc: string;
-    public refEntryId?: string;
-    public workItemId?: string;
-    public feedback?: string;
-    public feedbackAtUtc?: string;
-    public feedbackByUserAuthId?: string;
-
-    public constructor(init?: Partial<AiChatEntryWireDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserAiToolParameter {
-    public name: string;
-    public type: string;
-    public required: boolean;
-    public description?: string;
-
-    public constructor(init?: Partial<EndUserAiToolParameter>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EndUserAiTool {
-    public name: string;
-    public description: string;
-    public toolsets: string[] = [];
-    public requiresConfirmation: boolean;
-    public parameters: EndUserAiToolParameter[] = [];
-
-    public constructor(init?: Partial<EndUserAiTool>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1273,13 +1311,6 @@ export module CodeMashApi2 {
     }
   }
 
-  export class EmptyResponse extends ResponseBase {
-    public constructor(init?: Partial<EmptyResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export class IdResponse extends ResponseBase {
     // @DataMember
@@ -1289,6 +1320,104 @@ export module CodeMashApi2 {
     public status?: string;
 
     public constructor(init?: Partial<IdResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ListEndUserChatAttachmentsResponse extends ResponseBase {
+    public attachments: EndUserChatAttachment[] = [];
+
+    public constructor(init?: Partial<ListEndUserChatAttachmentsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EmptyResponse extends ResponseBase {
+    public constructor(init?: Partial<EmptyResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ListEndUserChatMemoryResponse extends ResponseBase {
+    public notes: EndUserChatMemoryNote[] = [];
+
+    public constructor(init?: Partial<ListEndUserChatMemoryResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEndUserChatAvailabilityResponse extends ResponseBase {
+    public enabled: boolean;
+    public available: boolean;
+    public reason?: string;
+    public defaultAssistantId?: string;
+    public assistants: EndUserChatAssistant[] = [];
+    public plan?: EndUserChatPlan;
+
+    public constructor(init?: Partial<GetEndUserChatAvailabilityResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ListEndUserChatSessionsResponse extends ResponseBase {
+    public sessions: EndUserChatSession[] = [];
+
+    public constructor(init?: Partial<ListEndUserChatSessionsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEndUserChatSessionResponse extends ResponseBase {
+    public session?: EndUserChatSession;
+
+    public constructor(init?: Partial<GetEndUserChatSessionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEndUserChatEntriesResponse extends ResponseBase {
+    public sessionId?: string;
+    public entries: AiChatEntryWireDto[] = [];
+    public lastSeq: number;
+    public hasMore: boolean;
+
+    public constructor(init?: Partial<GetEndUserChatEntriesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StartEndUserChatTurnResponse extends ResponseBase {
+    public turnId?: string;
+    public sessionId?: string;
+    public channel?: string;
+
+    public constructor(init?: Partial<StartEndUserChatTurnResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEndUserAiToolsResponse extends ResponseBase {
+    public tools?: EndUserAiTool[];
+
+    public constructor(init?: Partial<GetEndUserAiToolsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class InvokeEndUserAiToolResponse extends ResponseBase {
+    public result?: string;
+
+    public constructor(init?: Partial<InvokeEndUserAiToolResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -1548,96 +1677,6 @@ export module CodeMashApi2 {
     }
   }
 
-  export class ListEndUserChatAttachmentsResponse extends ResponseBase {
-    public attachments: EndUserChatAttachment[] = [];
-
-    public constructor(init?: Partial<ListEndUserChatAttachmentsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ListEndUserChatMemoryResponse extends ResponseBase {
-    public notes: EndUserChatMemoryNote[] = [];
-
-    public constructor(init?: Partial<ListEndUserChatMemoryResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEndUserChatAvailabilityResponse extends ResponseBase {
-    public enabled: boolean;
-    public available: boolean;
-    public reason?: string;
-    public defaultAssistantId?: string;
-    public assistants: EndUserChatAssistant[] = [];
-
-    public constructor(init?: Partial<GetEndUserChatAvailabilityResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ListEndUserChatSessionsResponse extends ResponseBase {
-    public sessions: EndUserChatSession[] = [];
-
-    public constructor(init?: Partial<ListEndUserChatSessionsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEndUserChatSessionResponse extends ResponseBase {
-    public session?: EndUserChatSession;
-
-    public constructor(init?: Partial<GetEndUserChatSessionResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEndUserChatEntriesResponse extends ResponseBase {
-    public sessionId?: string;
-    public entries: AiChatEntryWireDto[] = [];
-    public lastSeq: number;
-    public hasMore: boolean;
-
-    public constructor(init?: Partial<GetEndUserChatEntriesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class StartEndUserChatTurnResponse extends ResponseBase {
-    public turnId?: string;
-    public sessionId?: string;
-    public channel?: string;
-
-    public constructor(init?: Partial<StartEndUserChatTurnResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEndUserAiToolsResponse extends ResponseBase {
-    public tools?: EndUserAiTool[];
-
-    public constructor(init?: Partial<GetEndUserAiToolsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class InvokeEndUserAiToolResponse extends ResponseBase {
-    public result?: string;
-
-    public constructor(init?: Partial<InvokeEndUserAiToolResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export class AuthenticateResponse implements IHasSessionId, IHasBearerToken {
     // @DataMember(Order=1)
@@ -1720,6 +1759,27 @@ export module CodeMashApi2 {
     }
   }
 
+  // @Route("/{version}/public/projects/{ProjectId}/brand/{Kind}", "GET")
+  export class GetPublicProjectBrandAsset extends RequestBase implements IReturn<Blob> {
+    public projectId?: string;
+    public kind?: string;
+    public v?: string;
+
+    public constructor(init?: Partial<GetPublicProjectBrandAsset>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPublicProjectBrandAsset';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new Blob();
+    }
+  }
+
   // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
   export class GetPublicProjectConfig
     extends RequestBase
@@ -1762,6 +1822,449 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new PublicLegalDocumentDto();
+    }
+  }
+
+  /** @description Adds a file to one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/attachments", "POST")
+  // @Api(Description="Adds a file to one of the caller's own AI chats.")
+  export class UploadEndUserChatAttachmentRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    public sessionId: string;
+    public fileName: string;
+    public contentType: string;
+    public base64Content: string;
+
+    public constructor(init?: Partial<UploadEndUserChatAttachmentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UploadEndUserChatAttachmentRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Lists the files in one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/attachments", "GET")
+  // @Api(Description="Lists the files in one of the caller's own AI chats.")
+  export class ListEndUserChatAttachmentsRequest
+    extends CodeMashRequestBase
+    implements IReturn<ListEndUserChatAttachmentsResponse>
+  {
+    public sessionId: string;
+
+    public constructor(init?: Partial<ListEndUserChatAttachmentsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ListEndUserChatAttachmentsRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new ListEndUserChatAttachmentsResponse();
+    }
+  }
+
+  /** @description Removes a file from one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/attachments/{AttachmentId}", "DELETE")
+  // @Api(Description="Removes a file from one of the caller's own AI chats.")
+  export class DeleteEndUserChatAttachmentRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public attachmentId: string;
+
+    public constructor(init?: Partial<DeleteEndUserChatAttachmentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteEndUserChatAttachmentRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Likes, dislikes or clears one message of the caller's own AI chat. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/entries/{EntryId}/feedback", "PUT")
+  // @Api(Description="Likes, dislikes or clears one message of the caller's own AI chat.")
+  export class SetEndUserChatEntryFeedbackRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public sessionId: string;
+    public entryId: string;
+    public feedback?: string;
+
+    public constructor(init?: Partial<SetEndUserChatEntryFeedbackRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetEndUserChatEntryFeedbackRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Lists what the AI chat remembers about the caller. */
+  // @Route("/{version}/ai/chat/memory", "GET")
+  // @Api(Description="Lists what the AI chat remembers about the caller.")
+  export class ListEndUserChatMemoryRequest
+    extends CodeMashRequestBase
+    implements IReturn<ListEndUserChatMemoryResponse>
+  {
+    public take?: number;
+
+    public constructor(init?: Partial<ListEndUserChatMemoryRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ListEndUserChatMemoryRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new ListEndUserChatMemoryResponse();
+    }
+  }
+
+  /** @description Forgets one thing the AI chat remembers about the caller. */
+  // @Route("/{version}/ai/chat/memory/{NoteId}", "DELETE")
+  // @Api(Description="Forgets one thing the AI chat remembers about the caller.")
+  export class ForgetEndUserChatMemoryRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public noteId: string;
+
+    public constructor(init?: Partial<ForgetEndUserChatMemoryRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ForgetEndUserChatMemoryRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Whether the AI chat can run for the caller, and which assistants it offers. */
+  // @Route("/{version}/ai/chat/availability", "GET")
+  // @Api(Description="Whether the AI chat can run for the caller, and which assistants it offers.")
+  export class GetEndUserChatAvailabilityRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetEndUserChatAvailabilityResponse>
+  {
+    public constructor(init?: Partial<GetEndUserChatAvailabilityRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEndUserChatAvailabilityRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEndUserChatAvailabilityResponse();
+    }
+  }
+
+  /** @description Lists the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions", "GET")
+  // @Api(Description="Lists the caller's own AI chats.")
+  export class ListEndUserChatSessionsRequest
+    extends CodeMashRequestBase
+    implements IReturn<ListEndUserChatSessionsResponse>
+  {
+    public take?: number;
+    public includeArchived: boolean;
+
+    public constructor(init?: Partial<ListEndUserChatSessionsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ListEndUserChatSessionsRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new ListEndUserChatSessionsResponse();
+    }
+  }
+
+  /** @description Opens a new AI chat for the caller. */
+  // @Route("/{version}/ai/chat/sessions", "POST")
+  // @Api(Description="Opens a new AI chat for the caller.")
+  export class CreateEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    public assistantId?: string;
+    public title?: string;
+
+    public constructor(init?: Partial<CreateEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Returns one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}", "GET")
+  // @Api(Description="Returns one of the caller's own AI chats.")
+  export class GetEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetEndUserChatSessionResponse>
+  {
+    public sessionId: string;
+
+    public constructor(init?: Partial<GetEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEndUserChatSessionResponse();
+    }
+  }
+
+  /** @description Renames one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}", "PATCH")
+  // @Api(Description="Renames one of the caller's own AI chats.")
+  export class RenameEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public sessionId: string;
+    public title?: string;
+
+    public constructor(init?: Partial<RenameEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RenameEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Pins or unpins one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/pin", "PUT")
+  // @Api(Description="Pins or unpins one of the caller's own AI chats.")
+  export class PinEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public sessionId: string;
+    public pinned: boolean;
+
+    public constructor(init?: Partial<PinEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PinEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Archives or unarchives one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/archive", "PUT")
+  // @Api(Description="Archives or unarchives one of the caller's own AI chats.")
+  export class ArchiveEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public sessionId: string;
+    public archived: boolean;
+
+    public constructor(init?: Partial<ArchiveEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ArchiveEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Deletes one of the caller's own AI chats. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}", "DELETE")
+  // @Api(Description="Deletes one of the caller's own AI chats.")
+  export class DeleteEndUserChatSessionRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public sessionId: string;
+
+    public constructor(init?: Partial<DeleteEndUserChatSessionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteEndUserChatSessionRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Returns a page of one of the caller's own AI chat transcripts. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/entries", "GET")
+  // @Api(Description="Returns a page of one of the caller's own AI chat transcripts.")
+  export class GetEndUserChatEntriesRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetEndUserChatEntriesResponse>
+  {
+    public sessionId: string;
+    public afterSeq?: number;
+    public take?: number;
+
+    public constructor(init?: Partial<GetEndUserChatEntriesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEndUserChatEntriesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEndUserChatEntriesResponse();
+    }
+  }
+
+  /** @description Sends a message to the AI chat; the answer streams on the caller's channel. */
+  // @Route("/{version}/ai/chat/turn", "POST")
+  // @Api(Description="Sends a message to the AI chat; the answer streams on the caller's channel.")
+  export class StartEndUserChatTurnRequest
+    extends CodeMashRequestBase
+    implements IReturn<StartEndUserChatTurnResponse>
+  {
+    public sessionId?: string;
+    public assistantId?: string;
+    public message: string;
+
+    public constructor(init?: Partial<StartEndUserChatTurnRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartEndUserChatTurnRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartEndUserChatTurnResponse();
+    }
+  }
+
+  /** @description Lists the AI tools a project user may use: only their own data (own:* toolsets). */
+  // @Route("/{version}/ai/tools", "GET")
+  // @Api(Description="Lists the AI tools a project user may use: only their own data (own:* toolsets).")
+  export class GetEndUserAiToolsRequest
+    extends RequestBase
+    implements IReturn<GetEndUserAiToolsResponse>
+  {
+    public constructor(init?: Partial<GetEndUserAiToolsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEndUserAiToolsRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEndUserAiToolsResponse();
+    }
+  }
+
+  /** @description Invokes one own-scope AI tool as the calling project user. */
+  // @Route("/{version}/ai/tools/{ToolName}", "POST")
+  // @Api(Description="Invokes one own-scope AI tool as the calling project user.")
+  export class InvokeEndUserAiToolRequest
+    extends RequestBase
+    implements IReturn<InvokeEndUserAiToolResponse>
+  {
+    public toolName: string;
+    public argumentsJson?: string;
+
+    public constructor(init?: Partial<InvokeEndUserAiToolRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeEndUserAiToolRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeEndUserAiToolResponse();
     }
   }
 
@@ -4097,449 +4600,6 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new TestFilesIntegrationResponse();
-    }
-  }
-
-  /** @description Adds a file to one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/attachments", "POST")
-  // @Api(Description="Adds a file to one of the caller's own AI chats.")
-  export class UploadEndUserChatAttachmentRequest
-    extends CodeMashRequestBase
-    implements IReturn<IdResponse>
-  {
-    public sessionId: string;
-    public fileName: string;
-    public contentType: string;
-    public base64Content: string;
-
-    public constructor(init?: Partial<UploadEndUserChatAttachmentRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UploadEndUserChatAttachmentRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Lists the files in one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/attachments", "GET")
-  // @Api(Description="Lists the files in one of the caller's own AI chats.")
-  export class ListEndUserChatAttachmentsRequest
-    extends CodeMashRequestBase
-    implements IReturn<ListEndUserChatAttachmentsResponse>
-  {
-    public sessionId: string;
-
-    public constructor(init?: Partial<ListEndUserChatAttachmentsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ListEndUserChatAttachmentsRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new ListEndUserChatAttachmentsResponse();
-    }
-  }
-
-  /** @description Removes a file from one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/attachments/{AttachmentId}", "DELETE")
-  // @Api(Description="Removes a file from one of the caller's own AI chats.")
-  export class DeleteEndUserChatAttachmentRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public attachmentId: string;
-
-    public constructor(init?: Partial<DeleteEndUserChatAttachmentRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeleteEndUserChatAttachmentRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Likes, dislikes or clears one message of the caller's own AI chat. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/entries/{EntryId}/feedback", "PUT")
-  // @Api(Description="Likes, dislikes or clears one message of the caller's own AI chat.")
-  export class SetEndUserChatEntryFeedbackRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public sessionId: string;
-    public entryId: string;
-    public feedback?: string;
-
-    public constructor(init?: Partial<SetEndUserChatEntryFeedbackRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'SetEndUserChatEntryFeedbackRequest';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Lists what the AI chat remembers about the caller. */
-  // @Route("/{version}/ai/chat/memory", "GET")
-  // @Api(Description="Lists what the AI chat remembers about the caller.")
-  export class ListEndUserChatMemoryRequest
-    extends CodeMashRequestBase
-    implements IReturn<ListEndUserChatMemoryResponse>
-  {
-    public take?: number;
-
-    public constructor(init?: Partial<ListEndUserChatMemoryRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ListEndUserChatMemoryRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new ListEndUserChatMemoryResponse();
-    }
-  }
-
-  /** @description Forgets one thing the AI chat remembers about the caller. */
-  // @Route("/{version}/ai/chat/memory/{NoteId}", "DELETE")
-  // @Api(Description="Forgets one thing the AI chat remembers about the caller.")
-  export class ForgetEndUserChatMemoryRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public noteId: string;
-
-    public constructor(init?: Partial<ForgetEndUserChatMemoryRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ForgetEndUserChatMemoryRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Whether the AI chat can run for the caller, and which assistants it offers. */
-  // @Route("/{version}/ai/chat/availability", "GET")
-  // @Api(Description="Whether the AI chat can run for the caller, and which assistants it offers.")
-  export class GetEndUserChatAvailabilityRequest
-    extends CodeMashRequestBase
-    implements IReturn<GetEndUserChatAvailabilityResponse>
-  {
-    public constructor(init?: Partial<GetEndUserChatAvailabilityRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEndUserChatAvailabilityRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEndUserChatAvailabilityResponse();
-    }
-  }
-
-  /** @description Lists the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions", "GET")
-  // @Api(Description="Lists the caller's own AI chats.")
-  export class ListEndUserChatSessionsRequest
-    extends CodeMashRequestBase
-    implements IReturn<ListEndUserChatSessionsResponse>
-  {
-    public take?: number;
-    public includeArchived: boolean;
-
-    public constructor(init?: Partial<ListEndUserChatSessionsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ListEndUserChatSessionsRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new ListEndUserChatSessionsResponse();
-    }
-  }
-
-  /** @description Opens a new AI chat for the caller. */
-  // @Route("/{version}/ai/chat/sessions", "POST")
-  // @Api(Description="Opens a new AI chat for the caller.")
-  export class CreateEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<IdResponse>
-  {
-    public assistantId?: string;
-    public title?: string;
-
-    public constructor(init?: Partial<CreateEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CreateEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Returns one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}", "GET")
-  // @Api(Description="Returns one of the caller's own AI chats.")
-  export class GetEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<GetEndUserChatSessionResponse>
-  {
-    public sessionId: string;
-
-    public constructor(init?: Partial<GetEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEndUserChatSessionResponse();
-    }
-  }
-
-  /** @description Renames one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}", "PATCH")
-  // @Api(Description="Renames one of the caller's own AI chats.")
-  export class RenameEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public sessionId: string;
-    public title?: string;
-
-    public constructor(init?: Partial<RenameEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RenameEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Pins or unpins one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/pin", "PUT")
-  // @Api(Description="Pins or unpins one of the caller's own AI chats.")
-  export class PinEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public sessionId: string;
-    public pinned: boolean;
-
-    public constructor(init?: Partial<PinEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'PinEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Archives or unarchives one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/archive", "PUT")
-  // @Api(Description="Archives or unarchives one of the caller's own AI chats.")
-  export class ArchiveEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public sessionId: string;
-    public archived: boolean;
-
-    public constructor(init?: Partial<ArchiveEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ArchiveEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Deletes one of the caller's own AI chats. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}", "DELETE")
-  // @Api(Description="Deletes one of the caller's own AI chats.")
-  export class DeleteEndUserChatSessionRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    public sessionId: string;
-
-    public constructor(init?: Partial<DeleteEndUserChatSessionRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeleteEndUserChatSessionRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Returns a page of one of the caller's own AI chat transcripts. */
-  // @Route("/{version}/ai/chat/sessions/{SessionId}/entries", "GET")
-  // @Api(Description="Returns a page of one of the caller's own AI chat transcripts.")
-  export class GetEndUserChatEntriesRequest
-    extends CodeMashRequestBase
-    implements IReturn<GetEndUserChatEntriesResponse>
-  {
-    public sessionId: string;
-    public afterSeq?: number;
-    public take?: number;
-
-    public constructor(init?: Partial<GetEndUserChatEntriesRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEndUserChatEntriesRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEndUserChatEntriesResponse();
-    }
-  }
-
-  /** @description Sends a message to the AI chat; the answer streams on the caller's channel. */
-  // @Route("/{version}/ai/chat/turn", "POST")
-  // @Api(Description="Sends a message to the AI chat; the answer streams on the caller's channel.")
-  export class StartEndUserChatTurnRequest
-    extends CodeMashRequestBase
-    implements IReturn<StartEndUserChatTurnResponse>
-  {
-    public sessionId?: string;
-    public assistantId?: string;
-    public message: string;
-
-    public constructor(init?: Partial<StartEndUserChatTurnRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'StartEndUserChatTurnRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new StartEndUserChatTurnResponse();
-    }
-  }
-
-  /** @description Lists the AI tools a project user may use: only their own data (own:* toolsets). */
-  // @Route("/{version}/ai/tools", "GET")
-  // @Api(Description="Lists the AI tools a project user may use: only their own data (own:* toolsets).")
-  export class GetEndUserAiToolsRequest
-    extends RequestBase
-    implements IReturn<GetEndUserAiToolsResponse>
-  {
-    public constructor(init?: Partial<GetEndUserAiToolsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEndUserAiToolsRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEndUserAiToolsResponse();
-    }
-  }
-
-  /** @description Invokes one own-scope AI tool as the calling project user. */
-  // @Route("/{version}/ai/tools/{ToolName}", "POST")
-  // @Api(Description="Invokes one own-scope AI tool as the calling project user.")
-  export class InvokeEndUserAiToolRequest
-    extends RequestBase
-    implements IReturn<InvokeEndUserAiToolResponse>
-  {
-    public toolName: string;
-    public argumentsJson?: string;
-
-    public constructor(init?: Partial<InvokeEndUserAiToolRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'InvokeEndUserAiToolRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new InvokeEndUserAiToolResponse();
     }
   }
 

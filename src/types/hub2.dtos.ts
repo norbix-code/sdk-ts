@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-04 10:49:00
+Date: 2026-10-04 14:16:22
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1831,6 +1831,12 @@ export module CodeMashHub2 {
     // @DataMember
     public deliverySettings: EmailCampaignDeliverySettingsDto;
 
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public initiatorId?: string;
+
     public constructor(init?: Partial<TriggerActionEmailDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -1871,6 +1877,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public deliverySettings: PushCampaignDeliverySettingsDto;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public initiatorId?: string;
 
     public constructor(init?: Partial<TriggerActionPushDto>) {
       super(init);
@@ -1969,6 +1981,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public deliverySettings: SmsCampaignDeliverySettingsDto;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public initiatorId?: string;
 
     public constructor(init?: Partial<TriggerActionSmsDto>) {
       super(init);
@@ -4144,15 +4162,6 @@ export module CodeMashHub2 {
     correlationId?: string;
   }
 
-  export enum SubscriptionType {
-    ManagedService = 'ManagedService',
-    License = 'License',
-  }
-
-  export interface IHasAccountId {
-    accountId: string;
-  }
-
   // @DataContract(Namespace="http://codemash.io/types/")
   export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv {
     /** @description ID of your project. Can be passed in a header as norbix-project-id. */
@@ -4177,6 +4186,15 @@ export module CodeMashHub2 {
 
   export interface IHasEnv {
     env?: string;
+  }
+
+  export enum SubscriptionType {
+    ManagedService = 'ManagedService',
+    License = 'License',
+  }
+
+  export interface IHasAccountId {
+    accountId: string;
   }
 
   // @DataContract
@@ -5009,6 +5027,25 @@ export module CodeMashHub2 {
     public assistants: PublicAiAssistantDto[] = [];
 
     public constructor(init?: Partial<PublicAiChatDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TriggerAttentionDto {
+    // @DataMember
+    public triggerId: string;
+
+    // @DataMember
+    public triggerType: TriggerType;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public atUtc: string;
+
+    public constructor(init?: Partial<TriggerAttentionDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -6125,6 +6162,46 @@ export module CodeMashHub2 {
     public wallet: ProjectAiWalletDto;
 
     public constructor(init?: Partial<ProjectAiUsageDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @Flags()
+  export enum ApplicationModule {
+    Account = 0,
+    Membership = 1,
+    Database = 2,
+    Files = 4,
+    Code = 8,
+    Email = 16,
+    Push = 32,
+    Payment = 64,
+    Scheduler = 128,
+    Logging = 256,
+    ServerEvents = 512,
+    Ai = 1024,
+    Sms = 2048,
+    Project = 4096,
+    Compliance = 8192,
+    Contacts = 16384,
+    Marketplace = 32768,
+  }
+
+  // @DataContract
+  export class TemplateLanguageGapDto {
+    // @DataMember
+    public module: ApplicationModule;
+
+    // @DataMember
+    public templateId: string;
+
+    // @DataMember
+    public templateName: string;
+
+    // @DataMember
+    public missingLanguages: string[] = [];
+
+    public constructor(init?: Partial<TemplateLanguageGapDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7992,6 +8069,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class SmsTemplateListProjection extends TemplateListProjection {
+    // @DataMember
+    public languages: string[] = [];
+
     public constructor(init?: Partial<SmsTemplateListProjection>) {
       super(init);
       (Object as any).assign(this, init);
@@ -8211,6 +8291,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class PushTemplateListProjection extends TemplateListProjection {
+    // @DataMember
+    public languages: string[] = [];
+
     public constructor(init?: Partial<PushTemplateListProjection>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10003,6 +10086,17 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class GetTriggersNeedingAttentionResponse extends ResponseBase {
+    // @DataMember
+    public items: TriggerAttentionDto[] = [];
+
+    public constructor(init?: Partial<GetTriggersNeedingAttentionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetAccountProfileResponse extends ResponseBase {
     public item?: AccountOwnerDto;
 
@@ -10204,6 +10298,17 @@ export module CodeMashHub2 {
     public result?: ProjectAiUsageDto;
 
     public constructor(init?: Partial<GetProjectAiUsageResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CheckProjectLanguagesResponse extends ResponseBase {
+    // @DataMember
+    public templates: TemplateLanguageGapDto[] = [];
+
+    public constructor(init?: Partial<CheckProjectLanguagesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13436,6 +13541,34 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Get triggers that need attention */
+  // @Route("/{version}/triggers/attention", "GET")
+  // @Api(Description="Get triggers that need attention")
+  // @DataContract
+  export class GetTriggersNeedingAttention
+    extends CodeMashRequestBase
+    implements IReturn<GetTriggersNeedingAttentionResponse>
+  {
+    /** @description Which triggers: Membership, Schema, Files, Payments or Ai. */
+    // @DataMember
+    // @ApiMember(Description="Which triggers: Membership, Schema, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    public constructor(init?: Partial<GetTriggersNeedingAttention>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTriggersNeedingAttention';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetTriggersNeedingAttentionResponse();
+    }
+  }
+
   // @Route("/{version}/account/profile", "GET")
   export class GetAccountProfile extends RequestBase implements IReturn<GetAccountProfileResponse> {
     public constructor(init?: Partial<GetAccountProfile>) {
@@ -14849,6 +14982,39 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Checks which templates miss a (proposed) project language */
+  // @Route("/{version}/account/projects/{projectId}/settings/languages/check", "POST")
+  // @Api(Description="Checks which templates miss a (proposed) project language")
+  // @DataContract
+  export class CheckProjectLanguages
+    extends CodeMashRequestBase
+    implements IReturn<CheckProjectLanguagesResponse>
+  {
+    /** @description Proposed default language code. Omit to use the current one. */
+    // @DataMember
+    // @ApiMember(Description="Proposed default language code. Omit to use the current one.")
+    public defaultLanguage?: string;
+
+    /** @description Proposed complete language list. Omit to use the current one. */
+    // @DataMember
+    // @ApiMember(Description="Proposed complete language list. Omit to use the current one.")
+    public languages?: string[];
+
+    public constructor(init?: Partial<CheckProjectLanguages>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CheckProjectLanguages';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CheckProjectLanguagesResponse();
     }
   }
 
@@ -21664,6 +21830,11 @@ export module CodeMashHub2 {
     // @DataMember
     // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
     public databaseIntegrationId?: string;
+
+    /** @description SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it. */
+    // @DataMember
+    // @ApiMember(Description="SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it.", IsRequired=true)
+    public integrationId: string;
 
     /** @description Optional language code forcing one template translation for every recipient. */
     // @DataMember
