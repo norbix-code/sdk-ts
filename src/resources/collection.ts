@@ -66,6 +66,14 @@ export class CollectionResource<TItem = unknown> {
     return this.database.updateOne({ ...request, collectionName: this.collectionName }, options);
   }
 
+  /**
+   * Update every record that matches `filter`. An update body with `$`
+   * operators (`$inc`, `$set`, …) is refused (CM-ERRORS-DATABASE-035): send
+   * the plain fields to set. An empty filter (`{}`, or no filter) matches the
+   * whole collection and is refused (CM-ERRORS-DATABASE-037) unless
+   * `allRecords: true` is set. A caller with only own-record rights changes
+   * only the records it owns. Soft-deleted records are skipped.
+   */
   updateMany(
     request: Omit<Partial<CodeMashApi2.UpdateManyRequest>, 'collectionName'>,
     options: RequestOverrideOptions = {},
@@ -87,6 +95,12 @@ export class CollectionResource<TItem = unknown> {
     return this.database.deleteOne({ ...request, collectionName: this.collectionName }, options);
   }
 
+  /**
+   * Delete every record that matches `filter`. An empty filter (`{}`)
+   * matches the whole collection and is refused (CM-ERRORS-DATABASE-037)
+   * unless `allRecords: true` is set. A caller with only own-record rights
+   * deletes only the records it owns.
+   */
   deleteMany(
     request: Omit<Partial<CodeMashApi2.DeleteManyRequest>, 'collectionName'>,
     options: RequestOverrideOptions = {},

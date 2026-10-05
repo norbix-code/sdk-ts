@@ -318,6 +318,8 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 
 → [Full API index](./docs/api/_index.md)
 
+The Database calls follow rules the gateway checks (bulk writes with an empty filter need `allRecords: true`, one schema-trigger copy per env, the error codes of each refusal) — see [`docs/database-rules.md`](./docs/database-rules.md).
+
 ### `norbix.hub` — control plane, configuration
 
 Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
