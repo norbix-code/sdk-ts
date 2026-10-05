@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-05 16:03:12
+Date: 2026-10-05 20:15:41
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1546,6 +1546,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public tags?: string[];
+
+    // @DataMember
+    public env?: string;
 
     public constructor(init?: Partial<TemplateDto>) {
       (Object as any).assign(this, init);
@@ -3133,6 +3136,7 @@ export module CodeMashHub2 {
 
   export class DatabaseIntegrationDto extends IntegrationDto {
     public provider: DatabaseProvider;
+    public isSystemOwned: boolean;
 
     public constructor(init?: Partial<DatabaseIntegrationDto>) {
       super(init);
@@ -3506,6 +3510,9 @@ export module CodeMashHub2 {
     public stopOnError: boolean;
 
     // @DataMember
+    public env?: string;
+
+    // @DataMember
     public createdAtUnix?: number;
 
     // @DataMember
@@ -3698,6 +3705,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public pipeline: string;
+
+    // @DataMember
+    public joinedCollections?: string[];
 
     public constructor(init?: Partial<MongoDbAggregateDto>) {
       (Object as any).assign(this, init);
@@ -4737,38 +4747,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class AggregateId {
-    public value: string;
-    public get viewId(): string {
-      return this.value;
-    }
-
-    public constructor(init?: Partial<AggregateId>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ProjectId extends AggregateId implements IHasDomainEntityId {
-    public constructor(init?: Partial<ProjectId>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class IntegrationId extends AggregateId implements IHasDomainEntityId {
-    public constructor(init?: Partial<IntegrationId>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TaxonomyId extends AggregateId implements IHasDomainEntityId {
-    public constructor(init?: Partial<TaxonomyId>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export enum EmailValidationProvider {
     ZeroBounce = 1,
@@ -5359,6 +5337,9 @@ export module CodeMashHub2 {
     public integrationsSeeded: PromotionItemDto[] = [];
 
     // @DataMember
+    public integrationsToProvision: PromotionItemDto[] = [];
+
+    // @DataMember
     public integrationsSkipped: PromotionItemDto[] = [];
 
     // @DataMember
@@ -5621,6 +5602,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public configurationCode?: string;
+
+    // @DataMember
+    public env?: string;
 
     public constructor(init?: Partial<SchemaTriggerDto>) {
       super(init);
@@ -7014,6 +6998,9 @@ export module CodeMashHub2 {
     // @DataMember
     public type: SchemaTriggerType;
 
+    // @DataMember
+    public env?: string;
+
     public constructor(init?: Partial<SchemaTriggerProjectionList>) {
       super(init);
       (Object as any).assign(this, init);
@@ -7080,6 +7067,18 @@ export module CodeMashHub2 {
     }
   }
 
+  export class TaxonomyRef {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name?: string;
+
+    public constructor(init?: Partial<TaxonomyRef>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class TaxonomyListProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -7103,7 +7102,7 @@ export module CodeMashHub2 {
     public parentName?: string;
 
     // @DataMember
-    public dependencyNames?: string[];
+    public dependencyRefs?: TaxonomyRef[];
 
     public constructor(init?: Partial<TaxonomyListProjection>) {
       (Object as any).assign(this, init);
@@ -7472,6 +7471,9 @@ export module CodeMashHub2 {
     // @DataMember
     public provider: DatabaseProvider;
 
+    // @DataMember
+    public env?: string;
+
     public constructor(init?: Partial<DatabaseIntegrationListProjection>) {
       super(init);
       (Object as any).assign(this, init);
@@ -7756,6 +7758,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public tags?: string[];
+
+    // @DataMember
+    public env?: string;
 
     public constructor(init?: Partial<TemplateListProjection>) {
       (Object as any).assign(this, init);
@@ -9993,10 +9998,6 @@ export module CodeMashHub2 {
   export interface IBindableContract {}
 
   export interface IHasRazorTemplateCode {}
-
-  export interface IHasDomainEntityId {
-    viewId: string;
-  }
 
   export interface IHasResponsibleUserId {
     userId: string;
@@ -17487,9 +17488,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<IdResponse>
   {
-    /** @description Empty to create a new taxonomy; set to an existing taxonomy id (from get_database_taxonomies) to update it. */
+    /** @description Empty to create a new taxonomy; set to an existing taxonomy id (from get_database_taxonomies) to update it. An update replaces the whole taxonomy: send every field you want to keep (parentId, dependencies, description, schemas). */
     // @DataMember
-    // @ApiMember(Description="Empty to create a new taxonomy; set to an existing taxonomy id (from get_database_taxonomies) to update it.")
+    // @ApiMember(Description="Empty to create a new taxonomy; set to an existing taxonomy id (from get_database_taxonomies) to update it. An update replaces the whole taxonomy: send every field you want to keep (parentId, dependencies, description, schemas).")
     public viewId?: string;
 
     /** @description Human-entered taxonomy title (e.g. "Countries"); a slug is derived server-side. */
@@ -18134,11 +18135,6 @@ export module CodeMashHub2 {
     // @ApiMember(Description="New human-entered title (e.g. \"Company Employees\"); the slug is derived server-side.", IsRequired=true)
     public title: string;
 
-    /** @description When true (default), rejects the rename if another schema already owns the derived slug. Leave true unless explicitly asked to bypass the uniqueness check. */
-    // @DataMember
-    // @ApiMember(Description="When true (default), rejects the rename if another schema already owns the derived slug. Leave true unless explicitly asked to bypass the uniqueness check.")
-    public renameUniqueName: boolean;
-
     public constructor(init?: Partial<RenameDatabaseSchemaRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -18218,9 +18214,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Raw JSON string matching the Norbix data meta-schema (https://norbix.ai/schemas/meta/v1.json) for the draft's data schema.")
     public dataSchema?: string;
 
-    /** @description Raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. */
+    /** @description OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or invalid, the backend auto-generates a flat-list form from the data schema. */
     // @DataMember
-    // @ApiMember(Description="Raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form.")
+    // @ApiMember(Description="OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or invalid, the backend auto-generates a flat-list form from the data schema.")
     public visualSchema?: string;
 
     public constructor(init?: Partial<UpdateDatabaseSchemaDraftRequest>) {
@@ -18442,9 +18438,13 @@ export module CodeMashHub2 {
     public collectionName: string;
 
     public databaseIntegrationId?: string;
-    /** @description The match filter as a MongoDB extended-JSON document. Required. */
-    // @ApiMember(Description="The match filter as a MongoDB extended-JSON document. Required.", IsRequired=true)
+    /** @description The match filter as a MongoDB extended-JSON document. Required. An empty object ({}) matches every record and is refused unless AllRecords is true. */
+    // @ApiMember(Description="The match filter as a MongoDB extended-JSON document. Required. An empty object ({}) matches every record and is refused unless AllRecords is true.", IsRequired=true)
     public filter: string;
+
+    /** @description Set to true to delete EVERY record of the collection with an empty filter ({}). Without it an empty filter is refused (CM-ERRORS-DATABASE-037). */
+    // @ApiMember(Description="Set to true to delete EVERY record of the collection with an empty filter ({}). Without it an empty filter is refused (CM-ERRORS-DATABASE-037).")
+    public allRecords?: boolean;
 
     public constructor(init?: Partial<DeleteManyRecords>) {
       super(init);
@@ -18790,9 +18790,13 @@ export module CodeMashHub2 {
     public collectionName: string;
 
     public databaseIntegrationId?: string;
-    /** @description The match filter as a MongoDB extended-JSON document. Empty object means match all. */
-    // @ApiMember(Description="The match filter as a MongoDB extended-JSON document. Empty object means match all.", IsRequired=true)
+    /** @description The match filter as a MongoDB extended-JSON document. An empty object ({}) matches every record and is refused unless AllRecords is true. */
+    // @ApiMember(Description="The match filter as a MongoDB extended-JSON document. An empty object ({}) matches every record and is refused unless AllRecords is true.", IsRequired=true)
     public filter: string;
+
+    /** @description Set to true to update EVERY record of the collection with an empty filter ({}). Without it an empty filter is refused (CM-ERRORS-DATABASE-037). */
+    // @ApiMember(Description="Set to true to update EVERY record of the collection with an empty filter ({}). Without it an empty filter is refused (CM-ERRORS-DATABASE-037).")
+    public allRecords?: boolean;
 
     /** @description The partial update document (applied with $set), as MongoDB extended-JSON. */
     // @ApiMember(Description="The partial update document (applied with $set), as MongoDB extended-JSON.", IsRequired=true)
@@ -19454,102 +19458,6 @@ export module CodeMashHub2 {
     public createResponse() {
       return new TestDatabaseAggregateResponse();
     }
-  }
-
-  export class ProcessCollectionImport {
-    public importId: string;
-    public projectId: string;
-    public accountId: string;
-    public databaseIntegrationId: string;
-    public env?: string;
-
-    public constructor(init?: Partial<ProcessCollectionImport>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ProcessCollectionImport';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
-  }
-
-  export class TermInserted {
-    public projectId: ProjectId;
-    public databaseIntegrationId: IntegrationId;
-    public taxonomyId: TaxonomyId;
-    public id: string;
-    public document: Object;
-
-    public constructor(init?: Partial<TermInserted>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'TermInserted';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
-  }
-
-  export class TermUpdated {
-    public projectId: ProjectId;
-    public databaseIntegrationId: IntegrationId;
-    public taxonomyId: TaxonomyId;
-    public id: string;
-    public from: Object;
-    public to: Object;
-
-    public constructor(init?: Partial<TermUpdated>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'TermUpdated';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
-  }
-
-  export class TermDeleted {
-    public projectId: ProjectId;
-    public databaseIntegrationId: IntegrationId;
-    public taxonomyId: TaxonomyId;
-    public id: string;
-    public document: Object;
-
-    public constructor(init?: Partial<TermDeleted>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'TermDeleted';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
-  }
-
-  export class TermsDeleted {
-    public projectId: ProjectId;
-    public databaseIntegrationId: IntegrationId;
-    public taxonomyId: TaxonomyId;
-    public deletedCount: number;
-    public filter: Object;
-
-    public constructor(init?: Partial<TermsDeleted>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'TermsDeleted';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
   }
 
   // @Route("/{version}/files/disable", "PUT")
@@ -21201,8 +21109,8 @@ export module CodeMashHub2 {
     extends CodeMashListPaginationRequestBase
     implements IReturn<GetEmailCampaignBatchesResponse>
   {
-    /** @description The email campaign id to list batches for. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id to list batches for. Get it from get_all_email_campaigns.", IsRequired=true)
+    /** @description The email campaign id to list batches for. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id to list batches for. Get it from get_email_campaigns.", IsRequired=true)
     public id: string;
 
     /** @description Optional. Omit to use the project default database integration (resolved per environment). */
@@ -21239,8 +21147,8 @@ export module CodeMashHub2 {
     extends CodeMashListPaginationRequestBase
     implements IReturn<GetEmailCampaignBatchNotificationResponse>
   {
-    /** @description The email campaign id. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_all_email_campaigns.", IsRequired=true)
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
     public id: string;
 
     /** @description The campaign batch id. Get it from get_email_campaign_batches. */
@@ -21277,8 +21185,8 @@ export module CodeMashHub2 {
     extends CodeMashListPaginationRequestBase
     implements IReturn<GetEmailCampaignBatchNotificationsResponse>
   {
-    /** @description The email campaign id. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_all_email_campaigns.", IsRequired=true)
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
     public id: string;
 
     /** @description The campaign batch id to list notifications for. Get it from get_email_campaign_batches. */
@@ -21311,8 +21219,8 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetEmailCampaignStatisticsResponse>
   {
-    /** @description The email campaign id to get statistics for. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id to get statistics for. Get it from get_all_email_campaigns.", IsRequired=true)
+    /** @description The email campaign id to get statistics for. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id to get statistics for. Get it from get_email_campaigns.", IsRequired=true)
     public id: string;
 
     /** @description Optional. Omit to use the project default database integration (resolved per environment). */
@@ -21408,8 +21316,8 @@ export module CodeMashHub2 {
     extends CodeMashListPaginationRequestBase
     implements IReturn<GetEmailCampaignMessagesResponse>
   {
-    /** @description The email campaign id. Get it from get_all_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_all_email_campaigns.", IsRequired=true)
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
     public campaignId: string;
 
     /** @description The campaign batch id to list messages for. Get it from get_email_campaign_batches. */
@@ -25703,32 +25611,6 @@ export module CodeMashHub2 {
     public createResponse() {
       return new TestLlmIntegrationResponse();
     }
-  }
-
-  export class IngestSourceMessage {
-    public projectId: string;
-    public env?: string;
-    public ownerAuthId?: string;
-    public sourceKind: string;
-    public sourceId: string;
-    public title?: string;
-    public contentType?: string;
-    public content?: string;
-    public embeddingIntegrationId?: string;
-    public removed: boolean;
-    public metadata?: { [index: string]: string };
-    public ownerRequired: boolean;
-
-    public constructor(init?: Partial<IngestSourceMessage>) {
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'IngestSourceMessage';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {}
   }
 
   /** @description Gets the project's webhook integration */
