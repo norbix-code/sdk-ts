@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**535 endpoints across 27 modules.** Click a module
+**536 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -16,7 +16,7 @@ name for the full method reference and TypeScript examples.
 | [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
 | [`code`](./code.md)                   |        33 |                                                                                                                                          |
 | [`compliance`](./compliance.md)       |        18 |                                                                                                                                          |
-| [`database`](./database.md)           |        72 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
+| [`database`](./database.md)           |        73 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`email`](./email.md)                 |         2 |                                                                                                                                          |
