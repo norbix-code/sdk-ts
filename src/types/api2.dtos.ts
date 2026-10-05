@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-05 16:03:12
+Date: 2026-10-05 20:15:41
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -3876,6 +3876,9 @@ export module CodeMashApi2 {
     // @DataMember
     public filter: string;
 
+    // @DataMember
+    public allRecords?: boolean;
+
     public constructor(init?: Partial<DeleteManyRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -4204,6 +4207,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public filter: string;
+
+    // @DataMember
+    public allRecords?: boolean;
 
     // @DataMember
     public update: string;

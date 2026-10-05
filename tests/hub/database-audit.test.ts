@@ -11,7 +11,8 @@ import { createMockFetch, makeClient } from '../_helpers.js';
  * - new endpoint `PUT /database/schemas/{Id}/embed` — saves a schema's
  *   embedding setting (full replace);
  * - a taxonomy list row now carries `description`, `dependencies`,
- *   `parentName` and `dependencyNames`.
+ *   `parentName` and `dependencyRefs` (one `{ id, name? }` per entry of
+ *   `dependencies`, same order; `name` is null when the id no longer resolves).
  *
  * The calls are typed on the generated request / response types, so
  * `npm run typecheck` fails if a field disappears. The generated files prove
@@ -50,16 +51,19 @@ describe('schema embed setting', () => {
 });
 
 describe('taxonomy list rows', () => {
-  it('getDatabaseTaxonomies returns description, dependencies, parentName and dependencyNames', async () => {
+  it('getDatabaseTaxonomies returns description, dependencies, parentName and dependencyRefs in the order of dependencies', async () => {
     const row: CodeMashHub2.TaxonomyListProjection = {
       viewId: 'tax_city',
       taxonomyName: 'City',
       taxonomySlug: 'city',
       parentId: 'tax_country',
       description: 'Cities of the world',
-      dependencies: ['tax_country'],
+      dependencies: ['tax_country', 'tax_gone'],
       parentName: 'Country',
-      dependencyNames: ['Country'],
+      dependencyRefs: [
+        { id: 'tax_country', name: 'Country' },
+        { id: 'tax_gone', name: null as unknown as undefined },
+      ],
     };
     const mock = createMockFetch({
       body: { list: { items: [row], hasMore: false, hasPrevious: false } },
@@ -80,12 +84,15 @@ describe('taxonomy list rows', () => {
       description: got.description,
       dependencies: got.dependencies,
       parentName: got.parentName,
-      dependencyNames: got.dependencyNames,
+      dependencyRefs: got.dependencyRefs,
     }).toEqual({
       description: 'Cities of the world',
-      dependencies: ['tax_country'],
+      dependencies: ['tax_country', 'tax_gone'],
       parentName: 'Country',
-      dependencyNames: ['Country'],
+      dependencyRefs: [
+        { id: 'tax_country', name: 'Country' },
+        { id: 'tax_gone', name: null },
+      ],
     });
   });
 });
