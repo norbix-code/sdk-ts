@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { Transport } from '../src/client/transport.js';
+import type { ResolvedNorbixConfig } from '../src/client/types.js';
 import {
   Norbix,
   NorbixAuthError,
@@ -203,11 +205,45 @@ describe('Headers + scoping', () => {
     expect(new Headers(captured!.init.headers).get('X-CM-AccountId')).toBe('a1');
   });
 
-  it('throws on missing accountId for account-scoped endpoint', async () => {
-    const norbix = new Norbix({ apiKey: 'k', projectId: 'p1', fetch: fakeFetch({}) });
-    await expect(call(norbix, 'hub', 'account', 'verifyAccount')).rejects.toMatchObject({
-      code: 'NORBIX_ACCOUNT_SCOPE_REQUIRED',
-    });
+  it('throws on missing accountId for an account-scoped call', async () => {
+    // No generated method uses the 'account' scope today (verifyAccount is
+    // anonymous: its account id travels in the request), so the guard is
+    // checked on the transport directly.
+    const fetchImpl = fakeFetch({});
+    const t = new Transport({
+      baseUrl: { api: 'https://api.norbix.io', hub: 'https://hub.norbix.io' },
+      apiVersion: 'v2',
+      hubVersion: 'v2',
+      defaultHeaders: {},
+      timeoutMs: 5_000,
+      retry: { maxRetries: 0, baseDelayMs: 1, maxDelayMs: 1 },
+      apiKey: 'k',
+      projectId: 'p1',
+      fetch: fetchImpl,
+    } as unknown as ResolvedNorbixConfig);
+    await expect(
+      t.send({ target: 'hub', path: '/{version}/x', method: 'GET', scope: 'account' }),
+    ).rejects.toMatchObject({ code: 'NORBIX_ACCOUNT_SCOPE_REQUIRED' });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('verifyAccount needs no accountId on the client', async () => {
+    let captured: { url: string; init: RequestInit } | undefined;
+    const norbix = new Norbix(
+      {
+        projectId: 'p1',
+        fetch: fakeFetch({
+          body: {},
+          capture: (req) => {
+            captured = req;
+          },
+        }),
+      },
+      { envSource: {} },
+    );
+    await call(norbix, 'hub', 'account', 'verifyAccount', { accountId: 'a1', token: 't1' });
+    expect(new URL(captured!.url).searchParams.get('accountId')).toBe('a1');
+    expect(new Headers(captured!.init.headers).has('Authorization')).toBe(false);
   });
 });
 
