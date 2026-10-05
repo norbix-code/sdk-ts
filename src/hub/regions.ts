@@ -19,7 +19,8 @@ export class RegionsModule {
   /**
    * GET /{version}/account/regions
    * Lists the Norbix regions available to the account (region code, continent,
-   * display name). Request DTO: GetAccountRegions
+   * display name). Anonymous — no token and no `accountId` needed.
+   * Request DTO: GetAccountRegions
    */
   list = (
     request: Partial<CodeMashHub2.GetAccountRegions> = {} as Partial<CodeMashHub2.GetAccountRegions>,
@@ -31,7 +32,7 @@ export class RegionsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };

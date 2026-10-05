@@ -12,9 +12,10 @@ export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 /**
  * Marks endpoints that require an `accountId` on the client. The auto-mapped
- * code passes `'account'` for any DTO implementing `IHasAccountId`. The
- * special `'unauthenticated'` scope bypasses the auth header check, used by
- * the login flow which has no token yet.
+ * code passed `'account'` for any DTO implementing `IHasAccountId`; no method
+ * uses it today. The special `'unauthenticated'` scope bypasses the auth
+ * header check, used by the login flow which has no token yet, and by the
+ * anonymous Hub routes (sign-up, invitation, regions, account verify).
  *
  * `'optional'`: auth is sent when the client has a token, never required —
  * used by the signed notification preview links. With a token the
