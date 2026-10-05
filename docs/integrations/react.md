@@ -146,4 +146,4 @@ The same applies to React Native — there's no SSR concern there, just one proc
 
 - **`fetch` not found**: pass `fetch: customFetch` if you target a runtime older than Node 18 / browsers older than ~2017.
 - **CORS in browser**: the gateway must allow your origin. Configured in Hub → Project settings.
-- **`accountId` missing**: account-scoped endpoints throw `NORBIX_ACCOUNT_SCOPE_REQUIRED`. Pass it once at construction or use `norbix.setScope(...)`.
+- **`accountId` missing**: it is optional. Sign-up, invitation, regions and account verify need no token and no `accountId`. Pass it once at construction or use `norbix.setScope(...)` when you want the `norbix-account-id` header sent.

@@ -19,10 +19,10 @@ Accessed as `norbix.hub.regions` on the [`Norbix`](../../README.md#authenticatio
 
 ## Endpoints
 
-| Method                                          | Verb    | Path                                                       | Scope     |
-| ----------------------------------------------- | ------- | ---------------------------------------------------------- | --------- |
-| [`list`](#list)                                 | `GET`   | `/{version}/account/regions`                               | `project` |
-| [`updateProjectRegions`](#updateprojectregions) | `PATCH` | `/{version}/account/projects/{projectId}/settings/regions` | `project` |
+| Method                                          | Verb    | Path                                                       | Scope             |
+| ----------------------------------------------- | ------- | ---------------------------------------------------------- | ----------------- |
+| [`list`](#list)                                 | `GET`   | `/{version}/account/regions`                               | `unauthenticated` |
+| [`updateProjectRegions`](#updateprojectregions) | `PATCH` | `/{version}/account/projects/{projectId}/settings/regions` | `project`         |
 
 ## Reference
 
@@ -31,6 +31,8 @@ Accessed as `norbix.hub.regions` on the [`Norbix`](../../README.md#authenticatio
 `GET` `/{version}/account/regions`
 
 Lists the Norbix regions available to the account.
+
+> **No token needed.** The client needs no `apiKey` / `bearerToken` and no `accountId`; the call is sent with no `Authorization` header (scope `unauthenticated`).
 
 **Request DTO**: `CodeMashHub2.GetAccountRegions`
 **Response**: `CodeMashHub2.GetAccountRegionsResponse`

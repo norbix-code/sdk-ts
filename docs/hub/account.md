@@ -2,127 +2,127 @@
 
 [← Back to Hub index](./_index.md) · [↑ Back to project README](../../README.md)
 
-Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client.
+Account profile, status, verification, team invites, and Stripe billing portal. Most write endpoints require `accountId` on the client. Sign-up (`createAccount`), accepting an invitation (`createTeamMemberFromInvitation`), listing regions (`getAccountRegions`) and verifying the account (`verifyAccount`) need no token and no `accountId`.
 
 Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authentication) client.
 
 ## Endpoints
 
-| Method                                                                        | Verb     | Path                                                                         | Scope     |
-| ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- | --------- |
-| [`getAccountProfile`](#getaccountprofile)                                     | `GET`    | `/{version}/account/profile`                                                 | `project` |
-| [`updateAccountProfile`](#updateaccountprofile)                               | `PUT`    | `/{version}/account/profile`                                                 | `project` |
-| [`resendAccountVerificationToken`](#resendaccountverificationtoken)           | `GET`    | `/{version}/account/verify/resend`                                           | `project` |
-| [`getAccountStatus`](#getaccountstatus)                                       | `GET`    | `/{version}/account/status`                                                  | `project` |
-| [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project` |
-| [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project` |
-| [`createTeamMemberFromInvitation`](#createteammemberfrominvitation)           | `POST`   | `/{version}/account/team/member`                                             | `project` |
-| [`getAccountUsageBilling`](#getaccountusagebilling)                           | `GET`    | `/{version}/account/usage-billing`                                           | `project` |
-| [`verifyAccount`](#verifyaccount)                                             | `GET`    | `/{version}/account/verify`                                                  | `account` |
-| [`deleteNotificationsGroup`](#deletenotificationsgroup)                       | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/group`       | `project` |
-| [`deleteNotificationsTag`](#deletenotificationstag)                           | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/tag`         | `project` |
-| [`removeTagFromNotificationsGroup`](#removetagfromnotificationsgroup)         | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/group/tag`   | `project` |
-| [`saveNotificationsGroup`](#savenotificationsgroup)                           | `POST`   | `/{version}/account/projects/{projectId}/notifications/settings/group`       | `project` |
-| [`saveNotificationsTag`](#savenotificationstag)                               | `POST`   | `/{version}/account/projects/{projectId}/notifications/settings/tag`         | `project` |
-| [`createProject`](#createproject)                                             | `POST`   | `/{version}/account/projects`                                                | `project` |
-| [`deleteProject`](#deleteproject)                                             | `DELETE` | `/{version}/account/projects/{projectId}`                                    | `project` |
-| [`createProjectEnvironment`](#createprojectenvironment)                       | `POST`   | `/{version}/account/projects/environments`                                   | `project` |
-| [`deleteProjectEnvironment`](#deleteprojectenvironment)                       | `DELETE` | `/{version}/account/projects/environments/{environmentName}`                 | `project` |
-| [`setEnvironmentRank`](#setenvironmentrank)                                   | `PATCH`  | `/{version}/account/projects/environments/{environmentName}/rank`            | `project` |
-| [`promoteEnvironment`](#promoteenvironment)                                   | `POST`   | `/{version}/account/projects/environments/promote`                           | `project` |
-| [`rollbackPromotion`](#rollbackpromotion)                                     | `POST`   | `/{version}/account/projects/environments/promote/rollback`                  | `project` |
-| [`getProjectEnvironments`](#getprojectenvironments)                           | `GET`    | `/{version}/account/projects/environments`                                   | `project` |
-| [`getProject`](#getproject)                                                   | `GET`    | `/{version}/account/projects/{projectId}`                                    | `project` |
-| [`getProjects`](#getprojects)                                                 | `GET`    | `/{version}/account/projects`                                                | `project` |
-| [`getAccountRegions`](#getaccountregions)                                     | `GET`    | `/{version}/account/regions`                                                 | `project` |
-| [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project` |
-| [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project` |
-| [`setAdminPortalEnabled`](#setadminportalenabled)                             | `PUT`    | `/{version}/account/projects/{projectId}/admin-portal/enabled`               | `project` |
-| [`assignAdminPortalServiceUser`](#assignadminportalserviceuser)               | `PUT`    | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project` |
-| [`getAdminPortalStructure`](#getadminportalstructure)                         | `GET`    | `/{version}/account/projects/{projectId}/admin-portal/structure`             | `project` |
-| [`updateProjectAdminUrl`](#updateprojectadminurl)                             | `PATCH`  | `/{version}/account/projects/{projectId}/settings/admin-url`                 | `project` |
-| [`getProjectAiSettings`](#getprojectaisettings)                               | `GET`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
-| [`updateProjectAiSettings`](#updateprojectaisettings)                         | `PUT`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
-| [`createProjectAiAssistant`](#createprojectaiassistant)                       | `POST`   | `/{version}/account/projects/{projectId}/ai/assistants`                      | `project` |
-| [`updateProjectAiAssistant`](#updateprojectaiassistant)                       | `PUT`    | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project` |
-| [`deleteProjectAiAssistant`](#deleteprojectaiassistant)                       | `DELETE` | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project` |
-| [`getProjectAiUsage`](#getprojectaiusage)                                     | `GET`    | `/{version}/account/projects/{projectId}/ai/usage`                           | `project` |
-| [`updateProjectAccentColor`](#updateprojectaccentcolor)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/accent-color`              | `project` |
-| [`updateProjectIcon`](#updateprojecticon)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/icon`                      | `project` |
-| [`updateProjectLogo`](#updateprojectlogo)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/logo`                      | `project` |
-| [`updateProjectMainColor`](#updateprojectmaincolor)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/main-color`                | `project` |
-| [`updateProjectAllowedOrigins`](#updateprojectallowedorigins)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/origins`                   | `project` |
-| [`updateProjectDefaultLanguage`](#updateprojectdefaultlanguage)               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/default-language`          | `project` |
-| [`updateProjectDescription`](#updateprojectdescription)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/description`               | `project` |
-| [`disableProject`](#disableproject)                                           | `PATCH`  | `/{version}/account/projects/{projectId}/disable`                            | `project` |
-| [`enableProject`](#enableproject)                                             | `PATCH`  | `/{version}/account/projects/{projectId}/enable`                             | `project` |
-| [`updateProjectLanguages`](#updateprojectlanguages)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/languages`                 | `project` |
-| [`checkProjectLanguages`](#checkprojectlanguages)                             | `POST`   | `/{version}/account/projects/{projectId}/settings/languages/check`           | `project` |
-| [`updateProjectLegalDocuments`](#updateprojectlegaldocuments)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal`                     | `project` |
-| [`updateProjectExposeLegal`](#updateprojectexposelegal)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal/expose`              | `project` |
-| [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
-| [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project` |
-| [`updateProjectUrl`](#updateprojecturl)                                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/url`                       | `project` |
-| [`updateProjectName`](#updateprojectname)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/name`                      | `project` |
-| [`updateProjectRegions`](#updateprojectregions)                               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/regions`                   | `project` |
-| [`createAccount`](#createaccount)                                             | `POST`   | `/{version}/account`                                                         | `project` |
-| [`changeTeamMemberPassword`](#changeteammemberpassword)                       | `POST`   | `/{version}/account/team/member/password`                                    | `project` |
-| [`createTeamMember`](#createteammember)                                       | `POST`   | `/{version}/account/team/member/create`                                      | `project` |
-| [`createAccountPolicy`](#createaccountpolicy)                                 | `POST`   | `/{version}/account/team/policies`                                           | `project` |
-| [`createAccountRole`](#createaccountrole)                                     | `POST`   | `/{version}/account/team/roles`                                              | `project` |
-| [`deleteAccountPolicy`](#deleteaccountpolicy)                                 | `DELETE` | `/{version}/account/team/policies/{Id}`                                      | `project` |
-| [`deleteAccountRole`](#deleteaccountrole)                                     | `DELETE` | `/{version}/account/team/roles/{Id}`                                         | `project` |
-| [`getAccountCollaborators`](#getaccountcollaborators)                         | `GET`    | `/{version}/account/collaborators`                                           | `project` |
-| [`getAccountPasswordPolicy`](#getaccountpasswordpolicy)                       | `GET`    | `/{version}/account/team/password-policy`                                    | `project` |
-| [`getAccountTeamPolicies`](#getaccountteampolicies)                           | `GET`    | `/{version}/account/team/policies`                                           | `project` |
-| [`getAccountTeamRoles`](#getaccountteamroles)                                 | `GET`    | `/{version}/account/team/roles`                                              | `project` |
-| [`sendInviteToTeamMember`](#sendinvitetoteammember)                           | `POST`   | `/{version}/account/team/member/invite`                                      | `project` |
-| [`updateAccountPolicy`](#updateaccountpolicy)                                 | `PUT`    | `/{version}/account/team/policies`                                           | `project` |
-| [`updateAccountRole`](#updateaccountrole)                                     | `PUT`    | `/{version}/account/team/roles`                                              | `project` |
-| [`accountHasPasskey`](#accounthaspasskey)                                     | `POST`   | `/{version}/account/userauth/has-passkey`                                    | `project` |
-| [`accountStartEmailVerification`](#accountstartemailverification)             | `POST`   | `/{version}/account/userauth/email/start-verification`                       | `project` |
-| [`accountConfirmEmailVerification`](#accountconfirmemailverification)         | `POST`   | `/{version}/account/userauth/email/confirm-verification`                     | `project` |
-| [`accountPasskeyRegistrationOptions`](#accountpasskeyregistrationoptions)     | `POST`   | `/{version}/account/userauth/passkey/registration-options`                   | `project` |
-| [`accountVerifyPasskeyRegistration`](#accountverifypasskeyregistration)       | `POST`   | `/{version}/account/userauth/passkey/verify-registration`                    | `project` |
-| [`accountPasskeyAuthenticationOptions`](#accountpasskeyauthenticationoptions) | `POST`   | `/{version}/account/userauth/passkey/authentication-options`                 | `project` |
-| [`accountVerifyPasskeyAuthentication`](#accountverifypasskeyauthentication)   | `POST`   | `/{version}/account/userauth/passkey/verify-authentication`                  | `project` |
-| [`listAccountPasskeys`](#listaccountpasskeys)                                 | `GET`    | `/{version}/account/userauth/passkeys`                                       | `project` |
-| [`renameAccountPasskey`](#renameaccountpasskey)                               | `POST`   | `/{version}/account/userauth/passkeys/{CredentialId}/rename`                 | `project` |
-| [`revokeAccountPasskey`](#revokeaccountpasskey)                               | `POST`   | `/{version}/account/userauth/passkeys/{CredentialId}/revoke`                 | `project` |
-| [`accountPasskeyEnrollmentOptions`](#accountpasskeyenrollmentoptions)         | `POST`   | `/{version}/account/userauth/passkey/enrollment-options`                     | `project` |
-| [`accountVerifyPasskeyEnrollment`](#accountverifypasskeyenrollment)           | `POST`   | `/{version}/account/userauth/passkey/verify-enrollment`                      | `project` |
-| [`getMyAccountUserProfile`](#getmyaccountuserprofile)                         | `GET`    | `/{version}/account/me`                                                      | `project` |
-| [`updateMyAccountUserPhone`](#updatemyaccountuserphone)                       | `PUT`    | `/{version}/account/me/phone`                                                | `project` |
-| [`getLicenseDomainDnsStatus`](#getlicensedomaindnsstatus)                     | `GET`    | `/{version}/account/licensing/dns-status`                                    | `project` |
-| [`getLicenses`](#getlicenses)                                                 | `GET`    | `/{version}/account/licenses`                                                | `project` |
-| [`getInstallationLicenseStatus`](#getinstallationlicensestatus)               | `GET`    | `/{version}/account/licensing/status`                                        | `project` |
-| [`createAiServiceUser`](#createaiserviceuser)                                 | `POST`   | `/{version}/account/ai/service-users`                                        | `project` |
-| [`listAiServiceUsers`](#listaiserviceusers)                                   | `GET`    | `/{version}/account/ai/service-users`                                        | `project` |
-| [`rotateAiServiceUserKey`](#rotateaiserviceuserkey)                           | `POST`   | `/{version}/account/ai/service-users/{Id}/keys`                              | `project` |
-| [`revokeAiServiceUserKey`](#revokeaiserviceuserkey)                           | `DELETE` | `/{version}/account/ai/service-users/{Id}/keys/{KeyId}`                      | `project` |
-| [`deleteAiServiceUser`](#deleteaiserviceuser)                                 | `DELETE` | `/{version}/account/ai/service-users/{Id}`                                   | `project` |
-| [`getAgentOnboarding`](#getagentonboarding)                                   | `GET`    | `/{version}/account/agent/onboarding`                                        | `project` |
-| [`getAiTools`](#getaitools)                                                   | `GET`    | `/{version}/account/ai/tools`                                                | `project` |
-| [`invokeAiTool`](#invokeaitool)                                               | `POST`   | `/{version}/account/ai/tools/{ToolName}`                                     | `project` |
-| [`uploadChatAttachment`](#uploadchatattachment)                               | `POST`   | `/{version}/account/chat/attachments`                                        | `project` |
-| [`chatAvailability`](#chatavailability)                                       | `GET`    | `/{version}/account/chat/availability`                                       | `project` |
-| [`getChatMemory`](#getchatmemory)                                             | `GET`    | `/{version}/account/chat/memory`                                             | `project` |
-| [`forgetChatMemory`](#forgetchatmemory)                                       | `DELETE` | `/{version}/account/chat/memory/{NoteId}`                                    | `project` |
-| [`deleteChatSession`](#deletechatsession)                                     | `DELETE` | `/{version}/account/chat/sessions/{SessionId}`                               | `project` |
-| [`setChatSessionArchived`](#setchatsessionarchived)                           | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/archive`                       | `project` |
-| [`setChatSessionPinned`](#setchatsessionpinned)                               | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/pin`                           | `project` |
-| [`setChatSessionSharing`](#setchatsessionsharing)                             | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/sharing`                       | `project` |
-| [`getChatSessions`](#getchatsessions)                                         | `GET`    | `/{version}/account/chat/sessions`                                           | `project` |
-| [`getChatSessionEntries`](#getchatsessionentries)                             | `GET`    | `/{version}/account/chat/sessions/{SessionId}/entries`                       | `project` |
-| [`setChatEntryFeedback`](#setchatentryfeedback)                               | `POST`   | `/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback`    | `project` |
-| [`answerChatQuestion`](#answerchatquestion)                                   | `POST`   | `/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer`    | `project` |
-| [`decideChatPlan`](#decidechatplan)                                           | `POST`   | `/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision`      | `project` |
-| [`stopChatRunStep`](#stopchatrunstep)                                         | `POST`   | `/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop`          | `project` |
-| [`chatTurn`](#chatturn)                                                       | `POST`   | `/{version}/account/chat/turn`                                               | `project` |
-| [`scaffoldProject`](#scaffoldproject)                                         | `POST`   | `/{version}/account/ai/scaffold`                                             | `project` |
-| [`validateSchema`](#validateschema)                                           | `POST`   | `/{version}/account/ai/schemas/validate`                                     | `project` |
-| [`renderTemplatePreview`](#rendertemplatepreview)                             | `POST`   | `/{version}/account/ai/templates/render-preview`                             | `project` |
-| [`mcp`](#mcp)                                                                 | `POST`   | `/{version}/account/mcp`                                                     | `project` |
+| Method                                                                        | Verb     | Path                                                                         | Scope             |
+| ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- | ----------------- |
+| [`getAccountProfile`](#getaccountprofile)                                     | `GET`    | `/{version}/account/profile`                                                 | `project`         |
+| [`updateAccountProfile`](#updateaccountprofile)                               | `PUT`    | `/{version}/account/profile`                                                 | `project`         |
+| [`resendAccountVerificationToken`](#resendaccountverificationtoken)           | `GET`    | `/{version}/account/verify/resend`                                           | `project`         |
+| [`getAccountStatus`](#getaccountstatus)                                       | `GET`    | `/{version}/account/status`                                                  | `project`         |
+| [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project`         |
+| [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project`         |
+| [`createTeamMemberFromInvitation`](#createteammemberfrominvitation)           | `POST`   | `/{version}/account/team/member`                                             | `unauthenticated` |
+| [`getAccountUsageBilling`](#getaccountusagebilling)                           | `GET`    | `/{version}/account/usage-billing`                                           | `project`         |
+| [`verifyAccount`](#verifyaccount)                                             | `GET`    | `/{version}/account/verify`                                                  | `unauthenticated` |
+| [`deleteNotificationsGroup`](#deletenotificationsgroup)                       | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/group`       | `project`         |
+| [`deleteNotificationsTag`](#deletenotificationstag)                           | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/tag`         | `project`         |
+| [`removeTagFromNotificationsGroup`](#removetagfromnotificationsgroup)         | `DELETE` | `/{version}/account/projects/{projectId}/notifications/settings/group/tag`   | `project`         |
+| [`saveNotificationsGroup`](#savenotificationsgroup)                           | `POST`   | `/{version}/account/projects/{projectId}/notifications/settings/group`       | `project`         |
+| [`saveNotificationsTag`](#savenotificationstag)                               | `POST`   | `/{version}/account/projects/{projectId}/notifications/settings/tag`         | `project`         |
+| [`createProject`](#createproject)                                             | `POST`   | `/{version}/account/projects`                                                | `project`         |
+| [`deleteProject`](#deleteproject)                                             | `DELETE` | `/{version}/account/projects/{projectId}`                                    | `project`         |
+| [`createProjectEnvironment`](#createprojectenvironment)                       | `POST`   | `/{version}/account/projects/environments`                                   | `project`         |
+| [`deleteProjectEnvironment`](#deleteprojectenvironment)                       | `DELETE` | `/{version}/account/projects/environments/{environmentName}`                 | `project`         |
+| [`setEnvironmentRank`](#setenvironmentrank)                                   | `PATCH`  | `/{version}/account/projects/environments/{environmentName}/rank`            | `project`         |
+| [`promoteEnvironment`](#promoteenvironment)                                   | `POST`   | `/{version}/account/projects/environments/promote`                           | `project`         |
+| [`rollbackPromotion`](#rollbackpromotion)                                     | `POST`   | `/{version}/account/projects/environments/promote/rollback`                  | `project`         |
+| [`getProjectEnvironments`](#getprojectenvironments)                           | `GET`    | `/{version}/account/projects/environments`                                   | `project`         |
+| [`getProject`](#getproject)                                                   | `GET`    | `/{version}/account/projects/{projectId}`                                    | `project`         |
+| [`getProjects`](#getprojects)                                                 | `GET`    | `/{version}/account/projects`                                                | `project`         |
+| [`getAccountRegions`](#getaccountregions)                                     | `GET`    | `/{version}/account/regions`                                                 | `unauthenticated` |
+| [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project`         |
+| [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project`         |
+| [`setAdminPortalEnabled`](#setadminportalenabled)                             | `PUT`    | `/{version}/account/projects/{projectId}/admin-portal/enabled`               | `project`         |
+| [`assignAdminPortalServiceUser`](#assignadminportalserviceuser)               | `PUT`    | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project`         |
+| [`getAdminPortalStructure`](#getadminportalstructure)                         | `GET`    | `/{version}/account/projects/{projectId}/admin-portal/structure`             | `project`         |
+| [`updateProjectAdminUrl`](#updateprojectadminurl)                             | `PATCH`  | `/{version}/account/projects/{projectId}/settings/admin-url`                 | `project`         |
+| [`getProjectAiSettings`](#getprojectaisettings)                               | `GET`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project`         |
+| [`updateProjectAiSettings`](#updateprojectaisettings)                         | `PUT`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project`         |
+| [`createProjectAiAssistant`](#createprojectaiassistant)                       | `POST`   | `/{version}/account/projects/{projectId}/ai/assistants`                      | `project`         |
+| [`updateProjectAiAssistant`](#updateprojectaiassistant)                       | `PUT`    | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project`         |
+| [`deleteProjectAiAssistant`](#deleteprojectaiassistant)                       | `DELETE` | `/{version}/account/projects/{projectId}/ai/assistants/{assistantId}`        | `project`         |
+| [`getProjectAiUsage`](#getprojectaiusage)                                     | `GET`    | `/{version}/account/projects/{projectId}/ai/usage`                           | `project`         |
+| [`updateProjectAccentColor`](#updateprojectaccentcolor)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/accent-color`              | `project`         |
+| [`updateProjectIcon`](#updateprojecticon)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/icon`                      | `project`         |
+| [`updateProjectLogo`](#updateprojectlogo)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/logo`                      | `project`         |
+| [`updateProjectMainColor`](#updateprojectmaincolor)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/main-color`                | `project`         |
+| [`updateProjectAllowedOrigins`](#updateprojectallowedorigins)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/origins`                   | `project`         |
+| [`updateProjectDefaultLanguage`](#updateprojectdefaultlanguage)               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/default-language`          | `project`         |
+| [`updateProjectDescription`](#updateprojectdescription)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/description`               | `project`         |
+| [`disableProject`](#disableproject)                                           | `PATCH`  | `/{version}/account/projects/{projectId}/disable`                            | `project`         |
+| [`enableProject`](#enableproject)                                             | `PATCH`  | `/{version}/account/projects/{projectId}/enable`                             | `project`         |
+| [`updateProjectLanguages`](#updateprojectlanguages)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/languages`                 | `project`         |
+| [`checkProjectLanguages`](#checkprojectlanguages)                             | `POST`   | `/{version}/account/projects/{projectId}/settings/languages/check`           | `project`         |
+| [`updateProjectLegalDocuments`](#updateprojectlegaldocuments)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal`                     | `project`         |
+| [`updateProjectExposeLegal`](#updateprojectexposelegal)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal/expose`              | `project`         |
+| [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project`         |
+| [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project`         |
+| [`updateProjectUrl`](#updateprojecturl)                                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/url`                       | `project`         |
+| [`updateProjectName`](#updateprojectname)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/name`                      | `project`         |
+| [`updateProjectRegions`](#updateprojectregions)                               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/regions`                   | `project`         |
+| [`createAccount`](#createaccount)                                             | `POST`   | `/{version}/account`                                                         | `unauthenticated` |
+| [`changeTeamMemberPassword`](#changeteammemberpassword)                       | `POST`   | `/{version}/account/team/member/password`                                    | `project`         |
+| [`createTeamMember`](#createteammember)                                       | `POST`   | `/{version}/account/team/member/create`                                      | `project`         |
+| [`createAccountPolicy`](#createaccountpolicy)                                 | `POST`   | `/{version}/account/team/policies`                                           | `project`         |
+| [`createAccountRole`](#createaccountrole)                                     | `POST`   | `/{version}/account/team/roles`                                              | `project`         |
+| [`deleteAccountPolicy`](#deleteaccountpolicy)                                 | `DELETE` | `/{version}/account/team/policies/{Id}`                                      | `project`         |
+| [`deleteAccountRole`](#deleteaccountrole)                                     | `DELETE` | `/{version}/account/team/roles/{Id}`                                         | `project`         |
+| [`getAccountCollaborators`](#getaccountcollaborators)                         | `GET`    | `/{version}/account/collaborators`                                           | `project`         |
+| [`getAccountPasswordPolicy`](#getaccountpasswordpolicy)                       | `GET`    | `/{version}/account/team/password-policy`                                    | `project`         |
+| [`getAccountTeamPolicies`](#getaccountteampolicies)                           | `GET`    | `/{version}/account/team/policies`                                           | `project`         |
+| [`getAccountTeamRoles`](#getaccountteamroles)                                 | `GET`    | `/{version}/account/team/roles`                                              | `project`         |
+| [`sendInviteToTeamMember`](#sendinvitetoteammember)                           | `POST`   | `/{version}/account/team/member/invite`                                      | `project`         |
+| [`updateAccountPolicy`](#updateaccountpolicy)                                 | `PUT`    | `/{version}/account/team/policies`                                           | `project`         |
+| [`updateAccountRole`](#updateaccountrole)                                     | `PUT`    | `/{version}/account/team/roles`                                              | `project`         |
+| [`accountHasPasskey`](#accounthaspasskey)                                     | `POST`   | `/{version}/account/userauth/has-passkey`                                    | `project`         |
+| [`accountStartEmailVerification`](#accountstartemailverification)             | `POST`   | `/{version}/account/userauth/email/start-verification`                       | `project`         |
+| [`accountConfirmEmailVerification`](#accountconfirmemailverification)         | `POST`   | `/{version}/account/userauth/email/confirm-verification`                     | `project`         |
+| [`accountPasskeyRegistrationOptions`](#accountpasskeyregistrationoptions)     | `POST`   | `/{version}/account/userauth/passkey/registration-options`                   | `project`         |
+| [`accountVerifyPasskeyRegistration`](#accountverifypasskeyregistration)       | `POST`   | `/{version}/account/userauth/passkey/verify-registration`                    | `project`         |
+| [`accountPasskeyAuthenticationOptions`](#accountpasskeyauthenticationoptions) | `POST`   | `/{version}/account/userauth/passkey/authentication-options`                 | `project`         |
+| [`accountVerifyPasskeyAuthentication`](#accountverifypasskeyauthentication)   | `POST`   | `/{version}/account/userauth/passkey/verify-authentication`                  | `project`         |
+| [`listAccountPasskeys`](#listaccountpasskeys)                                 | `GET`    | `/{version}/account/userauth/passkeys`                                       | `project`         |
+| [`renameAccountPasskey`](#renameaccountpasskey)                               | `POST`   | `/{version}/account/userauth/passkeys/{CredentialId}/rename`                 | `project`         |
+| [`revokeAccountPasskey`](#revokeaccountpasskey)                               | `POST`   | `/{version}/account/userauth/passkeys/{CredentialId}/revoke`                 | `project`         |
+| [`accountPasskeyEnrollmentOptions`](#accountpasskeyenrollmentoptions)         | `POST`   | `/{version}/account/userauth/passkey/enrollment-options`                     | `project`         |
+| [`accountVerifyPasskeyEnrollment`](#accountverifypasskeyenrollment)           | `POST`   | `/{version}/account/userauth/passkey/verify-enrollment`                      | `project`         |
+| [`getMyAccountUserProfile`](#getmyaccountuserprofile)                         | `GET`    | `/{version}/account/me`                                                      | `project`         |
+| [`updateMyAccountUserPhone`](#updatemyaccountuserphone)                       | `PUT`    | `/{version}/account/me/phone`                                                | `project`         |
+| [`getLicenseDomainDnsStatus`](#getlicensedomaindnsstatus)                     | `GET`    | `/{version}/account/licensing/dns-status`                                    | `project`         |
+| [`getLicenses`](#getlicenses)                                                 | `GET`    | `/{version}/account/licenses`                                                | `project`         |
+| [`getInstallationLicenseStatus`](#getinstallationlicensestatus)               | `GET`    | `/{version}/account/licensing/status`                                        | `project`         |
+| [`createAiServiceUser`](#createaiserviceuser)                                 | `POST`   | `/{version}/account/ai/service-users`                                        | `project`         |
+| [`listAiServiceUsers`](#listaiserviceusers)                                   | `GET`    | `/{version}/account/ai/service-users`                                        | `project`         |
+| [`rotateAiServiceUserKey`](#rotateaiserviceuserkey)                           | `POST`   | `/{version}/account/ai/service-users/{Id}/keys`                              | `project`         |
+| [`revokeAiServiceUserKey`](#revokeaiserviceuserkey)                           | `DELETE` | `/{version}/account/ai/service-users/{Id}/keys/{KeyId}`                      | `project`         |
+| [`deleteAiServiceUser`](#deleteaiserviceuser)                                 | `DELETE` | `/{version}/account/ai/service-users/{Id}`                                   | `project`         |
+| [`getAgentOnboarding`](#getagentonboarding)                                   | `GET`    | `/{version}/account/agent/onboarding`                                        | `project`         |
+| [`getAiTools`](#getaitools)                                                   | `GET`    | `/{version}/account/ai/tools`                                                | `project`         |
+| [`invokeAiTool`](#invokeaitool)                                               | `POST`   | `/{version}/account/ai/tools/{ToolName}`                                     | `project`         |
+| [`uploadChatAttachment`](#uploadchatattachment)                               | `POST`   | `/{version}/account/chat/attachments`                                        | `project`         |
+| [`chatAvailability`](#chatavailability)                                       | `GET`    | `/{version}/account/chat/availability`                                       | `project`         |
+| [`getChatMemory`](#getchatmemory)                                             | `GET`    | `/{version}/account/chat/memory`                                             | `project`         |
+| [`forgetChatMemory`](#forgetchatmemory)                                       | `DELETE` | `/{version}/account/chat/memory/{NoteId}`                                    | `project`         |
+| [`deleteChatSession`](#deletechatsession)                                     | `DELETE` | `/{version}/account/chat/sessions/{SessionId}`                               | `project`         |
+| [`setChatSessionArchived`](#setchatsessionarchived)                           | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/archive`                       | `project`         |
+| [`setChatSessionPinned`](#setchatsessionpinned)                               | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/pin`                           | `project`         |
+| [`setChatSessionSharing`](#setchatsessionsharing)                             | `PATCH`  | `/{version}/account/chat/sessions/{SessionId}/sharing`                       | `project`         |
+| [`getChatSessions`](#getchatsessions)                                         | `GET`    | `/{version}/account/chat/sessions`                                           | `project`         |
+| [`getChatSessionEntries`](#getchatsessionentries)                             | `GET`    | `/{version}/account/chat/sessions/{SessionId}/entries`                       | `project`         |
+| [`setChatEntryFeedback`](#setchatentryfeedback)                               | `POST`   | `/{version}/account/chat/sessions/{SessionId}/entries/{EntryId}/feedback`    | `project`         |
+| [`answerChatQuestion`](#answerchatquestion)                                   | `POST`   | `/{version}/account/chat/sessions/{SessionId}/questions/{EntryId}/answer`    | `project`         |
+| [`decideChatPlan`](#decidechatplan)                                           | `POST`   | `/{version}/account/chat/sessions/{SessionId}/plans/{EntryId}/decision`      | `project`         |
+| [`stopChatRunStep`](#stopchatrunstep)                                         | `POST`   | `/{version}/account/chat/sessions/{SessionId}/steps/{EntryId}/stop`          | `project`         |
+| [`chatTurn`](#chatturn)                                                       | `POST`   | `/{version}/account/chat/turn`                                               | `project`         |
+| [`scaffoldProject`](#scaffoldproject)                                         | `POST`   | `/{version}/account/ai/scaffold`                                             | `project`         |
+| [`validateSchema`](#validateschema)                                           | `POST`   | `/{version}/account/ai/schemas/validate`                                     | `project`         |
+| [`renderTemplatePreview`](#rendertemplatepreview)                             | `POST`   | `/{version}/account/ai/templates/render-preview`                             | `project`         |
+| [`mcp`](#mcp)                                                                 | `POST`   | `/{version}/account/mcp`                                                     | `project`         |
 
 ## Reference
 
@@ -262,6 +262,8 @@ const result = await norbix.hub.account.getStripeBillingPortalUrl({
 
 Create a new item.
 
+> **No token needed.** Accepts a team invitation for someone who has no account yet. The client needs no `apiKey` / `bearerToken` and no `accountId`; the call is sent with no `Authorization` header (scope `unauthenticated`).
+
 **Request DTO**: `CodeMashHub2.CreateTeamMemberFromInvitation`
 **Response**: `CodeMashHub2.CreateTeamMemberFromInvitationResponse`
 
@@ -306,7 +308,7 @@ const result = await norbix.hub.account.getAccountUsageBilling({
 
 Verify / confirm the resource.
 
-> ⚠️ **Account-scoped.** This call requires `accountId` on the client. Construct with `new Norbix({ accountId, ... })` or set `NORBIX_ACCOUNT_ID`. Calling without it throws `NORBIX_ACCOUNT_SCOPE_REQUIRED`.
+> **No token needed.** Pass the account id and the verification token in the request (`{ accountId, token }`, sent in the query string). The client needs no `apiKey` / `bearerToken` and no `accountId`; the call is sent with no `Authorization` header (scope `unauthenticated`).
 
 **Request DTO**: `CodeMashHub2.VerifyAccount`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -317,7 +319,8 @@ import { Norbix } from '@norbix/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.account.verifyAccount({
-  // See CodeMash type for the full request shape.
+  accountId: '<account id>',
+  token: '<verification token>',
 });
 // → typed as CodeMashHub2.EmptyResponse
 ```
@@ -660,6 +663,8 @@ const result = await norbix.hub.account.getProjects({
 `GET` `/{version}/account/regions`
 
 Fetch a single item by ID.
+
+> **No token needed.** Lists the regions you can pick before you have an account. The client needs no `apiKey` / `bearerToken` and no `accountId`; the call is sent with no `Authorization` header (scope `unauthenticated`).
 
 **Request DTO**: `CodeMashHub2.GetAccountRegions`
 **Response**: `CodeMashHub2.GetAccountRegionsResponse`
@@ -1370,6 +1375,8 @@ const result = await norbix.hub.account.updateProjectRegions({
 `POST` `/{version}/account`
 
 Create a new item.
+
+> **No token needed.** Sign-up: creates a new account. The client needs no `apiKey` / `bearerToken` and no `accountId`; the call is sent with no `Authorization` header (scope `unauthenticated`).
 
 **Request DTO**: `CodeMashHub2.CreateAccount`
 **Response**: `CodeMashHub2.CreateAccountResponse`

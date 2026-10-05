@@ -212,7 +212,7 @@ Or via environment variables (no code change required):
 ```sh
 NORBIX_API_KEY=sk_live_...
 NORBIX_PROJECT_ID=proj_123
-NORBIX_ACCOUNT_ID=acc_456            # optional, unlocks Hub account-scoped endpoints
+NORBIX_ACCOUNT_ID=acc_456            # optional, sent as the norbix-account-id header
 NORBIX_REGION=nb-eu-germany          # optional, pins requests to a Norbix region (see Regions)
 NORBIX_API_URL=https://api.norbix.ai            # override for self-hosted, e.g. https://api.norbix.isidos.lt
 NORBIX_HUB_URL=https://hub.norbix.ai            # override for self-hosted, e.g. https://hub.norbix.isidos.lt
@@ -290,7 +290,7 @@ await norbix.api.database.find(
 
 Every generated endpoint method accepts the same `{ bearerToken?, timeoutMs?, env?, region? }` options as its second argument.
 
-> **Project vs account scope.** `projectId` is required by the API surface. `accountId` is required by the Hub surface for endpoints that act on the account (team invite, billing portal, account verify). Calling those without `accountId` throws `NORBIX_ACCOUNT_SCOPE_REQUIRED` _before_ the request leaves your machine.
+> **Project vs account scope.** `projectId` is required by the API surface. `accountId` is optional: when set, the client sends it as the `norbix-account-id` header. Sign-up (`hub.account.createAccount`), accepting an invitation (`hub.account.createTeamMemberFromInvitation`), listing regions (`hub.account.getAccountRegions` / `hub.regions.list`) and verifying the account (`hub.account.verifyAccount`, which takes `accountId` in its request) need no token and no `accountId` — they are sent with no `Authorization` header.
 
 <!-- END: AUTH_AND_CONFIG -->
 
@@ -650,7 +650,7 @@ when the body says nothing (for example a 500 page that is not JSON).
 | Code                            | Meaning                                                           |
 | ------------------------------- | ----------------------------------------------------------------- |
 | `NORBIX_NOT_AUTHENTICATED`      | No `apiKey`, `bearerToken`, or env var, and `login()` not called. |
-| `NORBIX_ACCOUNT_SCOPE_REQUIRED` | Account-scoped Hub endpoint called without `accountId`.           |
+| `NORBIX_ACCOUNT_SCOPE_REQUIRED` | Account-scoped call made without `accountId` (no method today).   |
 | `NORBIX_MISSING_PATH_PARAM`     | A `{token}` in the route was not provided on the request.         |
 | `NORBIX_NETWORK_ERROR`          | Fetch failed (network, CORS, timeout).                            |
 
