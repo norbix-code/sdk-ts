@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-04 18:34:30
+Date: 2026-10-05 07:54:38
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6980,6 +6980,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public parentId?: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public dependencies?: string[];
+
+    // @DataMember
+    public parentName?: string;
+
+    // @DataMember
+    public dependencyNames?: string[];
 
     public constructor(init?: Partial<TaxonomyListProjection>) {
       (Object as any).assign(this, init);
