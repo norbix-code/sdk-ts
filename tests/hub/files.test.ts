@@ -53,7 +53,7 @@ describe('hub.files', () => {
     expect(typeof ns['getFolderFiles']).toBe('function');
   });
 
-  it('disableFiles: GET /{version}/files/disable', async () => {
+  it('disableFiles: PUT /{version}/files/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -70,13 +70,13 @@ describe('hub.files', () => {
     )['files']!['disableFiles']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableFiles: GET /{version}/files/enable', async () => {
+  it('enableFiles: PUT /{version}/files/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -93,7 +93,7 @@ describe('hub.files', () => {
     )['files']!['enableFiles']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

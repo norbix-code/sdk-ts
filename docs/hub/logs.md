@@ -10,8 +10,8 @@ Accessed as `norbix.hub.logs` on the [`Norbix`](../../README.md#authentication) 
 
 | Method                                                    | Verb     | Path                                        | Scope     |
 | --------------------------------------------------------- | -------- | ------------------------------------------- | --------- |
-| [`disableLogging`](#disablelogging)                       | `GET`    | `/{version}/logs/disable`                   | `project` |
-| [`enableLogging`](#enablelogging)                         | `GET`    | `/{version}/logs/enable`                    | `project` |
+| [`disableLogging`](#disablelogging)                       | `PUT`    | `/{version}/logs/disable`                   | `project` |
+| [`enableLogging`](#enablelogging)                         | `PUT`    | `/{version}/logs/enable`                    | `project` |
 | [`deleteLoggingIntegration`](#deleteloggingintegration)   | `DELETE` | `/{version}/logs/integrations/{Id}`         | `project` |
 | [`disableLoggingIntegration`](#disableloggingintegration) | `PUT`    | `/{version}/logs/integrations/{Id}/disable` | `project` |
 | [`enableLoggingIntegration`](#enableloggingintegration)   | `PUT`    | `/{version}/logs/integrations/{Id}/enable`  | `project` |
@@ -29,7 +29,7 @@ Accessed as `norbix.hub.logs` on the [`Norbix`](../../README.md#authentication) 
 
 ### disableLogging
 
-`GET` `/{version}/logs/disable`
+`PUT` `/{version}/logs/disable`
 
 Disable the resource.
 
@@ -51,7 +51,7 @@ const result = await norbix.hub.logs.disableLogging({
 
 ### enableLogging
 
-`GET` `/{version}/logs/enable`
+`PUT` `/{version}/logs/enable`
 
 Enable the resource.
 

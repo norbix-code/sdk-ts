@@ -10,8 +10,8 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 
 | Method                                                                                | Verb     | Path                                                      | Scope     |
 | ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------- | --------- |
-| [`disablePayments`](#disablepayments)                                                 | `GET`    | `/{version}/payments/disable`                             | `project` |
-| [`enablePayments`](#enablepayments)                                                   | `GET`    | `/{version}/payments/enable`                              | `project` |
+| [`disablePayments`](#disablepayments)                                                 | `PUT`    | `/{version}/payments/disable`                             | `project` |
+| [`enablePayments`](#enablepayments)                                                   | `PUT`    | `/{version}/payments/enable`                              | `project` |
 | [`getPaymentsWebhookLog`](#getpaymentswebhooklog)                                     | `GET`    | `/{version}/payments/webhooks/log`                        | `project` |
 | [`deletePaymentsTrigger`](#deletepaymentstrigger)                                     | `DELETE` | `/{version}/payments/triggers/{triggerId}`                | `project` |
 | [`disablePaymentsTrigger`](#disablepaymentstrigger)                                   | `PATCH`  | `/{version}/payments/triggers/{triggerId}/disable`        | `project` |
@@ -32,7 +32,7 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 
 ### disablePayments
 
-`GET` `/{version}/payments/disable`
+`PUT` `/{version}/payments/disable`
 
 Disable the resource.
 
@@ -54,7 +54,7 @@ const result = await norbix.hub.payments.disablePayments({
 
 ### enablePayments
 
-`GET` `/{version}/payments/enable`
+`PUT` `/{version}/payments/enable`
 
 Enable the resource.
 

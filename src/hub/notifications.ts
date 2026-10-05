@@ -12,7 +12,7 @@ export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/notifications/email/disable
+   * PUT /{version}/notifications/email/disable
    * Request DTO: DisableEmail
    */
   disableEmail = (
@@ -22,7 +22,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/email/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -50,7 +50,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/email/enable
+   * PUT /{version}/notifications/email/enable
    * Request DTO: EnableEmail
    */
   enableEmail = (
@@ -60,7 +60,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/email/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -924,7 +924,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/sms/disable
+   * PUT /{version}/notifications/sms/disable
    * Request DTO: DisableSms
    */
   disableSms = (
@@ -934,7 +934,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/sms/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -962,7 +962,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/sms/enable
+   * PUT /{version}/notifications/sms/enable
    * Request DTO: EnableSms
    */
   enableSms = (
@@ -972,7 +972,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/sms/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -1570,7 +1570,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/push/disable
+   * PUT /{version}/notifications/push/disable
    * Request DTO: DisablePush
    */
   disablePush = (
@@ -1580,7 +1580,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/push/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -1608,7 +1608,7 @@ export class NotificationsModule {
   };
 
   /**
-   * GET /{version}/notifications/push/enable
+   * PUT /{version}/notifications/push/enable
    * Request DTO: EnablePush
    */
   enablePush = (
@@ -1618,7 +1618,7 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/notifications/push/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

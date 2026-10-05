@@ -12,7 +12,7 @@ export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/database/disable
+   * PUT /{version}/database/disable
    * Request DTO: DisableDatabase
    */
   disableDatabase = (
@@ -22,7 +22,7 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/database/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +31,7 @@ export class DatabaseModule {
   };
 
   /**
-   * GET /{version}/database/enable
+   * PUT /{version}/database/enable
    * Request DTO: EnableDatabase
    */
   enableDatabase = (
@@ -41,7 +41,7 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/database/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

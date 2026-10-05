@@ -10,9 +10,9 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 
 | Method                                                                          | Verb     | Path                                                                                  | Scope     |
 | ------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------- | --------- |
-| [`disableEmail`](#disableemail)                                                 | `GET`    | `/{version}/notifications/email/disable`                                              | `project` |
+| [`disableEmail`](#disableemail)                                                 | `PUT`    | `/{version}/notifications/email/disable`                                              | `project` |
 | [`getEmailDisableDependencies`](#getemaildisabledependencies)                   | `GET`    | `/{version}/notifications/email/disable-dependencies`                                 | `project` |
-| [`enableEmail`](#enableemail)                                                   | `GET`    | `/{version}/notifications/email/enable`                                               | `project` |
+| [`enableEmail`](#enableemail)                                                   | `PUT`    | `/{version}/notifications/email/enable`                                               | `project` |
 | [`saveEmailValidationIntegration`](#saveemailvalidationintegration)             | `POST`   | `/{version}/notifications/email/validation/integrations`                              | `project` |
 | [`testEmailValidationIntegration`](#testemailvalidationintegration)             | `POST`   | `/{version}/notifications/email/validation/integrations/test`                         | `project` |
 | [`attachFileToTemplate`](#attachfiletotemplate)                                 | `POST`   | `/{version}/notifications/email/templates/attachments`                                | `project` |
@@ -58,9 +58,9 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                              | `project` |
 | [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                                  | `project` |
 | [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                     | `project` |
-| [`disableSms`](#disablesms)                                                     | `GET`    | `/{version}/notifications/sms/disable`                                                | `project` |
+| [`disableSms`](#disablesms)                                                     | `PUT`    | `/{version}/notifications/sms/disable`                                                | `project` |
 | [`getSmsDisableDependencies`](#getsmsdisabledependencies)                       | `GET`    | `/{version}/notifications/sms/disable-dependencies`                                   | `project` |
-| [`enableSms`](#enablesms)                                                       | `GET`    | `/{version}/notifications/sms/enable`                                                 | `project` |
+| [`enableSms`](#enablesms)                                                       | `PUT`    | `/{version}/notifications/sms/enable`                                                 | `project` |
 | [`archiveSmsTemplate`](#archivesmstemplate)                                     | `PUT`    | `/{version}/notifications/sms/templates/{Id}/archive`                                 | `project` |
 | [`cloneSmsTemplate`](#clonesmstemplate)                                         | `POST`   | `/{version}/notifications/sms/templates/{Id}/clone`                                   | `project` |
 | [`createSmsTemplate`](#createsmstemplate)                                       | `POST`   | `/{version}/notifications/sms/templates`                                              | `project` |
@@ -92,9 +92,9 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                                | `project` |
 | [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                    | `project` |
 | [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                        | `project` |
-| [`disablePush`](#disablepush)                                                   | `GET`    | `/{version}/notifications/push/disable`                                               | `project` |
+| [`disablePush`](#disablepush)                                                   | `PUT`    | `/{version}/notifications/push/disable`                                               | `project` |
 | [`getPushDisableDependencies`](#getpushdisabledependencies)                     | `GET`    | `/{version}/notifications/push/disable-dependencies`                                  | `project` |
-| [`enablePush`](#enablepush)                                                     | `GET`    | `/{version}/notifications/push/enable`                                                | `project` |
+| [`enablePush`](#enablepush)                                                     | `PUT`    | `/{version}/notifications/push/enable`                                                | `project` |
 | [`archivePushTemplate`](#archivepushtemplate)                                   | `PUT`    | `/{version}/notifications/push/templates/{Id}/archive`                                | `project` |
 | [`clonePushTemplate`](#clonepushtemplate)                                       | `POST`   | `/{version}/notifications/push/templates/{Id}/clone`                                  | `project` |
 | [`createPushTemplate`](#createpushtemplate)                                     | `POST`   | `/{version}/notifications/push/templates`                                             | `project` |
@@ -139,7 +139,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 
 ### disableEmail
 
-`GET` `/{version}/notifications/email/disable`
+`PUT` `/{version}/notifications/email/disable`
 
 Disable the resource.
 
@@ -183,7 +183,7 @@ const result = await norbix.hub.notifications.getEmailDisableDependencies({
 
 ### enableEmail
 
-`GET` `/{version}/notifications/email/enable`
+`PUT` `/{version}/notifications/email/enable`
 
 Enable the resource.
 
@@ -1212,7 +1212,7 @@ const result = await norbix.hub.notifications.getEmailCampaignMessages({
 
 ### disableSms
 
-`GET` `/{version}/notifications/sms/disable`
+`PUT` `/{version}/notifications/sms/disable`
 
 Disable the resource.
 
@@ -1256,7 +1256,7 @@ const result = await norbix.hub.notifications.getSmsDisableDependencies({
 
 ### enableSms
 
-`GET` `/{version}/notifications/sms/enable`
+`PUT` `/{version}/notifications/sms/enable`
 
 Enable the resource.
 
@@ -1972,7 +1972,7 @@ const result = await norbix.hub.notifications.getSmsCampaignMessages({
 
 ### disablePush
 
-`GET` `/{version}/notifications/push/disable`
+`PUT` `/{version}/notifications/push/disable`
 
 Disable the resource.
 
@@ -2016,7 +2016,7 @@ const result = await norbix.hub.notifications.getPushDisableDependencies({
 
 ### enablePush
 
-`GET` `/{version}/notifications/push/enable`
+`PUT` `/{version}/notifications/push/enable`
 
 Enable the resource.
 

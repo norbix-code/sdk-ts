@@ -75,7 +75,7 @@ describe('hub.membership', () => {
     expect(typeof ns['removeContactIdentity']).toBe('function');
   });
 
-  it('disableMembership: GET /{version}/membership/disable', async () => {
+  it('disableMembership: PUT /{version}/membership/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -92,13 +92,13 @@ describe('hub.membership', () => {
     )['membership']!['disableMembership']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableMembership: GET /{version}/membership/enable', async () => {
+  it('enableMembership: PUT /{version}/membership/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -115,7 +115,7 @@ describe('hub.membership', () => {
     )['membership']!['enableMembership']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

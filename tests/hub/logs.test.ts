@@ -45,7 +45,7 @@ describe('hub.logs', () => {
     expect(typeof ns['saveLogSettings']).toBe('function');
   });
 
-  it('disableLogging: GET /{version}/logs/disable', async () => {
+  it('disableLogging: PUT /{version}/logs/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -62,13 +62,13 @@ describe('hub.logs', () => {
     )['logs']!['disableLogging']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableLogging: GET /{version}/logs/enable', async () => {
+  it('enableLogging: PUT /{version}/logs/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -85,7 +85,7 @@ describe('hub.logs', () => {
     )['logs']!['enableLogging']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

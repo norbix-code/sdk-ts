@@ -12,7 +12,7 @@ export class CodeModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/code/enable
+   * PUT /{version}/code/enable
    * Request DTO: EnableCode
    */
   enableCode = (
@@ -22,7 +22,7 @@ export class CodeModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/code/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +31,7 @@ export class CodeModule {
   };
 
   /**
-   * GET /{version}/code/disable
+   * PUT /{version}/code/disable
    * Request DTO: DisableCode
    */
   disableCode = (
@@ -41,7 +41,7 @@ export class CodeModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/code/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

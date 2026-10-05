@@ -10,8 +10,8 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 
 | Method                                                                    | Verb     | Path                                                                                | Scope     |
 | ------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------- | --------- |
-| [`disableDatabase`](#disabledatabase)                                     | `GET`    | `/{version}/database/disable`                                                       | `project` |
-| [`enableDatabase`](#enabledatabase)                                       | `GET`    | `/{version}/database/enable`                                                        | `project` |
+| [`disableDatabase`](#disabledatabase)                                     | `PUT`    | `/{version}/database/disable`                                                       | `project` |
+| [`enableDatabase`](#enabledatabase)                                       | `PUT`    | `/{version}/database/enable`                                                        | `project` |
 | [`deleteSchemaTrigger`](#deleteschematrigger)                             | `DELETE` | `/{version}/database/schemas/triggers/{triggerId}`                                  | `project` |
 | [`disableSchemaTrigger`](#disableschematrigger)                           | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/disable`                          | `project` |
 | [`enableSchemaTrigger`](#enableschematrigger)                             | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/enable`                           | `project` |
@@ -88,7 +88,7 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 
 ### disableDatabase
 
-`GET` `/{version}/database/disable`
+`PUT` `/{version}/database/disable`
 
 Disable the resource.
 
@@ -110,7 +110,7 @@ const result = await norbix.hub.database.disableDatabase({
 
 ### enableDatabase
 
-`GET` `/{version}/database/enable`
+`PUT` `/{version}/database/enable`
 
 Enable the resource.
 
