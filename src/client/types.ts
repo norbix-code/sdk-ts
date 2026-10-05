@@ -13,8 +13,10 @@
  *
  * Scoping rule:
  *  - `projectId` is required (or `NORBIX_PROJECT_ID` env var).
- *  - `accountId` is optional. When set, account-scoped Hub endpoints
- *    (team invite, billing portal, account verify, ...) become callable.
+ *  - `accountId` is optional. When set, it is sent as the
+ *    `norbix-account-id` header. Sign-up, accepting an invitation, listing
+ *    regions and verifying the account need no token and no `accountId`
+ *    (`verifyAccount` takes the account id in its request).
  *
  * Env vars (Node only — silently ignored in the browser):
  *   NORBIX_API_KEY
@@ -47,8 +49,8 @@ export interface NorbixConfig {
   projectId?: string;
 
   /**
-   * Optional account ID. Required for Hub account-scoped endpoints
-   * (team, billing, account profile). Falls back to `NORBIX_ACCOUNT_ID`.
+   * Optional account ID, sent as the `norbix-account-id` header. Falls back
+   * to `NORBIX_ACCOUNT_ID`.
    */
   accountId?: string;
 

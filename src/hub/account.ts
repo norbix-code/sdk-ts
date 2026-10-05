@@ -127,6 +127,7 @@ export class AccountModule {
 
   /**
    * POST /{version}/account/team/member
+   * Anonymous — no token and no `accountId` needed (accepts an invitation).
    * Request DTO: CreateTeamMemberFromInvitation
    */
   createTeamMemberFromInvitation = (
@@ -139,7 +140,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };
@@ -165,7 +166,8 @@ export class AccountModule {
 
   /**
    * GET /{version}/account/verify
-   * Account-scoped — requires `accountId` on the Norbix client.
+   * Anonymous — no token needed. The account id travels in the request
+   * (`accountId`, query string), not from the client.
    * Request DTO: VerifyAccount
    */
   verifyAccount = (
@@ -178,7 +180,7 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'account',
+      scope: 'unauthenticated',
       ...options,
     });
   };
@@ -470,6 +472,7 @@ export class AccountModule {
 
   /**
    * GET /{version}/account/regions
+   * Anonymous — no token and no `accountId` needed.
    * Request DTO: GetAccountRegions
    */
   getAccountRegions = (
@@ -482,7 +485,7 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };
@@ -1059,6 +1062,7 @@ export class AccountModule {
 
   /**
    * POST /{version}/account
+   * Anonymous — no token and no `accountId` needed (sign-up).
    * Request DTO: CreateAccount
    */
   createAccount = (
@@ -1071,7 +1075,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'unauthenticated',
       ...options,
     });
   };
