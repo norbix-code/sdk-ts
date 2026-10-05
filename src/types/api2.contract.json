@@ -3,6 +3,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ArchiveEndUserChatSessionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "AssignRolePermissionsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -36,6 +40,18 @@
     "returnsBytes": false
   },
   "CountRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateEndUserChatSessionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEndUserChatAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEndUserChatSessionRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -107,11 +123,31 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ForgetEndUserChatMemoryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetDatabaseSchemaRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
   "GetDatabaseSchemasRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEndUserAiToolsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEndUserChatAvailabilityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEndUserChatEntriesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEndUserChatSessionRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -124,6 +160,10 @@
     "returnsBytes": false
   },
   "GetPublicFileRequest": {
+    "requiresAuth": false,
+    "returnsBytes": true
+  },
+  "GetPublicProjectBrandAsset": {
     "requiresAuth": false,
     "returnsBytes": true
   },
@@ -171,7 +211,23 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "InvokeEndUserAiToolRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "LinkIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListEndUserChatAttachmentsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListEndUserChatMemoryRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ListEndUserChatSessionsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -199,12 +255,20 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "PinEndUserChatSessionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "PutFileContentRequest": {
     "requiresAuth": false,
     "returnsBytes": false
   },
   "RefreshPasskeyTokenRequest": {
     "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RenameEndUserChatSessionRequest": {
+    "requiresAuth": true,
     "returnsBytes": false
   },
   "RenamePasskeyRequest": {
@@ -271,8 +335,16 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SetEndUserChatEntryFeedbackRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "StartEmailVerificationRequest": {
     "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "StartEndUserChatTurnRequest": {
+    "requiresAuth": true,
     "returnsBytes": false
   },
   "TestFilesIntegrationRequest": {
@@ -300,6 +372,10 @@
     "returnsBytes": false
   },
   "UpdateUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UploadEndUserChatAttachmentRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
