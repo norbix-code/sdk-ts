@@ -45,7 +45,7 @@ flowchart LR
 
 - **Auth precedence:** per-call `bearerToken` override -> client bearer token -> API key.
 - **Per-call overrides:** `bearerToken` and `timeoutMs` are supported today (`src/client/transport.ts`).
-- **Scopes:** account-scoped endpoints throw early when `accountId` is missing.
+- **Scopes:** account-scoped endpoints throw early when `accountId` is missing (no method uses that scope today); the anonymous Hub routes (sign-up, invitation, regions, account verify) use the `unauthenticated` scope and send no `Authorization` header.
 - **Reliability:** timeout + structured error mapping implemented; retry/backoff and refresh retry are not.
 - **Realtime:** webhook management endpoints exist in Hub modules; no SDK-level SSE/event-stream helper module yet.
 
