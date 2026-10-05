@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import { AccountModule } from '../../src/hub/account.js';
-import { NorbixError } from '../../src/index.js';
 import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '../_helpers.js';
 
 /**
@@ -15,7 +14,8 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - issued HTTP verb + URL with version segment substituted and path
  *     tokens interpolated from a stubbed request
  *   - auth, project, and (when applicable) account headers
- *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
+ *   - no Authorization header on the anonymous routes (createAccount,
+ *     createTeamMemberFromInvitation, getAccountRegions, verifyAccount)
  */
 describe('hub.account', () => {
   it('module exposes 113 method(s)', () => {
@@ -302,7 +302,8 @@ describe('hub.account', () => {
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    // Anonymous route: no Authorization header even when the client has a token.
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
@@ -348,21 +349,23 @@ describe('hub.account', () => {
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    // Anonymous route: no Authorization header even when the client has a token.
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('verifyAccount: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId', async () => {
-    const stub = {};
-    const { norbix } = makeClient();
+  it('verifyAccount: works without accountId on the client (it travels in the query)', async () => {
+    const { norbix, mock } = makeClient();
     const fn = (
       norbix.hub as unknown as Record<
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['verifyAccount']!;
-    await expect(fn(stub)).rejects.toBeInstanceOf(NorbixError);
-    await expect(fn(stub)).rejects.toMatchObject({ code: 'NORBIX_ACCOUNT_SCOPE_REQUIRED' });
+    await fn({ accountId: 'acc-1', token: 'verify-1' });
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(new URL(mock.lastCall!.url).searchParams.get('accountId')).toBe('acc-1');
+    expect(mock.lastCall?.headers.has('X-CM-AccountId')).toBe(false);
   });
 
   it('verifyAccount: succeeds when accountId is configured', async () => {
@@ -763,7 +766,8 @@ describe('hub.account', () => {
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    // Anonymous route: no Authorization header even when the client has a token.
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
@@ -1494,7 +1498,8 @@ describe('hub.account', () => {
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    // Anonymous route: no Authorization header even when the client has a token.
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
