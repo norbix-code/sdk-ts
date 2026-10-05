@@ -43,6 +43,7 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`renameDatabaseSchema`](#renamedatabaseschema)                           | `PUT`    | `/{version}/database/schemas/{Id}/rename`                                           | `project` |
 | [`saveDatabaseSchema`](#savedatabaseschema)                               | `POST`   | `/{version}/database/schemas`                                                       | `project` |
 | [`updateDatabaseSchemaDraft`](#updatedatabaseschemadraft)                 | `PUT`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`updateDatabaseSchemaEmbed`](#updatedatabaseschemaembed)                 | `PUT`    | `/{version}/database/schemas/{Id}/embed`                                            | `project` |
 | [`updateDatabaseSchemaListSettings`](#updatedatabaseschemalistsettings)   | `PUT`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
 | [`updateDatabaseSchemaSettings`](#updatedatabaseschemasettings)           | `PUT`    | `/{version}/database/schemas/{Id}/settings`                                         | `project` |
 | [`aggregateRecords`](#aggregaterecords)                                   | `POST`   | `/{version}/database/collections/{collectionName}/aggregate`                        | `project` |
@@ -821,6 +822,29 @@ import { Norbix } from '@norbix/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.database.updateDatabaseSchemaDraft({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateDatabaseSchemaEmbed
+
+`PUT` `/{version}/database/schemas/{Id}/embed`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateDatabaseSchemaEmbedRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.updateDatabaseSchemaEmbed({
   Id: 'Id-here',
   // Other fields: see CodeMash type for the full request shape.
 });

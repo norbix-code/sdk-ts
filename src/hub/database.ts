@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 72
+ * Endpoints: 73
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -630,6 +630,25 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/database/schemas/{Id}/draft',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/database/schemas/{Id}/embed
+   * Request DTO: UpdateDatabaseSchemaEmbedRequest
+   */
+  updateDatabaseSchemaEmbed = (
+    request: Partial<CodeMashHub2.UpdateDatabaseSchemaEmbedRequest> = {} as Partial<CodeMashHub2.UpdateDatabaseSchemaEmbedRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/{Id}/embed',
       method: 'PUT',
       request,
       pathParams: ['Id'],
