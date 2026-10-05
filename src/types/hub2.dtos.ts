@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-05 07:54:38
+Date: 2026-10-05 16:03:12
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -3535,6 +3535,154 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class IdResponse extends ResponseBase {
+    // @DataMember
+    public id?: string;
+
+    // @DataMember
+    public status?: string;
+
+    public constructor(init?: Partial<IdResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract(Namespace="http://codemash.io/types/")
+  export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv {
+    /** @description ID of your project. Can be passed in a header as norbix-project-id. */
+    // @DataMember
+    // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
+    public projectId: string;
+
+    /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
+    // @DataMember
+    // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
+    public env?: string;
+
+    public constructor(init?: Partial<CodeMashRequestBase>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  /** @description Create SMS campaign */
+  // @Route("/{version}/notifications/sms/campaigns", "POST")
+  // @Api(Description="Create SMS campaign")
+  // @DataContract
+  export class CreateSmsCampaignRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
+    /** @description SMS template id to send — pick one with get_sms_templates. Never invent it. */
+    // @DataMember
+    // @ApiMember(Description="SMS template id to send — pick one with get_sms_templates. Never invent it.")
+    public templateId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it. */
+    // @DataMember
+    // @ApiMember(Description="SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it.", IsRequired=true)
+    public integrationId: string;
+
+    /** @description Optional language code forcing one template translation for every recipient. */
+    // @DataMember
+    // @ApiMember(Description="Optional language code forcing one template translation for every recipient.")
+    public language?: string;
+
+    // @DataMember
+    public initiatorId?: string;
+
+    /** @description Audience type: 'AllUsers' (every project member subscribed to the SMS channel — role-based delivery can address MILLIONS of contacts), 'SpecifiedUsers' (exact member ids), or 'PhoneNumbers' (raw phone numbers). Fill EXACTLY the settings object matching this value. 'Collection' delivery is not available from chat. */
+    // @DataMember
+    // @ApiMember(Description="Audience type: 'AllUsers' (every project member subscribed to the SMS channel — role-based delivery can address MILLIONS of contacts), 'SpecifiedUsers' (exact member ids), or 'PhoneNumbers' (raw phone numbers). Fill EXACTLY the settings object matching this value. 'Collection' delivery is not available from chat.")
+    public deliveryType: SmsCampaignRecipientsSourceTypes;
+
+    /** @description For deliveryType 'AllUsers'. JSON object: {"recipientsSourceType":"AllUsers","rolesNames":["authenticated"],"userTags":[],"campaignTime":<unix seconds UTC>}. rolesNames/userTags are optional narrowing filters — verify exact role names with get_roles. */
+    // @DataMember
+    // @ApiMember(Description="For deliveryType 'AllUsers'. JSON object: {\"recipientsSourceType\":\"AllUsers\",\"rolesNames\":[\"authenticated\"],\"userTags\":[],\"campaignTime\":<unix seconds UTC>}. rolesNames/userTags are optional narrowing filters — verify exact role names with get_roles.")
+    public allUsers?: SmsToAllUsersDeliverySettingsDto;
+
+    /** @description For deliveryType 'SpecifiedUsers'. JSON object: {"recipientsSourceType":"SpecifiedUsers","recipients":[<member ids>],"campaignTime":<unix seconds UTC>}. */
+    // @DataMember
+    // @ApiMember(Description="For deliveryType 'SpecifiedUsers'. JSON object: {\"recipientsSourceType\":\"SpecifiedUsers\",\"recipients\":[<member ids>],\"campaignTime\":<unix seconds UTC>}.")
+    public specifiedUsers?: SmsToUsersDeliverySettingsDto;
+
+    /** @description For deliveryType 'AccountUsers'. JSON object: {"recipientsSourceType":"AccountUsers","recipients":[<account owner / team member ids>],"campaignTime":<unix seconds UTC>}. Members without a phone number are skipped. */
+    // @DataMember
+    // @ApiMember(Description="For deliveryType 'AccountUsers'. JSON object: {\"recipientsSourceType\":\"AccountUsers\",\"recipients\":[<account owner / team member ids>],\"campaignTime\":<unix seconds UTC>}. Members without a phone number are skipped.")
+    public accountUsers?: SmsToAccountUsersDeliverySettingsDto;
+
+    // @DataMember
+    public collection?: SmsToCollectionRecordsDeliverySettingsDto;
+
+    /** @description For deliveryType 'PhoneNumbers'. JSON object: {"recipientsSourceType":"PhoneNumbers","phoneNumbers":["+37060000000"],"campaignTime":<unix seconds UTC>}. Numbers in international format. */
+    // @DataMember
+    // @ApiMember(Description="For deliveryType 'PhoneNumbers'. JSON object: {\"recipientsSourceType\":\"PhoneNumbers\",\"phoneNumbers\":[\"+37060000000\"],\"campaignTime\":<unix seconds UTC>}. Numbers in international format.")
+    public phoneNumbers?: SmsToPhoneNumbersDeliverySettingsDto;
+
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
+    public constructor(init?: Partial<CreateSmsCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateSmsCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  export class SmsCampaignSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public campaign?: CreateSmsCampaignRequest;
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<SmsCampaignSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PushCampaignRequest {
+    public source: PushCampaignRecipientsSourceTypes;
+    public templateId: string;
+    public integrationId?: string;
+    public language?: string;
+    public initiatorId?: string;
+    public notes?: string;
+    // @DataMember
+    public mappedTokens?: TokenMappingDto[];
+
+    // @DataMember
+    public campaignTime?: number;
+
+    public constructor(init?: Partial<PushCampaignRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PushCampaignSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public campaign?: PushCampaignRequest;
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<PushCampaignSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class MongoDbAggregateDto implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -4170,24 +4318,6 @@ export module CodeMashHub2 {
     correlationId?: string;
   }
 
-  // @DataContract(Namespace="http://codemash.io/types/")
-  export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv {
-    /** @description ID of your project. Can be passed in a header as norbix-project-id. */
-    // @DataMember
-    // @ApiMember(DataType="string", Description="ID of your project. Can be passed in a header as norbix-project-id.", IsRequired=true, Name="norbix-project-id", ParameterType="header")
-    public projectId: string;
-
-    /** @description Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env. */
-    // @DataMember
-    // @ApiMember(DataType="string", Description="Target environment for this request (e.g. TEST, STAGING). Optional — when omitted the request runs against PROD. Can be passed in a header as norbix-env.", Name="norbix-env", ParameterType="header")
-    public env?: string;
-
-    public constructor(init?: Partial<CodeMashRequestBase>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export interface IHasProjectId {
     projectId: string;
   }
@@ -4812,24 +4942,6 @@ export module CodeMashHub2 {
     public platformApiLevel?: number;
 
     public constructor(init?: Partial<PushDeviceDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PushCampaignRequest {
-    public source: PushCampaignRecipientsSourceTypes;
-    public templateId: string;
-    public integrationId?: string;
-    public language?: string;
-    public initiatorId?: string;
-    public notes?: string;
-    // @DataMember
-    public mappedTokens?: TokenMappingDto[];
-
-    // @DataMember
-    public campaignTime?: number;
-
-    public constructor(init?: Partial<PushCampaignRequest>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7235,6 +7347,9 @@ export module CodeMashHub2 {
     // @DataMember
     public description?: string;
 
+    // @DataMember
+    public env?: string;
+
     public constructor(init?: Partial<SchemaListProjection>) {
       (Object as any).assign(this, init);
     }
@@ -7846,6 +7961,12 @@ export module CodeMashHub2 {
     public notes?: string;
 
     // @DataMember
+    public createdById?: string;
+
+    // @DataMember
+    public timeZoneId?: string;
+
+    // @DataMember
     public userId: string;
 
     // @DataMember
@@ -8121,9 +8242,6 @@ export module CodeMashHub2 {
 
     // @DataMember
     public template: SmsTemplateDto;
-
-    // @DataMember
-    public createdById?: string;
 
     public constructor(init?: Partial<SmsCampaignDto>) {
       super(init);
@@ -10143,20 +10261,6 @@ export module CodeMashHub2 {
     public item?: AccountStatusDto;
 
     public constructor(init?: Partial<GetAccountStatusResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class IdResponse extends ResponseBase {
-    // @DataMember
-    public id?: string;
-
-    // @DataMember
-    public status?: string;
-
-    public constructor(init?: Partial<IdResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -12509,7 +12613,7 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/code/enable", "GET")
+  // @Route("/{version}/code/enable", "PUT")
   export class EnableCode extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableCode>) {
       super(init);
@@ -12519,14 +12623,14 @@ export module CodeMashHub2 {
       return 'EnableCode';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/code/disable", "GET")
+  // @Route("/{version}/code/disable", "PUT")
   export class DisableCode extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableCode>) {
       super(init);
@@ -12536,7 +12640,7 @@ export module CodeMashHub2 {
       return 'DisableCode';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -13432,6 +13536,8 @@ export module CodeMashHub2 {
     public typegen_193_WebhookDestinationDto?: WebhookDestinationDto;
     public typegen_194_SchedulerTaskDto?: SchedulerTaskDto;
     public typegen_249_EmailCampaignSchedulerTaskRequest?: EmailCampaignSchedulerTaskRequest;
+    public typegen_250_SmsCampaignSchedulerTaskRequest?: SmsCampaignSchedulerTaskRequest;
+    public typegen_251_PushCampaignSchedulerTaskRequest?: PushCampaignSchedulerTaskRequest;
     public typegen_195_MongoDbAggregateDto?: MongoDbAggregateDto;
     public typegen_196_MarketplaceIntegrationDto?: MarketplaceIntegrationDto;
     public typegen_197_MarketplaceFunctionDto?: MarketplaceFunctionDto;
@@ -16167,7 +16273,7 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/membership/disable", "GET")
+  // @Route("/{version}/membership/disable", "PUT")
   export class DisableMembership extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableMembership>) {
       super(init);
@@ -16177,14 +16283,14 @@ export module CodeMashHub2 {
       return 'DisableMembership';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/membership/enable", "GET")
+  // @Route("/{version}/membership/enable", "PUT")
   export class EnableMembership extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableMembership>) {
       super(init);
@@ -16194,7 +16300,7 @@ export module CodeMashHub2 {
       return 'EnableMembership';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -17113,7 +17219,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable database service */
-  // @Route("/{version}/database/disable", "GET")
+  // @Route("/{version}/database/disable", "PUT")
   // @Api(Description="Disable database service")
   export class DisableDatabase extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableDatabase>) {
@@ -17124,14 +17230,14 @@ export module CodeMashHub2 {
       return 'DisableDatabase';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/database/enable", "GET")
+  // @Route("/{version}/database/enable", "PUT")
   export class EnableDatabase extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableDatabase>) {
       super(init);
@@ -17141,7 +17247,7 @@ export module CodeMashHub2 {
       return 'EnableDatabase';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -19446,7 +19552,7 @@ export module CodeMashHub2 {
     public createResponse() {}
   }
 
-  // @Route("/{version}/files/disable", "GET")
+  // @Route("/{version}/files/disable", "PUT")
   export class DisableFiles extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableFiles>) {
       super(init);
@@ -19456,14 +19562,14 @@ export module CodeMashHub2 {
       return 'DisableFiles';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/files/enable", "GET")
+  // @Route("/{version}/files/enable", "PUT")
   export class EnableFiles extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableFiles>) {
       super(init);
@@ -19473,7 +19579,7 @@ export module CodeMashHub2 {
       return 'EnableFiles';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -19939,7 +20045,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable email service */
-  // @Route("/{version}/notifications/email/disable", "GET")
+  // @Route("/{version}/notifications/email/disable", "PUT")
   // @Api(Description="Disable email service")
   export class DisableEmail extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableEmail>) {
@@ -19950,7 +20056,7 @@ export module CodeMashHub2 {
       return 'DisableEmail';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -19980,7 +20086,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Enable email service */
-  // @Route("/{version}/notifications/email/enable", "GET")
+  // @Route("/{version}/notifications/email/enable", "PUT")
   // @Api(Description="Enable email service")
   export class EnableEmail extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableEmail>) {
@@ -19991,7 +20097,7 @@ export module CodeMashHub2 {
       return 'EnableEmail';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -21330,7 +21436,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable SMS service */
-  // @Route("/{version}/notifications/sms/disable", "GET")
+  // @Route("/{version}/notifications/sms/disable", "PUT")
   // @Api(Description="Disable SMS service")
   export class DisableSms extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableSms>) {
@@ -21341,7 +21447,7 @@ export module CodeMashHub2 {
       return 'DisableSms';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -21371,7 +21477,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Enable SMS service */
-  // @Route("/{version}/notifications/sms/enable", "GET")
+  // @Route("/{version}/notifications/sms/enable", "PUT")
   // @Api(Description="Enable SMS service")
   export class EnableSms extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnableSms>) {
@@ -21382,7 +21488,7 @@ export module CodeMashHub2 {
       return 'EnableSms';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -21905,82 +22011,6 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Create SMS campaign */
-  // @Route("/{version}/notifications/sms/campaigns", "POST")
-  // @Api(Description="Create SMS campaign")
-  // @DataContract
-  export class CreateSmsCampaignRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
-    /** @description SMS template id to send — pick one with get_sms_templates. Never invent it. */
-    // @DataMember
-    // @ApiMember(Description="SMS template id to send — pick one with get_sms_templates. Never invent it.")
-    public templateId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it. */
-    // @DataMember
-    // @ApiMember(Description="SMS provider integration id the campaign sends through — pick one with get_sms_integrations (the project default unless the user named another). Required; never invent it.", IsRequired=true)
-    public integrationId: string;
-
-    /** @description Optional language code forcing one template translation for every recipient. */
-    // @DataMember
-    // @ApiMember(Description="Optional language code forcing one template translation for every recipient.")
-    public language?: string;
-
-    // @DataMember
-    public initiatorId?: string;
-
-    /** @description Audience type: 'AllUsers' (every project member subscribed to the SMS channel — role-based delivery can address MILLIONS of contacts), 'SpecifiedUsers' (exact member ids), or 'PhoneNumbers' (raw phone numbers). Fill EXACTLY the settings object matching this value. 'Collection' delivery is not available from chat. */
-    // @DataMember
-    // @ApiMember(Description="Audience type: 'AllUsers' (every project member subscribed to the SMS channel — role-based delivery can address MILLIONS of contacts), 'SpecifiedUsers' (exact member ids), or 'PhoneNumbers' (raw phone numbers). Fill EXACTLY the settings object matching this value. 'Collection' delivery is not available from chat.")
-    public deliveryType: SmsCampaignRecipientsSourceTypes;
-
-    /** @description For deliveryType 'AllUsers'. JSON object: {"recipientsSourceType":"AllUsers","rolesNames":["authenticated"],"userTags":[],"campaignTime":<unix seconds UTC>}. rolesNames/userTags are optional narrowing filters — verify exact role names with get_roles. */
-    // @DataMember
-    // @ApiMember(Description="For deliveryType 'AllUsers'. JSON object: {\"recipientsSourceType\":\"AllUsers\",\"rolesNames\":[\"authenticated\"],\"userTags\":[],\"campaignTime\":<unix seconds UTC>}. rolesNames/userTags are optional narrowing filters — verify exact role names with get_roles.")
-    public allUsers?: SmsToAllUsersDeliverySettingsDto;
-
-    /** @description For deliveryType 'SpecifiedUsers'. JSON object: {"recipientsSourceType":"SpecifiedUsers","recipients":[<member ids>],"campaignTime":<unix seconds UTC>}. */
-    // @DataMember
-    // @ApiMember(Description="For deliveryType 'SpecifiedUsers'. JSON object: {\"recipientsSourceType\":\"SpecifiedUsers\",\"recipients\":[<member ids>],\"campaignTime\":<unix seconds UTC>}.")
-    public specifiedUsers?: SmsToUsersDeliverySettingsDto;
-
-    /** @description For deliveryType 'AccountUsers'. JSON object: {"recipientsSourceType":"AccountUsers","recipients":[<account owner / team member ids>],"campaignTime":<unix seconds UTC>}. Members without a phone number are skipped. */
-    // @DataMember
-    // @ApiMember(Description="For deliveryType 'AccountUsers'. JSON object: {\"recipientsSourceType\":\"AccountUsers\",\"recipients\":[<account owner / team member ids>],\"campaignTime\":<unix seconds UTC>}. Members without a phone number are skipped.")
-    public accountUsers?: SmsToAccountUsersDeliverySettingsDto;
-
-    // @DataMember
-    public collection?: SmsToCollectionRecordsDeliverySettingsDto;
-
-    /** @description For deliveryType 'PhoneNumbers'. JSON object: {"recipientsSourceType":"PhoneNumbers","phoneNumbers":["+37060000000"],"campaignTime":<unix seconds UTC>}. Numbers in international format. */
-    // @DataMember
-    // @ApiMember(Description="For deliveryType 'PhoneNumbers'. JSON object: {\"recipientsSourceType\":\"PhoneNumbers\",\"phoneNumbers\":[\"+37060000000\"],\"campaignTime\":<unix seconds UTC>}. Numbers in international format.")
-    public phoneNumbers?: SmsToPhoneNumbersDeliverySettingsDto;
-
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
-    // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
-    public sendNow?: boolean;
-
-    public constructor(init?: Partial<CreateSmsCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CreateSmsCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
   /** @description Deletes sms campaign from queue */
   // @Route("/{version}/notifications/sms/campaigns/{id}", "DELETE")
   // @Api(Description="Deletes sms campaign from queue")
@@ -22419,7 +22449,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable push service */
-  // @Route("/{version}/notifications/push/disable", "GET")
+  // @Route("/{version}/notifications/push/disable", "PUT")
   // @Api(Description="Disable push service")
   export class DisablePush extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisablePush>) {
@@ -22430,7 +22460,7 @@ export module CodeMashHub2 {
       return 'DisablePush';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -22460,7 +22490,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Enable push service */
-  // @Route("/{version}/notifications/push/enable", "GET")
+  // @Route("/{version}/notifications/push/enable", "PUT")
   // @Api(Description="Enable push service")
   export class EnablePush extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnablePush>) {
@@ -22471,7 +22501,7 @@ export module CodeMashHub2 {
       return 'EnablePush';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -23518,7 +23548,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable payments service */
-  // @Route("/{version}/payments/disable", "GET")
+  // @Route("/{version}/payments/disable", "PUT")
   // @Api(Description="Disable payments service")
   export class DisablePayments extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisablePayments>) {
@@ -23529,7 +23559,7 @@ export module CodeMashHub2 {
       return 'DisablePayments';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -23537,7 +23567,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Enable payments service */
-  // @Route("/{version}/payments/enable", "GET")
+  // @Route("/{version}/payments/enable", "PUT")
   // @Api(Description="Enable payments service")
   export class EnablePayments extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<EnablePayments>) {
@@ -23548,7 +23578,7 @@ export module CodeMashHub2 {
       return 'EnablePayments';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -23911,7 +23941,7 @@ export module CodeMashHub2 {
   }
 
   /** @description Disable logging service */
-  // @Route("/{version}/logs/disable", "GET")
+  // @Route("/{version}/logs/disable", "PUT")
   // @Api(Description="Disable logging service")
   export class DisableLogging extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     public constructor(init?: Partial<DisableLogging>) {
@@ -23922,14 +23952,14 @@ export module CodeMashHub2 {
       return 'DisableLogging';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
     }
   }
 
-  // @Route("/{version}/logs/enable", "GET")
+  // @Route("/{version}/logs/enable", "PUT")
   export class EnableLogging extends CodeMashRequestBase implements IReturn<EmptyResponse> {
     /** @description When true, also create a Norbix Logging integration backed by the project's default database. */
     // @ApiMember(DataType="boolean", Description="When true, also create a Norbix Logging integration backed by the project's default database.", Name="createNorbixLogging", ParameterType="query")
@@ -23943,7 +23973,7 @@ export module CodeMashHub2 {
       return 'EnableLogging';
     }
     public getMethod() {
-      return 'GET';
+      return 'PUT';
     }
     public createResponse() {
       return new EmptyResponse();
