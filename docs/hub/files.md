@@ -10,8 +10,8 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 
 | Method                                                          | Verb     | Path                                            | Scope     |
 | --------------------------------------------------------------- | -------- | ----------------------------------------------- | --------- |
-| [`disableFiles`](#disablefiles)                                 | `GET`    | `/{version}/files/disable`                      | `project` |
-| [`enableFiles`](#enablefiles)                                   | `GET`    | `/{version}/files/enable`                       | `project` |
+| [`disableFiles`](#disablefiles)                                 | `PUT`    | `/{version}/files/disable`                      | `project` |
+| [`enableFiles`](#enablefiles)                                   | `PUT`    | `/{version}/files/enable`                       | `project` |
 | [`deleteFilesTrigger`](#deletefilestrigger)                     | `DELETE` | `/{version}/files/triggers/{triggerId}`         | `project` |
 | [`disableFilesTrigger`](#disablefilestrigger)                   | `PATCH`  | `/{version}/files/triggers/{triggerId}/disable` | `project` |
 | [`enableFilesTrigger`](#enablefilestrigger)                     | `PATCH`  | `/{version}/files/triggers/{triggerId}/enable`  | `project` |
@@ -37,7 +37,7 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 
 ### disableFiles
 
-`GET` `/{version}/files/disable`
+`PUT` `/{version}/files/disable`
 
 Disable the resource.
 
@@ -59,7 +59,7 @@ const result = await norbix.hub.files.disableFiles({
 
 ### enableFiles
 
-`GET` `/{version}/files/enable`
+`PUT` `/{version}/files/enable`
 
 Enable the resource.
 

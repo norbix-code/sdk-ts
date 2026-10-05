@@ -104,7 +104,7 @@ describe('hub.database', () => {
     expect(typeof ns['testDatabaseAggregate']).toBe('function');
   });
 
-  it('disableDatabase: GET /{version}/database/disable', async () => {
+  it('disableDatabase: PUT /{version}/database/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -121,13 +121,13 @@ describe('hub.database', () => {
     )['database']!['disableDatabase']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableDatabase: GET /{version}/database/enable', async () => {
+  it('enableDatabase: PUT /{version}/database/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -144,7 +144,7 @@ describe('hub.database', () => {
     )['database']!['enableDatabase']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

@@ -12,7 +12,7 @@ export class FilesModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/files/disable
+   * PUT /{version}/files/disable
    * Request DTO: DisableFiles
    */
   disableFiles = (
@@ -22,7 +22,7 @@ export class FilesModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/files/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +31,7 @@ export class FilesModule {
   };
 
   /**
-   * GET /{version}/files/enable
+   * PUT /{version}/files/enable
    * Request DTO: EnableFiles
    */
   enableFiles = (
@@ -41,7 +41,7 @@ export class FilesModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/files/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

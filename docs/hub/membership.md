@@ -10,8 +10,8 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 
 | Method                                                                    | Verb     | Path                                                                  | Scope     |
 | ------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | --------- |
-| [`disableMembership`](#disablemembership)                                 | `GET`    | `/{version}/membership/disable`                                       | `project` |
-| [`enableMembership`](#enablemembership)                                   | `GET`    | `/{version}/membership/enable`                                        | `project` |
+| [`disableMembership`](#disablemembership)                                 | `PUT`    | `/{version}/membership/disable`                                       | `project` |
+| [`enableMembership`](#enablemembership)                                   | `PUT`    | `/{version}/membership/enable`                                        | `project` |
 | [`issueServiceUserApiKey`](#issueserviceuserapikey)                       | `POST`   | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
 | [`listServiceUserApiKeys`](#listserviceuserapikeys)                       | `GET`    | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
 | [`deleteServiceUserApiKey`](#deleteserviceuserapikey)                     | `DELETE` | `/{version}/membership/users/{Id}/api-keys/{KeyId}`                   | `project` |
@@ -59,7 +59,7 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 
 ### disableMembership
 
-`GET` `/{version}/membership/disable`
+`PUT` `/{version}/membership/disable`
 
 Disable the resource.
 
@@ -81,7 +81,7 @@ const result = await norbix.hub.membership.disableMembership({
 
 ### enableMembership
 
-`GET` `/{version}/membership/enable`
+`PUT` `/{version}/membership/enable`
 
 Enable the resource.
 

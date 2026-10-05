@@ -12,7 +12,7 @@ export class MembershipModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/membership/disable
+   * PUT /{version}/membership/disable
    * Request DTO: DisableMembership
    */
   disableMembership = (
@@ -22,7 +22,7 @@ export class MembershipModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/membership/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +31,7 @@ export class MembershipModule {
   };
 
   /**
-   * GET /{version}/membership/enable
+   * PUT /{version}/membership/enable
    * Request DTO: EnableMembership
    */
   enableMembership = (
@@ -41,7 +41,7 @@ export class MembershipModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/membership/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

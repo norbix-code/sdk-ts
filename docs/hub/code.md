@@ -8,8 +8,8 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 
 | Method                                                                              | Verb     | Path                                                                                              | Scope     |
 | ----------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- | --------- |
-| [`enableCode`](#enablecode)                                                         | `GET`    | `/{version}/code/enable`                                                                          | `project` |
-| [`disableCode`](#disablecode)                                                       | `GET`    | `/{version}/code/disable`                                                                         | `project` |
+| [`enableCode`](#enablecode)                                                         | `PUT`    | `/{version}/code/enable`                                                                          | `project` |
+| [`disableCode`](#disablecode)                                                       | `PUT`    | `/{version}/code/disable`                                                                         | `project` |
 | [`getCodeIntegrations`](#getcodeintegrations)                                       | `GET`    | `/{version}/code/integrations`                                                                    | `project` |
 | [`getCodeIntegration`](#getcodeintegration)                                         | `GET`    | `/{version}/code/integrations/{id}`                                                               | `project` |
 | [`saveCodeIntegration`](#savecodeintegration)                                       | `POST`   | `/{version}/code/integrations`                                                                    | `project` |
@@ -46,7 +46,7 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 
 ### enableCode
 
-`GET` `/{version}/code/enable`
+`PUT` `/{version}/code/enable`
 
 Enable the resource.
 
@@ -68,7 +68,7 @@ const result = await norbix.hub.code.enableCode({
 
 ### disableCode
 
-`GET` `/{version}/code/disable`
+`PUT` `/{version}/code/disable`
 
 Disable the resource.
 

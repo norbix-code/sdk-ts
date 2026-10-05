@@ -48,7 +48,7 @@ describe('hub.payments', () => {
     expect(typeof ns['testPaymentsIntegration']).toBe('function');
   });
 
-  it('disablePayments: GET /{version}/payments/disable', async () => {
+  it('disablePayments: PUT /{version}/payments/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -65,13 +65,13 @@ describe('hub.payments', () => {
     )['payments']!['disablePayments']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enablePayments: GET /{version}/payments/enable', async () => {
+  it('enablePayments: PUT /{version}/payments/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -88,7 +88,7 @@ describe('hub.payments', () => {
     )['payments']!['enablePayments']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

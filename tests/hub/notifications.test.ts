@@ -155,7 +155,7 @@ describe('hub.notifications', () => {
     expect(typeof ns['unsubscribeContact']).toBe('function');
   });
 
-  it('disableEmail: GET /{version}/notifications/email/disable', async () => {
+  it('disableEmail: PUT /{version}/notifications/email/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -172,7 +172,7 @@ describe('hub.notifications', () => {
     )['notifications']!['disableEmail']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -201,7 +201,7 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableEmail: GET /{version}/notifications/email/enable', async () => {
+  it('enableEmail: PUT /{version}/notifications/email/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -218,7 +218,7 @@ describe('hub.notifications', () => {
     )['notifications']!['enableEmail']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -1265,7 +1265,7 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('disableSms: GET /{version}/notifications/sms/disable', async () => {
+  it('disableSms: PUT /{version}/notifications/sms/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -1282,7 +1282,7 @@ describe('hub.notifications', () => {
     )['notifications']!['disableSms']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -1311,7 +1311,7 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enableSms: GET /{version}/notifications/sms/enable', async () => {
+  it('enableSms: PUT /{version}/notifications/sms/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -1328,7 +1328,7 @@ describe('hub.notifications', () => {
     )['notifications']!['enableSms']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -2051,7 +2051,7 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('disablePush: GET /{version}/notifications/push/disable', async () => {
+  it('disablePush: PUT /{version}/notifications/push/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -2068,7 +2068,7 @@ describe('hub.notifications', () => {
     )['notifications']!['disablePush']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
@@ -2097,7 +2097,7 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('enablePush: GET /{version}/notifications/push/enable', async () => {
+  it('enablePush: PUT /{version}/notifications/push/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -2114,7 +2114,7 @@ describe('hub.notifications', () => {
     )['notifications']!['enablePush']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');

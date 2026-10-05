@@ -12,7 +12,7 @@ export class PaymentsModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * GET /{version}/payments/disable
+   * PUT /{version}/payments/disable
    * Request DTO: DisablePayments
    */
   disablePayments = (
@@ -22,7 +22,7 @@ export class PaymentsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/payments/disable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',
@@ -31,7 +31,7 @@ export class PaymentsModule {
   };
 
   /**
-   * GET /{version}/payments/enable
+   * PUT /{version}/payments/enable
    * Request DTO: EnablePayments
    */
   enablePayments = (
@@ -41,7 +41,7 @@ export class PaymentsModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/payments/enable',
-      method: 'GET',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

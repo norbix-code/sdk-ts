@@ -64,7 +64,7 @@ describe('hub.code', () => {
     expect(typeof ns['getMarketplaceFunctionCatalog']).toBe('function');
   });
 
-  it('enableCode: GET /{version}/code/enable', async () => {
+  it('enableCode: PUT /{version}/code/enable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -81,13 +81,13 @@ describe('hub.code', () => {
     )['code']!['enableCode']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
-  it('disableCode: GET /{version}/code/disable', async () => {
+  it('disableCode: PUT /{version}/code/disable', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://hub.norbix.io',
@@ -104,7 +104,7 @@ describe('hub.code', () => {
     )['code']!['disableCode']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
