@@ -18,6 +18,15 @@ Accessed as `norbix.hub.webhooks` on the [`Norbix`](../../README.md#authenticati
 | [`removeWebhookDestination`](#removewebhookdestination)                         | `DELETE` | `/{version}/webhooks/destinations/{DestinationId}`         | `project` |
 | [`saveWebhookDestination`](#savewebhookdestination)                             | `POST`   | `/{version}/webhooks/destinations`                         | `project` |
 
+> **Receiving deliveries.** Each POST to a destination carries a JSON envelope
+> `{ id, eventId, event, createdOn, accountId, projectId, triggerId?, data }`.
+> `id` is one per delivery (a retry keeps it) — dedupe retries on it. `eventId`
+> is the same for every delivery made for ONE record change — dedupe the same
+> change on it. A destination that is subscribed to the event **and** targeted
+> by a schema Webhook trigger gets two deliveries (`triggerId` null and set), two
+> `id`s, one `eventId`. Use the receiver in
+> [`docs/webhooks-receiver.md`](../webhooks-receiver.md#de-duplication-id-vs-eventid).
+
 ## Reference
 
 ### getWebhookIntegration

@@ -36,7 +36,7 @@ receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
 
 // In your HTTP route (Express, Ts.ED, etc.):
 const result = await receiver.handle({ rawBody: req.rawBody, headers: req.headers });
-// → { received: true, event, deliveryId, verified, handled, triggerId }
+// → { received: true, event, deliveryId, eventId, verified, handled, triggerId }
 ```
 
 ## Catching events
@@ -71,7 +71,7 @@ receiver.on(NorbixWebhookEvents.Files.FileUploaded, (file, event) => {
 Handler signature: `(payload, event) => void | Promise<void>`.
 
 - **`payload`** — normalised data (entity, `{ from, to }` mutation, or batch array).
-- **`event`** — delivery metadata (`deliveryId`, `triggerId`, `verified`, `metadata`, `raw` envelope).
+- **`event`** — delivery metadata (`deliveryId`, `eventId`, `triggerId`, `verified`, `metadata`, `raw` envelope).
 
 ### `onAll(events, handler)` — catch-all
 
@@ -86,9 +86,12 @@ receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
 
 // Or use ctx for headers / verify status
 receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e, ctx) => {
-  console.log(e.event, e.id, ctx.verified);
+  console.log(e.event, e.id, ctx.eventId, ctx.verified);
 });
 ```
+
+`ctx.eventId` is the envelope `eventId`, or the envelope `id` when the gateway
+did not send one. The envelope itself is passed untouched.
 
 Pass `NORBIX_WEBHOOK_EVENT_NAMES` to subscribe to the full Norbix catalog, or a
 subset:
@@ -254,6 +257,7 @@ POST a signed JSON envelope to subscribed destinations:
 ```json
 {
   "id": "<deliveryId>",
+  "eventId": "<eventId>",
   "event": "database.record.inserted",
   "createdOn": "2026-01-01T00:00:00Z",
   "accountId": "acc_…",
@@ -261,6 +265,32 @@ POST a signed JSON envelope to subscribed destinations:
   "triggerId": "trg_…",
   "data": {}
 }
+```
+
+## De-duplication: `id` vs `eventId`
+
+- **`id`** (`event.deliveryId`, header `X-Norbix-Delivery`) — one per delivery.
+  A **retry** of the same delivery keeps its `id`. Dedupe retries on it.
+- **`eventId`** (`event.eventId`) — the same for **every** delivery made for
+  **one** record change: the plain webhook delivery and each schema
+  Webhook-trigger delivery. Dedupe the same change on it.
+
+A destination that is subscribed to the event **and** targeted by a schema
+Webhook trigger gets **two** deliveries for one change: one with `triggerId`
+`null`, one with `triggerId` set — two different `id`s, **one** `eventId`.
+
+When a publisher has no shared event id (Files, Membership, Payments, AI
+triggers) `eventId` equals `id`. Older gateways do not send `eventId` at all;
+the receiver then falls back to `id`, so `event.eventId` is always set.
+
+```ts
+const seen = new Set<string>(); // use Redis / a DB table with a TTL in production
+
+receiver.on<MyDoc>(NorbixWebhookEvents.Database.RecordUpdated, ({ from, to }, event) => {
+  if (seen.has(event.eventId)) return; // same change, other delivery — skip
+  seen.add(event.eventId);
+  /* apply the change once */
+});
 ```
 
 ## Signature verification
