@@ -499,6 +499,10 @@ receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
 await receiver.handle({ rawBody: req.rawBody, headers: req.headers });
 ```
 
+De-duplicate on `event.eventId`: it is the same for every delivery of one
+change (plain + schema Webhook trigger). `event.deliveryId` (envelope `id`)
+only repeats on a retry.
+
 → [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md)
 
 <!-- END: WEBHOOKS_RECEIVER -->
