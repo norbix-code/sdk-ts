@@ -297,4 +297,77 @@ describe('NorbixWebhookReceiver', () => {
     expect(handler.mock.calls[0]?.[1]?.headers.accountId).toBe('acc_env');
     expect(handler.mock.calls[0]?.[1]?.headers.projectId).toBe('pr_env');
   });
+
+  describe('eventId', () => {
+    const base = {
+      event: 'database.record.updated',
+      createdOn: '2026-01-01T00:00:00Z',
+      accountId: 'acc_1',
+      projectId: 'pr_1',
+      data: { schemaName: 'orders', id: 'rec_1', from: { a: 1 }, to: { a: 2 } },
+    };
+
+    it('exposes envelope eventId on event, ctx and result', async () => {
+      const receiver = new NorbixWebhookReceiver();
+      const typed = vi.fn();
+      const raw = vi.fn();
+      receiver.on('database.record.updated', typed);
+      receiver.onAll(['database.record.updated'], raw);
+
+      const result = await receiver.handle({
+        rawBody: JSON.stringify({ ...base, id: 'dlv_1', eventId: 'evt_1' }),
+        headers: {},
+      });
+
+      expect(result.deliveryId).toBe('dlv_1');
+      expect(result.eventId).toBe('evt_1');
+      expect(typed.mock.calls[0]?.[1]?.deliveryId).toBe('dlv_1');
+      expect(typed.mock.calls[0]?.[1]?.eventId).toBe('evt_1');
+      expect(raw.mock.calls[0]?.[0]?.eventId).toBe('evt_1');
+      expect(raw.mock.calls[0]?.[1]?.eventId).toBe('evt_1');
+    });
+
+    it('falls back to the envelope id when an older gateway sends no eventId', async () => {
+      const receiver = new NorbixWebhookReceiver();
+      const typed = vi.fn();
+      const raw = vi.fn();
+      receiver.on('database.record.updated', typed);
+      receiver.onAll(['database.record.updated'], raw);
+
+      const result = await receiver.handle({
+        rawBody: JSON.stringify({ ...base, id: 'dlv_old' }),
+        headers: {},
+      });
+
+      expect(result.eventId).toBe('dlv_old');
+      expect(typed.mock.calls[0]?.[1]?.eventId).toBe('dlv_old');
+      expect(raw.mock.calls[0]?.[1]?.eventId).toBe('dlv_old');
+      // the envelope itself stays untouched
+      expect(raw.mock.calls[0]?.[0]?.eventId).toBeUndefined();
+    });
+
+    it('lets a receiver de-duplicate a plain delivery and a trigger delivery of one change', async () => {
+      const receiver = new NorbixWebhookReceiver();
+      const seen = new Set<string>();
+      const applied: string[] = [];
+      receiver.on('database.record.updated', (_payload, event) => {
+        if (seen.has(event.eventId)) return;
+        seen.add(event.eventId);
+        applied.push(event.deliveryId);
+      });
+
+      const plain = await receiver.handle({
+        rawBody: JSON.stringify({ ...base, id: 'dlv_plain', eventId: 'evt_9', triggerId: null }),
+        headers: {},
+      });
+      const trigger = await receiver.handle({
+        rawBody: JSON.stringify({ ...base, id: 'dlv_trg', eventId: 'evt_9', triggerId: 'trg_1' }),
+        headers: {},
+      });
+
+      expect(plain.deliveryId).not.toBe(trigger.deliveryId);
+      expect(plain.eventId).toBe(trigger.eventId);
+      expect(applied).toEqual(['dlv_plain']);
+    });
+  });
 });
