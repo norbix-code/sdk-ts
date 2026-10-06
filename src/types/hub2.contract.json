@@ -1411,10 +1411,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "IngestSourceMessage": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
   "InsertManyRecords": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1540,10 +1536,6 @@
     "returnsBytes": false
   },
   "PreviewSmsNotification": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ProcessCollectionImport": {
     "requiresAuth": false,
     "returnsBytes": false
   },
@@ -1921,22 +1913,6 @@
   },
   "StopSmsCampaignRequest": {
     "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "TermDeleted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "TermInserted": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "TermUpdated": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "TermsDeleted": {
-    "requiresAuth": false,
     "returnsBytes": false
   },
   "TestCodeIntegration": {
