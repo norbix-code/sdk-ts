@@ -64,3 +64,8 @@ reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inB
 id = "GHSA-vfj7-8cjw-p6xm"
 ignoreUntil = 2027-01-04T00:00:00Z
 reason = "braces 3.0.3 is the latest release and the advisory lists no fixed version. Dev-only (build / test tooling via micromatch), never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-rj75-hqrm-r3gf"
+ignoreUntil = 2027-01-06T00:00:00Z
+reason = "postcss-selector-parser 7.1.4 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
