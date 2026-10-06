@@ -85,6 +85,10 @@ interface Registration {
  * receiver.onAll(NORBIX_WEBHOOK_EVENT_NAMES, (e) => console.log(e));
  *
  * await receiver.handle({ rawBody, headers: req.headers });
+ *
+ * // De-duplicate: `event.deliveryId` repeats on a RETRY; `event.eventId` is the
+ * // same for every delivery of ONE change (plain + schema Webhook trigger).
+ * // if (await seen.has(event.eventId)) return;
  * ```
  */
 export class NorbixWebhookReceiver {
@@ -196,8 +200,13 @@ export class NorbixWebhookReceiver {
       );
     }
 
+    // Older gateways do not send eventId — fall back to the delivery id.
+    const eventId =
+      typeof envelope.eventId === 'string' && envelope.eventId ? envelope.eventId : envelope.id;
+
     const ctx: NorbixWebhookContext = {
       path: input.path,
+      eventId,
       headers: {
         ...deliveryHeaders,
         event: deliveryHeaders.event ?? envelope.event,
@@ -216,6 +225,7 @@ export class NorbixWebhookReceiver {
       const event: NorbixWebhookEvent = {
         name: envelope.event,
         deliveryId: envelope.id,
+        eventId,
         createdOn: envelope.createdOn,
         triggerId: envelope.triggerId ?? null,
         correlationId: null,
@@ -239,6 +249,7 @@ export class NorbixWebhookReceiver {
       received: true,
       event: envelope.event,
       deliveryId: envelope.id,
+      eventId,
       verified,
       handled,
       triggerId: envelope.triggerId,

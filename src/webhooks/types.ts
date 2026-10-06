@@ -2,8 +2,19 @@ import type { NorbixWebhookEventMetadata } from './event-data.js';
 
 /** JSON envelope POSTed to every webhook destination. */
 export interface NorbixWebhookEnvelope<TData = unknown> {
-  /** Stable delivery id — dedupe retries on this (also X-Norbix-Delivery). */
+  /**
+   * Stable delivery id — one per delivery; a retry of the same delivery keeps
+   * it (also X-Norbix-Delivery). Dedupe RETRIES on this.
+   */
   id: string;
+  /**
+   * Id of the change that caused this delivery. Every delivery made for ONE
+   * record change carries the same `eventId` (the plain webhook delivery and
+   * each schema Webhook-trigger delivery), so dedupe the SAME CHANGE arriving
+   * through several deliveries on this. Equals `id` when the publisher has no
+   * shared event id. Absent on older gateways — use `eventId ?? id`.
+   */
+  eventId?: string;
   /** Logical event name, e.g. database.record.inserted. */
   event: string;
   /** ISO-8601 UTC timestamp when the event was emitted. */
@@ -58,6 +69,11 @@ export interface NorbixWebhookEvent {
   name: string;
   /** Stable delivery id — dedupe retries on this. */
   deliveryId: string;
+  /**
+   * Id of the change — shared by every delivery made for one record change.
+   * Dedupe on this. Falls back to `deliveryId` when the gateway did not send it.
+   */
+  eventId: string;
   /** ISO-8601 UTC emit time. */
   createdOn: string;
   triggerId: string | null;
@@ -78,6 +94,8 @@ export interface NorbixWebhookEvent {
 /** Context passed to `onAll` handlers alongside the envelope. */
 export interface NorbixWebhookContext {
   path?: string;
+  /** Envelope `eventId`, or envelope `id` when the gateway did not send it. Dedupe on this. */
+  eventId: string;
   headers: NorbixWebhookDeliveryHeaders;
   /** true when signature verified; null when verification was skipped. */
   verified: boolean | null;
@@ -87,6 +105,8 @@ export interface NorbixWebhookHandleResult {
   received: true;
   event: string;
   deliveryId: string;
+  /** Envelope `eventId`, or `deliveryId` when the gateway did not send it. */
+  eventId: string;
   /** true when verified, null when verification was skipped (no secret). */
   verified: boolean | null;
   handled: boolean;
