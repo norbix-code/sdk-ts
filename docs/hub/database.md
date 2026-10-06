@@ -568,6 +568,14 @@ const result = await norbix.hub.database.applyDatabaseSchemaBundle({
 
 Delete an item.
 
+> **Also drops the schema's records.** Deleting a schema also drops its records
+> (its MongoDB collection, with its indexes) in the request environment — in every
+> active database integration of that environment. For a schema with AI embed on,
+> its records are also removed from the AI knowledge. The delete is **refused**
+> (and nothing is dropped) while a saved aggregate or a trigger still uses the
+> schema. The request and response shape did not change. A retry is safe
+> (idempotent).
+
 **Request DTO**: `CodeMashHub2.DeleteDatabaseSchemaRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
