@@ -24,6 +24,8 @@ export module CodeMashHub2 {
   export interface IReturnVoid {
     createResponse(): void;
   }
+  export type JsonObject = { [key: string]: unknown };
+  export interface IGet {}
 
   export interface IHasSessionId {
     sessionId?: string;
@@ -2099,7 +2101,7 @@ export module CodeMashHub2 {
     /** @description The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3 */
     // @DataMember
     // @ApiMember(DataType="string", Description="The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3", IsRequired=true, Name="version", ParameterType="path")
-    public version: string;
+    public version?: string | number;
 
     /** @description CorrelationId for each request */
     // @DataMember
@@ -4368,7 +4370,7 @@ export module CodeMashHub2 {
   }
 
   export interface IVersionBasedRequest {
-    version: string;
+    version?: string | number;
   }
 
   export interface IHasCorrelationIdRequest {
@@ -9472,7 +9474,7 @@ export module CodeMashHub2 {
     contentLength: number;
     files?: IHttpFile[];
     urlReferrer?: string;
-    requestAborted: CancellationToken;
+    requestAborted: any;
   }
 
   export interface IResponse {

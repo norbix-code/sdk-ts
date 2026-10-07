@@ -24,6 +24,7 @@ export module CodeMashApi2 {
   export interface IReturnVoid {
     createResponse(): void;
   }
+  export interface IGet {}
 
   export interface IHasSessionId {
     sessionId?: string;
