@@ -19,6 +19,12 @@ Good to know:
   caller or a service user of the project.
 - **Module enable / disable are `PUT`** (they were `GET` before v4.6.0).
   Disabling the module stops every task's cron.
+- **Task health.** Every task (`getSchedulerTask` item and each
+  `getSchedulerTasks` row) carries `isFailing`: `true` when its last run failed
+  or was skipped (any reason but the module being off). `lastFailureReason`
+  (e.g. `run-failed`, `initiator-not-found`) and `lastFailedAtUnix` (when the
+  current failing streak started) are set while it is failing. A good run or a
+  save turns it back to `false`. The runs themselves: `getSchedulerTaskRuns`.
 
 ## Endpoints
 
@@ -30,6 +36,7 @@ Good to know:
 | [`disableSchedulerTask`](#disableschedulertask) | `PUT`    | `/{version}/scheduler/tasks/{Id}/disable` | `project` |
 | [`enableSchedulerTask`](#enableschedulertask)   | `PUT`    | `/{version}/scheduler/tasks/{Id}/enable`  | `project` |
 | [`getSchedulerTask`](#getschedulertask)         | `GET`    | `/{version}/scheduler/tasks/{id}`         | `project` |
+| [`getSchedulerTaskRuns`](#getschedulertaskruns) | `GET`    | `/{version}/scheduler/tasks/{id}/runs`    | `project` |
 | [`getSchedulerTasks`](#getschedulertasks)       | `GET`    | `/{version}/scheduler/tasks`              | `project` |
 | [`saveSchedulerTask`](#saveschedulertask)       | `POST`   | `/{version}/scheduler/tasks`              | `project` |
 
@@ -147,6 +154,62 @@ const norbix = new Norbix();
 
 const { item } = await norbix.hub.scheduler.getSchedulerTask({ id: 'tsk_123' });
 // item: CodeMashHub2.SchedulerTaskDto
+if (item?.isFailing) {
+  console.log(`failing since ${item.lastFailedAtUnix}: ${item.lastFailureReason}`);
+}
+```
+
+[↑ Top](#endpoints)
+
+### getSchedulerTaskRuns
+
+`GET` `/{version}/scheduler/tasks/{id}/runs`
+
+The latest runs of one task, **newest first**, read from the project's logs:
+each run fired, failed or was skipped. `id` goes in the path; `take` (1–50,
+default 10) goes in the query string. Needs `scheduler:read` on the task and
+`logging:read`.
+
+When the project's Logs module is off there is nothing to read: the answer is
+`logsEnabled: false` with an empty `runs`. For runs older than the latest 50,
+read the logs filtered by the task id:
+`norbix.hub.logs.getLogs({ module: 'Scheduler', metaKey: 'taskId', metaValue: 'tsk_123' })`.
+
+**Request DTO**: `CodeMashHub2.GetSchedulerTaskRuns` (typed as `GetSchedulerTaskRunsInput`: `id` is required)
+**Response**: `SchedulerTaskRunsResponse` (`CodeMashHub2.GetSchedulerTaskRunsResponse` with typed runs)
+
+| Field                  | Type                               | Notes                                                                             |
+| ---------------------- | ---------------------------------- | --------------------------------------------------------------------------------- |
+| `logsEnabled`          | `boolean`                          | `false` when the Logs module is off — `runs` is then empty                        |
+| `runs[].logId`         | `string`                           | id of the run's log entry                                                         |
+| `runs[].atUtc`         | `string`                           | when the run ended (UTC)                                                          |
+| `runs[].atUnix`        | `number`                           | the same, Unix seconds                                                            |
+| `runs[].outcome`       | `'Fired' \| 'Failed' \| 'Skipped'` | the gateway sends the name                                                        |
+| `runs[].reason`        | `string?`                          | stable code of a failed or skipped run (`run-failed`, `module-disabled`, …)       |
+| `runs[].detail`        | `string?`                          | the errors of a failed or skipped run                                             |
+| `runs[].correlationId` | `string?`                          | the run's request trail — `norbix.hub.logs.getLogsByCorrelationId` shows the rest |
+
+`outcome` is typed as the string the gateway sends. The generated
+`CodeMashHub2.SchedulerTaskRunOutcome` enum carries numbers (`Fired = 1`), so
+compare against the strings, not the enum.
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { logsEnabled, runs } = await norbix.hub.scheduler.getSchedulerTaskRuns({
+  id: 'tsk_123',
+  take: 20, // optional, 1–50, default 10
+});
+
+if (!logsEnabled) {
+  console.log('Turn on the Logs module to see the run history.');
+}
+for (const run of runs) {
+  // newest first
+  console.log(run.atUtc, run.outcome, run.reason ?? '', run.detail ?? '');
+}
 ```
 
 [↑ Top](#endpoints)
@@ -171,7 +234,7 @@ const { list } = await norbix.hub.scheduler.getSchedulerTasks({
   type: CodeMashHub2.SchedulerTaskType.EmailCampaign,
   enabled: true,
 });
-// list.items: CodeMashHub2.SchedulerTaskListProjection[]; list.hasMore for the next page
+// list.items: CodeMashHub2.SchedulerTaskListProjection[] (each with isFailing); list.hasMore for the next page
 ```
 
 [↑ Top](#endpoints)
@@ -208,6 +271,14 @@ default database integration is used when the task fires. The body is typed
 inputs `EmailCampaignSchedulerTaskInput`, `SmsCampaignSchedulerTaskInput` and
 `PushCampaignSchedulerTaskInput`), so plain string values type-check without a
 cast, and a wrong `type` or a missing required field fails the typecheck.
+
+**Refused when the initiator lacks permissions.** The task runs as
+`initiatorUserId`, so the save checks that this user holds every permission
+the task needs when it fires (for a campaign task: sending that campaign). If
+not, the save fails with `CM-ERRORS-SCHEDULER-012` and nothing is saved: the
+message names each missing permission (`"{action} on {resource}"`), and the
+error's metadata carries `InitiatorUserId` and `MissingPermissions`. Give the
+user the permissions, or pick another initiator, and save again.
 
 **Request DTO**: `CodeMashHub2.SaveSchedulerTaskRequest` (task: `CodeMashHub2.EmailCampaignSchedulerTaskRequest`, `CodeMashHub2.SmsCampaignSchedulerTaskRequest` or `CodeMashHub2.PushCampaignSchedulerTaskRequest`)
 **Response**: `CodeMashHub2.IdResponse` (`id` — the task id)

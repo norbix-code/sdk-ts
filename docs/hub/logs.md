@@ -275,7 +275,12 @@ const result = await norbix.hub.logs.getLogsByCorrelationId({
 
 `GET` `/{version}/logs`
 
-Fetch a single item by ID.
+List the project's log entries, one page at a time. Every filter goes in the
+query string: `level`, `module`, `logCorrelationId`, `eventCode`, `search`,
+`fromUtc`, `toUtc`, and `metaKey` + `metaValue` — only entries whose `meta`
+holds that key with that value (e.g. `metaKey: 'taskId'` for one scheduler
+task's runs). `metaKey` is letters, digits and `_` only, and always comes with
+`metaValue`.
 
 **Request DTO**: `CodeMashHub2.GetLogs`
 **Response**: `CodeMashHub2.GetLogsResponse`
@@ -285,8 +290,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
+// Every logged run of one scheduler task
 const result = await norbix.hub.logs.getLogs({
-  // See CodeMash type for the full request shape.
+  module: 'Scheduler',
+  metaKey: 'taskId',
+  metaValue: 'tsk_123',
 });
 // → typed as CodeMashHub2.GetLogsResponse
 ```

@@ -336,7 +336,7 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 | 🤖 `ai`                  | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
 | 📊 `logs`                | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
 | 👥 `membership`          | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
-| ⏰ `scheduler`           | Scheduler module and task management                                    | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
+| ⏰ `scheduler`           | Scheduler module, tasks and their run history                           | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
 | 🪝 `webhooks`            | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
 | 📥 `webhooks` (receiver) | Verify & handle inbound Norbix webhook POSTs at your endpoint           | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
 | 🔐 `auth`                | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
