@@ -20,7 +20,7 @@ Accessed as `norbix.hub.internal` on the [`Norbix`](../../README.md#authenticati
 **Response**: `CodeMashHub2.unknown`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

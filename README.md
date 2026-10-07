@@ -541,14 +541,15 @@ Norbix ships an MCP (Model Context Protocol) server that exposes every API and H
 
 Same modules, same method shapes, every language. Each row links to the repo for that language. Package shape varies per language ecosystem norm — TypeScript, Python, Dart, and Kotlin ship a single package; .NET and Swift ship two surfaces (NuGet packages / SwiftPM library products) inside one repo.
 
-| Language          | Package                                   | Repo                                                                    | Status         |
-| ----------------- | ----------------------------------------- | ----------------------------------------------------------------------- | -------------- |
-| TypeScript / Node | `@norbix.ai/ts`                           | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)             | ✅ Stable      |
-| .NET              | `Norbix.Api` + `Norbix.Hub`               | [norbix-dev/norbix-net](https://github.com/norbix-dev/norbix-net)       | ✅ Stable      |
-| Python            | `norbix`                                  | [norbix-dev/norbix-python](https://github.com/norbix-dev/norbix-python) | 🚧 In progress |
-| Dart / Flutter    | `norbix`                                  | [norbix-dev/norbix-dart](https://github.com/norbix-dev/norbix-dart)     | 🚧 In progress |
-| Kotlin            | `dev.norbix:norbix`                       | [norbix-dev/norbix-kotlin](https://github.com/norbix-dev/norbix-kotlin) | 🚧 In progress |
-| Swift             | `Norbix` (libs: `NorbixApi`, `NorbixHub`) | [norbix-dev/norbix-swift](https://github.com/norbix-dev/norbix-swift)   | 🚧 In progress |
+| Language          | Package                                   | Repo                                                                | Status         |
+| ----------------- | ----------------------------------------- | ------------------------------------------------------------------- | -------------- |
+| TypeScript / Node | `@norbix.ai/ts`                           | [norbix-code/sdk-ts](https://github.com/norbix-code/sdk-ts)         | ✅ Stable      |
+| .NET              | `Norbix.Api` + `Norbix.Hub`               | [norbix-code/sdk-net](https://github.com/norbix-code/sdk-net)       | ✅ Stable      |
+| Python            | `norbix`                                  | [norbix-code/sdk-python](https://github.com/norbix-code/sdk-python) | 🚧 In progress |
+| Dart / Flutter    | `norbix`                                  | [norbix-code/sdk-dart](https://github.com/norbix-code/sdk-dart)     | 🚧 In progress |
+| Kotlin            | `ai.norbix:norbix-kotlin`                 | [norbix-code/sdk-kotlin](https://github.com/norbix-code/sdk-kotlin) | 🚧 In progress |
+| Swift             | `Norbix` (libs: `NorbixApi`, `NorbixHub`) | [norbix-code/sdk-swift](https://github.com/norbix-code/sdk-swift)   | 🚧 In progress |
+| Go                | `github.com/norbix-code/sdk-go/v2`        | [norbix-code/sdk-go](https://github.com/norbix-code/sdk-go)         | 🚧 In progress |
 
 <!-- END: SDK_FAMILY -->
 

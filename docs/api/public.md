@@ -23,7 +23,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.PublicProjectConfigDto`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -46,7 +46,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.PublicLegalDocumentDto`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

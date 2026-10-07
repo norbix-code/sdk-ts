@@ -34,7 +34,7 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -57,7 +57,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.Blob`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -78,7 +78,7 @@ const result = await norbix.api.files.getFileContent({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -101,7 +101,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -124,7 +124,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -145,7 +145,7 @@ const result = await norbix.api.files.deleteManyFilesApi({
 **Response**: `CodeMashApi2.Blob`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -168,7 +168,7 @@ Fetch one file by its stable id — the id a file field on a record stores, and 
 **Response**: `CodeMashApi2.GetFileByIdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -191,7 +191,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetFileInfoResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -214,7 +214,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetSignedUrlResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -235,7 +235,7 @@ const result = await norbix.api.files.getSignedUrl({
 **Response**: `CodeMashApi2.ListFilesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -258,7 +258,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.Blob`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -280,7 +280,7 @@ const result = await norbix.api.files.getPublicFile({
 **Response**: `CodeMashApi2.RequestUploadUrlResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -303,7 +303,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashApi2.TestFilesIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

@@ -38,7 +38,7 @@ Lists the Norbix regions available to the account.
 **Response**: `CodeMashHub2.GetAccountRegionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -64,7 +64,7 @@ spans.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

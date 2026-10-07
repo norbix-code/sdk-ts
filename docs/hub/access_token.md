@@ -24,7 +24,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccessTokenResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

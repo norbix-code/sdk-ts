@@ -37,7 +37,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -59,7 +59,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -81,7 +81,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -104,7 +104,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -127,7 +127,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -150,7 +150,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLoggingIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -173,7 +173,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLoggingIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -195,7 +195,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -217,7 +217,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestLoggingIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -237,7 +237,7 @@ const result = await norbix.hub.logs.testLoggingIntegration({
 **Response**: `CodeMashHub2.CleanLogsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -259,7 +259,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLogsByCorrelationIdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -281,7 +281,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLogsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -303,7 +303,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLogSettingsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -325,7 +325,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.SaveLogSettingsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

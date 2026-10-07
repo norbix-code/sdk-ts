@@ -24,7 +24,7 @@ Accessed as `norbix.hub.oauth` on the [`Norbix`](../../README.md#authentication)
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -44,7 +44,7 @@ const result = await norbix.hub.oauth.oAuthRegister({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -64,7 +64,7 @@ const result = await norbix.hub.oauth.oAuthAuthorize({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -84,7 +84,7 @@ const result = await norbix.hub.oauth.oAuthAuthorizeDecision({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -104,7 +104,7 @@ const result = await norbix.hub.oauth.oAuthToken({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

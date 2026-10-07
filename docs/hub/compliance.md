@@ -39,7 +39,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetComplianceSettingsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -59,7 +59,7 @@ const result = await norbix.hub.compliance.getComplianceSettings({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -81,7 +81,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -103,7 +103,7 @@ Assign the resource to another entity.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -123,7 +123,7 @@ const result = await norbix.hub.compliance.assignRegime({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -143,7 +143,7 @@ const result = await norbix.hub.compliance.clearRegime({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -163,7 +163,7 @@ const result = await norbix.hub.compliance.defineConsentPurpose({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -185,7 +185,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLegalHoldsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -205,7 +205,7 @@ const result = await norbix.hub.compliance.getLegalHolds({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -225,7 +225,7 @@ const result = await norbix.hub.compliance.placeLegalHold({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -245,7 +245,7 @@ const result = await norbix.hub.compliance.releaseLegalHold({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -265,7 +265,7 @@ const result = await norbix.hub.compliance.approveDsarRequest({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -287,7 +287,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDsarRequestsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -307,7 +307,7 @@ const result = await norbix.hub.compliance.getDsarRequests({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -329,7 +329,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetComplianceAuditLogResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -351,7 +351,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountComplianceResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -373,7 +373,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -395,7 +395,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

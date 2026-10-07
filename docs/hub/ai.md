@@ -41,7 +41,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -64,7 +64,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetEmbeddingIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -87,7 +87,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetEmbeddingIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -109,7 +109,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -131,7 +131,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestEmbeddingIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -154,7 +154,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -177,7 +177,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -200,7 +200,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -223,7 +223,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLlmIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -246,7 +246,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLlmIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -268,7 +268,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -288,7 +288,7 @@ const result = await norbix.hub.ai.saveLlmIntegration({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -311,7 +311,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestLlmIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -333,7 +333,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -356,7 +356,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -379,7 +379,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -402,7 +402,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetMcpIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -425,7 +425,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetMcpIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -447,7 +447,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -469,7 +469,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestLlmIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

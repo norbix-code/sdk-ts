@@ -22,7 +22,7 @@ Accessed as `norbix.hub.licensing` on the [`Norbix`](../../README.md#authenticat
 **Response**: `CodeMashHub2.StartLicenseDomainVerificationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -44,7 +44,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLicenseDomainVerificationStatusResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -64,7 +64,7 @@ const result = await norbix.hub.licensing.getLicenseDomainVerificationStatus({
 **Response**: `CodeMashHub2.PostLicenseHeartbeatResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

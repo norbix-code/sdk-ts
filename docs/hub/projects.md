@@ -26,7 +26,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectBriefResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -49,7 +49,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetWorkItemsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -72,7 +72,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetWorkItemResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -94,7 +94,7 @@ const result = await norbix.hub.projects.getWorkItem({
 **Response**: `CodeMashHub2.ExportWorkItemResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -116,7 +116,7 @@ const result = await norbix.hub.projects.exportWorkItem({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
