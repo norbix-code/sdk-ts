@@ -12,10 +12,10 @@ export class AuthModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * POST /auth
+   * POST /v3/auth
    * Aliases:
+   *   - GET,POST /auth
    *   - GET,POST /auth/{provider}
-   *   - POST,GET,OPTIONS /v3/auth
    *   - POST,GET,OPTIONS /v3/auth/{provider}
    * Request DTO: Authenticate
    */
@@ -25,7 +25,7 @@ export class AuthModule {
   ): Promise<CodeMashApi2.AuthenticateResponse> => {
     return this.transport.send<CodeMashApi2.AuthenticateResponse>({
       target: 'api',
-      path: '/auth',
+      path: '/v3/auth',
       method: 'POST',
       request,
       pathParams: [],

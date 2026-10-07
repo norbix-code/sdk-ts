@@ -8,15 +8,15 @@ Accessed as `norbix.hub.auth` on the [`Norbix`](../../README.md#authentication) 
 
 ## Endpoints
 
-| Method                          | Verb   | Path    | Scope     |
-| ------------------------------- | ------ | ------- | --------- |
-| [`authenticate`](#authenticate) | `POST` | `/auth` | `project` |
+| Method                          | Verb   | Path       | Scope     |
+| ------------------------------- | ------ | ---------- | --------- |
+| [`authenticate`](#authenticate) | `POST` | `/v3/auth` | `project` |
 
 ## Reference
 
 ### authenticate
 
-`POST` `/auth`
+`POST` `/v3/auth`
 
 Authenticate the user. The SDK exposes `norbix.login(...)` as a higher-level helper.
 
@@ -24,7 +24,7 @@ Authenticate the user. The SDK exposes `norbix.login(...)` as a higher-level hel
 **Response**: `CodeMashHub2.AuthenticateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
