@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-07 09:15:16
+Date: 2026-10-07 19:03:07
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1114,8 +1114,16 @@ export module CodeMashHub2 {
 
   export class EdgeWebPushIntegrationRequest extends PushIntegrationRequest {
     public provider: PushProvider;
+    /** @description VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey. */
+    // @ApiMember(Description="VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey.", IsRequired=true)
     public vapidPublicKey: string;
+
+    /** @description VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret. */
+    // @ApiMember(Description="VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret.", IsRequired=true)
     public vapidPrivateKey: string;
+
+    /** @description Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:. */
+    // @ApiMember(Description="Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:.")
     public subject?: string;
 
     public constructor(init?: Partial<EdgeWebPushIntegrationRequest>) {
@@ -1126,9 +1134,20 @@ export module CodeMashHub2 {
 
   export class ChromePluginPushIntegrationRequest extends PushIntegrationRequest {
     public provider: PushProvider;
+    /** @description The extension's Chrome id: 32 lower-case letters a–p, as shown on chrome://extensions. */
+    // @ApiMember(Description="The extension's Chrome id: 32 lower-case letters a–p, as shown on chrome://extensions.", IsRequired=true)
     public extensionId: string;
+
+    /** @description VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey. */
+    // @ApiMember(Description="VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey.", IsRequired=true)
     public vapidPublicKey: string;
+
+    /** @description VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret. */
+    // @ApiMember(Description="VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret.", IsRequired=true)
     public vapidPrivateKey: string;
+
+    /** @description Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:. */
+    // @ApiMember(Description="Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:.")
     public subject?: string;
 
     public constructor(init?: Partial<ChromePluginPushIntegrationRequest>) {
@@ -1151,8 +1170,16 @@ export module CodeMashHub2 {
 
   export class ChromeWebPushIntegrationRequest extends PushIntegrationRequest {
     public provider: PushProvider;
+    /** @description VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey. */
+    // @ApiMember(Description="VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey.", IsRequired=true)
     public vapidPublicKey: string;
+
+    /** @description VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret. */
+    // @ApiMember(Description="VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret.", IsRequired=true)
     public vapidPrivateKey: string;
+
+    /** @description Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:. */
+    // @ApiMember(Description="Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:.")
     public subject?: string;
 
     public constructor(init?: Partial<ChromeWebPushIntegrationRequest>) {
@@ -1163,8 +1190,16 @@ export module CodeMashHub2 {
 
   export class FirefoxWebPushIntegrationRequest extends PushIntegrationRequest {
     public provider: PushProvider;
+    /** @description VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey. */
+    // @ApiMember(Description="VAPID public key (URL-safe Base-64, 65 bytes), generated together with the private key — e.g. `npx web-push generate-vapid-keys`. The browser subscribes with it as applicationServerKey.", IsRequired=true)
     public vapidPublicKey: string;
+
+    /** @description VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret. */
+    // @ApiMember(Description="VAPID private key (URL-safe Base-64, 32 bytes). Stored as a secret.", IsRequired=true)
     public vapidPrivateKey: string;
+
+    /** @description Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:. */
+    // @ApiMember(Description="Contact e-mail the browser push services can reach you at, e.g. admin@example.com. An e-mail address only (no URL); it is sent as mailto:.")
     public subject?: string;
 
     public constructor(init?: Partial<FirefoxWebPushIntegrationRequest>) {
@@ -1598,7 +1633,7 @@ export module CodeMashHub2 {
   // @DataContract
   export class FileResourceDto {
     // @DataMember(Order=1)
-    public id: string;
+    public id?: string;
 
     // @DataMember(Order=2)
     public originalFileName: string;
@@ -3298,6 +3333,8 @@ export module CodeMashHub2 {
   export class AppleApnsPushIntegrationDto extends PushIntegrationDto {
     public teamId: string;
     public appBundleId: string;
+    public keyId?: string;
+    public isProduction: boolean;
 
     public constructor(init?: Partial<AppleApnsPushIntegrationDto>) {
       super(init);
@@ -3519,6 +3556,15 @@ export module CodeMashHub2 {
 
     // @DataMember
     public updatedAtUnix?: number;
+
+    // @DataMember
+    public isFailing: boolean;
+
+    // @DataMember
+    public lastFailureReason?: string;
+
+    // @DataMember
+    public lastFailedAtUnix?: number;
 
     public constructor(init?: Partial<SchedulerTaskDto>) {
       (Object as any).assign(this, init);
@@ -4546,20 +4592,14 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class AiScopeDto {
+  export class AiProjectRoleIdsDto {
     // @DataMember
-    public reach: string;
+    public projectId: string;
 
     // @DataMember
-    public projectId?: string;
+    public roleIds: string[] = [];
 
-    // @DataMember
-    public rights: string;
-
-    // @DataMember
-    public envs: string[] = [];
-
-    public constructor(init?: Partial<AiScopeDto>) {
+    public constructor(init?: Partial<AiProjectRoleIdsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -5063,14 +5103,40 @@ export module CodeMashHub2 {
     }
   }
 
+  export class EchoAgentSnippetDto {
+    public client: string;
+    public kind: string;
+    public recommended: boolean;
+    public auth: string;
+    public config: string;
+
+    public constructor(init?: Partial<EchoAgentSnippetDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class EchoAgentDto {
     public mcpUrl: string;
     public oAuthMetadataUrl?: string;
     public installationType: string;
     public onboardingDocsUrl: string;
     public toolsUrl: string;
+    public cliPackage: string;
+    public cliInstallCommand: string;
+    public deviceAuthorizationUrl: string;
+    public deviceTokenUrl: string;
+    public snippets: EchoAgentSnippetDto[] = [];
 
     public constructor(init?: Partial<EchoAgentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoHostingPlatformDto {
+    public provider: string;
+    public isAws: boolean;
+
+    public constructor(init?: Partial<EchoHostingPlatformDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -6291,6 +6357,7 @@ export module CodeMashHub2 {
     Compliance = 8192,
     Contacts = 16384,
     Marketplace = 32768,
+    Diagnostics = 65536,
   }
 
   // @DataContract
@@ -6677,6 +6744,41 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class AiRoleDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public description: string;
+
+    // @DataMember
+    public isSystem: boolean;
+
+    public constructor(init?: Partial<AiRoleDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiProjectRolesDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public roles: AiRoleDto[] = [];
+
+    public constructor(init?: Partial<AiProjectRolesDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AiServiceUserKeyDto {
     // @DataMember
     public id: string;
@@ -6701,7 +6803,10 @@ export module CodeMashHub2 {
     public name: string;
 
     // @DataMember
-    public scope: AiScopeDto;
+    public accountRoles: AiRoleDto[] = [];
+
+    // @DataMember
+    public projects: AiProjectRolesDto[] = [];
 
     // @DataMember
     public createdAt: string;
@@ -7818,6 +7923,18 @@ export module CodeMashHub2 {
   }
 
   export class SystemEmailTemplateListProjection extends EmailTemplateListProjection {
+    // @DataMember
+    public imagePreview?: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public theme?: SystemEmailTemplateTheme;
+
+    // @DataMember
+    public systemTags?: string[];
+
     public constructor(init?: Partial<SystemEmailTemplateListProjection>) {
       super(init);
       (Object as any).assign(this, init);
@@ -8717,6 +8834,8 @@ export module CodeMashHub2 {
     public client: string;
     public config: string;
     public auth: string;
+    public kind: string;
+    public recommended: boolean;
 
     public constructor(init?: Partial<AgentOnboardingSnippet>) {
       (Object as any).assign(this, init);
@@ -9303,9 +9422,52 @@ export module CodeMashHub2 {
     public isEnabled: boolean;
 
     // @DataMember
+    public isFailing: boolean;
+
+    // @DataMember
+    public lastFailureReason?: string;
+
+    // @DataMember
+    public lastFailedAtUnix?: number;
+
+    // @DataMember
     public viewId: string;
 
     public constructor(init?: Partial<SchedulerTaskListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum SchedulerTaskRunOutcome {
+    Fired = 1,
+    Failed = 2,
+    Skipped = 3,
+  }
+
+  // @DataContract
+  export class SchedulerTaskRunDto {
+    // @DataMember
+    public logId: string;
+
+    // @DataMember
+    public atUtc: string;
+
+    // @DataMember
+    public atUnix: number;
+
+    // @DataMember
+    public outcome: SchedulerTaskRunOutcome;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public detail?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    public constructor(init?: Partial<SchedulerTaskRunDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10337,6 +10499,7 @@ export module CodeMashHub2 {
     public installationDomain?: string;
     public licensingDocsUrl?: string;
     public agent?: EchoAgentDto;
+    public hostingPlatform?: EchoHostingPlatformDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -12370,6 +12533,83 @@ export module CodeMashHub2 {
     }
   }
 
+  export class AuthDeviceStartResponse extends ResponseBase {
+    public deviceCode?: string;
+    public userCode?: string;
+    public verificationUri?: string;
+    public verificationUriComplete?: string;
+    public expiresIn: number;
+    public interval: number;
+
+    public constructor(init?: Partial<AuthDeviceStartResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AuthDeviceTokenResponse extends ResponseBase {
+    public error?: string;
+    public errorDescription?: string;
+    public errorCode?: string;
+    public bearerToken?: string;
+    public refreshToken?: string;
+    public expiresIn?: number;
+    public clientId?: string;
+    public userId?: string;
+    public userName?: string;
+    public displayName?: string;
+    public accountId?: string;
+    public projectId?: string;
+
+    public constructor(init?: Partial<AuthDeviceTokenResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AuthDeviceConsentResponse extends ResponseBase {
+    public clientName: string;
+    public deviceName: string;
+    public userCode: string;
+    public projectId?: string;
+    public accountRoles: AiRoleDto[] = [];
+    public projects: AiProjectRolesDto[] = [];
+
+    public constructor(init?: Partial<AuthDeviceConsentResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AuthDeviceConsentDecisionResponse extends ResponseBase {
+    public constructor(init?: Partial<AuthDeviceConsentDecisionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class OAuthConsentResponse extends ResponseBase {
+    public clientName: string;
+    public redirectHost: string;
+    public consentTicket: string;
+    public accountRoles: AiRoleDto[] = [];
+    public projects: AiProjectRolesDto[] = [];
+
+    public constructor(init?: Partial<OAuthConsentResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class OAuthConsentDecisionResponse extends ResponseBase {
+    public redirectUrl?: string;
+
+    public constructor(init?: Partial<OAuthConsentDecisionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetEmbeddingIntegrationResponse extends ResponseBase {
     public item?: EmbeddingIntegrationDto;
 
@@ -12536,6 +12776,16 @@ export module CodeMashHub2 {
     public list?: PaginatedResponse<SchedulerTaskListProjection>;
 
     public constructor(init?: Partial<GetSchedulerTasksResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSchedulerTaskRunsResponse extends ResponseBase {
+    public logsEnabled: boolean;
+    public runs: SchedulerTaskRunDto[] = [];
+
+    public constructor(init?: Partial<GetSchedulerTaskRunsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16307,9 +16557,13 @@ export module CodeMashHub2 {
     // @ApiMember(Description="A name people recognise, e.g. \"Claude Code on my laptop\".", IsRequired=true)
     public name: string;
 
-    /** @description Reach (account | project + projectId), rights (read | admin), envs (["TEST"] or ["TEST","PROD"]). */
-    // @ApiMember(Description="Reach (account | project + projectId), rights (read | admin), envs ([\"TEST\"] or [\"TEST\",\"PROD\"]).", IsRequired=true)
-    public scope: AiScopeDto;
+    /** @description Account role ids (acc_…_nr_…) to give, built-in or custom. At least one role in total (account or project). */
+    // @ApiMember(Description="Account role ids (acc_…_nr_…) to give, built-in or custom. At least one role in total (account or project).")
+    public accountRoleIds?: string[];
+
+    /** @description Project roles to give: [{ projectId, roleIds: [pr_…_nr_…] }]. Without an account role the service user is pinned to these projects. */
+    // @ApiMember(Description="Project roles to give: [{ projectId, roleIds: [pr_…_nr_…] }]. Without an account role the service user is pinned to these projects.")
+    public projectRoles?: AiProjectRoleIdsDto[];
 
     public constructor(init?: Partial<CreateAiServiceUserRequest>) {
       super(init);
@@ -20137,6 +20391,31 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/files/item/use", "POST")
+  export class UseFileRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
+    /** @description The files integration the file lives on. */
+    // @ApiMember(Description="The files integration the file lives on.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Path of the file, relative to the integration. */
+    // @ApiMember(Description="Path of the file, relative to the integration.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<UseFileRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UseFileRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
   /** @description Disable email service */
   // @Route("/{version}/notifications/email/disable", "PUT")
   // @Api(Description="Disable email service")
@@ -23102,14 +23381,14 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The push integration id to test. Get it from get_push_integrations.", IsRequired=true)
     public integrationId: string;
 
-    /** @description Optional device token to send the test notification to. Requires DeliveryFamily when set. */
+    /** @description The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Fake integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily. */
     // @DataMember
-    // @ApiMember(Description="Optional device token to send the test notification to. Requires DeliveryFamily when set.")
+    // @ApiMember(Description="The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Fake integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily.")
     public testToken?: string;
 
-    /** @description Optional delivery family for the test token (ios, android, chrome or safari). Requires TestToken when set. */
+    /** @description The delivery family of TestToken: ios, android, chrome (any browser web push) or safari. Requires TestToken. */
     // @DataMember
-    // @ApiMember(Description="Optional delivery family for the test token (ios, android, chrome or safari). Requires TestToken when set.")
+    // @ApiMember(Description="The delivery family of TestToken: ios, android, chrome (any browser web push) or safari. Requires TestToken.")
     public deliveryFamily?: string;
 
     public constructor(init?: Partial<TestPushIntegration>) {
@@ -24324,6 +24603,14 @@ export module CodeMashHub2 {
     // @ApiMember(DataType="string", Description="Free-text search over title and message.", Name="search", ParameterType="query")
     public search?: string;
 
+    /** @description Meta key to filter on (e.g. taskId). Letters, digits and _ only. Must come with metaValue. */
+    // @ApiMember(DataType="string", Description="Meta key to filter on (e.g. taskId). Letters, digits and _ only. Must come with metaValue.", Name="metaKey", ParameterType="query")
+    public metaKey?: string;
+
+    /** @description Exact Meta value for metaKey (e.g. a task id tsk_...). Must come with metaKey. */
+    // @ApiMember(DataType="string", Description="Exact Meta value for metaKey (e.g. a task id tsk_...). Must come with metaKey.", Name="metaValue", ParameterType="query")
+    public metaValue?: string;
+
     /** @description Start of the timestamp range (inclusive, UTC). Optional. */
     // @ApiMember(Description="Start of the timestamp range (inclusive, UTC). Optional.")
     public fromUtc?: string;
@@ -25196,6 +25483,130 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Starts a browser sign-in for the Norbix CLI (OAuth device authorization, RFC 8628): a device code for polling and a user code the person confirms on the dashboard. */
+  // @Route("/{version}/auth/device/start", "POST")
+  // @Api(Description="Starts a browser sign-in for the Norbix CLI (OAuth device authorization, RFC 8628): a device code for polling and a user code the person confirms on the dashboard.")
+  export class AuthDeviceStartRequest
+    extends RequestBase
+    implements IReturn<AuthDeviceStartResponse>
+  {
+    /** @description Who asks, shown on the dashboard, e.g. "norbix-cli". 1–80 printable characters. */
+    // @ApiMember(Description="Who asks, shown on the dashboard, e.g. \"norbix-cli\". 1–80 printable characters.", IsRequired=true)
+    public clientName: string;
+
+    /** @description The computer name, shown on the dashboard and part of the AI service user's name (cleaned, at most 40 characters). */
+    // @ApiMember(Description="The computer name, shown on the dashboard and part of the AI service user's name (cleaned, at most 40 characters).")
+    public deviceName?: string;
+
+    /** @description The project the CLI wants to work in. It must be a project of the account of the person who allows the sign-in. */
+    // @ApiMember(Description="The project the CLI wants to work in. It must be a project of the account of the person who allows the sign-in.")
+    public projectId?: string;
+
+    public constructor(init?: Partial<AuthDeviceStartRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AuthDeviceStartRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AuthDeviceStartResponse();
+    }
+  }
+
+  /** @description Polls a CLI browser sign-in (RFC 8628). Always HTTP 200: an error name (authorization_pending, slow_down, access_denied, expired_token, invalid_grant, invalid_request) or the tokens, once. */
+  // @Route("/{version}/auth/device/token", "POST")
+  // @Api(Description="Polls a CLI browser sign-in (RFC 8628). Always HTTP 200: an error name (authorization_pending, slow_down, access_denied, expired_token, invalid_grant, invalid_request) or the tokens, once.")
+  export class AuthDeviceTokenRequest
+    extends RequestBase
+    implements IReturn<AuthDeviceTokenResponse>
+  {
+    /** @description The deviceCode from POST /auth/device/start. */
+    // @ApiMember(Description="The deviceCode from POST /auth/device/start.", IsRequired=true)
+    public deviceCode: string;
+
+    public constructor(init?: Partial<AuthDeviceTokenRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AuthDeviceTokenRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AuthDeviceTokenResponse();
+    }
+  }
+
+  /** @description The dashboard screen for a CLI browser sign-in: the client and computer that asked, and the roles the signed-in person may give. */
+  // @Route("/{version}/auth/device/consent", "GET")
+  // @Api(Description="The dashboard screen for a CLI browser sign-in: the client and computer that asked, and the roles the signed-in person may give.")
+  export class AuthDeviceConsentRequest
+    extends RequestBase
+    implements IReturn<AuthDeviceConsentResponse>
+  {
+    /** @description The code the terminal shows, XXXX-XXXX (case, spaces and the dash do not matter). */
+    // @ApiMember(Description="The code the terminal shows, XXXX-XXXX (case, spaces and the dash do not matter).", IsRequired=true)
+    public userCode: string;
+
+    public constructor(init?: Partial<AuthDeviceConsentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AuthDeviceConsentRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new AuthDeviceConsentResponse();
+    }
+  }
+
+  /** @description The signed-in person's decision on a CLI browser sign-in: allow with Membership roles, or deny. */
+  // @Route("/{version}/auth/device/consent", "POST")
+  // @Api(Description="The signed-in person's decision on a CLI browser sign-in: allow with Membership roles, or deny.")
+  export class AuthDeviceConsentDecisionRequest
+    extends RequestBase
+    implements IReturn<AuthDeviceConsentDecisionResponse>
+  {
+    /** @description The code the terminal shows, XXXX-XXXX. */
+    // @ApiMember(Description="The code the terminal shows, XXXX-XXXX.", IsRequired=true)
+    public userCode: string;
+
+    /** @description allow | deny. */
+    // @ApiMember(Description="allow | deny.", IsRequired=true)
+    public decision: string;
+
+    /** @description For allow: account role ids (acc_…_nr_…) to give. */
+    // @ApiMember(Description="For allow: account role ids (acc_…_nr_…) to give.")
+    public accountRoleIds?: string[];
+
+    /** @description For allow: project roles to give, [{ projectId, roleIds: [pr_…_nr_…] }]. */
+    // @ApiMember(Description="For allow: project roles to give, [{ projectId, roleIds: [pr_…_nr_…] }].")
+    public projectRoles?: AiProjectRoleIdsDto[];
+
+    public constructor(init?: Partial<AuthDeviceConsentDecisionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AuthDeviceConsentDecisionRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AuthDeviceConsentDecisionResponse();
+    }
+  }
+
   /** @description OAuth protected-resource metadata (RFC 9728) for the Hub MCP endpoint. */
   // @Route("/.well-known/oauth-protected-resource", "GET")
   // @Route("/.well-known/oauth-protected-resource/{Path*}", "GET")
@@ -25259,9 +25670,9 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description OAuth authorization endpoint: sign-in hint or the consent page (HTML). */
+  /** @description OAuth authorization endpoint: checks the request and redirects to the dashboard consent screen. */
   // @Route("/{version}/oauth/authorize", "GET")
-  // @Api(Description="OAuth authorization endpoint: sign-in hint or the consent page (HTML).")
+  // @Api(Description="OAuth authorization endpoint: checks the request and redirects to the dashboard consent screen.")
   export class OAuthAuthorizeRequest implements IReturn<string> {
     public version?: string;
 
@@ -25279,23 +25690,124 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description OAuth authorization endpoint: the person's decision from the consent page. */
-  // @Route("/{version}/oauth/authorize", "POST")
-  // @Api(Description="OAuth authorization endpoint: the person's decision from the consent page.")
-  export class OAuthAuthorizeDecisionRequest implements IReturn<string> {
-    public version?: string;
+  /** @description The dashboard consent screen for an AI tool: the client, where it returns to, and the roles the signed-in person may give. */
+  // @Route("/{version}/oauth/consent", "GET")
+  // @Api(Description="The dashboard consent screen for an AI tool: the client, where it returns to, and the roles the signed-in person may give.")
+  export class OAuthConsentRequest extends RequestBase implements IReturn<OAuthConsentResponse> {
+    /** @description OAuth response_type from the authorize request (must be "code"). */
+    // @ApiMember(Description="OAuth response_type from the authorize request (must be \"code\").")
+    public responseType?: string;
 
-    public constructor(init?: Partial<OAuthAuthorizeDecisionRequest>) {
+    /** @description OAuth client_id from the authorize request. */
+    // @ApiMember(Description="OAuth client_id from the authorize request.")
+    public clientId?: string;
+
+    /** @description OAuth redirect_uri from the authorize request. */
+    // @ApiMember(Description="OAuth redirect_uri from the authorize request.")
+    public redirectUri?: string;
+
+    /** @description PKCE code_challenge from the authorize request. */
+    // @ApiMember(Description="PKCE code_challenge from the authorize request.")
+    public codeChallenge?: string;
+
+    /** @description PKCE code_challenge_method from the authorize request (must be "S256"). */
+    // @ApiMember(Description="PKCE code_challenge_method from the authorize request (must be \"S256\").")
+    public codeChallengeMethod?: string;
+
+    /** @description OAuth state from the authorize request; returned to the client unchanged. */
+    // @ApiMember(Description="OAuth state from the authorize request; returned to the client unchanged.")
+    public state?: string;
+
+    /** @description OAuth resource (RFC 8707) from the authorize request. */
+    // @ApiMember(Description="OAuth resource (RFC 8707) from the authorize request.")
+    public resource?: string;
+
+    /** @description OAuth scope from the authorize request. */
+    // @ApiMember(Description="OAuth scope from the authorize request.")
+    public scope?: string;
+
+    public constructor(init?: Partial<OAuthConsentRequest>) {
+      super(init);
       (Object as any).assign(this, init);
     }
     public getTypeName() {
-      return 'OAuthAuthorizeDecisionRequest';
+      return 'OAuthConsentRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new OAuthConsentResponse();
+    }
+  }
+
+  /** @description The signed-in person's decision on the consent screen: allow with roles, or deny. Returns the address to send the browser to. */
+  // @Route("/{version}/oauth/consent", "POST")
+  // @Api(Description="The signed-in person's decision on the consent screen: allow with roles, or deny. Returns the address to send the browser to.")
+  export class OAuthConsentDecisionRequest
+    extends RequestBase
+    implements IReturn<OAuthConsentDecisionResponse>
+  {
+    /** @description OAuth response_type from the authorize request (must be "code"). */
+    // @ApiMember(Description="OAuth response_type from the authorize request (must be \"code\").")
+    public responseType?: string;
+
+    /** @description OAuth client_id from the authorize request. */
+    // @ApiMember(Description="OAuth client_id from the authorize request.")
+    public clientId?: string;
+
+    /** @description OAuth redirect_uri from the authorize request. */
+    // @ApiMember(Description="OAuth redirect_uri from the authorize request.")
+    public redirectUri?: string;
+
+    /** @description PKCE code_challenge from the authorize request. */
+    // @ApiMember(Description="PKCE code_challenge from the authorize request.")
+    public codeChallenge?: string;
+
+    /** @description PKCE code_challenge_method from the authorize request (must be "S256"). */
+    // @ApiMember(Description="PKCE code_challenge_method from the authorize request (must be \"S256\").")
+    public codeChallengeMethod?: string;
+
+    /** @description OAuth state from the authorize request; returned to the client unchanged. */
+    // @ApiMember(Description="OAuth state from the authorize request; returned to the client unchanged.")
+    public state?: string;
+
+    /** @description OAuth resource (RFC 8707) from the authorize request. */
+    // @ApiMember(Description="OAuth resource (RFC 8707) from the authorize request.")
+    public resource?: string;
+
+    /** @description OAuth scope from the authorize request. */
+    // @ApiMember(Description="OAuth scope from the authorize request.")
+    public scope?: string;
+
+    /** @description The consentTicket from GET /oauth/consent. */
+    // @ApiMember(Description="The consentTicket from GET /oauth/consent.", IsRequired=true)
+    public consentTicket: string;
+
+    /** @description allow | deny. */
+    // @ApiMember(Description="allow | deny.", IsRequired=true)
+    public decision: string;
+
+    /** @description For allow: account role ids (acc_…_nr_…) to give. */
+    // @ApiMember(Description="For allow: account role ids (acc_…_nr_…) to give.")
+    public accountRoleIds?: string[];
+
+    /** @description For allow: project roles to give, [{ projectId, roleIds: [pr_…_nr_…] }]. */
+    // @ApiMember(Description="For allow: project roles to give, [{ projectId, roleIds: [pr_…_nr_…] }].")
+    public projectRoles?: AiProjectRoleIdsDto[];
+
+    public constructor(init?: Partial<OAuthConsentDecisionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OAuthConsentDecisionRequest';
     }
     public getMethod() {
       return 'POST';
     }
     public createResponse() {
-      return '';
+      return new OAuthConsentDecisionResponse();
     }
   }
 
@@ -25886,6 +26398,7 @@ export module CodeMashHub2 {
 
   // @Route("/{version}/webhooks/{source}/{integrationInstanceId}", "POST")
   export class ReceiveWebhook implements IReturnVoid {
+    public version?: string;
     public source: string;
     public integrationInstanceId: string;
     public requestStream: string;
@@ -26160,6 +26673,33 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetSchedulerTasksResponse();
+    }
+  }
+
+  /** @description Gets the latest runs of a scheduled task */
+  // @Route("/{version}/scheduler/tasks/{id}/runs", "GET")
+  // @Api(Description="Gets the latest runs of a scheduled task")
+  export class GetSchedulerTaskRuns
+    extends CodeMashRequestBase
+    implements IReturn<GetSchedulerTaskRunsResponse>
+  {
+    public id: string;
+    /** @description How many runs to return, newest first: 1-50. Default 10. */
+    // @ApiMember(DataType="integer", Description="How many runs to return, newest first: 1-50. Default 10.", Name="take", ParameterType="query")
+    public take?: number;
+
+    public constructor(init?: Partial<GetSchedulerTaskRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSchedulerTaskRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSchedulerTaskRunsResponse();
     }
   }
 

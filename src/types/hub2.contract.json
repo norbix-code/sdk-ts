@@ -87,6 +87,22 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "AuthDeviceConsentDecisionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AuthDeviceConsentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AuthDeviceStartRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "AuthDeviceTokenRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "ChangeRecordResponsibility": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1011,6 +1027,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetFileById": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetFilesIntegration": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1307,6 +1327,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetSchedulerTaskRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetSchedulerTasks": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1483,12 +1507,16 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
-  "OAuthAuthorizeDecisionRequest": {
+  "OAuthAuthorizeRequest": {
     "requiresAuth": false,
     "returnsBytes": false
   },
-  "OAuthAuthorizeRequest": {
-    "requiresAuth": false,
+  "OAuthConsentDecisionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "OAuthConsentRequest": {
+    "requiresAuth": true,
     "returnsBytes": false
   },
   "OAuthProtectedResourceMetadataRequest": {
@@ -2152,6 +2180,10 @@
     "returnsBytes": false
   },
   "UploadChatAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UseFileRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
