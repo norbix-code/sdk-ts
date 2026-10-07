@@ -16,7 +16,7 @@ import type {
 
 const DEFAULT_BASE_URL_API = 'https://api.norbix.ai';
 const DEFAULT_BASE_URL_HUB = 'https://hub.norbix.ai';
-const DEFAULT_VERSION = 'v2';
+const DEFAULT_VERSION = 'v3';
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_RETRY = { maxRetries: 2, baseDelayMs: 250, maxDelayMs: 5_000 } as const;
 

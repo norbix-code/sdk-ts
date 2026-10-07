@@ -9,7 +9,7 @@ import type {
   NorbixSseStatus,
 } from './types.js';
 
-const DEFAULT_VERSION = 'v2';
+const DEFAULT_VERSION = 'v3';
 const DEFAULT_RECONNECT = { baseDelayMs: 500, maxDelayMs: 10_000, enabled: true };
 
 /**
