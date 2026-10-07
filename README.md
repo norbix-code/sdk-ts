@@ -309,7 +309,7 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 | 🔐 `auth`        | Sign-in flows. Most apps prefer `norbix.login(...)`.                                          | [`docs/api/auth.md`](./docs/api/auth.md)                 |
 | 👤 `membership`  | User CRUD, registration, login, passkeys, email verification, magic links, roles, preferences | [`docs/api/membership.md`](./docs/api/membership.md)     |
 | 🗄️ `database`    | Collections, find/insert/update/delete, aggregate, taxonomies                                 | [`docs/api/database.md`](./docs/api/database.md)         |
-| 📁 `files`       | Signed upload URLs, download, file info, listing, integration test                            | [`docs/api/files.md`](./docs/api/files.md)               |
+| 📁 `files`       | Signed upload URLs, download, file info, file by id, listing, integration test                | [`docs/api/files.md`](./docs/api/files.md)               |
 | 🔑 `apikeys`     | List + regenerate per-environment API keys                                                    | [`docs/api/apikeys.md`](./docs/api/apikeys.md)           |
 | 🪪 `accessToken` | Refresh-token exchange                                                                        | [`docs/api/access_token.md`](./docs/api/access_token.md) |
 | 🩺 `echo`        | Gateway smoke check                                                                           | [`docs/api/echo.md`](./docs/api/echo.md)                 |
@@ -318,7 +318,7 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 
 → [Full API index](./docs/api/_index.md)
 
-The Database calls follow rules the gateway checks (bulk writes with an empty filter need `allRecords: true`, one schema-trigger copy per env, the error codes of each refusal) — see [`docs/database-rules.md`](./docs/database-rules.md).
+The Database calls follow rules the gateway checks (bulk writes with an empty filter need `allRecords: true`, `expandReferences` for `{ id, display }` references, nested documents and `arrayFilters`, the typed schema field DTOs, the error codes of each refusal) — see [`docs/database-rules.md`](./docs/database-rules.md).
 
 ### `norbix.hub` — control plane, configuration
 

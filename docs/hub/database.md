@@ -1071,7 +1071,7 @@ const result = await norbix.hub.database.executeRecordsAggregate({
 
 `GET` `/{version}/database/collections/{collectionName}`
 
-Search / paginate items.
+Search / paginate items. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
 
 **Request DTO**: `CodeMashHub2.FindRecords`
 **Response**: `CodeMashHub2.FindRecordsResponse`
@@ -1094,7 +1094,7 @@ const result = await norbix.hub.database.findRecords({
 
 `GET` `/{version}/database/collections/{collectionName}/{id}`
 
-Search / paginate items.
+Fetch one record by id. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
 
 **Request DTO**: `CodeMashHub2.FindOneRecord`
 **Response**: `CodeMashHub2.FindOneRecordResponse`
@@ -1231,7 +1231,7 @@ const result = await norbix.hub.database.seedCollectionRecords({
 
 `PUT` `/{version}/database/collections/{collectionName}/many`
 
-Update an existing item.
+Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
 
 **Request DTO**: `CodeMashHub2.UpdateManyRecords`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1254,7 +1254,7 @@ const result = await norbix.hub.database.updateManyRecords({
 
 `PUT` `/{version}/database/collections/{collectionName}/{id}`
 
-Update an existing item.
+Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
 
 **Request DTO**: `CodeMashHub2.UpdateOneRecord`
 **Response**: `CodeMashHub2.EmptyResponse`
