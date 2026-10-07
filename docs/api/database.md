@@ -359,7 +359,7 @@ const result = await norbix.api.database.executeAggregate({
 
 `GET` `/{version}/database/collections/{collectionName}`
 
-Search / paginate items.
+Search / paginate items. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
 
 **Request DTO**: `CodeMashApi2.FindRequest`
 **Response**: `CodeMashApi2.FindResponse`
@@ -382,7 +382,7 @@ const result = await norbix.api.database.find({
 
 `GET` `/{version}/database/collections/{collectionName}/{id}`
 
-Search / paginate items.
+Fetch one record by id. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
 
 **Request DTO**: `CodeMashApi2.FindOneRequest`
 **Response**: `CodeMashApi2.FindOneResponse`
@@ -406,7 +406,7 @@ const result = await norbix.api.database.findOne({
 
 `GET` `/{version}/database/collections/{collectionName}/own`
 
-Search / paginate items.
+Search / paginate items. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
 
 **Request DTO**: `CodeMashApi2.FindOwnRequest`
 **Response**: `CodeMashApi2.FindResponse`
@@ -499,7 +499,7 @@ const result = await norbix.api.database.replaceOne({
 
 `PUT` `/{version}/database/collections/{collectionName}/many`
 
-Update an existing item.
+Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
 
 **Request DTO**: `CodeMashApi2.UpdateManyRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -522,7 +522,7 @@ const result = await norbix.api.database.updateMany({
 
 `PUT` `/{version}/database/collections/{collectionName}/{id}`
 
-Update an existing item.
+Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
 
 **Request DTO**: `CodeMashApi2.UpdateOneRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
