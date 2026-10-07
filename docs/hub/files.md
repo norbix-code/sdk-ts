@@ -46,7 +46,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -68,7 +68,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -90,7 +90,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -113,7 +113,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -136,7 +136,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -159,7 +159,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFilesTriggerResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -182,7 +182,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFilesTriggersResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -204,7 +204,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -224,7 +224,7 @@ const result = await norbix.hub.files.saveFilesTrigger({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -244,7 +244,7 @@ const result = await norbix.hub.files.makeFilePrivate({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -264,7 +264,7 @@ const result = await norbix.hub.files.makeFilePublic({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -284,7 +284,7 @@ const result = await norbix.hub.files.makeFolderPrivate({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -306,7 +306,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -329,7 +329,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -352,7 +352,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -375,7 +375,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFilesIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -398,7 +398,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFilesIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -420,7 +420,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -440,7 +440,7 @@ const result = await norbix.hub.files.saveFilesIntegration({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -463,7 +463,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestFilesIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -485,7 +485,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFileResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -507,7 +507,7 @@ Fetch one file by its stable id (`filesIntegrationId` + `id` in the query) — t
 **Response**: `CodeMashHub2.GetFileByIdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -530,7 +530,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetFolderFilesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

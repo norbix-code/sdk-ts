@@ -25,7 +25,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetApiKeysResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -45,7 +45,7 @@ const result = await norbix.api.apikeys.getApiKeys({
 **Response**: `CodeMashApi2.RegenerateApiKeysResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

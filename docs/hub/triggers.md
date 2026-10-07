@@ -22,7 +22,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetTriggersNeedingAttentionResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

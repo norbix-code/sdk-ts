@@ -96,7 +96,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -118,7 +118,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -140,7 +140,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -163,7 +163,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -186,7 +186,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -209,7 +209,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetSchemaTriggerResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -232,7 +232,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetSchemaTriggersResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -254,7 +254,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -276,7 +276,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -299,7 +299,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseTaxonomyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -322,7 +322,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseTaxonomiesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -344,7 +344,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseTaxonomyTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -366,7 +366,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -388,7 +388,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -412,7 +412,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -435,7 +435,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseTaxonomyTermResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -459,7 +459,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseMergedTermTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -482,7 +482,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseTaxonomyTermTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -505,7 +505,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -528,7 +528,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -550,7 +550,7 @@ const result = await norbix.hub.database.updateDatabaseTaxonomyTerm({
 **Response**: `CodeMashHub2.ApplyDatabaseSchemaBundleResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -580,7 +580,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -601,7 +601,7 @@ const result = await norbix.hub.database.deleteDatabaseSchema({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -624,7 +624,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemaResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -647,7 +647,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemasResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -669,7 +669,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemaDraftResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -692,7 +692,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemaListSettingsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -715,7 +715,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemaVersionDiffResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -738,7 +738,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseSchemaVersionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -759,7 +759,7 @@ const result = await norbix.hub.database.getDatabaseSchemaVersions({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -780,7 +780,7 @@ const result = await norbix.hub.database.publishDatabaseSchema({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -803,7 +803,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -825,7 +825,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -848,7 +848,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -871,7 +871,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -894,7 +894,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -917,7 +917,7 @@ Run an aggregation pipeline.
 **Response**: `CodeMashHub2.AggregateRecordsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -938,7 +938,7 @@ const result = await norbix.hub.database.aggregateRecords({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -962,7 +962,7 @@ Count items matching the filter.
 **Response**: `CodeMashHub2.CountRecordsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -985,7 +985,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1008,7 +1008,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1032,7 +1032,7 @@ Return distinct values for a field.
 **Response**: `CodeMashHub2.DistinctRecordValuesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1053,7 +1053,7 @@ const result = await norbix.hub.database.distinctRecordValues({
 **Response**: `CodeMashHub2.ExecuteRecordsAggregateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1077,7 +1077,7 @@ Search / paginate items. Takes `expandReferences: true` to read every reference 
 **Response**: `CodeMashHub2.FindRecordsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1100,7 +1100,7 @@ Fetch one record by id. Takes `expandReferences: true` to read every reference f
 **Response**: `CodeMashHub2.FindOneRecordResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1124,7 +1124,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetCollectionIndexesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1147,7 +1147,7 @@ Insert one or more items.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1170,7 +1170,7 @@ Insert one or more items.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1193,7 +1193,7 @@ Replace an existing item wholesale.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1215,7 +1215,7 @@ const result = await norbix.hub.database.replaceRecord({
 **Response**: `CodeMashHub2.SeedCollectionRecordsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1237,7 +1237,7 @@ Update an existing item. Keys may be nested paths; `arrayFilters` picks the list
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1260,7 +1260,7 @@ Update an existing item. Keys may be nested paths; `arrayFilters` picks the list
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1284,7 +1284,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1307,7 +1307,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1330,7 +1330,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1353,7 +1353,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1376,7 +1376,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseIntegrationsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1398,7 +1398,7 @@ List all items.
 **Response**: `CodeMashHub2.GetAllowedFlexTiersResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1420,7 +1420,7 @@ Reveal the masked value.
 **Response**: `CodeMashHub2.RevealManagedFlexConnectionStringResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1443,7 +1443,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1463,7 +1463,7 @@ const result = await norbix.hub.database.saveDatabaseIntegration({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1486,7 +1486,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestDatabaseIntegrationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1508,7 +1508,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1530,7 +1530,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1553,7 +1553,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetCollectionImportResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1576,7 +1576,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetCollectionImportsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1596,7 +1596,7 @@ const result = await norbix.hub.database.getCollectionImports({
 **Response**: `CodeMashHub2.RequestImportUploadUrlResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1616,7 +1616,7 @@ const result = await norbix.hub.database.requestImportUploadUrl({
 **Response**: `CodeMashHub2.AnalyzeImportFileResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1638,7 +1638,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1661,7 +1661,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseAggregateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1684,7 +1684,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDatabaseAggregatesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1706,7 +1706,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1728,7 +1728,7 @@ Run a connection / delivery test against the integration.
 **Response**: `CodeMashHub2.TestDatabaseAggregateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

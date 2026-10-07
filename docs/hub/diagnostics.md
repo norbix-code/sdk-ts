@@ -28,7 +28,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDiagnosticPacksResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -50,7 +50,7 @@ Run / execute the resource.
 **Response**: `CodeMashHub2.RunDiagnosticPackResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -73,7 +73,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetDiagnosticEchoResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -93,7 +93,7 @@ const result = await norbix.hub.diagnostics.getDiagnosticEcho({
 **Response**: `CodeMashHub2.ReadDiagnosticEventsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -113,7 +113,7 @@ const result = await norbix.hub.diagnostics.readDiagnosticEvents({
 **Response**: `CodeMashHub2.QueryDiagnosticLogsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -133,7 +133,7 @@ const result = await norbix.hub.diagnostics.queryDiagnosticLogs({
 **Response**: `CodeMashHub2.InspectDiagnosticRedisResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -155,7 +155,7 @@ Run / execute the resource.
 **Response**: `CodeMashHub2.RunDiagnosticHealthCheckResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

@@ -26,7 +26,7 @@ Accessed as `norbix.hub.support` on the [`Norbix`](../../README.md#authenticatio
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -47,7 +47,7 @@ const result = await norbix.hub.support.closeSupportCase({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -68,7 +68,7 @@ const result = await norbix.hub.support.reopenSupportCase({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -89,7 +89,7 @@ const result = await norbix.hub.support.resolveSupportCase({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -112,7 +112,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetSupportCaseResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -135,7 +135,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetSupportCasesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -155,7 +155,7 @@ const result = await norbix.hub.support.getSupportCases({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

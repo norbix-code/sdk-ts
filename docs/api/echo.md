@@ -24,7 +24,7 @@ Echo the request back (smoke test).
 **Response**: `CodeMashApi2.EchoResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

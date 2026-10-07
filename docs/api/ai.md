@@ -37,7 +37,7 @@ Accessed as `norbix.api.ai` on the [`Norbix`](../../README.md#authentication) cl
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -58,7 +58,7 @@ const result = await norbix.api.ai.uploadEndUserChatAttachment({
 **Response**: `CodeMashApi2.ListEndUserChatAttachmentsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -81,7 +81,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -102,7 +102,7 @@ const result = await norbix.api.ai.deleteEndUserChatAttachment({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -124,7 +124,7 @@ const result = await norbix.api.ai.setEndUserChatEntryFeedback({
 **Response**: `CodeMashApi2.ListEndUserChatMemoryResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -144,7 +144,7 @@ const result = await norbix.api.ai.listEndUserChatMemory({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -167,7 +167,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetEndUserChatAvailabilityResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -187,7 +187,7 @@ const result = await norbix.api.ai.getEndUserChatAvailability({
 **Response**: `CodeMashApi2.ListEndUserChatSessionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -209,7 +209,7 @@ Create a new item.
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -231,7 +231,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetEndUserChatSessionResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -252,7 +252,7 @@ const result = await norbix.api.ai.getEndUserChatSession({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -273,7 +273,7 @@ const result = await norbix.api.ai.renameEndUserChatSession({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -296,7 +296,7 @@ Archive (soft-hide) the resource.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -319,7 +319,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -342,7 +342,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetEndUserChatEntriesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -363,7 +363,7 @@ const result = await norbix.api.ai.getEndUserChatEntries({
 **Response**: `CodeMashApi2.StartEndUserChatTurnResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -385,7 +385,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetEndUserAiToolsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -405,7 +405,7 @@ const result = await norbix.api.ai.getEndUserAiTools({
 **Response**: `CodeMashApi2.InvokeEndUserAiToolResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

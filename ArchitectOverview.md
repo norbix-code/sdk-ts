@@ -1,6 +1,6 @@
 # Norbix TypeScript SDK — Architecture Review and Improvement Plan
 
-> Scope: architecture and developer UX for `@norbix/ts`, based on current source and generated docs.
+> Scope: architecture and developer UX for `@norbix.ai/ts`, based on current source and generated docs.
 > Date: 2026-04-28.
 
 This document is the maintainer-facing architecture review for the JS SDK. It separates current implementation facts from improvement proposals and tags each recommendation as `Done`, `Partial`, or `Open`.
@@ -11,7 +11,7 @@ This document is the maintainer-facing architecture review for the JS SDK. It se
 
 ### 1.1 System boundaries
 
-- **Public package and exports:** `package.json` exports `@norbix/ts`, `@norbix/ts/api`, `@norbix/ts/hub`, `@norbix/ts/types/*`.
+- **Public package and exports:** `package.json` exports `@norbix.ai/ts`, `@norbix.ai/ts/api`, `@norbix.ai/ts/hub`, `@norbix.ai/ts/types/*`.
 - **Top-level entrypoint:** `src/index.ts` re-exports `Norbix`, core errors, config helpers.
 - **Core handwritten runtime:** `src/client/*` (`Norbix.ts`, `transport.ts`, `errors.ts`, `env.ts`, `types.ts`).
 - **Generated API surface:** `src/api/*`, `src/hub/*`, and DTO contracts in `src/types/*`.
@@ -203,6 +203,6 @@ Each item lists status, impact, and evidence.
 
 ### Needs maintainer confirmation
 
-- Canonical naming language in docs (`norbix-js` repository vs `@norbix/ts` package references).
+- Canonical naming language in docs (`norbix-js` repository vs `@norbix.ai/ts` package references).
 - Preferred refresh-token ownership model (SDK-managed vs app-provided callback).
 - Major-version timing for strict typing changes.

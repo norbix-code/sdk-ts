@@ -136,7 +136,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountProfileResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -158,7 +158,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -178,7 +178,7 @@ const result = await norbix.hub.account.updateAccountProfile({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -200,7 +200,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountStatusResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -222,7 +222,7 @@ Create a new item.
 **Response**: `CodeMashHub2.CreateStripeCheckoutSessionResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -244,7 +244,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetStripeBillingPortalUrlResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -268,7 +268,7 @@ Create a new item.
 **Response**: `CodeMashHub2.CreateTeamMemberFromInvitationResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -290,7 +290,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountUsageBillingResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -314,7 +314,7 @@ Verify / confirm the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -337,7 +337,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -360,7 +360,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -381,7 +381,7 @@ const result = await norbix.hub.account.deleteNotificationsTag({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -404,7 +404,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -427,7 +427,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -450,7 +450,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -472,7 +472,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -495,7 +495,7 @@ Create a new item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -517,7 +517,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -538,7 +538,7 @@ const result = await norbix.hub.account.deleteProjectEnvironment({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -559,7 +559,7 @@ const result = await norbix.hub.account.setEnvironmentRank({
 **Response**: `CodeMashHub2.PromoteEnvironmentResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -579,7 +579,7 @@ const result = await norbix.hub.account.promoteEnvironment({
 **Response**: `CodeMashHub2.PromoteEnvironmentResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -601,7 +601,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectEnvironmentsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -623,7 +623,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -646,7 +646,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -670,7 +670,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountRegionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -690,7 +690,7 @@ const result = await norbix.hub.account.getAccountRegions({
 **Response**: `CodeMashHub2.WaitForProjectActiveResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -713,7 +713,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -734,7 +734,7 @@ const result = await norbix.hub.account.getProjectTokens({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -757,7 +757,7 @@ Assign the resource to another entity.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -780,7 +780,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.AdminPortalStructureDto`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -803,7 +803,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -826,7 +826,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectAiSettingsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -849,7 +849,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -872,7 +872,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -895,7 +895,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -919,7 +919,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -943,7 +943,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetProjectAiUsageResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -966,7 +966,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -989,7 +989,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1012,7 +1012,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1035,7 +1035,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1058,7 +1058,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1081,7 +1081,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1104,7 +1104,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1127,7 +1127,7 @@ Disable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1150,7 +1150,7 @@ Enable the resource.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1173,7 +1173,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1196,7 +1196,7 @@ Run a runtime check.
 **Response**: `CodeMashHub2.CheckProjectLanguagesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1219,7 +1219,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1242,7 +1242,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1265,7 +1265,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1288,7 +1288,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1311,7 +1311,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1334,7 +1334,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1357,7 +1357,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1382,7 +1382,7 @@ Create a new item.
 **Response**: `CodeMashHub2.CreateAccountResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1402,7 +1402,7 @@ const result = await norbix.hub.account.createAccount({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1424,7 +1424,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1446,7 +1446,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1468,7 +1468,7 @@ Create a new item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1490,7 +1490,7 @@ Delete an item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1513,7 +1513,7 @@ Delete an item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1536,7 +1536,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountCollaboratorsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1558,7 +1558,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountPasswordPolicyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1580,7 +1580,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountTeamPoliciesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1602,7 +1602,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAccountTeamRolesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1624,7 +1624,7 @@ Send a message / invitation.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1646,7 +1646,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1668,7 +1668,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1688,7 +1688,7 @@ const result = await norbix.hub.account.updateAccountRole({
 **Response**: `CodeMashHub2.AccountPasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1708,7 +1708,7 @@ const result = await norbix.hub.account.accountHasPasskey({
 **Response**: `CodeMashHub2.AccountPasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1728,7 +1728,7 @@ const result = await norbix.hub.account.accountStartEmailVerification({
 **Response**: `CodeMashHub2.AccountPasskeyVerificationTokenResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1748,7 +1748,7 @@ const result = await norbix.hub.account.accountConfirmEmailVerification({
 **Response**: `CodeMashHub2.AccountPasskeyCeremonyOptionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1768,7 +1768,7 @@ const result = await norbix.hub.account.accountPasskeyRegistrationOptions({
 **Response**: `CodeMashHub2.AccountPasskeyAuthTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1788,7 +1788,7 @@ const result = await norbix.hub.account.accountVerifyPasskeyRegistration({
 **Response**: `CodeMashHub2.AccountPasskeyCeremonyOptionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1808,7 +1808,7 @@ const result = await norbix.hub.account.accountPasskeyAuthenticationOptions({
 **Response**: `CodeMashHub2.AccountPasskeyAuthTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1828,7 +1828,7 @@ const result = await norbix.hub.account.accountVerifyPasskeyAuthentication({
 **Response**: `CodeMashHub2.AccountPasskeyListResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1848,7 +1848,7 @@ const result = await norbix.hub.account.listAccountPasskeys({
 **Response**: `CodeMashHub2.AccountPasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1869,7 +1869,7 @@ const result = await norbix.hub.account.renameAccountPasskey({
 **Response**: `CodeMashHub2.AccountPasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1890,7 +1890,7 @@ const result = await norbix.hub.account.revokeAccountPasskey({
 **Response**: `CodeMashHub2.AccountPasskeyCeremonyOptionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1910,7 +1910,7 @@ const result = await norbix.hub.account.accountPasskeyEnrollmentOptions({
 **Response**: `CodeMashHub2.AccountPasskeyEnrollmentResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1932,7 +1932,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetMyAccountUserProfileResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1954,7 +1954,7 @@ Update an existing item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1976,7 +1976,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLicenseDomainDnsStatusResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -1998,7 +1998,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetLicensesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2020,7 +2020,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetInstallationLicenseStatusResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2042,7 +2042,7 @@ Create a new item.
 **Response**: `CodeMashHub2.CreateAiServiceUserResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2062,7 +2062,7 @@ const result = await norbix.hub.account.createAiServiceUser({
 **Response**: `CodeMashHub2.ListAiServiceUsersResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2084,7 +2084,7 @@ Rotate the secret / token.
 **Response**: `CodeMashHub2.RotateAiServiceUserKeyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2105,7 +2105,7 @@ const result = await norbix.hub.account.rotateAiServiceUserKey({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2129,7 +2129,7 @@ Delete an item.
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2152,7 +2152,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAgentOnboardingResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2174,7 +2174,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetAiToolsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2194,7 +2194,7 @@ const result = await norbix.hub.account.getAiTools({
 **Response**: `CodeMashHub2.InvokeAiToolResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2215,7 +2215,7 @@ const result = await norbix.hub.account.invokeAiTool({
 **Response**: `CodeMashHub2.UploadChatAttachmentResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2235,7 +2235,7 @@ const result = await norbix.hub.account.uploadChatAttachment({
 **Response**: `CodeMashHub2.ChatAvailabilityResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2257,7 +2257,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetChatMemoryResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2277,7 +2277,7 @@ const result = await norbix.hub.account.getChatMemory({
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2300,7 +2300,7 @@ Delete an item.
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2321,7 +2321,7 @@ const result = await norbix.hub.account.deleteChatSession({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2342,7 +2342,7 @@ const result = await norbix.hub.account.setChatSessionArchived({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2363,7 +2363,7 @@ const result = await norbix.hub.account.setChatSessionPinned({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2386,7 +2386,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetChatSessionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2408,7 +2408,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashHub2.GetChatSessionEntriesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2429,7 +2429,7 @@ const result = await norbix.hub.account.getChatSessionEntries({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2451,7 +2451,7 @@ const result = await norbix.hub.account.setChatEntryFeedback({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2473,7 +2473,7 @@ const result = await norbix.hub.account.answerChatQuestion({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2495,7 +2495,7 @@ const result = await norbix.hub.account.decideChatPlan({
 **Response**: `CodeMashHub2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2517,7 +2517,7 @@ const result = await norbix.hub.account.stopChatRunStep({
 **Response**: `CodeMashHub2.ChatTurnResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2537,7 +2537,7 @@ const result = await norbix.hub.account.chatTurn({
 **Response**: `CodeMashHub2.ScaffoldProjectResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2557,7 +2557,7 @@ const result = await norbix.hub.account.scaffoldProject({
 **Response**: `CodeMashHub2.ValidateSchemaResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2577,7 +2577,7 @@ const result = await norbix.hub.account.validateSchema({
 **Response**: `CodeMashHub2.RenderTemplatePreviewResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -2597,7 +2597,7 @@ const result = await norbix.hub.account.renderTemplatePreview({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

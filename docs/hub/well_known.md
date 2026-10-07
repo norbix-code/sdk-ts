@@ -21,7 +21,7 @@ Accessed as `norbix.hub.wellKnown` on the [`Norbix`](../../README.md#authenticat
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -41,7 +41,7 @@ const result = await norbix.hub.wellKnown.oAuthProtectedResourceMetadata({
 **Response**: `CodeMashHub2.string`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

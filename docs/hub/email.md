@@ -27,7 +27,7 @@ when the client has one).
 **Response**: `CodeMashHub2.GetEmailPreferencesByLinkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -50,7 +50,7 @@ Public one-click unsubscribe from a signed e-mail link. No sign-in is needed
 **Response**: `CodeMashHub2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

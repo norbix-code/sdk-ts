@@ -45,7 +45,7 @@ Search / paginate items.
 **Response**: `CodeMashApi2.FindMergedTermTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -68,7 +68,7 @@ Search / paginate items.
 **Response**: `CodeMashApi2.FindTaxonomyTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -90,7 +90,7 @@ Search / paginate items.
 **Response**: `CodeMashApi2.FindTermsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -113,7 +113,7 @@ Search / paginate items.
 **Response**: `CodeMashApi2.FindTermsChildrenResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -137,7 +137,7 @@ Search / paginate items.
 **Response**: `CodeMashApi2.FindTermTreeResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -160,7 +160,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetDatabaseSchemaResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -183,7 +183,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetDatabaseSchemasResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -205,7 +205,7 @@ Run an aggregation pipeline.
 **Response**: `CodeMashApi2.AggregateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -226,7 +226,7 @@ const result = await norbix.api.database.aggregate({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -250,7 +250,7 @@ Count items matching the filter.
 **Response**: `CodeMashApi2.CountResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -273,7 +273,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -296,7 +296,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -320,7 +320,7 @@ Return distinct values for a field.
 **Response**: `CodeMashApi2.DistinctResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -341,7 +341,7 @@ const result = await norbix.api.database.distinct({
 **Response**: `CodeMashApi2.ExecuteAggregateResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -365,7 +365,7 @@ Search / paginate items. Takes `expandReferences: true` to read every reference 
 **Response**: `CodeMashApi2.FindResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -388,7 +388,7 @@ Fetch one record by id. Takes `expandReferences: true` to read every reference f
 **Response**: `CodeMashApi2.FindOneResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -412,7 +412,7 @@ Search / paginate items. Takes `expandReferences: true` to read every reference 
 **Response**: `CodeMashApi2.FindResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -435,7 +435,7 @@ Insert one or more items.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -458,7 +458,7 @@ Insert one or more items.
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -481,7 +481,7 @@ Replace an existing item wholesale.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -505,7 +505,7 @@ Update an existing item. Keys may be nested paths; `arrayFilters` picks the list
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -528,7 +528,7 @@ Update an existing item. Keys may be nested paths; `arrayFilters` picks the list
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

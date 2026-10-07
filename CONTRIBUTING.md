@@ -1,4 +1,4 @@
-# Contributing to `@norbix/ts`
+# Contributing to `@norbix.ai/ts`
 
 This SDK is auto-generated from the Norbix gateway DTOs and released by CI on every push to `main`. The flow below is the same one CI runs — keep your local steps aligned with CI and you'll never get a surprise on merge.
 

@@ -20,7 +20,7 @@ Accessed as `norbix.hub.resources` on the [`Norbix`](../../README.md#authenticat
 **Response**: `CodeMashHub2.ResolveResourcesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 

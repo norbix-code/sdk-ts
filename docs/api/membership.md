@@ -65,7 +65,7 @@ Block the resource.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -87,7 +87,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -109,7 +109,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -131,7 +131,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -153,7 +153,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -175,7 +175,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -197,7 +197,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -219,7 +219,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -241,7 +241,7 @@ Upsert an item (create or update).
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -263,7 +263,7 @@ Delete an item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -285,7 +285,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetUserResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -308,7 +308,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetUsersResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -330,7 +330,7 @@ Fetch a single item by ID.
 **Response**: `CodeMashApi2.GetUserPreferencesResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -351,7 +351,7 @@ const result = await norbix.api.membership.getUserPreferences({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -373,7 +373,7 @@ const result = await norbix.api.membership.grantContactConsent({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -393,7 +393,7 @@ const result = await norbix.api.membership.inviteUser({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -414,7 +414,7 @@ const result = await norbix.api.membership.linkIdentity({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -437,7 +437,7 @@ Assign the resource to another entity.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -457,7 +457,7 @@ const result = await norbix.api.membership.assignRolePermissions({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -478,7 +478,7 @@ const result = await norbix.api.membership.setContactRoles({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -504,7 +504,7 @@ Unblock the resource.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -524,7 +524,7 @@ const result = await norbix.api.membership.unblockUser({
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -548,7 +548,7 @@ Update an existing item.
 **Response**: `CodeMashApi2.IdResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -570,7 +570,7 @@ Update an existing item.
 **Response**: `CodeMashApi2.EmptyResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -591,7 +591,7 @@ const result = await norbix.api.membership.updateUserPreferences({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -611,7 +611,7 @@ const result = await norbix.api.membership.changePassword({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -631,7 +631,7 @@ const result = await norbix.api.membership.requestPasswordReset({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -651,7 +651,7 @@ const result = await norbix.api.membership.confirmPasswordReset({
 **Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -673,7 +673,7 @@ Verify / confirm the resource.
 **Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -693,7 +693,7 @@ const result = await norbix.api.membership.verifyPasskeyAuthentication({
 **Response**: `CodeMashApi2.PasskeyListResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -713,7 +713,7 @@ const result = await norbix.api.membership.listPasskeys({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -734,7 +734,7 @@ const result = await norbix.api.membership.renamePasskey({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -755,7 +755,7 @@ const result = await norbix.api.membership.revokePasskey({
 **Response**: `CodeMashApi2.PasskeyRecoveryResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -775,7 +775,7 @@ const result = await norbix.api.membership.useRecoveryCode({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -795,7 +795,7 @@ const result = await norbix.api.membership.requestMagicLink({
 **Response**: `CodeMashApi2.PasskeyRecoveryResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -815,7 +815,7 @@ const result = await norbix.api.membership.consumeMagicLink({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -835,7 +835,7 @@ const result = await norbix.api.membership.hasPasskey({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -855,7 +855,7 @@ const result = await norbix.api.membership.startEmailVerification({
 **Response**: `CodeMashApi2.PasskeyVerificationTokenResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -875,7 +875,7 @@ const result = await norbix.api.membership.confirmEmailVerification({
 **Response**: `CodeMashApi2.PasskeyCeremonyOptionsResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -897,7 +897,7 @@ Verify / confirm the resource.
 **Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -917,7 +917,7 @@ const result = await norbix.api.membership.verifyPasskeyRegistration({
 **Response**: `CodeMashApi2.PasskeyAuthTokensResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
@@ -937,7 +937,7 @@ const result = await norbix.api.membership.refreshPasskeyToken({
 **Response**: `CodeMashApi2.PasskeyOkResponse`
 
 ```ts
-import { Norbix } from '@norbix/ts';
+import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
