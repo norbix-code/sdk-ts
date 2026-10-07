@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-07 09:15:15
+Date: 2026-10-07 18:32:45
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -24,7 +24,6 @@ export module CodeMashApi2 {
   export interface IReturnVoid {
     createResponse(): void;
   }
-  export interface IGet {}
 
   export interface IHasSessionId {
     sessionId?: string;
@@ -307,14 +306,40 @@ export module CodeMashApi2 {
     }
   }
 
+  export class EchoAgentSnippetDto {
+    public client: string;
+    public kind: string;
+    public recommended: boolean;
+    public auth: string;
+    public config: string;
+
+    public constructor(init?: Partial<EchoAgentSnippetDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class EchoAgentDto {
     public mcpUrl: string;
     public oAuthMetadataUrl?: string;
     public installationType: string;
     public onboardingDocsUrl: string;
     public toolsUrl: string;
+    public cliPackage: string;
+    public cliInstallCommand: string;
+    public deviceAuthorizationUrl: string;
+    public deviceTokenUrl: string;
+    public snippets: EchoAgentSnippetDto[] = [];
 
     public constructor(init?: Partial<EchoAgentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoHostingPlatformDto {
+    public provider: string;
+    public isAws: boolean;
+
+    public constructor(init?: Partial<EchoHostingPlatformDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -953,7 +978,7 @@ export module CodeMashApi2 {
   // @DataContract
   export class FileResourceDto {
     // @DataMember(Order=1)
-    public id: string;
+    public id?: string;
 
     // @DataMember(Order=2)
     public originalFileName: string;
@@ -1415,6 +1440,7 @@ export module CodeMashApi2 {
     public installationDomain?: string;
     public licensingDocsUrl?: string;
     public agent?: EchoAgentDto;
+    public hostingPlatform?: EchoHostingPlatformDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -4796,6 +4822,32 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new TestFilesIntegrationResponse();
+    }
+  }
+
+  /** @description Files */
+  // @Route("/{version}/files/{filesIntegrationId}/use", "POST")
+  // @Api(Description="Files")
+  // @DataContract
+  export class UseFileRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
+    // @DataMember
+    public filesIntegrationId: string;
+
+    // @DataMember
+    public path: string;
+
+    public constructor(init?: Partial<UseFileRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UseFileRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
     }
   }
 
