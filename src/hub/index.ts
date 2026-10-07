@@ -32,9 +32,13 @@ import { WellKnownModule } from './well_known.js';
 
 export type {
   EmailCampaignSchedulerTaskInput,
+  PushCampaignSchedulerTaskInput,
   SaveSchedulerTaskInput,
   SchedulerEmailCampaignInput,
+  SchedulerPushCampaignInput,
+  SchedulerSmsCampaignInput,
   SchedulerTaskInput,
+  SmsCampaignSchedulerTaskInput,
 } from './scheduler.js';
 
 /**
