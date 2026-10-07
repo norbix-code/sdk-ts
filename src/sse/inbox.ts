@@ -40,7 +40,7 @@ export class NorbixInboxClient {
 
   constructor(private readonly opts: NorbixInboxOptions) {
     this.base = opts.hubUrl.replace(/\/+$/, '');
-    this.version = opts.hubVersion ?? 'v2';
+    this.version = opts.hubVersion ?? 'v3';
     const f = opts.fetchImpl ?? globalThis.fetch;
     if (typeof f !== 'function') {
       throw new Error('NorbixInboxClient: no fetch available; pass options.fetchImpl.');

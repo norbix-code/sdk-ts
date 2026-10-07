@@ -71,7 +71,7 @@ export type NorbixSseStatus = 'connecting' | 'open' | 'reconnecting' | 'refused'
 export interface NorbixSseClientOptions {
   /** Hub base URL, e.g. https://hub.norbix.ai. */
   hubUrl: string;
-  /** API version segment for the stream path. Defaults to "v2". */
+  /** API version segment for the stream path. Defaults to "v3". */
   hubVersion?: string;
   /** Bearer token (JWT) OR API key — sent as Authorization: Bearer. */
   token?: string;

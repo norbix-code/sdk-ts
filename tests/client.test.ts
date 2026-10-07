@@ -103,6 +103,24 @@ describe('Construction', () => {
     expect(new Headers(captured!.init.headers).get('Authorization')).toBe('Bearer usr-jwt');
   });
 
+  it('defaults the API and Hub version to v3', async () => {
+    const urls: string[] = [];
+    const norbix = new Norbix({
+      apiKey: 'srv-key',
+      projectId: 'p1',
+      fetch: fakeFetch({ body: {}, capture: (req) => urls.push(req.url) }),
+    });
+    expect(norbix.getConfig().apiVersion).toBe('v3');
+    expect(norbix.getConfig().hubVersion).toBe('v3');
+
+    await call(norbix, 'hub', 'account', 'getAccountStatus');
+    await norbix.hub.auth.authenticate({ provider: 'credentials' });
+    expect(urls).toEqual([
+      'https://hub.norbix.ai/v3/account/status',
+      'https://hub.norbix.ai/v3/auth',
+    ]);
+  });
+
   it('throws NORBIX_NOT_AUTHENTICATED when neither auth is set', async () => {
     const norbix = new Norbix({ projectId: 'p1', fetch: fakeFetch({}) });
     expect(norbix.isAuthenticated()).toBe(false);

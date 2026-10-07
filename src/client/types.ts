@@ -92,7 +92,7 @@ export interface NorbixConfig {
     hub?: string;
   };
 
-  /** API version segment used in `{version}` route tokens. Defaults to `v2`. */
+  /** API version segment used in `{version}` route tokens. Defaults to `v3`. */
   apiVersion?: string;
   hubVersion?: string;
 
