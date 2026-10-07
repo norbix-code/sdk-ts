@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**536 endpoints across 27 modules.** Click a module
+**538 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -31,7 +31,7 @@ name for the full method reference and TypeScript examples.
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |
 | [`public`](./public.md)               |         2 |                                                                                                                                          |
 | [`resources`](./resources.md)         |         1 |                                                                                                                                          |
-| [`scheduler`](./scheduler.md)         |         8 |                                                                                                                                          |
+| [`scheduler`](./scheduler.md)         |         9 |                                                                                                                                          |
 | [`support`](./support.md)             |         7 |                                                                                                                                          |
 | [`triggers`](./triggers.md)           |         1 |                                                                                                                                          |
 | [`webhooks`](./webhooks.md)           |         9 |                                                                                                                                          |
