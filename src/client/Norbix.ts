@@ -272,10 +272,15 @@ export class Norbix {
   /**
    * Ergonomic database access wrapper over `norbix.api.database.*`.
    * Keeps the generated API available, but gives a resource-first call style.
+   *
+   * `TItem` is the stored record shape; `TExpanded` (optional) is the shape a
+   * read with `expandReferences: true` returns — see `WithExpandedReferences`.
    */
-  collection<TItem = unknown>(collectionName: string): CollectionResource<TItem> {
+  collection<TItem = unknown, TExpanded = TItem>(
+    collectionName: string,
+  ): CollectionResource<TItem, TExpanded> {
     if (!collectionName) throw new Error('Norbix: collectionName must be a non-empty string');
-    return new CollectionResource<TItem>(this.api.database, collectionName);
+    return new CollectionResource<TItem, TExpanded>(this.api.database, collectionName);
   }
 
   /**
