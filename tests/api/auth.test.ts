@@ -32,11 +32,11 @@ describe('api.auth', () => {
     expect(typeof ns['authenticate']).toBe('function');
   });
 
-  it('authenticate: POST /auth', async () => {
+  it('authenticate: POST /v3/auth', async () => {
     const stub = {};
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.io',
-      path: '/auth',
+      path: '/v3/auth',
       version: 'v2',
       stub,
     });

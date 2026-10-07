@@ -12,10 +12,10 @@ export class AuthModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * POST /auth
+   * POST /v3/auth
    * Aliases:
+   *   - GET,POST /auth
    *   - GET,POST /auth/{provider}
-   *   - POST,GET,OPTIONS /v3/auth
    *   - POST,GET,OPTIONS /v3/auth/{provider}
    *   - POST,GET,OPTIONS /v3/staff/auth
    *   - POST,GET,OPTIONS /v3/staff/auth/{provider}
@@ -27,7 +27,7 @@ export class AuthModule {
   ): Promise<CodeMashHub2.AuthenticateResponse> => {
     return this.transport.send<CodeMashHub2.AuthenticateResponse>({
       target: 'hub',
-      path: '/auth',
+      path: '/v3/auth',
       method: 'POST',
       request,
       pathParams: [],
