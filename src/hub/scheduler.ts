@@ -164,12 +164,36 @@ export type SaveSchedulerTaskInput = Omit<
   task?: SchedulerTaskInput;
 };
 
+/** What one run of a scheduler task ended with — the gateway writes the member name. */
+export type SchedulerTaskRunOutcomeName = 'Fired' | 'Failed' | 'Skipped';
+
+/**
+ * One row of a task's run history. `outcome` is the string the gateway sends
+ * (`'Fired'`, `'Failed'`, `'Skipped'`); the generated
+ * `CodeMashHub2.SchedulerTaskRunOutcome` enum carries numbers, so compare
+ * against these strings. `reason` is a stable code on a failed or skipped run
+ * (e.g. `run-failed`, `module-disabled`, `initiator-not-found`).
+ */
+export type SchedulerTaskRun = Omit<CodeMashHub2.SchedulerTaskRunDto, 'outcome'> & {
+  outcome: SchedulerTaskRunOutcomeName;
+};
+
+/** Response of {@link SchedulerModule.getSchedulerTaskRuns}. */
+export type SchedulerTaskRunsResponse = Omit<CodeMashHub2.GetSchedulerTaskRunsResponse, 'runs'> & {
+  runs: SchedulerTaskRun[];
+};
+
+/** Request of {@link SchedulerModule.getSchedulerTaskRuns}: the task id and how many runs. */
+export type GetSchedulerTaskRunsInput = Omit<Partial<CodeMashHub2.GetSchedulerTaskRuns>, 'id'> & {
+  id: string;
+};
+
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
  * Group: scheduler
- * Endpoints: 8
+ * Endpoints: 9
  */
 export class SchedulerModule {
   constructor(private readonly transport: Transport) {}
@@ -308,12 +332,42 @@ export class SchedulerModule {
   };
 
   /**
+   * GET /{version}/scheduler/tasks/{id}/runs
+   * Request DTO: GetSchedulerTaskRuns
+   *
+   * The latest runs of one task (fired, failed or skipped, with the reason),
+   * newest first, read from the project's logs. `take` is 1–50 (default 10).
+   * `logsEnabled` is `false` with no runs when the Logs module is off. Needs
+   * `scheduler:read` and `logging:read`. For older runs, read the logs with
+   * `hub.logs.getLogs({ module: 'Scheduler', metaKey: 'taskId', metaValue: id })`.
+   */
+  getSchedulerTaskRuns = (
+    request: GetSchedulerTaskRunsInput,
+    options: RequestOverrideOptions = {},
+  ): Promise<SchedulerTaskRunsResponse> => {
+    return this.transport.send<SchedulerTaskRunsResponse>({
+      target: 'hub',
+      path: '/{version}/scheduler/tasks/{id}/runs',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/scheduler/tasks
    * Request DTO: SaveSchedulerTaskRequest
    *
    * Creates a task, or updates it when `taskId` is set. `task` is typed
    * (hand-set): `{ type: 'EmailCampaign' | 'SmsCampaign' | 'PushCampaign',
    * campaign: { templateId, … } }` — see {@link SchedulerTaskInput}.
+   *
+   * The task runs as `initiatorUserId`. The save is refused with
+   * `CM-ERRORS-SCHEDULER-012` when that user lacks a permission the task
+   * needs when it fires (e.g. sending the campaign) — every run would fail.
+   * The error names each missing permission (`"{action} on {resource}"`).
    */
   saveSchedulerTask = (
     request: SaveSchedulerTaskInput = {} as SaveSchedulerTaskInput,
