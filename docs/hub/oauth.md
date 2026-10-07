@@ -6,13 +6,14 @@ Accessed as `norbix.hub.oauth` on the [`Norbix`](../../README.md#authentication)
 
 ## Endpoints
 
-| Method                                              | Verb   | Path                         | Scope     |
-| --------------------------------------------------- | ------ | ---------------------------- | --------- |
-| [`oAuthRegister`](#oauthregister)                   | `POST` | `/{version}/oauth/register`  | `project` |
-| [`oAuthAuthorize`](#oauthauthorize)                 | `GET`  | `/{version}/oauth/authorize` | `project` |
-| [`oAuthAuthorizeDecision`](#oauthauthorizedecision) | `POST` | `/{version}/oauth/authorize` | `project` |
-| [`oAuthToken`](#oauthtoken)                         | `POST` | `/{version}/oauth/token`     | `project` |
-| [`oAuthRevoke`](#oauthrevoke)                       | `POST` | `/{version}/oauth/revoke`    | `project` |
+| Method                                          | Verb   | Path                         | Scope     |
+| ----------------------------------------------- | ------ | ---------------------------- | --------- |
+| [`oAuthRegister`](#oauthregister)               | `POST` | `/{version}/oauth/register`  | `project` |
+| [`oAuthAuthorize`](#oauthauthorize)             | `GET`  | `/{version}/oauth/authorize` | `project` |
+| [`oAuthConsent`](#oauthconsent)                 | `GET`  | `/{version}/oauth/consent`   | `project` |
+| [`oAuthConsentDecision`](#oauthconsentdecision) | `POST` | `/{version}/oauth/consent`   | `project` |
+| [`oAuthToken`](#oauthtoken)                     | `POST` | `/{version}/oauth/token`     | `project` |
+| [`oAuthRevoke`](#oauthrevoke)                   | `POST` | `/{version}/oauth/revoke`    | `project` |
 
 ## Reference
 
@@ -56,22 +57,42 @@ const result = await norbix.hub.oauth.oAuthAuthorize({
 
 [↑ Top](#endpoints)
 
-### oAuthAuthorizeDecision
+### oAuthConsent
 
-`POST` `/{version}/oauth/authorize`
+`GET` `/{version}/oauth/consent`
 
-**Request DTO**: `CodeMashHub2.OAuthAuthorizeDecisionRequest`
-**Response**: `CodeMashHub2.string`
+**Request DTO**: `CodeMashHub2.OAuthConsentRequest`
+**Response**: `CodeMashHub2.OAuthConsentResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.oauth.oAuthAuthorizeDecision({
+const result = await norbix.hub.oauth.oAuthConsent({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.string
+// → typed as CodeMashHub2.OAuthConsentResponse
+```
+
+[↑ Top](#endpoints)
+
+### oAuthConsentDecision
+
+`POST` `/{version}/oauth/consent`
+
+**Request DTO**: `CodeMashHub2.OAuthConsentDecisionRequest`
+**Response**: `CodeMashHub2.OAuthConsentDecisionResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.oauth.oAuthConsentDecision({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.OAuthConsentDecisionResponse
 ```
 
 [↑ Top](#endpoints)

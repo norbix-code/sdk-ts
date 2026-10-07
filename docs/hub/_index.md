@@ -26,7 +26,7 @@ name for the full method reference and TypeScript examples.
 | [`logs`](./logs.md)                   |        14 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        44 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
 | [`notifications`](./notifications.md) |       124 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
-| [`oauth`](./oauth.md)                 |         5 |                                                                                                                                          |
+| [`oauth`](./oauth.md)                 |         6 |                                                                                                                                          |
 | [`payments`](./payments.md)           |        17 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |
 | [`public`](./public.md)               |         2 |                                                                                                                                          |

@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: oauth
- * Endpoints: 5
+ * Endpoints: 6
  */
 export class OauthModule {
   constructor(private readonly transport: Transport) {}
@@ -50,16 +50,35 @@ export class OauthModule {
   };
 
   /**
-   * POST /{version}/oauth/authorize
-   * Request DTO: OAuthAuthorizeDecisionRequest
+   * GET /{version}/oauth/consent
+   * Request DTO: OAuthConsentRequest
    */
-  oAuthAuthorizeDecision = (
-    request: Partial<CodeMashHub2.OAuthAuthorizeDecisionRequest> = {} as Partial<CodeMashHub2.OAuthAuthorizeDecisionRequest>,
+  oAuthConsent = (
+    request: Partial<CodeMashHub2.OAuthConsentRequest> = {} as Partial<CodeMashHub2.OAuthConsentRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<string> => {
-    return this.transport.send<string>({
+  ): Promise<CodeMashHub2.OAuthConsentResponse> => {
+    return this.transport.send<CodeMashHub2.OAuthConsentResponse>({
       target: 'hub',
-      path: '/{version}/oauth/authorize',
+      path: '/{version}/oauth/consent',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/oauth/consent
+   * Request DTO: OAuthConsentDecisionRequest
+   */
+  oAuthConsentDecision = (
+    request: Partial<CodeMashHub2.OAuthConsentDecisionRequest> = {} as Partial<CodeMashHub2.OAuthConsentDecisionRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.OAuthConsentDecisionResponse> => {
+    return this.transport.send<CodeMashHub2.OAuthConsentDecisionResponse>({
+      target: 'hub',
+      path: '/{version}/oauth/consent',
       method: 'POST',
       request,
       pathParams: [],
