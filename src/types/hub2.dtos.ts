@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-06 11:08:41
+Date: 2026-10-07 09:15:16
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7150,6 +7150,9 @@ export module CodeMashHub2 {
     public names?: { [index: string]: string };
 
     // @DataMember
+    public slug?: string;
+
+    // @DataMember
     public description?: string;
 
     // @DataMember
@@ -7214,6 +7217,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public names?: { [index: string]: string };
+
+    // @DataMember
+    public slug?: string;
 
     // @DataMember
     public description?: string;
@@ -10028,6 +10034,12 @@ export module CodeMashHub2 {
     // @DataMember
     public translateOptions?: IReadOnlyDictionary<string, string>;
 
+    // @DataMember
+    public default?: string;
+
+    // @DataMember
+    public unique?: boolean;
+
     public constructor(init?: Partial<StringFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10044,8 +10056,26 @@ export module CodeMashHub2 {
     // @DataMember
     public multipleOf?: number;
 
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
     public constructor(init?: Partial<DecimalFieldDto>) {
       super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyDefaultDto {
+    // @DataMember
+    public value: number;
+
+    // @DataMember
+    public currency: string;
+
+    public constructor(init?: Partial<CurrencyDefaultDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10054,6 +10084,18 @@ export module CodeMashHub2 {
     // @DataMember
     public allowedCurrencies?: IReadOnlyList<string>;
 
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: CurrencyDefaultDto;
+
     public constructor(init?: Partial<CurrencyFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10061,6 +10103,9 @@ export module CodeMashHub2 {
   }
 
   export class BooleanFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public default?: boolean;
+
     public constructor(init?: Partial<BooleanFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10074,6 +10119,9 @@ export module CodeMashHub2 {
     // @DataMember
     public maximum?: number;
 
+    // @DataMember
+    public default?: number;
+
     public constructor(init?: Partial<DateFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10086,6 +10134,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
 
     public constructor(init?: Partial<IntegerFieldDto>) {
       super(init);
@@ -10104,6 +10158,15 @@ export module CodeMashHub2 {
   }
 
   export class TagsFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
     public constructor(init?: Partial<TagsFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10113,6 +10176,18 @@ export module CodeMashHub2 {
   export class FileFieldDto extends JsonSchemaFieldDto {
     // @DataMember
     public storages?: IReadOnlyList<string>;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public allowedFileType?: string;
+
+    // @DataMember
+    public maxSizeMb?: number;
 
     public constructor(init?: Partial<FileFieldDto>) {
       super(init);
@@ -10126,6 +10201,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
 
     public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
       super(init);
@@ -10153,6 +10231,9 @@ export module CodeMashHub2 {
     // @DataMember
     public multiple: boolean;
 
+    // @DataMember
+    public displayField?: string;
+
     public constructor(init?: Partial<UserSelectionFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10162,6 +10243,9 @@ export module CodeMashHub2 {
   export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
     // @DataMember
     public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
 
     public constructor(init?: Partial<RoleSelectionFieldDto>) {
       super(init);
@@ -10176,7 +10260,52 @@ export module CodeMashHub2 {
     // @DataMember
     public multiple: boolean;
 
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
     public constructor(init?: Partial<EnumSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ObjectFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public properties: IReadOnlyList<JsonSchemaFieldDto>;
+
+    // @DataMember
+    public required?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<ObjectFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ArrayFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public items: JsonSchemaFieldDto;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public uniqueItems?: boolean;
+
+    public constructor(init?: Partial<ArrayFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class JsonFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public maxBytes?: number;
+
+    public constructor(init?: Partial<JsonFieldDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -11174,6 +11303,17 @@ export module CodeMashHub2 {
     public publicUrl?: string;
 
     public constructor(init?: Partial<GetFileResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetFileByIdResponse extends ResponseBase {
+    public file?: FileResourceRefDto;
+    public isPublic?: boolean;
+    public publicUrl?: string;
+
+    public constructor(init?: Partial<GetFileByIdResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -17750,9 +17890,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional database integration id. When omitted, the project's default database integration is used.")
     public databaseIntegrationId?: string;
 
-    /** @description The term to insert, as a MongoDB extended-JSON document string (a raw JSON object). Supported term fields: name (string, or a {lang:value} map — required); description; order (integer sort position, lower shows first — omit for unordered); parentId (id of the single parent term); multiParents ("additional categories": array of {taxonomyId, parentId}). The server stamps taxonomyId/taxonomyName automatically — do not include them. Example: {"name":"France","order":1}. */
+    /** @description The term to insert, as a MongoDB extended-JSON document string (a raw JSON object). Supported term fields: name (string, or a {lang:value} map — required); description; slug (optional — the URL-safe name, unique inside the taxonomy; derived from name when omitted, e.g. 'France' → 'france', with a -2, -3… suffix when another term of the taxonomy already has that derived slug; an explicit slug another term has is refused, CM-ERRORS-TAXONOMIES-012); order (integer sort position, lower shows first — omit for unordered); parentId (id of the single parent term); multiParents ("additional categories": array of {taxonomyId, parentId}). The server stamps taxonomyId/taxonomyName automatically — do not include them. Example: {"name":"France","order":1}. */
     // @DataMember
-    // @ApiMember(Description="The term to insert, as a MongoDB extended-JSON document string (a raw JSON object). Supported term fields: name (string, or a {lang:value} map — required); description; order (integer sort position, lower shows first — omit for unordered); parentId (id of the single parent term); multiParents (\"additional categories\": array of {taxonomyId, parentId}). The server stamps taxonomyId/taxonomyName automatically — do not include them. Example: {\"name\":\"France\",\"order\":1}.", IsRequired=true)
+    // @ApiMember(Description="The term to insert, as a MongoDB extended-JSON document string (a raw JSON object). Supported term fields: name (string, or a {lang:value} map — required); description; slug (optional — the URL-safe name, unique inside the taxonomy; derived from name when omitted, e.g. 'France' → 'france', with a -2, -3… suffix when another term of the taxonomy already has that derived slug; an explicit slug another term has is refused, CM-ERRORS-TAXONOMIES-012); order (integer sort position, lower shows first — omit for unordered); parentId (id of the single parent term); multiParents (\"additional categories\": array of {taxonomyId, parentId}). The server stamps taxonomyId/taxonomyName automatically — do not include them. Example: {\"name\":\"France\",\"order\":1}.", IsRequired=true)
     public document: string;
 
     public constructor(init?: Partial<SaveDatabaseTaxonomyTermRequest>) {
@@ -17793,9 +17933,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional database integration id. When omitted, the project's default database integration is used.")
     public databaseIntegrationId?: string;
 
-    /** @description Partial update document as MongoDB extended-JSON (a raw JSON object of fields to change), applied with $set — only the given fields change. Updatable term fields: name (string or {lang:value} map); description; order (integer sort position, lower shows first — use this to numerate/rank terms; set null to clear); parentId (single parent term id — a term from THIS taxonomy's parent taxonomy; e.g. link a country to its region by setting the country term's parentId to the region term id); multiParents ("additional categories": array of {taxonomyId, parentId}). Example to rank a term: {"order":1}. */
+    /** @description Partial update document as MongoDB extended-JSON (a raw JSON object of fields to change), applied with $set — only the given fields change. Updatable term fields: name (string or {lang:value} map — a new name re-derives the slug unless 'slug' is sent too; a derived slug another term has gets a -2, -3… suffix); slug (optional — set explicitly, unique inside the taxonomy, CM-ERRORS-TAXONOMIES-012 when another term has it); description; order (integer sort position, lower shows first — use this to numerate/rank terms; set null to clear); parentId (single parent term id — a term from THIS taxonomy's parent taxonomy; e.g. link a country to its region by setting the country term's parentId to the region term id); multiParents ("additional categories": array of {taxonomyId, parentId}). Example to rank a term: {"order":1}. */
     // @DataMember
-    // @ApiMember(Description="Partial update document as MongoDB extended-JSON (a raw JSON object of fields to change), applied with $set — only the given fields change. Updatable term fields: name (string or {lang:value} map); description; order (integer sort position, lower shows first — use this to numerate/rank terms; set null to clear); parentId (single parent term id — a term from THIS taxonomy's parent taxonomy; e.g. link a country to its region by setting the country term's parentId to the region term id); multiParents (\"additional categories\": array of {taxonomyId, parentId}). Example to rank a term: {\"order\":1}.", IsRequired=true)
+    // @ApiMember(Description="Partial update document as MongoDB extended-JSON (a raw JSON object of fields to change), applied with $set — only the given fields change. Updatable term fields: name (string or {lang:value} map — a new name re-derives the slug unless 'slug' is sent too; a derived slug another term has gets a -2, -3… suffix); slug (optional — set explicitly, unique inside the taxonomy, CM-ERRORS-TAXONOMIES-012 when another term has it); description; order (integer sort position, lower shows first — use this to numerate/rank terms; set null to clear); parentId (single parent term id — a term from THIS taxonomy's parent taxonomy; e.g. link a country to its region by setting the country term's parentId to the region term id); multiParents (\"additional categories\": array of {taxonomyId, parentId}). Example to rank a term: {\"order\":1}.", IsRequired=true)
     public update: string;
 
     public constructor(init?: Partial<UpdateDatabaseTaxonomyTermRequest>) {
@@ -18218,9 +18358,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Raw JSON string matching the Norbix data meta-schema (https://norbix.ai/schemas/meta/v1.json) for the draft's data schema.")
     public dataSchema?: string;
 
-    /** @description OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or invalid, the backend auto-generates a flat-list form from the data schema. */
+    /** @description OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or empty (no field cell), the backend auto-generates a flat-list form from the data schema; a layout that fails the meta-schema is refused with the key named. */
     // @DataMember
-    // @ApiMember(Description="OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or invalid, the backend auto-generates a flat-list form from the data schema.")
+    // @ApiMember(Description="OPTIONAL raw JSON string matching the Norbix UI/visual meta-schema (https://norbix.ai/schemas/ui/v1.json) for the draft's record form. If omitted or empty (no field cell), the backend auto-generates a flat-list form from the data schema; a layout that fails the meta-schema is refused with the key named.")
     public visualSchema?: string;
 
     public constructor(init?: Partial<UpdateDatabaseSchemaDraftRequest>) {
@@ -18590,6 +18730,9 @@ export module CodeMashHub2 {
     public pagingArgs?: PagingArgs;
     public sortBy?: string;
     public sortOrder?: number;
+    /** @description Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids. */
+    // @ApiMember(Description="Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids.")
+    public expandReferences: boolean;
 
     public constructor(init?: Partial<FindRecords>) {
       super(init);
@@ -18619,6 +18762,9 @@ export module CodeMashHub2 {
     public id: string;
 
     public databaseIntegrationId?: string;
+    /** @description Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids. */
+    // @ApiMember(Description="Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids.")
+    public expandReferences: boolean;
 
     public constructor(init?: Partial<FindOneRecord>) {
       super(init);
@@ -18802,9 +18948,13 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Set to true to update EVERY record of the collection with an empty filter ({}). Without it an empty filter is refused (CM-ERRORS-DATABASE-037).")
     public allRecords?: boolean;
 
-    /** @description The partial update document (applied with $set), as MongoDB extended-JSON. */
-    // @ApiMember(Description="The partial update document (applied with $set), as MongoDB extended-JSON.", IsRequired=true)
+    /** @description The partial update document (applied with $set), as MongoDB extended-JSON. Dotted paths reach nested data: {"address.city":"Vilnius"}, {"lines.$[].qty":1}, or {"lines.$[line].qty":3} together with ArrayFilters. */
+    // @ApiMember(Description="The partial update document (applied with $set), as MongoDB extended-JSON. Dotted paths reach nested data: {\"address.city\":\"Vilnius\"}, {\"lines.$[].qty\":1}, or {\"lines.$[line].qty\":3} together with ArrayFilters.", IsRequired=true)
     public update: string;
+
+    /** @description Optional MongoDB arrayFilters — a JSON array of filter documents, one per $[name] identifier used in the Update paths, e.g. [{"line.sku":"A-1"}] for {"lines.$[line].qty":3}. */
+    // @ApiMember(Description="Optional MongoDB arrayFilters — a JSON array of filter documents, one per $[name] identifier used in the Update paths, e.g. [{\"line.sku\":\"A-1\"}] for {\"lines.$[line].qty\":3}.")
+    public arrayFilters?: string;
 
     public constructor(init?: Partial<UpdateManyRecords>) {
       super(init);
@@ -18834,9 +18984,13 @@ export module CodeMashHub2 {
     public id: string;
 
     public databaseIntegrationId?: string;
-    /** @description The partial update document (applied with $set), as MongoDB extended-JSON. */
-    // @ApiMember(Description="The partial update document (applied with $set), as MongoDB extended-JSON.", IsRequired=true)
+    /** @description The partial update document (applied with $set), as MongoDB extended-JSON. Dotted paths reach nested data: {"address.city":"Vilnius"}, {"lines.2.qty":3}, {"lines.$[].qty":1}, or {"lines.$[line].qty":3} together with ArrayFilters. */
+    // @ApiMember(Description="The partial update document (applied with $set), as MongoDB extended-JSON. Dotted paths reach nested data: {\"address.city\":\"Vilnius\"}, {\"lines.2.qty\":3}, {\"lines.$[].qty\":1}, or {\"lines.$[line].qty\":3} together with ArrayFilters.", IsRequired=true)
     public update: string;
+
+    /** @description Optional MongoDB arrayFilters — a JSON array of filter documents, one per $[name] identifier used in the Update paths, e.g. [{"line.sku":"A-1"}] for {"lines.$[line].qty":3}. */
+    // @ApiMember(Description="Optional MongoDB arrayFilters — a JSON array of filter documents, one per $[name] identifier used in the Update paths, e.g. [{\"line.sku\":\"A-1\"}] for {\"lines.$[line].qty\":3}.")
+    public arrayFilters?: string;
 
     public constructor(init?: Partial<UpdateOneRecord>) {
       super(init);
@@ -19925,6 +20079,31 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetFileResponse();
+    }
+  }
+
+  // @Route("/{version}/files/item/by-id", "GET")
+  export class GetFileById extends CodeMashRequestBase implements IReturn<GetFileByIdResponse> {
+    /** @description The files integration id to read from, from get_files_integrations. */
+    // @ApiMember(Description="The files integration id to read from, from get_files_integrations.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description The file id — nbfl_… as the Files endpoints return it, or its bare UUID. */
+    // @ApiMember(Description="The file id — nbfl_… as the Files endpoints return it, or its bare UUID.", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetFileById>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetFileById';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetFileByIdResponse();
     }
   }
 
