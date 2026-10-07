@@ -9,9 +9,10 @@ once (`enableScheduler`), then save tasks.
 
 Good to know:
 
-- **Only `EmailCampaign` tasks today.** A task sends an email campaign (a
-  template to an audience) each time its cron fires. Other `SchedulerTaskType`
-  values exist in the types but the gateway refuses them.
+- **Email, SMS and push campaign tasks.** A task sends a campaign (a template
+  to an audience) each time its cron fires: `type` is `EmailCampaign`,
+  `SmsCampaign` or `PushCampaign`. Webhook and code tasks (`WebhookCall`,
+  `CodeFunctionalCall`) exist in the types but the gateway refuses them for now.
 - **Cron is 5 fields, in UTC**: `minute hour day-of-month month day-of-week`.
   `0 9 * * 1` = every Monday at 09:00 UTC. Tasks have no time zone.
 - **`initiatorUserId`** (`usr_…`) is the user the task runs as. It must be the
@@ -181,24 +182,34 @@ const { list } = await norbix.hub.scheduler.getSchedulerTasks({
 
 Create a task, or update it when `taskId` is set. All fields go in the JSON body.
 
-| Field             | Required | Notes                                                         |
-| ----------------- | -------- | ------------------------------------------------------------- |
-| `name`            | yes      |                                                               |
-| `cron`            | yes      | 5 fields, UTC                                                 |
-| `initiatorUserId` | yes      | `usr_…` — the caller or a project service user                |
-| `isEnabled`       | yes      | `false` saves the task without starting its cron              |
-| `stopOnError`     | yes      | `true` disables the task when a run fails                     |
-| `task`            | yes      | `{ type: 'EmailCampaign', campaign, databaseIntegrationId? }` |
-| `taskId`          | no       | set to update an existing task                                |
-| `description`     | no       |                                                               |
+| Field             | Required | Notes                                                    |
+| ----------------- | -------- | -------------------------------------------------------- |
+| `name`            | yes      |                                                          |
+| `cron`            | yes      | 5 fields, UTC                                            |
+| `initiatorUserId` | yes      | `usr_…` — the caller or a project service user           |
+| `isEnabled`       | yes      | `false` saves the task without starting its cron         |
+| `stopOnError`     | yes      | `true` disables the task when a run fails                |
+| `task`            | yes      | `{ type, campaign, databaseIntegrationId? }` — see below |
+| `taskId`          | no       | set to update an existing task                           |
+| `description`     | no       |                                                          |
 
-`task.campaign` is the same email campaign you would create with the
-notifications module: `source` picks the audience (`AllUsers`,
-`SpecifiedUsers`, `AccountUsers`, `Email`, `Collection`) and `templateId` is
-always required. The body is typed (`SaveSchedulerTaskInput`, exported from
-`@norbix.ai/ts/hub`), so plain string values type-check without a cast.
+`task.type` picks the channel, and `task.campaign` is the same campaign you
+would create with that notifications module:
 
-**Request DTO**: `CodeMashHub2.SaveSchedulerTaskRequest` (task: `CodeMashHub2.EmailCampaignSchedulerTaskRequest`)
+| `task.type`     | `task.campaign`                                | Required by the gateway                                                                                                                                                                                       |
+| --------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EmailCampaign` | email campaign (`SchedulerEmailCampaignInput`) | `source` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `Email`, `Collection`) and `templateId`                                                                                                               |
+| `SmsCampaign`   | SMS campaign (`SchedulerSmsCampaignInput`)     | `templateId`, `integrationId`, and the audience: `deliveryType` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `PhoneNumbers`, `Collection`) plus the settings object of the same name, e.g. `specifiedUsers` |
+| `PushCampaign`  | push campaign (`SchedulerPushCampaignInput`)   | `source` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `Devices`, `Collection`) and `templateId`; the audience fields go with `source`                                                                       |
+
+`databaseIntegrationId` (`int_…`) is optional: without it the project's
+default database integration is used when the task fires. The body is typed
+(`SaveSchedulerTaskInput`, exported from `@norbix.ai/ts/hub` with the per-type
+inputs `EmailCampaignSchedulerTaskInput`, `SmsCampaignSchedulerTaskInput` and
+`PushCampaignSchedulerTaskInput`), so plain string values type-check without a
+cast, and a wrong `type` or a missing required field fails the typecheck.
+
+**Request DTO**: `CodeMashHub2.SaveSchedulerTaskRequest` (task: `CodeMashHub2.EmailCampaignSchedulerTaskRequest`, `CodeMashHub2.SmsCampaignSchedulerTaskRequest` or `CodeMashHub2.PushCampaignSchedulerTaskRequest`)
 **Response**: `CodeMashHub2.IdResponse` (`id` — the task id)
 
 ```ts
@@ -218,6 +229,60 @@ const { id } = await norbix.hub.scheduler.saveSchedulerTask({
       source: 'AllUsers',
       templateId: 'tpl_123',
       rolesNames: ['subscriber'], // optional: only users with these roles
+    },
+  },
+});
+```
+
+An SMS task — every day at 08:00 UTC to two members, through one SMS provider:
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { id } = await norbix.hub.scheduler.saveSchedulerTask({
+  name: 'Daily SMS reminder',
+  cron: '0 8 * * *',
+  initiatorUserId: 'usr_123',
+  isEnabled: true,
+  stopOnError: false,
+  task: {
+    type: 'SmsCampaign',
+    campaign: {
+      templateId: 'tmpl_sms_reminder',
+      integrationId: 'int_twilio', // the SMS provider integration
+      deliveryType: 'SpecifiedUsers',
+      specifiedUsers: {
+        recipientsSourceType: 'SpecifiedUsers', // same value as deliveryType
+        recipients: ['usr_456', 'usr_789'],
+      },
+    },
+  },
+});
+```
+
+A push task — every Friday at 18:00 UTC to all subscribers on iOS and Android:
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { id } = await norbix.hub.scheduler.saveSchedulerTask({
+  name: 'Weekly push',
+  cron: '0 18 * * 5',
+  initiatorUserId: 'usr_123',
+  isEnabled: true,
+  stopOnError: true,
+  task: {
+    type: 'PushCampaign',
+    campaign: {
+      source: 'AllUsers',
+      templateId: 'tmpl_push_weekly',
+      integrationId: 'int_fcm', // optional: the project default push integration otherwise
+      rolesNames: ['subscriber'], // optional
+      platforms: ['Ios', 'Android'], // optional: every platform otherwise
     },
   },
 });
