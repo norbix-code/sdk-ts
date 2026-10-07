@@ -321,6 +321,22 @@ describe('hub.logs', () => {
     expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
   });
 
+  it('getLogs: metaKey / metaValue go in the query string with the other filters', async () => {
+    const { norbix, mock } = makeClient({});
+    await norbix.hub.logs.getLogs({
+      module: 'Scheduler',
+      metaKey: 'taskId',
+      metaValue: 'tsk_123',
+    });
+    expect(mock.lastCall?.method).toBe('GET');
+    const url = new URL(mock.lastCall!.url);
+    expect(`${url.origin}${url.pathname}`).toBe('https://hub.norbix.io/v2/logs');
+    expect(url.searchParams.get('module')).toBe('Scheduler');
+    expect(url.searchParams.get('metaKey')).toBe('taskId');
+    expect(url.searchParams.get('metaValue')).toBe('tsk_123');
+    expect(mock.lastCall?.body).toBeUndefined();
+  });
+
   it('getLogSettings: GET /{version}/logs/settings', async () => {
     const stub = {};
     const expected = expectedUrl({

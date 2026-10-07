@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SaveSchedulerTaskInput, SchedulerTaskInput } from '../../src/hub/index.js';
+import type {
+  SaveSchedulerTaskInput,
+  SchedulerTaskInput,
+  SchedulerTaskRunsResponse,
+} from '../../src/hub/index.js';
 import { CodeMashHub2 } from '../../src/types/hub2.dtos.js';
-import { makeClient } from '../_helpers.js';
+import { createMockFetch, makeClient } from '../_helpers.js';
 
 /**
- * Tests for hub.scheduler (8 endpoints).
+ * Tests for hub.scheduler (9 endpoints).
  *
  * Each method is asserted against:
  *   - the HTTP verb and the full URL (version segment + path tokens)
@@ -35,7 +39,7 @@ function sentBody(raw: string | undefined): Record<string, unknown> {
 }
 
 describe('hub.scheduler', () => {
-  it('module exposes 8 method(s)', () => {
+  it('module exposes 9 method(s)', () => {
     const { scheduler } = client();
     const methods = Object.entries(scheduler)
       .filter(([, v]) => typeof v === 'function')
@@ -48,6 +52,7 @@ describe('hub.scheduler', () => {
         'enableScheduler',
         'enableSchedulerTask',
         'getSchedulerTask',
+        'getSchedulerTaskRuns',
         'getSchedulerTasks',
         'saveSchedulerTask',
       ].sort(),
@@ -94,6 +99,57 @@ describe('hub.scheduler', () => {
     expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123`);
     expect(mock.lastCall?.body).toBeUndefined();
     expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('getSchedulerTaskRuns: GET /{version}/scheduler/tasks/{id}/runs, id in the path, take in the query', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.getSchedulerTaskRuns({ id: 'tsk_123', take: 25 });
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123/runs?take=25`);
+    expect(mock.lastCall?.body).toBeUndefined();
+    expectAuthHeaders(mock.lastCall?.headers);
+  });
+
+  it('getSchedulerTaskRuns: no take sends no query string (the gateway defaults to 10)', async () => {
+    const { scheduler, mock } = client();
+    await scheduler.getSchedulerTaskRuns({ id: 'tsk_123' });
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123/runs`);
+  });
+
+  it('getSchedulerTaskRuns: returns the runs with the outcome as the wire string', async () => {
+    const body = {
+      logsEnabled: true,
+      runs: [
+        {
+          logId: 'log_2',
+          atUtc: '2026-10-07T10:00:00Z',
+          atUnix: 1791367200,
+          outcome: 'Failed',
+          reason: 'run-failed',
+          detail: 'Template not found',
+          correlationId: 'corr_2',
+        },
+        { logId: 'log_1', atUtc: '2026-10-07T09:00:00Z', atUnix: 1791363600, outcome: 'Fired' },
+      ],
+    };
+    const mock = createMockFetch({ body });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+    const result: SchedulerTaskRunsResponse = await norbix.hub.scheduler.getSchedulerTaskRuns({
+      id: 'tsk_123',
+    });
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks/tsk_123/runs`);
+    expect(result.logsEnabled).toBe(true);
+    expect(result.runs.map((r) => [r.outcome, r.reason])).toEqual([
+      ['Failed', 'run-failed'],
+      ['Fired', undefined],
+    ]);
+  });
+
+  it('getSchedulerTaskRuns: the task id is required', () => {
+    const { scheduler } = client();
+    // @ts-expect-error — `id` is required
+    const call = () => scheduler.getSchedulerTaskRuns({ take: 5 });
+    expect(typeof call).toBe('function');
   });
 
   it('enableSchedulerTask: PUT /{version}/scheduler/tasks/{Id}/enable, id in the path', async () => {
