@@ -20,8 +20,8 @@ Not in scope: other SDKs, the CLI, the portal (`cloud`), gateway code, merging
 3. feat(database): collection helper — `findOwn` / `findOwnItems`, `findOneItem`, typed `{ id, display }` references with `expandReferences`, `arrayFilters` comments — done
 4. test(database): mock-fetch tests for `expandReferences`, `arrayFilters`, nested documents, the new field DTOs and the new error codes — done
 5. docs(database): rules page (references, nested documents, field rules, files by id, error codes), method pages, README — done
-6. check: `npm run typecheck`, `npm run lint`, `npx prettier --check .`, `npx vitest run`, `npm run build` — done
-7. ship: `nbx-ship --no-merge` (pull request only; merge after the gateway campaign lands) — doing
+6. check: `npm run typecheck`, `npm run lint`, `npx prettier --check .`, `npx vitest run`, `npm run build` — done (tsc clean; eslint clean; prettier clean; vitest 53 files, 912 tests passed; tsup build rc=0)
+7. ship: `nbx-ship --no-merge` (pull request only; merge after the gateway campaign lands) — done (pull request open, not merged)
 
 ## Changes
 
