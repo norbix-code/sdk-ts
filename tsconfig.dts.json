@@ -1,0 +1,17 @@
+{
+  // Checks the published .d.ts / .d.cts files the way an app compiled WITHOUT
+  // skipLibCheck sees them. `// @ts-nocheck` in src/types/*.dtos.ts does not
+  // survive into the declaration files, so `npm run typecheck` cannot catch
+  // what this does. Run after `npm run build`.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "types": ["node"]
+  },
+  "include": ["dist/**/*.d.ts", "dist/**/*.d.cts"]
+}

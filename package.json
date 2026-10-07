@@ -83,6 +83,7 @@
     "sync-types:remote": "node scripts/sync-types.mjs --remote",
     "generate-endpoints": "node scripts/generate-endpoints.mjs",
     "typecheck": "tsc --noEmit",
+    "typecheck:dist": "tsc -p tsconfig.dts.json",
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"tests/**/*.ts\" --fix",
     "format": "prettier --write \"**/*.{ts,js,json,md,yml,yaml}\"",

@@ -46,6 +46,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Published types compile without skipLibCheck
+        run: npm run typecheck:dist
+
       - name: Verify package contents (npm pack --dry-run)
         # Catches accidental inclusion of src/, tests/, docs/, .env, or any
         # file that would balloon the published tarball. The `.npmignore`
