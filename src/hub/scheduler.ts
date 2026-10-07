@@ -29,13 +29,132 @@ export type EmailCampaignSchedulerTaskInput = Omit<
   campaign?: SchedulerEmailCampaignInput;
 };
 
+/** One SMS audience: `deliveryType` names it, the property of the same name holds its settings. */
+type SmsAudience<
+  S extends CodeMashHub2.SmsCampaignRecipientsSourceTypes,
+  K extends string,
+  D extends CodeMashHub2.SmsCampaignDeliverySettingsDto,
+> = { deliveryType: EnumOrLiteral<S> } & {
+  [P in K]: Omit<D, 'recipientsSourceType'> & { recipientsSourceType: EnumOrLiteral<S> };
+};
+
+type SmsAudienceKey =
+  'allUsers' | 'specifiedUsers' | 'accountUsers' | 'collection' | 'phoneNumbers';
+
 /**
- * The `task` of {@link SchedulerModule.saveSchedulerTask}. Only `EmailCampaign`
- * is supported by the gateway today. A `SchedulerTaskRequest` /
- * `EmailCampaignSchedulerTaskRequest` class instance is accepted too.
+ * The SMS campaign a scheduled task sends — the body of
+ * `POST /notifications/sms/campaigns` (`CreateSmsCampaignRequest`).
+ * `templateId`, `integrationId` and the audience are required by the gateway:
+ * `deliveryType` picks the audience, and the settings object of the same
+ * name (`allUsers`, `specifiedUsers`, `accountUsers`, `collection`,
+ * `phoneNumbers`) carries it, with the same `recipientsSourceType`.
+ */
+export type SchedulerSmsCampaignInput = Omit<
+  Partial<CodeMashHub2.CreateSmsCampaignRequest>,
+  'templateId' | 'integrationId' | 'deliveryType' | SmsAudienceKey
+> & {
+  templateId: string;
+  integrationId: string;
+} & (
+    | SmsAudience<
+        CodeMashHub2.SmsCampaignRecipientsSourceTypes.AllUsers,
+        'allUsers',
+        CodeMashHub2.SmsToAllUsersDeliverySettingsDto
+      >
+    | SmsAudience<
+        CodeMashHub2.SmsCampaignRecipientsSourceTypes.SpecifiedUsers,
+        'specifiedUsers',
+        CodeMashHub2.SmsToUsersDeliverySettingsDto
+      >
+    | SmsAudience<
+        CodeMashHub2.SmsCampaignRecipientsSourceTypes.AccountUsers,
+        'accountUsers',
+        CodeMashHub2.SmsToAccountUsersDeliverySettingsDto
+      >
+    | SmsAudience<
+        CodeMashHub2.SmsCampaignRecipientsSourceTypes.Collection,
+        'collection',
+        CodeMashHub2.SmsToCollectionRecordsDeliverySettingsDto
+      >
+    | SmsAudience<
+        CodeMashHub2.SmsCampaignRecipientsSourceTypes.PhoneNumbers,
+        'phoneNumbers',
+        CodeMashHub2.SmsToPhoneNumbersDeliverySettingsDto
+      >
+  );
+
+/** Task body of type `SmsCampaign` — sends an SMS campaign each time the cron fires. */
+export type SmsCampaignSchedulerTaskInput = Omit<
+  Partial<CodeMashHub2.SmsCampaignSchedulerTaskRequest>,
+  'type' | 'campaign'
+> & {
+  type: CodeMashHub2.SchedulerTaskType.SmsCampaign | 'SmsCampaign';
+  campaign: SchedulerSmsCampaignInput;
+};
+
+type PushPlatform = EnumOrLiteral<CodeMashHub2.PushDeviceDeliveryFamily>;
+
+/** The fields every push audience shares; `templateId` is required by the gateway. */
+type PushCampaignBase<S extends CodeMashHub2.PushCampaignRecipientsSourceTypes> = Omit<
+  Partial<CodeMashHub2.PushCampaignRequest>,
+  'source' | 'templateId'
+> & {
+  source: EnumOrLiteral<S>;
+  templateId: string;
+};
+
+/**
+ * The push campaign a scheduled task sends — the body of
+ * `POST /notifications/push/campaigns`. `source` picks the audience and the
+ * fields that go with it (the gateway's `PushTo…DeliverySettingsRequest`
+ * records); `templateId` is always required.
+ */
+export type SchedulerPushCampaignInput =
+  | (PushCampaignBase<CodeMashHub2.PushCampaignRecipientsSourceTypes.AllUsers> & {
+      rolesNames?: string[];
+      userTags?: string[];
+      platforms?: PushPlatform[];
+    })
+  | (PushCampaignBase<CodeMashHub2.PushCampaignRecipientsSourceTypes.SpecifiedUsers> & {
+      userRecipients: string[];
+    })
+  | (PushCampaignBase<CodeMashHub2.PushCampaignRecipientsSourceTypes.AccountUsers> & {
+      userRecipients: string[];
+      platforms?: PushPlatform[];
+    })
+  | (PushCampaignBase<CodeMashHub2.PushCampaignRecipientsSourceTypes.Collection> & {
+      schemaName: string;
+      fields: string[];
+      fieldType: EnumOrLiteral<CodeMashHub2.CollectionEmailCampaignRecipientField>;
+      roleNames?: string[];
+      languages?: string[];
+    })
+  | (PushCampaignBase<CodeMashHub2.PushCampaignRecipientsSourceTypes.Devices> & {
+      devices: { token: string; deliveryFamily: PushPlatform }[];
+    });
+
+/** Task body of type `PushCampaign` — sends a push campaign each time the cron fires. */
+export type PushCampaignSchedulerTaskInput = Omit<
+  Partial<CodeMashHub2.PushCampaignSchedulerTaskRequest>,
+  'type' | 'campaign'
+> & {
+  type: CodeMashHub2.SchedulerTaskType.PushCampaign | 'PushCampaign';
+  campaign: SchedulerPushCampaignInput;
+};
+
+/**
+ * The `task` of {@link SchedulerModule.saveSchedulerTask}. The gateway runs
+ * email, SMS and push campaign tasks (`EmailCampaign`, `SmsCampaign`,
+ * `PushCampaign`); webhook and code tasks (`WebhookCall`,
+ * `CodeFunctionalCall`) are not supported yet and are rejected. A
+ * `SchedulerTaskRequest` subclass instance (e.g.
+ * `SmsCampaignSchedulerTaskRequest`) is accepted too.
  */
 export type SchedulerTaskInput =
-  EmailCampaignSchedulerTaskInput | CodeMashHub2.SchedulerTaskRequest;
+  | EmailCampaignSchedulerTaskInput
+  | SmsCampaignSchedulerTaskInput
+  | PushCampaignSchedulerTaskInput
+  | CodeMashHub2.SchedulerTaskRequest;
 
 /** Request of {@link SchedulerModule.saveSchedulerTask} with a typed `task`. */
 export type SaveSchedulerTaskInput = Omit<
@@ -193,7 +312,8 @@ export class SchedulerModule {
    * Request DTO: SaveSchedulerTaskRequest
    *
    * Creates a task, or updates it when `taskId` is set. `task` is typed
-   * (hand-set): `{ type: 'EmailCampaign', campaign: { source, templateId, … } }`.
+   * (hand-set): `{ type: 'EmailCampaign' | 'SmsCampaign' | 'PushCampaign',
+   * campaign: { templateId, … } }` — see {@link SchedulerTaskInput}.
    */
   saveSchedulerTask = (
     request: SaveSchedulerTaskInput = {} as SaveSchedulerTaskInput,

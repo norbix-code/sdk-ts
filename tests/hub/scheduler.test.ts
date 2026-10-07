@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { SaveSchedulerTaskInput } from '../../src/hub/index.js';
+import type { SaveSchedulerTaskInput, SchedulerTaskInput } from '../../src/hub/index.js';
 import { CodeMashHub2 } from '../../src/types/hub2.dtos.js';
 import { makeClient } from '../_helpers.js';
 
@@ -13,8 +13,9 @@ import { makeClient } from '../_helpers.js';
  *   - auth and project headers
  *
  * `saveSchedulerTask` also checks the JSON body: the gateway picks the task
- * subtype from `task.type` (only `EmailCampaign` today) and the campaign
- * audience from `task.campaign.source`. Every call goes to a mock fetch.
+ * subtype from `task.type` (`EmailCampaign`, `SmsCampaign` or `PushCampaign`)
+ * and the campaign audience from `task.campaign.source` (email, push) or
+ * `task.campaign.deliveryType` (SMS). Every call goes to a mock fetch.
  */
 const HUB = 'https://hub.norbix.io/v2';
 
@@ -196,5 +197,119 @@ describe('hub.scheduler', () => {
         campaign: { source: 'AllUsers', templateId: 'tpl_123' },
       },
     });
+  });
+  it('saveSchedulerTask: POST /{version}/scheduler/tasks, typed SmsCampaign task in the JSON body', async () => {
+    const { scheduler, mock } = client();
+    // Plain object literal, no cast: also the type-check of the SMS task input.
+    await scheduler.saveSchedulerTask({
+      name: 'Daily SMS reminder',
+      cron: '0 8 * * *',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: false,
+      task: {
+        type: 'SmsCampaign',
+        databaseIntegrationId: 'int_db',
+        campaign: {
+          templateId: 'tmpl_sms',
+          integrationId: 'int_sms',
+          deliveryType: 'SpecifiedUsers',
+          specifiedUsers: {
+            recipientsSourceType: 'SpecifiedUsers',
+            recipients: ['usr_1', 'usr_2'],
+          },
+        },
+      },
+    });
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks`);
+    expect(mock.lastCall?.headers.get('Content-Type')).toBe('application/json');
+    expectAuthHeaders(mock.lastCall?.headers);
+    expect(sentBody(mock.lastCall?.body)).toEqual({
+      name: 'Daily SMS reminder',
+      cron: '0 8 * * *',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: false,
+      task: {
+        type: 'SmsCampaign',
+        databaseIntegrationId: 'int_db',
+        campaign: {
+          templateId: 'tmpl_sms',
+          integrationId: 'int_sms',
+          deliveryType: 'SpecifiedUsers',
+          specifiedUsers: {
+            recipientsSourceType: 'SpecifiedUsers',
+            recipients: ['usr_1', 'usr_2'],
+          },
+        },
+      },
+    });
+  });
+
+  it('saveSchedulerTask: POST /{version}/scheduler/tasks, typed PushCampaign task in the JSON body', async () => {
+    const { scheduler, mock } = client();
+    // Plain object literal, no cast: also the type-check of the push task input.
+    await scheduler.saveSchedulerTask({
+      name: 'Weekly push',
+      cron: '0 18 * * 5',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: true,
+      task: {
+        type: 'PushCampaign',
+        campaign: {
+          source: 'AllUsers',
+          templateId: 'tmpl_push',
+          integrationId: 'int_push',
+          rolesNames: ['subscriber'],
+          platforms: ['Ios', 'Android'],
+        },
+      },
+    });
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe(`${HUB}/scheduler/tasks`);
+    expect(mock.lastCall?.headers.get('Content-Type')).toBe('application/json');
+    expectAuthHeaders(mock.lastCall?.headers);
+    expect(sentBody(mock.lastCall?.body)).toEqual({
+      name: 'Weekly push',
+      cron: '0 18 * * 5',
+      initiatorUserId: 'usr_123',
+      isEnabled: true,
+      stopOnError: true,
+      task: {
+        type: 'PushCampaign',
+        campaign: {
+          source: 'AllUsers',
+          templateId: 'tmpl_push',
+          integrationId: 'int_push',
+          rolesNames: ['subscriber'],
+          platforms: ['Ios', 'Android'],
+        },
+      },
+    });
+  });
+
+  it('SchedulerTaskInput: an unknown type literal or a missing required field fails the typecheck', () => {
+    // @ts-expect-error — 'WebhookCall' tasks are not supported yet (no typed input)
+    const webhook: SchedulerTaskInput = { type: 'WebhookCall' };
+    // @ts-expect-error — not a task type at all
+    const bogus: SchedulerTaskInput = { type: 'SmsCampaigns', campaign: {} };
+    const noIntegration: SchedulerTaskInput = {
+      type: 'SmsCampaign',
+      // @ts-expect-error — an SMS campaign needs `integrationId` and an audience
+      campaign: { templateId: 'tmpl_sms' },
+    };
+    const noTemplate: SchedulerTaskInput = {
+      type: 'PushCampaign',
+      // @ts-expect-error — a push campaign needs `templateId`
+      campaign: { source: 'AllUsers' },
+    };
+    expect([webhook, bogus, noIntegration, noTemplate].map((t) => t.type)).toEqual([
+      'WebhookCall',
+      'SmsCampaigns',
+      'SmsCampaign',
+      'PushCampaign',
+    ]);
   });
 });
