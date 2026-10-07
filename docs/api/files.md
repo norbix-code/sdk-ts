@@ -16,6 +16,7 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 | [`deleteFileApi`](#deletefileapi)               | `DELETE` | `/{version}/files/{filesIntegrationId}`            | `project` |
 | [`deleteManyFilesApi`](#deletemanyfilesapi)     | `DELETE` | `/{version}/files/{filesIntegrationId}/bulk`       | `project` |
 | [`downloadFileApi`](#downloadfileapi)           | `GET`    | `/{version}/files/{filesIntegrationId}/download`   | `project` |
+| [`getFileById`](#getfilebyid)                   | `GET`    | `/{version}/files/{filesIntegrationId}/by-id/{id}` | `project` |
 | [`getFileInfo`](#getfileinfo)                   | `GET`    | `/{version}/files/{filesIntegrationId}/info`       | `project` |
 | [`getSignedUrl`](#getsignedurl)                 | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
 | [`listFiles`](#listfiles)                       | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
@@ -153,6 +154,29 @@ const result = await norbix.api.files.downloadFileApi({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.Blob
+```
+
+[↑ Top](#endpoints)
+
+### getFileById
+
+`GET` `/{version}/files/{filesIntegrationId}/by-id/{id}`
+
+Fetch one file by its stable id — the id a file field on a record stores, and the `id` an expanded reference (`expandReferences: true`) returns. The answer carries the file's `resource`, `path`, `isPublic` and `publicUrl`. An id no storage of the integration holds answers not found.
+
+**Request DTO**: `CodeMashApi2.GetFileByIdRequest`
+**Response**: `CodeMashApi2.GetFileByIdResponse`
+
+```ts
+import { Norbix } from '@norbix/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.files.getFileById({
+  filesIntegrationId: 'filesIntegrationId-here',
+  id: 'id-here',
+});
+// → typed as CodeMashApi2.GetFileByIdResponse
 ```
 
 [↑ Top](#endpoints)

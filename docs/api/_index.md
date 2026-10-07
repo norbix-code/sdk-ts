@@ -15,6 +15,6 @@ name for the full method reference and TypeScript examples.
 | [`auth`](./auth.md)                |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
 | [`database`](./database.md)        |        22 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`echo`](./echo.md)                |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
-| [`files`](./files.md)              |        12 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
+| [`files`](./files.md)              |        13 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
 | [`membership`](./membership.md)    |        42 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
 | [`public`](./public.md)            |         2 |                                                                                                                                          |
