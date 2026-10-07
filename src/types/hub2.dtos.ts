@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-07 19:03:07
+Date: 2026-10-07 18:32:46
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -24,8 +24,6 @@ export module CodeMashHub2 {
   export interface IReturnVoid {
     createResponse(): void;
   }
-  export type JsonObject = { [key: string]: unknown };
-  export interface IGet {}
 
   export interface IHasSessionId {
     sessionId?: string;
@@ -2101,7 +2099,7 @@ export module CodeMashHub2 {
     /** @description The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3 */
     // @DataMember
     // @ApiMember(DataType="string", Description="The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3", IsRequired=true, Name="version", ParameterType="path")
-    public version?: string | number;
+    public version: string;
 
     /** @description CorrelationId for each request */
     // @DataMember
@@ -3174,6 +3172,7 @@ export module CodeMashHub2 {
   export class DatabaseIntegrationDto extends IntegrationDto {
     public provider: DatabaseProvider;
     public isSystemOwned: boolean;
+    public canManageIndexes?: boolean;
 
     public constructor(init?: Partial<DatabaseIntegrationDto>) {
       super(init);
@@ -4369,7 +4368,7 @@ export module CodeMashHub2 {
   }
 
   export interface IVersionBasedRequest {
-    version?: string | number;
+    version: string;
   }
 
   export interface IHasCorrelationIdRequest {
@@ -6360,10 +6359,19 @@ export module CodeMashHub2 {
     Diagnostics = 65536,
   }
 
+  export enum LanguageGapKind {
+    Template = 'Template',
+    Footer = 'Footer',
+    Signature = 'Signature',
+  }
+
   // @DataContract
   export class TemplateLanguageGapDto {
     // @DataMember
     public module: ApplicationModule;
+
+    // @DataMember
+    public kind: LanguageGapKind;
 
     // @DataMember
     public templateId: string;
@@ -7482,6 +7490,81 @@ export module CodeMashHub2 {
     }
   }
 
+  export class SchemaIndexDto {
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public keys: string[] = [];
+
+    // @DataMember
+    public unique: boolean;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public field: string;
+
+    public constructor(init?: Partial<SchemaIndexDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SchemaIndexIntegrationStatusDto {
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public state: string;
+
+    // @DataMember
+    public wanted: SchemaIndexDto[] = [];
+
+    // @DataMember
+    public created: string[] = [];
+
+    // @DataMember
+    public dropped: string[] = [];
+
+    // @DataMember
+    public overCap: SchemaIndexDto[] = [];
+
+    // @DataMember
+    public refusedReason?: string;
+
+    // @DataMember
+    public lastRunUtc: string;
+
+    public constructor(init?: Partial<SchemaIndexIntegrationStatusDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SchemaIndexStatusDto {
+    // @DataMember
+    public schemaId: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public collection: string;
+
+    // @DataMember
+    public state: string;
+
+    // @DataMember
+    public integrations: SchemaIndexIntegrationStatusDto[] = [];
+
+    // @DataMember
+    public lastRunUtc: string;
+
+    public constructor(init?: Partial<SchemaIndexStatusDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class SchemaDiffDto {
     // @DataMember
     public fromVersion: number;
@@ -7539,6 +7622,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public keys: CollectionIndexKeyDto[] = [];
+
+    // @DataMember
+    public createdByNorbix: boolean;
 
     public constructor(init?: Partial<CollectionIndexDto>) {
       (Object as any).assign(this, init);
@@ -9386,7 +9472,7 @@ export module CodeMashHub2 {
     contentLength: number;
     files?: IHttpFile[];
     urlReferrer?: string;
-    requestAborted: any;
+    requestAborted: CancellationToken;
   }
 
   export interface IResponse {
@@ -11196,6 +11282,15 @@ export module CodeMashHub2 {
     public item?: SchemaDraftDto;
 
     public constructor(init?: Partial<GetDatabaseSchemaDraftResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetDatabaseSchemaIndexStatusResponse extends ResponseBase {
+    public status?: SchemaIndexStatusDto;
+
+    public constructor(init?: Partial<GetDatabaseSchemaIndexStatusResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -18393,6 +18488,34 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetDatabaseSchemaDraftResponse();
+    }
+  }
+
+  /** @description Gets the Norbix index status of a database schema */
+  // @Route("/{version}/database/schemas/{Id}/index-status", "GET")
+  // @Api(Description="Gets the Norbix index status of a database schema")
+  // @DataContract
+  export class GetDatabaseSchemaIndexStatus
+    extends CodeMashRequestBase
+    implements IReturn<GetDatabaseSchemaIndexStatusResponse>
+  {
+    /** @description Schema id from get_database_schemas. */
+    // @DataMember
+    // @ApiMember(Description="Schema id from get_database_schemas.", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetDatabaseSchemaIndexStatus>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetDatabaseSchemaIndexStatus';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetDatabaseSchemaIndexStatusResponse();
     }
   }
 

@@ -506,6 +506,25 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/schemas/{Id}/index-status
+   * Request DTO: GetDatabaseSchemaIndexStatus
+   */
+  getDatabaseSchemaIndexStatus = (
+    request: Partial<CodeMashHub2.GetDatabaseSchemaIndexStatus> = {} as Partial<CodeMashHub2.GetDatabaseSchemaIndexStatus>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseSchemaIndexStatusResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseSchemaIndexStatusResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/{Id}/index-status',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/database/schemas/{Id}/list-settings
    * Request DTO: GetDatabaseSchemaListSettings
    */

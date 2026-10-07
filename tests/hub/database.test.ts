@@ -55,6 +55,7 @@ describe('hub.database', () => {
     expect(typeof ns['getDatabaseSchema']).toBe('function');
     expect(typeof ns['getDatabaseSchemas']).toBe('function');
     expect(typeof ns['getDatabaseSchemaDraft']).toBe('function');
+    expect(typeof ns['getDatabaseSchemaIndexStatus']).toBe('function');
     expect(typeof ns['getDatabaseSchemaListSettings']).toBe('function');
     expect(typeof ns['getDatabaseSchemaVersionDiff']).toBe('function');
     expect(typeof ns['getDatabaseSchemaVersions']).toBe('function');

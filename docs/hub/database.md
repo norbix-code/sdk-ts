@@ -36,6 +36,7 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`getDatabaseSchema`](#getdatabaseschema)                                 | `GET`    | `/{version}/database/schemas/{id}`                                                  | `project` |
 | [`getDatabaseSchemas`](#getdatabaseschemas)                               | `GET`    | `/{version}/database/schemas`                                                       | `project` |
 | [`getDatabaseSchemaDraft`](#getdatabaseschemadraft)                       | `GET`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`getDatabaseSchemaIndexStatus`](#getdatabaseschemaindexstatus)           | `GET`    | `/{version}/database/schemas/{Id}/index-status`                                     | `project` |
 | [`getDatabaseSchemaListSettings`](#getdatabaseschemalistsettings)         | `GET`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
 | [`getDatabaseSchemaVersionDiff`](#getdatabaseschemaversiondiff)           | `GET`    | `/{version}/database/schemas/{Id}/versions/diff`                                    | `project` |
 | [`getDatabaseSchemaVersions`](#getdatabaseschemaversions)                 | `GET`    | `/{version}/database/schemas/{Id}/versions`                                         | `project` |
@@ -678,6 +679,36 @@ const result = await norbix.hub.database.getDatabaseSchemaDraft({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetDatabaseSchemaDraftResponse
+```
+
+[↑ Top](#endpoints)
+
+### getDatabaseSchemaIndexStatus
+
+`GET` `/{version}/database/schemas/{Id}/index-status`
+
+The last schema-index run of one collection in the request's environment. Norbix creates a published collection's obvious indexes itself — `idx_<field>` per reference field, `uniq_<field>` per `unique` field, `idx_<field>__id` for the records list's default sort, at most 8 — on publish, on a default-sort change and on promotion. `status` is `null` before the first run; otherwise `status.state` is `building`, `ready`, `refused` (a database refused `createIndex`) or `partial`, with one entry per database under `status.integrations` (`wanted`, `created`, `dropped`, `overCap`, `refusedReason`).
+
+**Request DTO**: `CodeMashHub2.GetDatabaseSchemaIndexStatus`
+**Response**: `CodeMashHub2.GetDatabaseSchemaIndexStatusResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { status } = await norbix.hub.database.getDatabaseSchemaIndexStatus({
+  id: 'sch_4kX9mQvR2tYw7ZbC1dFgHj',
+});
+console.log(status?.state); // 'building' | 'ready' | 'refused' | 'partial'
+for (const db of status?.integrations ?? []) {
+  console.log(
+    db.integrationId,
+    db.state,
+    db.created,
+    db.overCap.map((i) => i.name),
+  );
+}
 ```
 
 [↑ Top](#endpoints)
