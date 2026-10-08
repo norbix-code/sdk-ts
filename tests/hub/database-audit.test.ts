@@ -46,7 +46,7 @@ describe('schema embed setting', () => {
       embeddingIntegrationId: 'int_embed',
       perUser: false,
     });
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 });
 

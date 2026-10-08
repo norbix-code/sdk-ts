@@ -75,7 +75,6 @@ describe('hub.account — anonymous calls (no token, no accountId)', () => {
     expect(new URL(sent.url).origin + new URL(sent.url).pathname).toBe(`${HUB}${c.path}`);
     expect(sent.headers.has('Authorization')).toBe(false);
     expect([...sent.headers.keys()].filter((h) => /api-?key/i.test(h))).toEqual([]);
-    expect(sent.headers.has('X-CM-AccountId')).toBe(false);
     expect(sent.headers.has('norbix-account-id')).toBe(false);
   });
 

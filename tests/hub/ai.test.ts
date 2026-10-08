@@ -68,7 +68,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('DELETE');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getEmbeddingIntegration: GET /{version}/ai/integrations/embeddings/{Id}', async () => {
@@ -91,7 +91,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getEmbeddingIntegrations: GET /{version}/ai/integrations/embeddings', async () => {
@@ -114,7 +114,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('saveEmbeddingIntegration: POST /{version}/ai/integrations/embeddings', async () => {
@@ -137,7 +137,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('testEmbeddingIntegration: POST /{version}/ai/integrations/embeddings/{Id}/test', async () => {
@@ -160,7 +160,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('deleteLlmIntegration: DELETE /{version}/ai/integrations/llms/{Id}', async () => {
@@ -183,7 +183,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('DELETE');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('disableLlmIntegration: PUT /{version}/ai/integrations/llms/{Id}/disable', async () => {
@@ -206,7 +206,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('enableLlmIntegration: PUT /{version}/ai/integrations/llms/{Id}/enable', async () => {
@@ -229,7 +229,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getLlmIntegration: GET /{version}/ai/integrations/llms/{id}', async () => {
@@ -252,7 +252,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getLlmIntegrations: GET /{version}/ai/integrations/llms/integrations', async () => {
@@ -275,7 +275,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('saveLlmIntegration: POST /{version}/ai/integrations/llms/', async () => {
@@ -298,7 +298,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('setLlmIntegrationAsDefault: PUT /{version}/ai/integrations/llms/{Id}/default', async () => {
@@ -321,7 +321,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('testLlmIntegration: POST /{version}/ai/integrations/llms/test', async () => {
@@ -344,7 +344,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('deleteMcpIntegration: DELETE /{version}/ai/integrations/mcp/{Id}', async () => {
@@ -367,7 +367,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('DELETE');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('disableMcpIntegration: PUT /{version}/ai/integrations/mcp/{Id}/disable', async () => {
@@ -390,7 +390,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('enableMcpIntegration: PUT /{version}/ai/integrations/mcp/{Id}/enable', async () => {
@@ -413,7 +413,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getMcpIntegration: GET /{version}/ai/integrations/mcp/{id}', async () => {
@@ -436,7 +436,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getMcpIntegrations: GET /{version}/ai/integrations/mcp/integrations', async () => {
@@ -459,7 +459,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('saveMcpIntegration: POST /{version}/ai/integrations/mcp/', async () => {
@@ -482,7 +482,7 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('testMcpIntegration: POST /{version}/ai/integrations/mcp/test', async () => {
@@ -505,6 +505,6 @@ describe('hub.ai', () => {
     expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 });

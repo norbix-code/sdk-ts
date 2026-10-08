@@ -53,7 +53,7 @@ describe('hub.wellKnown', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('oAuthAuthorizationServerMetadata: GET /.well-known/oauth-authorization-server', async () => {
@@ -76,6 +76,6 @@ describe('hub.wellKnown', () => {
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 });

@@ -70,7 +70,6 @@ describe('api.files.testFilesIntegration', () => {
     const h = mock.lastCall!.headers;
     expect(h.get('Authorization')).toBe('Bearer test-token');
     expect(h.get('norbix-project-id')).toBe('test-project');
-    expect(h.get('X-CM-ProjectId')).toBe('test-project');
   });
 
   it('gives back the probe items parsed, one per step', async () => {

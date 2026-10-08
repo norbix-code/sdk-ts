@@ -113,7 +113,6 @@ describe("transport scope 'optional' — signed notification preview links", () 
     });
 
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBeNull();
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBeNull();
   });
 
   it('a 401 on a call sent without a token is not refreshed — the link itself is bad', async () => {

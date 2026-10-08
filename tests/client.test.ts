@@ -164,8 +164,8 @@ describe('Env-var auto-load', () => {
     await call(norbix, 'hub', 'account', 'getAccountStatus');
     const headers = new Headers(captured!.init.headers);
     expect(headers.get('Authorization')).toBe('Bearer env-key');
-    expect(headers.get('X-CM-ProjectId')).toBe('env-proj');
-    expect(headers.get('X-CM-AccountId')).toBe('env-acc');
+    expect(headers.get('norbix-project-id')).toBe('env-proj');
+    expect(headers.get('norbix-account-id')).toBe('env-acc');
   });
 
   it('explicit constructor args override env vars', () => {
@@ -206,7 +206,7 @@ describe('Env-var auto-load', () => {
 });
 
 describe('Headers + scoping', () => {
-  it('attaches X-CM-AccountId only when configured', async () => {
+  it('attaches norbix-account-id only when configured', async () => {
     let captured: { url: string; init: RequestInit } | undefined;
     const norbix = new Norbix({
       apiKey: 'k',
@@ -220,7 +220,11 @@ describe('Headers + scoping', () => {
       }),
     });
     await call(norbix, 'hub', 'account', 'getAccountStatus');
-    expect(new Headers(captured!.init.headers).get('X-CM-AccountId')).toBe('a1');
+    const sent = new Headers(captured!.init.headers);
+    expect(sent.get('norbix-account-id')).toBe('a1');
+    // The legacy X-CM-* names are not read by the gateway and are no longer sent.
+    expect(sent.has('X-CM-ProjectId')).toBe(false);
+    expect(sent.has('X-CM-AccountId')).toBe(false);
   });
 
   it('throws on missing accountId for an account-scoped call', async () => {
