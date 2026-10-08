@@ -864,7 +864,7 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
-  export class TriggerDto implements IHasViewId {
+  export class TriggerDto implements IHasViewId, IQueuedTrigger {
     // @DataMember
     public type: TriggerType;
 
@@ -885,6 +885,12 @@ export module CodeMashApi2 {
 
     // @DataMember
     public activationCode?: string;
+
+    // @DataMember
+    public order?: number;
+
+    // @DataMember
+    public breakOnError: boolean;
 
     // @DataMember
     public savedByAuthId?: string;
@@ -1117,6 +1123,13 @@ export module CodeMashApi2 {
 
   export interface IHasViewId {
     viewId: string;
+  }
+
+  export interface IQueuedTrigger {
+    viewId: string;
+    name: string;
+    order?: number;
+    breakOnError: boolean;
   }
 
   export interface ICursorArgs {

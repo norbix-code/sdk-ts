@@ -307,6 +307,8 @@ export module CodeMashHub2 {
     public description?: string;
     public isEnabled: boolean;
     public preExecuteCode?: string;
+    public order?: number;
+    public breakOnError: boolean;
     public action: TriggerActionDto;
 
     public constructor(init?: Partial<SaveTriggerRequest>) {
@@ -5631,7 +5633,7 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class TriggerDto implements IHasViewId {
+  export class TriggerDto implements IHasViewId, IQueuedTrigger {
     // @DataMember
     public type: TriggerType;
 
@@ -5652,6 +5654,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public activationCode?: string;
+
+    // @DataMember
+    public order?: number;
+
+    // @DataMember
+    public breakOnError: boolean;
 
     // @DataMember
     public savedByAuthId?: string;
@@ -6852,7 +6860,7 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class TriggerProjectionList implements IHasViewId {
+  export class TriggerProjectionList implements IHasViewId, IQueuedTrigger {
     // @DataMember
     public viewId: string;
 
@@ -6867,6 +6875,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public isEnabled: boolean;
+
+    // @DataMember
+    public order?: number;
+
+    // @DataMember
+    public breakOnError: boolean;
 
     public constructor(init?: Partial<TriggerProjectionList>) {
       (Object as any).assign(this, init);
@@ -10260,6 +10274,13 @@ export module CodeMashHub2 {
   export interface IBindableContract {}
 
   export interface IHasRazorTemplateCode {}
+
+  export interface IQueuedTrigger {
+    viewId: string;
+    name: string;
+    order?: number;
+    breakOnError: boolean;
+  }
 
   export interface IHasResponsibleUserId {
     userId: string;
