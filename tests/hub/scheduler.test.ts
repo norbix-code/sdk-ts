@@ -30,7 +30,7 @@ function client() {
 
 function expectAuthHeaders(headers: Headers | undefined) {
   expect(headers?.get('Authorization')).toBe('Bearer test-token');
-  expect(headers?.get('X-CM-ProjectId')).toBe('test-project');
+  expect(headers?.get('norbix-project-id')).toBe('test-project');
 }
 
 function sentBody(raw: string | undefined): Record<string, unknown> {

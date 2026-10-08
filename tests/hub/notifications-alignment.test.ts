@@ -134,7 +134,7 @@ describe('new endpoints', () => {
     expect(url.origin + url.pathname).toBe('https://hub.norbix.io/v2/triggers/attention');
     expect(url.searchParams.get('triggerType')).toBe('Schema');
     expect(mock.lastCall?.body).toBeUndefined();
-    expect(mock.lastCall?.headers.get('X-CM-ProjectId')).toBe('test-project');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('account.checkProjectLanguages is POST /account/projects/{projectId}/settings/languages/check', async () => {
