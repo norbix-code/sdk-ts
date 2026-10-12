@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-12 13:45:53
+Date: 2026-10-12 16:33:00
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6565,9 +6565,6 @@ export module CodeMashHub2 {
     // @DataMember
     public isEnabled: boolean;
 
-    // @DataMember
-    public defaultIntegrationViewId?: string;
-
     public constructor(init?: Partial<CodeDto>) {
       (Object as any).assign(this, init);
     }
@@ -9418,6 +9415,9 @@ export module CodeMashHub2 {
     // @DataMember
     public requestId?: string;
 
+    // @DataMember
+    public input?: string;
+
     public constructor(init?: Partial<CodeFunctionRunDto>) {
       (Object as any).assign(this, init);
     }
@@ -11492,6 +11492,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetLicenseKeyResponse extends ResponseBase {
+    public key?: string;
+
+    public constructor(init?: Partial<GetLicenseKeyResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class CreateAiServiceUserResponse extends ResponseBase {
     // @DataMember
@@ -12611,7 +12620,6 @@ export module CodeMashHub2 {
   }
 
   export class GetCodeIntegrationsResponse extends ResponseBase {
-    public defaultIntegrationId?: string;
     public list?: PaginatedResponse<CodeIntegrationListProjection>;
 
     public constructor(init?: Partial<GetCodeIntegrationsResponse>) {
@@ -13804,30 +13812,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/code/integrations/{Id}/default", "PUT")
-  export class SetCodeIntegrationAsDefault
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description Integration id, from get_code_integrations. */
-    // @ApiMember(Description="Integration id, from get_code_integrations.", IsRequired=true)
-    public id: string;
-
-    public constructor(init?: Partial<SetCodeIntegrationAsDefault>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'SetCodeIntegrationAsDefault';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
   // @Route("/{version}/code/integrations/{Id}", "DELETE")
   export class DeleteCodeIntegrationRequest
     extends CodeMashRequestBase
@@ -14593,7 +14577,6 @@ export module CodeMashHub2 {
     public typegen_205_SaveCodeIntegration?: SaveCodeIntegration;
     public typegen_206_TestCodeIntegration?: TestCodeIntegration;
     public typegen_207_ConfirmCodeIntegrationHumanDeliveryRequest?: ConfirmCodeIntegrationHumanDeliveryRequest;
-    public typegen_208_SetCodeIntegrationAsDefault?: SetCodeIntegrationAsDefault;
     public typegen_209_DeleteCodeIntegrationRequest?: DeleteCodeIntegrationRequest;
     public typegen_210_EnableCodeIntegrationRequest?: EnableCodeIntegrationRequest;
     public typegen_211_DisableCodeIntegrationRequest?: DisableCodeIntegrationRequest;
@@ -17222,6 +17205,25 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetInstallationLicenseStatusResponse();
+    }
+  }
+
+  // @Route("/{version}/account/licenses/{Id}/key", "GET")
+  export class GetLicenseKey extends RequestBase implements IReturn<GetLicenseKeyResponse> {
+    public id?: string;
+
+    public constructor(init?: Partial<GetLicenseKey>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetLicenseKey';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetLicenseKeyResponse();
     }
   }
 

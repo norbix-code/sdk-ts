@@ -1087,6 +1087,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetLicenseKey": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetLicenses": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1900,10 +1904,6 @@
     "returnsBytes": false
   },
   "SetChatSessionSharingRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetCodeIntegrationAsDefault": {
     "requiresAuth": true,
     "returnsBytes": false
   },
