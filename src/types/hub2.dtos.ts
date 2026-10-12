@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-07 18:32:46
+Date: 2026-10-12 13:45:53
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1247,6 +1247,7 @@ export module CodeMashHub2 {
     Netlify = 'Netlify',
     SupabaseEdge = 'SupabaseEdge',
     Modal = 'Modal',
+    Fake = 'Fake',
   }
 
   export class CodeIntegrationRequest {
@@ -1930,6 +1931,33 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class FunctionRefDto {
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public provider?: CodeProvider;
+
+    // @DataMember
+    public functionId: string;
+
+    // @DataMember
+    public qualifier?: string;
+
+    // @DataMember
+    public displayName?: string;
+
+    public constructor(init?: Partial<FunctionRefDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CodeInvocationType {
+    Sync = 'Sync',
+    Async = 'Async',
+  }
+
+  // @DataContract
   export class CodeDeliverySettingsDto {
     // @DataMember
     public mappedTokens?: TokenMappingDto[];
@@ -1942,10 +1970,28 @@ export module CodeMashHub2 {
   // @DataContract
   export class TriggerActionCodeDto extends TriggerActionDto {
     // @DataMember
-    public functionId: string;
+    public functionRef?: FunctionRefDto;
 
     // @DataMember
-    public deliverySettings: CodeDeliverySettingsDto;
+    public runAsUserId?: string;
+
+    // @DataMember
+    public invocationType: CodeInvocationType;
+
+    // @DataMember
+    public config?: string;
+
+    // @DataMember
+    public deliverySettings?: CodeDeliverySettingsDto;
+
+    // @DataMember
+    public functionId?: string;
+
+    // @DataMember
+    public activationCode?: string;
+
+    // @DataMember
+    public meta?: { [index: string]: string };
 
     public constructor(init?: Partial<TriggerActionCodeDto>) {
       super(init);
@@ -4367,6 +4413,655 @@ export module CodeMashHub2 {
     }
   }
 
+  export class JsonSchemaFieldDto {
+    // @DataMember
+    public fieldName: string;
+
+    public constructor(init?: Partial<JsonSchemaFieldDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StringFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public format?: string;
+
+    // @DataMember
+    public pattern?: string;
+
+    // @DataMember
+    public minLength?: number;
+
+    // @DataMember
+    public maxLength?: number;
+
+    // @DataMember
+    public translateOptions?: IReadOnlyDictionary<string, string>;
+
+    // @DataMember
+    public default?: string;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<StringFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DecimalFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<DecimalFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyDefaultDto {
+    // @DataMember
+    public value: number;
+
+    // @DataMember
+    public currency: string;
+
+    public constructor(init?: Partial<CurrencyDefaultDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedCurrencies?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: CurrencyDefaultDto;
+
+    public constructor(init?: Partial<CurrencyFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BooleanFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public default?: boolean;
+
+    public constructor(init?: Partial<BooleanFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DateFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    public constructor(init?: Partial<DateFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class IntegerFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<IntegerFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GeolocationFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedTypes?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<GeolocationFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TagsFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<TagsFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FileFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public storages?: IReadOnlyList<string>;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public allowedFileType?: string;
+
+    // @DataMember
+    public maxSizeMb?: number;
+
+    public constructor(init?: Partial<FileFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public taxonomyId?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public collectionId?: string;
+
+    // @DataMember
+    public displayField?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<UserSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<RoleSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public values?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<EnumSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ObjectFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public properties: IReadOnlyList<JsonSchemaFieldDto>;
+
+    // @DataMember
+    public required?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<ObjectFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ArrayFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public items: JsonSchemaFieldDto;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public uniqueItems?: boolean;
+
+    public constructor(init?: Partial<ArrayFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class JsonFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public maxBytes?: number;
+
+    public constructor(init?: Partial<JsonFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CodeFunctionSource {
+    Database = 'Database',
+    Membership = 'Membership',
+    Files = 'Files',
+    Payments = 'Payments',
+    Ai = 'Ai',
+    Scheduler = 'Scheduler',
+    Manual = 'Manual',
+  }
+
+  export enum CodeFunctionCallerKind {
+    User = 'User',
+    ApiKey = 'ApiKey',
+    System = 'System',
+  }
+
+  // @DataContract
+  export class CodeFunctionCallerDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public email?: string;
+
+    // @DataMember
+    public kind: CodeFunctionCallerKind;
+
+    public constructor(init?: Partial<CodeFunctionCallerDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionRunAsDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public accessToken?: string;
+
+    // @DataMember
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<CodeFunctionRunAsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionContextDto {
+    // @DataMember
+    public accountId: string;
+
+    // @DataMember
+    public projectId: string;
+
+    // @DataMember
+    public environment: string;
+
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public hubUrl: string;
+
+    // @DataMember
+    public apiUrl: string;
+
+    // @DataMember
+    public echoUrl: string;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public taskId?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public caller?: CodeFunctionCallerDto;
+
+    // @DataMember
+    public runAs?: CodeFunctionRunAsDto;
+
+    public constructor(init?: Partial<CodeFunctionContextDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum ResourceKindDto {
+    Contact = 'contact',
+    Document = 'document',
+    File = 'file',
+    PaymentCustomer = 'paymentCustomer',
+    Order = 'order',
+    Payment = 'payment',
+    Product = 'product',
+    Integration = 'integration',
+  }
+
+  export class ResourceRefDto {
+    public projectId: string;
+    public integrationId?: string;
+    public kind: ResourceKindDto;
+
+    public constructor(init?: Partial<ResourceRefDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DocumentRefDto extends ResourceRefDto {
+    public kind: ResourceKindDto;
+    public databaseIntegrationId: string;
+    public schemaId: string;
+    public externalId: string;
+
+    public constructor(init?: Partial<DocumentRefDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class DatabaseRecordChangeDto {
+    // @DataMember
+    public collection: string;
+
+    // @DataMember
+    public schemaId: string;
+
+    // @DataMember
+    public schemaVersion?: number;
+
+    // @DataMember
+    public recordId?: string;
+
+    // @DataMember
+    public old?: { [index: string]: Object };
+
+    // @DataMember
+    public new?: { [index: string]: Object };
+
+    // @DataMember
+    public truncated: boolean;
+
+    // @DataMember
+    public oldRef?: DocumentRefDto;
+
+    // @DataMember
+    public newRef?: DocumentRefDto;
+
+    public constructor(init?: Partial<DatabaseRecordChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class UserChangeDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public old?: { [index: string]: Object };
+
+    // @DataMember
+    public new?: { [index: string]: Object };
+
+    public constructor(init?: Partial<UserChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class FileChangeDto {
+    // @DataMember
+    public old?: { [index: string]: Object };
+
+    // @DataMember
+    public new?: { [index: string]: Object };
+
+    // @DataMember
+    public path?: string;
+
+    public constructor(init?: Partial<FileChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentFactDto {
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerEventId: string;
+
+    // @DataMember
+    public eventName: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public amountMinor?: number;
+
+    // @DataMember
+    public currency?: string;
+
+    // @DataMember
+    public externalIds?: { [index: string]: string };
+
+    // @DataMember
+    public occurredOn?: string;
+
+    // @DataMember
+    public receivedOn: string;
+
+    public constructor(init?: Partial<PaymentFactDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AiUsageEventDto {
+    // @DataMember
+    public payload: { [index: string]: Object } = {};
+
+    // @DataMember
+    public targetUserId?: string;
+
+    public constructor(init?: Partial<AiUsageEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ScheduledTaskInfoDto {
+    // @DataMember
+    public taskId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public firedAt: string;
+
+    public constructor(init?: Partial<ScheduledTaskInfoDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionDataDto {
+    // @DataMember
+    public database?: DatabaseRecordChangeDto;
+
+    // @DataMember
+    public user?: UserChangeDto;
+
+    // @DataMember
+    public file?: FileChangeDto;
+
+    // @DataMember
+    public payment?: PaymentFactDto;
+
+    // @DataMember
+    public ai?: AiUsageEventDto;
+
+    // @DataMember
+    public task?: ScheduledTaskInfoDto;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<CodeFunctionDataDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionEventDto {
+    // @DataMember
+    public specVersion: string;
+
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public eventId: string;
+
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public source: CodeFunctionSource;
+
+    // @DataMember
+    public createdOn: string;
+
+    // @DataMember
+    public context: CodeFunctionContextDto;
+
+    // @DataMember
+    public data: CodeFunctionDataDto;
+
+    // @DataMember
+    public config?: { [index: string]: Object };
+
+    public constructor(init?: Partial<CodeFunctionEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeCodeIntegrationDto extends CodeIntegrationDto {
+    public constructor(init?: Partial<FakeCodeIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeCodeIntegrationRequest extends CodeIntegrationRequest {
+    public provider: CodeProvider;
+
+    public constructor(init?: Partial<FakeCodeIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CodeFunctionSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public functionRef?: FunctionRefDto;
+    public invocationType: CodeInvocationType;
+    public config?: string;
+    public mappedTokens?: TokenMappingDto[];
+
+    public constructor(init?: Partial<CodeFunctionSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export interface ICultureBasedRequest {
     cultureCode?: string;
   }
@@ -4998,27 +5693,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum ResourceKindDto {
-    Contact = 'contact',
-    Document = 'document',
-    File = 'file',
-    PaymentCustomer = 'paymentCustomer',
-    Order = 'order',
-    Payment = 'payment',
-    Product = 'product',
-    Integration = 'integration',
-  }
-
-  export class ResourceRefDto {
-    public projectId: string;
-    public integrationId?: string;
-    public kind: ResourceKindDto;
-
-    public constructor(init?: Partial<ResourceRefDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   export enum CaseResolutionFixKind {
     CodeFix = 'CodeFix',
     ConfigChange = 'ConfigChange',
@@ -5285,6 +5959,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public trialWasIssued: boolean;
+
+    // @DataMember
+    public emailVerified: boolean;
+
+    // @DataMember
+    public joinedByInvitation: boolean;
 
     public constructor(init?: Partial<AccountStatusDto>) {
       (Object as any).assign(this, init);
@@ -5779,6 +6459,7 @@ export module CodeMashHub2 {
     public name: string;
     public description?: string;
     public isSystem: boolean;
+    public version: string;
     public permissions?: PermissionDto[];
 
     public constructor(init?: Partial<PolicyItemDto>) {
@@ -5883,6 +6564,9 @@ export module CodeMashHub2 {
   export class CodeDto {
     // @DataMember
     public isEnabled: boolean;
+
+    // @DataMember
+    public defaultIntegrationViewId?: string;
 
     public constructor(init?: Partial<CodeDto>) {
       (Object as any).assign(this, init);
@@ -7134,15 +7818,6 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<SchemaTriggerProjectionList>) {
       super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class JsonSchemaFieldDto {
-    // @DataMember
-    public fieldName: string;
-
-    public constructor(init?: Partial<JsonSchemaFieldDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -8658,6 +9333,92 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<CodeIntegrationListProjection>) {
       super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionDescriptorDto {
+    // @DataMember
+    public functionId: string;
+
+    // @DataMember
+    public displayName: string;
+
+    // @DataMember
+    public runtime?: string;
+
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public lastModified?: string;
+
+    // @DataMember
+    public tags?: { [index: string]: string };
+
+    // @DataMember
+    public arn?: string;
+
+    public constructor(init?: Partial<CodeFunctionDescriptorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CodeFunctionQualifierKindDto {
+    Alias = 'Alias',
+    Version = 'Version',
+  }
+
+  // @DataContract
+  export class CodeFunctionQualifierDto {
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public kind: CodeFunctionQualifierKindDto;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public targetVersion?: string;
+
+    public constructor(init?: Partial<CodeFunctionQualifierDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeFunctionRunDto {
+    // @DataMember
+    public firedAt: string;
+
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public succeeded: boolean;
+
+    // @DataMember
+    public statusCode?: number;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public error?: string;
+
+    // @DataMember
+    public requestId?: string;
+
+    public constructor(init?: Partial<CodeFunctionRunDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10291,299 +11052,6 @@ export module CodeMashHub2 {
     order: number;
   }
 
-  export class StringFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public format?: string;
-
-    // @DataMember
-    public pattern?: string;
-
-    // @DataMember
-    public minLength?: number;
-
-    // @DataMember
-    public maxLength?: number;
-
-    // @DataMember
-    public translateOptions?: IReadOnlyDictionary<string, string>;
-
-    // @DataMember
-    public default?: string;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<StringFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DecimalFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<DecimalFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyDefaultDto {
-    // @DataMember
-    public value: number;
-
-    // @DataMember
-    public currency: string;
-
-    public constructor(init?: Partial<CurrencyDefaultDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedCurrencies?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: CurrencyDefaultDto;
-
-    public constructor(init?: Partial<CurrencyFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class BooleanFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public default?: boolean;
-
-    public constructor(init?: Partial<BooleanFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DateFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    public constructor(init?: Partial<DateFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class IntegerFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<IntegerFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GeolocationFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedTypes?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<GeolocationFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TagsFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<TagsFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class FileFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public storages?: IReadOnlyList<string>;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public allowedFileType?: string;
-
-    // @DataMember
-    public maxSizeMb?: number;
-
-    public constructor(init?: Partial<FileFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public taxonomyId?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public collectionId?: string;
-
-    // @DataMember
-    public displayField?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<UserSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<RoleSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public values?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<EnumSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ObjectFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public properties: IReadOnlyList<JsonSchemaFieldDto>;
-
-    // @DataMember
-    public required?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<ObjectFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ArrayFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public items: JsonSchemaFieldDto;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public uniqueItems?: boolean;
-
-    public constructor(init?: Partial<ArrayFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class JsonFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public maxBytes?: number;
-
-    public constructor(init?: Partial<JsonFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class EchoResponse {
     public containerName?: string;
     public ip: string;
@@ -10676,6 +11144,12 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class CreateStripeCheckoutSessionResponse extends IdResponse {
+    // @DataMember
+    public trialIncluded: boolean;
+
+    // @DataMember
+    public noTrialReason?: string;
+
     public constructor(init?: Partial<CreateStripeCheckoutSessionResponse>) {
       super(init);
       (Object as any).assign(this, init);
@@ -12137,6 +12611,7 @@ export module CodeMashHub2 {
   }
 
   export class GetCodeIntegrationsResponse extends ResponseBase {
+    public defaultIntegrationId?: string;
     public list?: PaginatedResponse<CodeIntegrationListProjection>;
 
     public constructor(init?: Partial<GetCodeIntegrationsResponse>) {
@@ -12151,6 +12626,55 @@ export module CodeMashHub2 {
     public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
     public constructor(init?: Partial<TestCodeIntegrationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCodeFunctionsResponse extends ResponseBase {
+    public list?: PaginatedResponse<CodeFunctionDescriptorDto>;
+
+    public constructor(init?: Partial<GetCodeFunctionsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCodeFunctionEventSampleResponse extends ResponseBase {
+    public sample?: CodeFunctionEventDto;
+
+    public constructor(init?: Partial<GetCodeFunctionEventSampleResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCodeFunctionQualifiersResponse extends ResponseBase {
+    public qualifiers?: IReadOnlyList<CodeFunctionQualifierDto>;
+
+    public constructor(init?: Partial<GetCodeFunctionQualifiersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCodeFunctionRunsResponse extends ResponseBase {
+    public runs: CodeFunctionRunDto[] = [];
+
+    public constructor(init?: Partial<GetCodeFunctionRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class InvokeCodeFunctionResponse extends ResponseBase {
+    public statusCode: number;
+    public output?: Object;
+    public durationMs: number;
+    public requestId?: string;
+    public logs?: string;
+
+    public constructor(init?: Partial<InvokeCodeFunctionResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -12669,6 +13193,7 @@ export module CodeMashHub2 {
     public error?: string;
     public errorDescription?: string;
     public errorCode?: string;
+    public reason?: string;
     public bearerToken?: string;
     public refreshToken?: string;
     public expiresIn?: number;
@@ -12709,6 +13234,8 @@ export module CodeMashHub2 {
   export class OAuthConsentResponse extends ResponseBase {
     public clientName: string;
     public redirectHost: string;
+    public clientHost: string;
+    public redirectIsLoopback: boolean;
     public consentTicket: string;
     public accountRoles: AiRoleDto[] = [];
     public projects: AiProjectRolesDto[] = [];
@@ -14102,6 +14629,38 @@ export module CodeMashHub2 {
     public typegen_243_ActionPendingEntryWireDto?: ActionPendingEntryWireDto;
     public typegen_244_NoticeEntryWireDto?: NoticeEntryWireDto;
     public typegen_245_ConversationSnapshotEntryWireDto?: ConversationSnapshotEntryWireDto;
+    public typegen_252_StringFieldDto?: StringFieldDto;
+    public typegen_253_DecimalFieldDto?: DecimalFieldDto;
+    public typegen_254_CurrencyFieldDto?: CurrencyFieldDto;
+    public typegen_255_BooleanFieldDto?: BooleanFieldDto;
+    public typegen_256_DateFieldDto?: DateFieldDto;
+    public typegen_257_IntegerFieldDto?: IntegerFieldDto;
+    public typegen_258_GeolocationFieldDto?: GeolocationFieldDto;
+    public typegen_259_TagsFieldDto?: TagsFieldDto;
+    public typegen_260_FileFieldDto?: FileFieldDto;
+    public typegen_261_TaxonomySelectionFieldDto?: TaxonomySelectionFieldDto;
+    public typegen_262_CollectionSelectionFieldDto?: CollectionSelectionFieldDto;
+    public typegen_263_UserSelectionFieldDto?: UserSelectionFieldDto;
+    public typegen_264_RoleSelectionFieldDto?: RoleSelectionFieldDto;
+    public typegen_265_EnumSelectionFieldDto?: EnumSelectionFieldDto;
+    public typegen_266_ObjectFieldDto?: ObjectFieldDto;
+    public typegen_267_ArrayFieldDto?: ArrayFieldDto;
+    public typegen_268_JsonFieldDto?: JsonFieldDto;
+    public typegen_269_FunctionRefDto?: FunctionRefDto;
+    public typegen_270_CodeFunctionEventDto?: CodeFunctionEventDto;
+    public typegen_271_CodeFunctionContextDto?: CodeFunctionContextDto;
+    public typegen_272_CodeFunctionCallerDto?: CodeFunctionCallerDto;
+    public typegen_273_CodeFunctionRunAsDto?: CodeFunctionRunAsDto;
+    public typegen_274_CodeFunctionDataDto?: CodeFunctionDataDto;
+    public typegen_275_DatabaseRecordChangeDto?: DatabaseRecordChangeDto;
+    public typegen_276_UserChangeDto?: UserChangeDto;
+    public typegen_277_FileChangeDto?: FileChangeDto;
+    public typegen_278_PaymentFactDto?: PaymentFactDto;
+    public typegen_279_AiUsageEventDto?: AiUsageEventDto;
+    public typegen_280_ScheduledTaskInfoDto?: ScheduledTaskInfoDto;
+    public typegen_281_FakeCodeIntegrationDto?: FakeCodeIntegrationDto;
+    public typegen_282_FakeCodeIntegrationRequest?: FakeCodeIntegrationRequest;
+    public typegen_283_CodeFunctionSchedulerTaskRequest?: CodeFunctionSchedulerTaskRequest;
 
     public constructor(init?: Partial<InternalsTypeGen>) {
       (Object as any).assign(this, init);
@@ -14281,7 +14840,7 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/account/verify/resend", "GET")
+  // @Route("/{version}/account/verify/resend", "POST")
   export class ResendAccountVerificationToken
     extends RequestBase
     implements IReturn<EmptyResponse>
@@ -14294,7 +14853,7 @@ export module CodeMashHub2 {
       return 'ResendAccountVerificationToken';
     }
     public getMethod() {
-      return 'GET';
+      return 'POST';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -14441,7 +15000,7 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/account/verify", "GET")
+  // @Route("/{version}/account/verify", "POST")
   export class VerifyAccount extends RequestBase implements IReturn<EmptyResponse>, IHasAccountId {
     public token: string;
     public accountId: string;
@@ -14454,7 +15013,7 @@ export module CodeMashHub2 {
       return 'VerifyAccount';
     }
     public getMethod() {
-      return 'GET';
+      return 'POST';
     }
     public createResponse() {
       return new EmptyResponse();
@@ -22963,6 +23522,174 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetMarketplaceFunctionCatalogResponse();
+    }
+  }
+
+  // @Route("/{version}/code/functions", "GET")
+  export class GetCodeFunctions
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetCodeFunctionsResponse>
+  {
+    /** @description Code integration id (int_…), from get_code_integrations. */
+    // @ApiMember(Description="Code integration id (int_…), from get_code_integrations.", IsRequired=true)
+    public integrationId: string;
+
+    /** @description Only functions whose id starts with this. */
+    // @ApiMember(Description="Only functions whose id starts with this.")
+    public prefix?: string;
+
+    /** @description Only functions carrying this tag: "key" or "key=value". */
+    // @ApiMember(Description="Only functions carrying this tag: \"key\" or \"key=value\".")
+    public tag?: string;
+
+    public constructor(init?: Partial<GetCodeFunctions>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeFunctions';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCodeFunctionsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/functions/event-sample", "GET")
+  export class GetCodeFunctionEventSample
+    extends CodeMashRequestBase
+    implements IReturn<GetCodeFunctionEventSampleResponse>
+  {
+    /** @description Database | Membership | Files | Payments | Ai | Scheduler | Manual. */
+    // @ApiMember(Description="Database | Membership | Files | Payments | Ai | Scheduler | Manual.", IsRequired=true)
+    public source: CodeFunctionSource;
+
+    /** @description The event name, e.g. database.record.inserted; omitted = the source's usual one. */
+    // @ApiMember(Description="The event name, e.g. database.record.inserted; omitted = the source's usual one.")
+    public event?: string;
+
+    /** @description The schema id to put into data.database.schemaId (Database source). */
+    // @ApiMember(Description="The schema id to put into data.database.schemaId (Database source).")
+    public schemaId?: string;
+
+    public constructor(init?: Partial<GetCodeFunctionEventSample>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeFunctionEventSample';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCodeFunctionEventSampleResponse();
+    }
+  }
+
+  // @Route("/{version}/code/functions/qualifiers", "GET")
+  export class GetCodeFunctionQualifiers
+    extends CodeMashRequestBase
+    implements IReturn<GetCodeFunctionQualifiersResponse>
+  {
+    /** @description Code integration id (int_…), from get_code_integrations. */
+    // @ApiMember(Description="Code integration id (int_…), from get_code_integrations.", IsRequired=true)
+    public integrationId: string;
+
+    /** @description Provider-native function id, from get_code_functions. */
+    // @ApiMember(Description="Provider-native function id, from get_code_functions.", IsRequired=true)
+    public functionId: string;
+
+    public constructor(init?: Partial<GetCodeFunctionQualifiers>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeFunctionQualifiers';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCodeFunctionQualifiersResponse();
+    }
+  }
+
+  // @Route("/{version}/code/functions/runs", "GET")
+  export class GetCodeFunctionRuns
+    extends CodeMashRequestBase
+    implements IReturn<GetCodeFunctionRunsResponse>
+  {
+    /** @description The trigger whose function runs to list (trg_…). One of triggerId / taskId. */
+    // @ApiMember(Description="The trigger whose function runs to list (trg_…). One of triggerId / taskId.")
+    public triggerId?: string;
+
+    /** @description The scheduler task whose function runs to list (tsk_…). One of triggerId / taskId. */
+    // @ApiMember(Description="The scheduler task whose function runs to list (tsk_…). One of triggerId / taskId.")
+    public taskId?: string;
+
+    /** @description How many runs, newest first: 1-50. Default 20. */
+    // @ApiMember(DataType="integer", Description="How many runs, newest first: 1-50. Default 20.")
+    public limit?: number;
+
+    public constructor(init?: Partial<GetCodeFunctionRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeFunctionRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCodeFunctionRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/functions/invoke", "POST")
+  // @DataContract
+  export class InvokeCodeFunction
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeFunctionResponse>
+  {
+    /** @description Which function: { integrationId, functionId, qualifier? }. */
+    // @DataMember
+    // @ApiMember(Description="Which function: { integrationId, functionId, qualifier? }.", IsRequired=true)
+    public functionRef: FunctionRefDto;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    /** @description Sync (wait for the result, default) or Async (fire and forget). */
+    // @DataMember
+    // @ApiMember(Description="Sync (wait for the result, default) or Async (fire and forget).")
+    public invocationType: CodeInvocationType;
+
+    /** @description The service user the function acts as (usr_…); omitted = you. */
+    // @DataMember
+    // @ApiMember(Description="The service user the function acts as (usr_…); omitted = you.")
+    public runAsUserId?: string;
+
+    /** @description A JSON object → envelope config. No bindings: a manual call has nothing to bind them with. */
+    // @DataMember
+    // @ApiMember(Description="A JSON object → envelope config. No bindings: a manual call has nothing to bind them with.")
+    public config?: string;
+
+    public constructor(init?: Partial<InvokeCodeFunction>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeCodeFunction';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeFunctionResponse();
     }
   }
 

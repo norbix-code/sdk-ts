@@ -151,6 +151,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetFileByIdRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetFileContentRequest": {
     "requiresAuth": false,
     "returnsBytes": true
@@ -376,6 +380,10 @@
     "returnsBytes": false
   },
   "UploadEndUserChatAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UseFileRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

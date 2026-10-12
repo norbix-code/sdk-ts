@@ -41,6 +41,11 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`revealMarketplaceIntegrationSecrets`](#revealmarketplaceintegrationsecrets)       | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`                     | `project` |
 | [`setMarketplaceIntegrationTokenMappings`](#setmarketplaceintegrationtokenmappings) | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings`                     | `project` |
 | [`getMarketplaceFunctionCatalog`](#getmarketplacefunctioncatalog)                   | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog`                            | `project` |
+| [`getCodeFunctions`](#getcodefunctions)                                             | `GET`    | `/{version}/code/functions`                                                                       | `project` |
+| [`getCodeFunctionEventSample`](#getcodefunctioneventsample)                         | `GET`    | `/{version}/code/functions/event-sample`                                                          | `project` |
+| [`getCodeFunctionQualifiers`](#getcodefunctionqualifiers)                           | `GET`    | `/{version}/code/functions/qualifiers`                                                            | `project` |
+| [`getCodeFunctionRuns`](#getcodefunctionruns)                                       | `GET`    | `/{version}/code/functions/runs`                                                                  | `project` |
+| [`invokeCodeFunction`](#invokecodefunction)                                         | `POST`   | `/{version}/code/functions/invoke`                                                                | `project` |
 
 ## Reference
 
@@ -788,6 +793,114 @@ const result = await norbix.hub.code.getMarketplaceFunctionCatalog({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetMarketplaceFunctionCatalogResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeFunctions
+
+`GET` `/{version}/code/functions`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeFunctions`
+**Response**: `CodeMashHub2.GetCodeFunctionsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeFunctions({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetCodeFunctionsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeFunctionEventSample
+
+`GET` `/{version}/code/functions/event-sample`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeFunctionEventSample`
+**Response**: `CodeMashHub2.GetCodeFunctionEventSampleResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeFunctionEventSample({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetCodeFunctionEventSampleResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeFunctionQualifiers
+
+`GET` `/{version}/code/functions/qualifiers`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeFunctionQualifiers`
+**Response**: `CodeMashHub2.GetCodeFunctionQualifiersResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeFunctionQualifiers({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetCodeFunctionQualifiersResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeFunctionRuns
+
+`GET` `/{version}/code/functions/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeFunctionRuns`
+**Response**: `CodeMashHub2.GetCodeFunctionRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeFunctionRuns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetCodeFunctionRunsResponse
+```
+
+[↑ Top](#endpoints)
+
+### invokeCodeFunction
+
+`POST` `/{version}/code/functions/invoke`
+
+**Request DTO**: `CodeMashHub2.InvokeCodeFunction`
+**Response**: `CodeMashHub2.InvokeCodeFunctionResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.invokeCodeFunction({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.InvokeCodeFunctionResponse
 ```
 
 [↑ Top](#endpoints)
