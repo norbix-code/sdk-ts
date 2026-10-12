@@ -1131,6 +1131,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetMarketplaceFunctionRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetMarketplaceFunctionTokens": {
     "requiresAuth": true,
     "returnsBytes": false

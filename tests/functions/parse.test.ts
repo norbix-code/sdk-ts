@@ -285,6 +285,25 @@ describe('CodeFunctionEvent typed views', () => {
     expect(event.payload<{ dryRun: boolean }>()?.dryRun).toBe(true);
   });
 
+  it('asMarketplaceCall() for a marketplace function call, and its refusal on another source', () => {
+    const call = parseFunctionEvent(
+      envelope('manual', 'marketplace.function.invoked', {
+        marketplace: {
+          functionId: 'func_4hT2b9QkLm3XcT1yRfGh7a',
+          functionKey: 'slack.post-message',
+          integrationId: 'int_6Qp1dW2kRm8NsT4vYc0Hb',
+          payload: { channel: '#orders', text: 'Order 6ac54a59 shipped' },
+        },
+      }),
+    ).asMarketplaceCall();
+    expect(call.functionKey).toBe('slack.post-message');
+    expect(call.integrationId).toBe('int_6Qp1dW2kRm8NsT4vYc0Hb');
+    expect(call.payload['channel']).toBe('#orders');
+    expect(() => parseFunctionEvent(databaseSample).asMarketplaceCall()).toThrow(
+      /asMarketplaceCall\(\) is for a marketplace event/,
+    );
+  });
+
   it('payload() for a manual invoke, undefined when the call sent none', () => {
     const withPayload = parseFunctionEvent(
       envelope('manual', 'manual.invoke', { payload: { orderId: '6ac54a59212c29912eaddd81' } }),

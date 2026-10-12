@@ -78,6 +78,11 @@ export class CodeFunctionEvent implements CodeMashHub2.CodeFunctionEventDto {
     return this.requireSlot('task', 'asScheduledTask');
   }
 
+  /** Marketplace function call — `data.marketplace`: which installed function ran, with its rendered payload. */
+  asMarketplaceCall(): CodeMashHub2.MarketplaceFunctionCallDto {
+    return this.requireSlot('marketplace', 'asMarketplaceCall');
+  }
+
   /**
    * The caller's JSON: `data.payload` of a manual `invokeCodeFunction` /
    * `norbix code invoke` call, or a scheduler task's static payload.
@@ -143,6 +148,7 @@ const slotSource: Record<Slot, string> = {
   ai: 'ai',
   task: 'scheduler',
   payload: 'manual / scheduler',
+  marketplace: 'marketplace',
 };
 
 /** `null` on the wire (older gateways) → `undefined`, so `old?.x` reads the same either way. */
