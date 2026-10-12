@@ -15,7 +15,6 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`saveCodeIntegration`](#savecodeintegration)                                       | `POST`   | `/{version}/code/integrations`                                                                    | `project` |
 | [`testCodeIntegration`](#testcodeintegration)                                       | `POST`   | `/{version}/code/integrations/test`                                                               | `project` |
 | [`confirmCodeIntegrationHumanDelivery`](#confirmcodeintegrationhumandelivery)       | `POST`   | `/{version}/code/integrations/confirm-human-delivery`                                             | `project` |
-| [`setCodeIntegrationAsDefault`](#setcodeintegrationasdefault)                       | `PUT`    | `/{version}/code/integrations/{Id}/default`                                                       | `project` |
 | [`deleteCodeIntegration`](#deletecodeintegration)                                   | `DELETE` | `/{version}/code/integrations/{Id}`                                                               | `project` |
 | [`enableCodeIntegration`](#enablecodeintegration)                                   | `PUT`    | `/{version}/code/integrations/{Id}/enable`                                                        | `project` |
 | [`disableCodeIntegration`](#disablecodeintegration)                                 | `PUT`    | `/{version}/code/integrations/{Id}/disable`                                                       | `project` |
@@ -196,27 +195,6 @@ const norbix = new Norbix();
 
 const result = await norbix.hub.code.confirmCodeIntegrationHumanDelivery({
   // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### setCodeIntegrationAsDefault
-
-`PUT` `/{version}/code/integrations/{Id}/default`
-
-**Request DTO**: `CodeMashHub2.SetCodeIntegrationAsDefault`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.code.setCodeIntegrationAsDefault({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
 ```

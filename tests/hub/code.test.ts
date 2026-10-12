@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.code (38 endpoints).
+ * Tests for hub.code (37 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.code', () => {
-  it('module exposes 38 method(s)', () => {
+  it('module exposes 37 method(s)', () => {
     const mock = createMockFetch();
     const mod = new CodeModule({} as never);
     void mod; // silence unused — we only need the type
@@ -36,7 +36,6 @@ describe('hub.code', () => {
     expect(typeof ns['saveCodeIntegration']).toBe('function');
     expect(typeof ns['testCodeIntegration']).toBe('function');
     expect(typeof ns['confirmCodeIntegrationHumanDelivery']).toBe('function');
-    expect(typeof ns['setCodeIntegrationAsDefault']).toBe('function');
     expect(typeof ns['deleteCodeIntegration']).toBe('function');
     expect(typeof ns['enableCodeIntegration']).toBe('function');
     expect(typeof ns['disableCodeIntegration']).toBe('function');
@@ -225,29 +224,6 @@ describe('hub.code', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('setCodeIntegrationAsDefault: PUT /{version}/code/integrations/{Id}/default', async () => {
-    const stub = stubRequestForPath('/{version}/code/integrations/{Id}/default');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/integrations/{Id}/default',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['setCodeIntegrationAsDefault']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

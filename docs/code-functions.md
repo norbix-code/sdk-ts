@@ -128,6 +128,27 @@ await writeFile('event.json', JSON.stringify(sample, null, 2));
 
 The same from the terminal: `norbix code event-sample --source database --event database.record.updated --schema sch_… > event.json`.
 
+## What a dry run received
+
+A Code integration on the **Fake** provider calls no cloud: every run of a
+trigger or a scheduled task through it keeps the envelope it would have sent.
+`hub.code.getCodeFunctionRuns` hands it back as `CodeFunctionRunDto.input` —
+Fake runs carry the received envelope, token masked: the JSON text as sent,
+with `context.runAs.accessToken` replaced by `***`, cut at 64 KB. A run through
+a real provider has no `input` (the payload is your project's data), and
+neither has a run where the function was not called.
+
+```ts
+const { runs } = await norbix.hub.code.getCodeFunctionRuns({
+  triggerId: 'trg_1p4R3gTobGZpD6fXvHT4rd',
+});
+const received = runs[0]?.input; // string | undefined — JSON unless the 64 KB cut hit it
+if (received) console.log(parseFunctionEvent(JSON.parse(received)).event);
+```
+
+The same from the terminal: `norbix code runs --trigger trg_… --limit 5` prints
+`input` under each row when it is there.
+
 ## Idempotency
 
 `eventId` is the change: a webhook delivery of the same record change carries

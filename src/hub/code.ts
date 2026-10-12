@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 38
+ * Endpoints: 37
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -139,25 +139,6 @@ export class CodeModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PUT /{version}/code/integrations/{Id}/default
-   * Request DTO: SetCodeIntegrationAsDefault
-   */
-  setCodeIntegrationAsDefault = (
-    request: Partial<CodeMashHub2.SetCodeIntegrationAsDefault> = {} as Partial<CodeMashHub2.SetCodeIntegrationAsDefault>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/code/integrations/{Id}/default',
-      method: 'PUT',
-      request,
-      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });
