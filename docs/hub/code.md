@@ -40,6 +40,7 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`revealMarketplaceIntegrationSecrets`](#revealmarketplaceintegrationsecrets)       | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`                     | `project` |
 | [`setMarketplaceIntegrationTokenMappings`](#setmarketplaceintegrationtokenmappings) | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings`                     | `project` |
 | [`getMarketplaceFunctionCatalog`](#getmarketplacefunctioncatalog)                   | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/catalog`                            | `project` |
+| [`getMarketplaceFunctionRuns`](#getmarketplacefunctionruns)                         | `GET`    | `/{version}/code/marketplace/functions/runs`                                                      | `project` |
 | [`getCodeFunctions`](#getcodefunctions)                                             | `GET`    | `/{version}/code/functions`                                                                       | `project` |
 | [`getCodeFunctionEventSample`](#getcodefunctioneventsample)                         | `GET`    | `/{version}/code/functions/event-sample`                                                          | `project` |
 | [`getCodeFunctionQualifiers`](#getcodefunctionqualifiers)                           | `GET`    | `/{version}/code/functions/qualifiers`                                                            | `project` |
@@ -771,6 +772,28 @@ const result = await norbix.hub.code.getMarketplaceFunctionCatalog({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetMarketplaceFunctionCatalogResponse
+```
+
+[↑ Top](#endpoints)
+
+### getMarketplaceFunctionRuns
+
+`GET` `/{version}/code/marketplace/functions/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetMarketplaceFunctionRuns`
+**Response**: `CodeMashHub2.GetMarketplaceFunctionRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getMarketplaceFunctionRuns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetMarketplaceFunctionRunsResponse
 ```
 
 [↑ Top](#endpoints)
