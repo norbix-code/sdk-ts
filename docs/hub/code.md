@@ -904,3 +904,22 @@ const result = await norbix.hub.code.invokeCodeFunction({
 ```
 
 [↑ Top](#endpoints)
+
+## Cloud functions
+
+`hub.code.getCodeFunctions`, `getCodeFunctionQualifiers`, `invokeCodeFunction`, `getCodeFunctionEventSample` and `getCodeFunctionRuns` above are the Hub side: the functions a Code integration may call, their aliases and versions, a call by hand, a sample envelope and the last runs of a trigger or task.
+
+The function side — parsing the envelope your function receives, the typed views on `data`, and a `Norbix` client for the run-as user — is `parseFunctionEvent` from the package root:
+
+```ts
+import { parseFunctionEvent } from '@norbix.ai/ts';
+
+export const handler = async (raw: unknown) => {
+  const event = parseFunctionEvent(raw);
+  const { old, new: next } = event.asDatabaseRecordChange<{ status: string }>();
+  const norbix = event.createClient(); // bearer = context.runAs.accessToken, baseUrl = context.hubUrl / apiUrl
+  // …
+};
+```
+
+→ [`docs/code-functions.md`](../code-functions.md)
