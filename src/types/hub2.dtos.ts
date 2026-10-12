@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-12 16:33:00
+Date: 2026-10-12 21:36:47
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -163,6 +163,16 @@ export module CodeMashHub2 {
     EmailFooters = 'EmailFooters',
     Old = 'Old',
     New = 'New',
+    RequestInput = 'RequestInput',
+    IntegrationConfig = 'IntegrationConfig',
+    IntegrationSecret = 'IntegrationSecret',
+  }
+
+  export enum SecretValueFormat {
+    Raw = 'Raw',
+    Bearer = 'Bearer',
+    Basic = 'Basic',
+    Prefixed = 'Prefixed',
   }
 
   // @DataContract
@@ -175,6 +185,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public resolver: TokenMappingResolverType;
+
+    // @DataMember
+    public secretKeys?: string[];
+
+    // @DataMember
+    public secretFormat?: SecretValueFormat;
 
     public constructor(init?: Partial<TokenMappingDto>) {
       (Object as any).assign(this, init);
@@ -2126,6 +2142,9 @@ export module CodeMashHub2 {
     // @DataMember
     public payload?: { [index: string]: string };
 
+    // @DataMember
+    public runAsUserId?: string;
+
     public constructor(init?: Partial<TriggerActionMarketplaceDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -3563,6 +3582,7 @@ export module CodeMashHub2 {
     SmsCampaign = 'SmsCampaign',
     CodeFunctionalCall = 'CodeFunctionalCall',
     WebhookCall = 'WebhookCall',
+    MarketplaceFunctionCall = 'MarketplaceFunctionCall',
   }
 
   // @DataContract
@@ -3838,6 +3858,31 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class MarketplaceValidationStepResultDto {
+    // @DataMember
+    public key: string;
+
+    // @DataMember
+    public label: string;
+
+    // @DataMember
+    public requiredForFunctions: boolean;
+
+    // @DataMember
+    public succeeded: boolean;
+
+    // @DataMember
+    public skipped: boolean;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<MarketplaceValidationStepResultDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class MarketplaceIntegrationDto extends IntegrationDto {
     // @DataMember
     public listingViewId: string;
@@ -3857,47 +3902,33 @@ export module CodeMashHub2 {
     // @DataMember
     public config: IReadOnlyDictionary<string, string>;
 
+    // @DataMember
+    public lastValidationSteps?: MarketplaceValidationStepResultDto[];
+
     public constructor(init?: Partial<MarketplaceIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
   }
 
-  export enum MarketplaceTokenResolverKind {
-    Static = 'Static',
-    Request = 'Request',
-    Project = 'Project',
-    Initiator = 'Initiator',
-    Custom = 'Custom',
-    IntegrationConfig = 'IntegrationConfig',
-    IntegrationSecret = 'IntegrationSecret',
-  }
-
-  export enum MarketplaceSecretValueFormat {
-    Raw = 'Raw',
-    Bearer = 'Bearer',
-    Basic = 'Basic',
-    Prefixed = 'Prefixed',
-  }
-
   // @DataContract
-  export class MarketplaceTokenMappingDto {
+  export class MarketplaceFunctionParameterDto {
     // @DataMember
-    public token: string;
+    public name: string;
 
     // @DataMember
-    public resolver: MarketplaceTokenResolverKind;
+    public type: string;
 
     // @DataMember
-    public value?: string;
+    public description?: string;
 
     // @DataMember
-    public secretKeys?: string[];
+    public isRequired: boolean;
 
     // @DataMember
-    public format: MarketplaceSecretValueFormat;
+    public defaultValue?: string;
 
-    public constructor(init?: Partial<MarketplaceTokenMappingDto>) {
+    public constructor(init?: Partial<MarketplaceFunctionParameterDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -3923,14 +3954,26 @@ export module CodeMashHub2 {
     public isEnabled: boolean;
 
     // @DataMember
-    public requestTemplate: string;
+    public requestTemplate?: string;
 
     // @DataMember
-    public mappedTokens: MarketplaceTokenMappingDto[] = [];
+    public arguments: { [index: string]: string } = {};
+
+    // @DataMember
+    public inputs: MarketplaceFunctionParameterDto[] = [];
+
+    // @DataMember
+    public mappedTokens: TokenMappingDto[] = [];
 
     public constructor(init?: Partial<MarketplaceFunctionDto>) {
       (Object as any).assign(this, init);
     }
+  }
+
+  export enum MarketplaceAvailability {
+    Development = 'Development',
+    Staging = 'Staging',
+    Production = 'Production',
   }
 
   export enum MarketplaceFieldType {
@@ -3981,23 +4024,17 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class MarketplaceFunctionParameterDto {
+  export class MarketplaceInstallFormDto {
     // @DataMember
-    public name: string;
+    public dataSchema: string;
 
     // @DataMember
-    public type: string;
+    public uiSchema: string;
 
     // @DataMember
-    public description?: string;
+    public secretKeys: string[] = [];
 
-    // @DataMember
-    public isRequired: boolean;
-
-    // @DataMember
-    public defaultValue?: string;
-
-    public constructor(init?: Partial<MarketplaceFunctionParameterDto>) {
+    public constructor(init?: Partial<MarketplaceInstallFormDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -4060,6 +4097,37 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class MarketplaceValidationStepDto {
+    // @DataMember
+    public key: string;
+
+    // @DataMember
+    public label: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public requiredForFunctions: boolean;
+
+    // @DataMember
+    public probe?: MarketplaceHttpRequestSpecDto;
+
+    public constructor(init?: Partial<MarketplaceValidationStepDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum MarketplaceFormKind {
+    Generic = 'Generic',
+    DatabaseQuery = 'DatabaseQuery',
+    DatabaseWrite = 'DatabaseWrite',
+    Message = 'Message',
+    Prompt = 'Prompt',
+    Web = 'Web',
+  }
+
+  // @DataContract
   export class MarketplaceFunctionDefinitionDto {
     // @DataMember
     public definitionId?: string;
@@ -4077,6 +4145,12 @@ export module CodeMashHub2 {
     public group?: string;
 
     // @DataMember
+    public formKind: MarketplaceFormKind;
+
+    // @DataMember
+    public inputs: IReadOnlyList<MarketplaceFunctionParameterDto>;
+
+    // @DataMember
     public parameters: IReadOnlyList<MarketplaceFunctionParameterDto>;
 
     // @DataMember
@@ -4089,7 +4163,7 @@ export module CodeMashHub2 {
     public request?: MarketplaceHttpRequestSpecDto;
 
     // @DataMember
-    public defaultTokenMappings: MarketplaceTokenMappingDto[] = [];
+    public defaultTokenMappings: TokenMappingDto[] = [];
 
     public constructor(init?: Partial<MarketplaceFunctionDefinitionDto>) {
       (Object as any).assign(this, init);
@@ -4126,6 +4200,12 @@ export module CodeMashHub2 {
     public documentationUrl?: string;
 
     // @DataMember
+    public videoUrl?: string;
+
+    // @DataMember
+    public availability: MarketplaceAvailability;
+
+    // @DataMember
     public isOfficial: boolean;
 
     // @DataMember
@@ -4139,6 +4219,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public secretFields: IReadOnlyList<MarketplaceFieldDefinitionDto>;
+
+    // @DataMember
+    public installForm?: MarketplaceInstallFormDto;
+
+    // @DataMember
+    public validationSteps: IReadOnlyList<MarketplaceValidationStepDto>;
 
     // @DataMember
     public functions: IReadOnlyList<MarketplaceFunctionDefinitionDto>;
@@ -4972,6 +5058,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class MarketplaceFunctionCallDto {
+    // @DataMember
+    public functionId: string;
+
+    // @DataMember
+    public functionKey: string;
+
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public payload: { [index: string]: Object } = {};
+
+    public constructor(init?: Partial<MarketplaceFunctionCallDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CodeFunctionDataDto {
     // @DataMember
     public database?: DatabaseRecordChangeDto;
@@ -4993,6 +5098,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public payload?: { [index: string]: Object };
+
+    // @DataMember
+    public marketplace?: MarketplaceFunctionCallDto;
 
     public constructor(init?: Partial<CodeFunctionDataDto>) {
       (Object as any).assign(this, init);
@@ -5057,6 +5165,17 @@ export module CodeMashHub2 {
     public mappedTokens?: TokenMappingDto[];
 
     public constructor(init?: Partial<CodeFunctionSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MarketplaceFunctionSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public functionId?: string;
+    public payload?: { [index: string]: string };
+
+    public constructor(init?: Partial<MarketplaceFunctionSchedulerTaskRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -7434,6 +7553,12 @@ export module CodeMashHub2 {
     // @DataMember(Name="licenseExpireUtc")
     public licenseExpireUtc?: string;
 
+    // @DataMember(Name="lastHeartbeatOutcome")
+    public lastHeartbeatOutcome?: string;
+
+    // @DataMember(Name="lastHeartbeatError")
+    public lastHeartbeatError?: string;
+
     // @DataMember(Name="message")
     public message?: string;
 
@@ -9251,6 +9376,12 @@ export module CodeMashHub2 {
     // @DataMember
     public functionCount: number;
 
+    // @DataMember
+    public availability: MarketplaceAvailability;
+
+    // @DataMember
+    public videoUrl?: string;
+
     public constructor(init?: Partial<MarketplaceListingProjection>) {
       (Object as any).assign(this, init);
     }
@@ -9320,6 +9451,43 @@ export module CodeMashHub2 {
     public mappingCount: number;
 
     public constructor(init?: Partial<MarketplaceFunctionProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceFunctionRunDto {
+    // @DataMember
+    public firedAt: string;
+
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public functionId: string;
+
+    // @DataMember
+    public runAsUserId?: string;
+
+    // @DataMember
+    public succeeded: boolean;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public error?: string;
+
+    // @DataMember
+    public vendorRequestId?: string;
+
+    // @DataMember
+    public input?: string;
+
+    public constructor(init?: Partial<MarketplaceFunctionRunDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -12559,6 +12727,9 @@ export module CodeMashHub2 {
     // @DataMember
     public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
+    // @DataMember
+    public steps?: IReadOnlyList<MarketplaceValidationStepResultDto>;
+
     public constructor(init?: Partial<TestMarketplaceIntegrationResponse>) {
       super(init);
       (Object as any).assign(this, init);
@@ -12594,6 +12765,15 @@ export module CodeMashHub2 {
     public functions: IReadOnlyList<MarketplaceFunctionDefinitionDto>;
 
     public constructor(init?: Partial<GetMarketplaceFunctionCatalogResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetMarketplaceFunctionRunsResponse extends ResponseBase {
+    public runs: MarketplaceFunctionRunDto[] = [];
+
+    public constructor(init?: Partial<GetMarketplaceFunctionRunsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -14644,6 +14824,7 @@ export module CodeMashHub2 {
     public typegen_281_FakeCodeIntegrationDto?: FakeCodeIntegrationDto;
     public typegen_282_FakeCodeIntegrationRequest?: FakeCodeIntegrationRequest;
     public typegen_283_CodeFunctionSchedulerTaskRequest?: CodeFunctionSchedulerTaskRequest;
+    public typegen_284_MarketplaceFunctionSchedulerTaskRequest?: MarketplaceFunctionSchedulerTaskRequest;
 
     public constructor(init?: Partial<InternalsTypeGen>) {
       (Object as any).assign(this, init);
@@ -23486,7 +23667,7 @@ export module CodeMashHub2 {
     public integrationViewId: string;
 
     // @DataMember
-    public tokenMappings: MarketplaceTokenMappingDto[] = [];
+    public tokenMappings: TokenMappingDto[] = [];
 
     public constructor(init?: Partial<SetMarketplaceIntegrationTokenMappingsRequest>) {
       super(init);
@@ -23524,6 +23705,38 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetMarketplaceFunctionCatalogResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/functions/runs", "GET")
+  export class GetMarketplaceFunctionRuns
+    extends CodeMashRequestBase
+    implements IReturn<GetMarketplaceFunctionRunsResponse>
+  {
+    /** @description The trigger whose marketplace function runs to list (trg_…). One of triggerId / taskId. */
+    // @ApiMember(Description="The trigger whose marketplace function runs to list (trg_…). One of triggerId / taskId.")
+    public triggerId?: string;
+
+    /** @description The scheduler task whose marketplace function runs to list (tsk_…). One of triggerId / taskId. */
+    // @ApiMember(Description="The scheduler task whose marketplace function runs to list (tsk_…). One of triggerId / taskId.")
+    public taskId?: string;
+
+    /** @description How many runs, newest first: 1-50. Default 20. */
+    // @ApiMember(DataType="integer", Description="How many runs, newest first: 1-50. Default 20.")
+    public limit?: number;
+
+    public constructor(init?: Partial<GetMarketplaceFunctionRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMarketplaceFunctionRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMarketplaceFunctionRunsResponse();
     }
   }
 
