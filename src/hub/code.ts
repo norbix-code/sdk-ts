@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 33
+ * Endpoints: 38
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -633,6 +633,101 @@ export class CodeModule {
       method: 'GET',
       request,
       pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/functions
+   * Request DTO: GetCodeFunctions
+   */
+  getCodeFunctions = (
+    request: Partial<CodeMashHub2.GetCodeFunctions> = {} as Partial<CodeMashHub2.GetCodeFunctions>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCodeFunctionsResponse> => {
+    return this.transport.send<CodeMashHub2.GetCodeFunctionsResponse>({
+      target: 'hub',
+      path: '/{version}/code/functions',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/functions/event-sample
+   * Request DTO: GetCodeFunctionEventSample
+   */
+  getCodeFunctionEventSample = (
+    request: Partial<CodeMashHub2.GetCodeFunctionEventSample> = {} as Partial<CodeMashHub2.GetCodeFunctionEventSample>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCodeFunctionEventSampleResponse> => {
+    return this.transport.send<CodeMashHub2.GetCodeFunctionEventSampleResponse>({
+      target: 'hub',
+      path: '/{version}/code/functions/event-sample',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/functions/qualifiers
+   * Request DTO: GetCodeFunctionQualifiers
+   */
+  getCodeFunctionQualifiers = (
+    request: Partial<CodeMashHub2.GetCodeFunctionQualifiers> = {} as Partial<CodeMashHub2.GetCodeFunctionQualifiers>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCodeFunctionQualifiersResponse> => {
+    return this.transport.send<CodeMashHub2.GetCodeFunctionQualifiersResponse>({
+      target: 'hub',
+      path: '/{version}/code/functions/qualifiers',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/functions/runs
+   * Request DTO: GetCodeFunctionRuns
+   */
+  getCodeFunctionRuns = (
+    request: Partial<CodeMashHub2.GetCodeFunctionRuns> = {} as Partial<CodeMashHub2.GetCodeFunctionRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetCodeFunctionRunsResponse> => {
+    return this.transport.send<CodeMashHub2.GetCodeFunctionRunsResponse>({
+      target: 'hub',
+      path: '/{version}/code/functions/runs',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/functions/invoke
+   * Request DTO: InvokeCodeFunction
+   */
+  invokeCodeFunction = (
+    request: Partial<CodeMashHub2.InvokeCodeFunction> = {} as Partial<CodeMashHub2.InvokeCodeFunction>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.InvokeCodeFunctionResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeCodeFunctionResponse>({
+      target: 'hub',
+      path: '/{version}/code/functions/invoke',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

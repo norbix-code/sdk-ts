@@ -831,6 +831,22 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetCodeFunctionEventSample": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeFunctionQualifiers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeFunctionRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeFunctions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetCodeIntegration": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -888,6 +904,10 @@
     "returnsBytes": false
   },
   "GetDatabaseSchemaDraft": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetDatabaseSchemaIndexStatus": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1452,6 +1472,10 @@
     "returnsBytes": false
   },
   "InvokeAiToolRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "InvokeCodeFunction": {
     "requiresAuth": true,
     "returnsBytes": false
   },
