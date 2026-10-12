@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 37
+ * Endpoints: 38
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -614,6 +614,25 @@ export class CodeModule {
       method: 'GET',
       request,
       pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/marketplace/functions/runs
+   * Request DTO: GetMarketplaceFunctionRuns
+   */
+  getMarketplaceFunctionRuns = (
+    request: Partial<CodeMashHub2.GetMarketplaceFunctionRuns> = {} as Partial<CodeMashHub2.GetMarketplaceFunctionRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMarketplaceFunctionRunsResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceFunctionRunsResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/functions/runs',
+      method: 'GET',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });
