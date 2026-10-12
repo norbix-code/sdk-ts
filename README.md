@@ -324,28 +324,30 @@ The Database calls follow rules the gateway checks (bulk writes with an empty fi
 
 Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 
-| Module                   | Purpose                                                                 | Reference                                                  |
-| ------------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
-| 🏢 `account`             | Account profile, status, projects, regions, team, billing, verification | [`docs/hub/account.md`](./docs/hub/account.md)             |
-| 🌍 `regions`             | List available Norbix regions, update the regions a project spans       | [`docs/hub/regions.md`](./docs/hub/regions.md)             |
-| 🗄️ `database`            | Schemas, integrations, saved aggregates, taxonomies, triggers           | [`docs/hub/database.md`](./docs/hub/database.md)           |
-| 📁 `files`               | File-storage integrations, triggers, module settings                    | [`docs/hub/files.md`](./docs/hub/files.md)                 |
-| 📧 `notifications`       | Email, push & SMS templates, integrations, campaigns, contacts, devices | [`docs/hub/notifications.md`](./docs/hub/notifications.md) |
-| 📨 `email`               | Email module switches                                                   | [`docs/hub/email.md`](./docs/hub/email.md)                 |
-| 💳 `payments`            | Payment integrations, triggers, tests, module settings                  | [`docs/hub/payments.md`](./docs/hub/payments.md)           |
-| 🤖 `ai`                  | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
-| 📊 `logs`                | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
-| 👥 `membership`          | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
-| ⏰ `scheduler`           | Scheduler module, tasks and their run history                           | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
-| 🪝 `webhooks`            | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
-| 📥 `webhooks` (receiver) | Verify & handle inbound Norbix webhook POSTs at your endpoint           | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
-| 🔐 `auth`                | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
-| 🔑 `apikeys`             | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
-| 🪪 `accessToken`         | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
-| 🩺 `echo`                | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
-| 🛠️ `internal`            | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
-| 📦 `resources`           | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
-| 🚦 `triggers`            | Triggers that need attention (for example a missing provider)           | [`docs/hub/triggers.md`](./docs/hub/triggers.md)           |
+| Module                    | Purpose                                                                 | Reference                                                  |
+| ------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
+| 🏢 `account`              | Account profile, status, projects, regions, team, billing, verification | [`docs/hub/account.md`](./docs/hub/account.md)             |
+| 🌍 `regions`              | List available Norbix regions, update the regions a project spans       | [`docs/hub/regions.md`](./docs/hub/regions.md)             |
+| 🗄️ `database`             | Schemas, integrations, saved aggregates, taxonomies, triggers           | [`docs/hub/database.md`](./docs/hub/database.md)           |
+| 📁 `files`                | File-storage integrations, triggers, module settings                    | [`docs/hub/files.md`](./docs/hub/files.md)                 |
+| 📧 `notifications`        | Email, push & SMS templates, integrations, campaigns, contacts, devices | [`docs/hub/notifications.md`](./docs/hub/notifications.md) |
+| 📨 `email`                | Email module switches                                                   | [`docs/hub/email.md`](./docs/hub/email.md)                 |
+| 💳 `payments`             | Payment integrations, triggers, tests, module settings                  | [`docs/hub/payments.md`](./docs/hub/payments.md)           |
+| 🤖 `ai`                   | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
+| 📊 `logs`                 | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
+| 👥 `membership`           | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
+| ⏰ `scheduler`            | Scheduler module, tasks and their run history                           | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
+| 🪝 `webhooks`             | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
+| 📥 `webhooks` (receiver)  | Verify & handle inbound Norbix webhook POSTs at your endpoint           | [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md) |
+| ⚡ `code`                 | Code integrations (AWS Lambda, Azure, Google), functions, invoke, runs  | [`docs/hub/code.md`](./docs/hub/code.md)                   |
+| ⚡ `code` (function side) | Parse the envelope your cloud function receives, call Norbix back       | [`docs/code-functions.md`](./docs/code-functions.md)       |
+| 🔐 `auth`                 | Hub-side sign-in flows                                                  | [`docs/hub/auth.md`](./docs/hub/auth.md)                   |
+| 🔑 `apikeys`              | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
+| 🪪 `accessToken`          | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
+| 🩺 `echo`                 | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
+| 🛠️ `internal`             | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
+| 📦 `resources`            | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
+| 🚦 `triggers`             | Triggers that need attention (for example a missing provider)           | [`docs/hub/triggers.md`](./docs/hub/triggers.md)           |
 
 → [Full Hub index](./docs/hub/_index.md)
 
@@ -506,6 +508,47 @@ only repeats on a retry.
 → [`docs/webhooks-receiver.md`](./docs/webhooks-receiver.md)
 
 <!-- END: WEBHOOKS_RECEIVER -->
+
+<!-- BEGIN: CODE_FUNCTIONS -->
+
+## Cloud functions
+
+When a trigger or a scheduled task runs **your** function on AWS Lambda, Azure Functions or
+Google Cloud Functions, the function receives one JSON envelope — the event, its data, a
+short-lived token for the run-as user and your config. `parseFunctionEvent` turns it into a
+typed `CodeFunctionEvent` (or throws on an unknown `specVersion`), the views
+`asDatabaseRecordChange<T>()` / `asUserChange()` / `asFileChange()` / `asPayment()` /
+`asScheduledTask()` / `payload<T>()` type the `data` slot, and `createClient()` gives you a
+`Norbix` client that acts as the run-as user against the Norbix that called you
+(`clientOptions()` returns the constructor options instead). The Hub side — list the functions
+an integration may call, their aliases, invoke one by hand, fetch a sample envelope, read the
+last runs — is `norbix.hub.code.getCodeFunctions` / `getCodeFunctionQualifiers` /
+`invokeCodeFunction` / `getCodeFunctionEventSample` / `getCodeFunctionRuns`.
+
+```ts
+import { parseFunctionEvent } from '@norbix.ai/ts';
+
+export const handler = async (raw: unknown) => {
+  const event = parseFunctionEvent(raw);
+  if (event.event !== 'database.record.updated') return { ok: true };
+  const { old, new: next } = event.asDatabaseRecordChange<{ _id: string; status: string }>();
+  if (old?.status !== next?.status) {
+    await event.createClient().api.database.insertOne({
+      collectionName: 'order_events',
+      document: JSON.stringify({
+        orderId: next?._id,
+        status: next?.status,
+        eventId: event.eventId,
+      }),
+    });
+  }
+  return { ok: true };
+};
+```
+
+→ [`docs/code-functions.md`](./docs/code-functions.md)
+
+<!-- END: CODE_FUNCTIONS -->
 
 <!-- BEGIN: MCP -->
 

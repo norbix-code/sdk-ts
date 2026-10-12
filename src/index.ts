@@ -16,3 +16,17 @@ export type { EnvConfig } from './client/env.js';
 export { NORBIX_HUB_URL, NORBIX_API_URL } from './client/constants.js';
 export { CollectionResource } from './resources/index.js';
 export type { ReferenceDisplay, WithExpandedReferences } from './resources/index.js';
+export {
+  CODE_FUNCTION_SPEC_VERSION,
+  CodeFunctionEvent,
+  NorbixFunctionEventError,
+  parseFunctionEvent,
+} from './functions/index.js';
+export type {
+  CodeFunctionClientOptions,
+  CodeFunctionSourceName,
+  DatabaseRecordChange,
+  FileChange,
+  NorbixFunctionEventErrorCode,
+  UserChange,
+} from './functions/index.js';
