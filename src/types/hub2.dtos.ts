@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-13 06:06:10
+Date: 2026-10-13 09:00:52
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -9431,6 +9431,31 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class MarketplaceMcpToolDto {
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public title?: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public inputSchema: string;
+
+    // @DataMember
+    public readOnlyHint?: boolean;
+
+    // @DataMember
+    public destructiveHint?: boolean;
+
+    public constructor(init?: Partial<MarketplaceMcpToolDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class MarketplaceFunctionProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -12716,6 +12741,18 @@ export module CodeMashHub2 {
     public list?: PaginatedResponse<MarketplaceIntegrationListProjection>;
 
     public constructor(init?: Partial<GetMarketplaceIntegrationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetMarketplaceIntegrationToolsResponse extends ResponseBase {
+    public tools: IReadOnlyList<MarketplaceMcpToolDto>;
+    public listedAt?: string;
+    public catalogHash?: string;
+    public truncated: boolean;
+
+    public constructor(init?: Partial<GetMarketplaceIntegrationToolsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -23612,6 +23649,30 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetSmsCampaignMessagesResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/tools", "GET")
+  export class GetMarketplaceIntegrationTools
+    extends CodeMashRequestBase
+    implements IReturn<GetMarketplaceIntegrationToolsResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    public constructor(init?: Partial<GetMarketplaceIntegrationTools>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMarketplaceIntegrationTools';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMarketplaceIntegrationToolsResponse();
     }
   }
 
