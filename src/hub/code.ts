@@ -546,6 +546,25 @@ export class CodeModule {
   };
 
   /**
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/tools
+   * Request DTO: GetMarketplaceIntegrationTools
+   */
+  getMarketplaceIntegrationTools = (
+    request: Partial<CodeMashHub2.GetMarketplaceIntegrationTools> = {} as Partial<CodeMashHub2.GetMarketplaceIntegrationTools>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMarketplaceIntegrationToolsResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceIntegrationToolsResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/tools',
+      method: 'GET',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/secrets
    * Request DTO: ReplaceMarketplaceIntegrationSecretsRequest
    */
