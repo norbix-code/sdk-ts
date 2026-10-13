@@ -1147,6 +1147,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetMarketplaceIntegrationAccess": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetMarketplaceIntegrationTools": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1827,6 +1831,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SaveMarketplaceIntegrationCustomAccess": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SaveMcpIntegration": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1932,6 +1940,10 @@
     "returnsBytes": false
   },
   "SetLlmIntegrationAsDefaultRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetMarketplaceIntegrationRoleAccess": {
     "requiresAuth": true,
     "returnsBytes": false
   },
