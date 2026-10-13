@@ -1971,6 +1971,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "StartMarketplaceIntegrationSignIn": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "StopChatRunStepRequest": {
     "requiresAuth": true,
     "returnsBytes": false
