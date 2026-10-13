@@ -8,7 +8,7 @@ import { LogsModule } from './logs.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 38
+ * Endpoints: 42
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -537,6 +537,63 @@ export class CodeModule {
     return this.transport.send<CodeMashHub2.TestMarketplaceIntegrationResponse>({
       target: 'hub',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/test',
+      method: 'POST',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/access
+   * Request DTO: GetMarketplaceIntegrationAccess
+   */
+  getMarketplaceIntegrationAccess = (
+    request: Partial<CodeMashHub2.GetMarketplaceIntegrationAccess> = {} as Partial<CodeMashHub2.GetMarketplaceIntegrationAccess>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMarketplaceIntegrationAccessResponse> => {
+    return this.transport.send<CodeMashHub2.GetMarketplaceIntegrationAccessResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/access',
+      method: 'GET',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles
+   * Request DTO: SetMarketplaceIntegrationRoleAccess
+   */
+  setMarketplaceIntegrationRoleAccess = (
+    request: Partial<CodeMashHub2.SetMarketplaceIntegrationRoleAccess> = {} as Partial<CodeMashHub2.SetMarketplaceIntegrationRoleAccess>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles',
+      method: 'PUT',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom
+   * Request DTO: SaveMarketplaceIntegrationCustomAccess
+   */
+  saveMarketplaceIntegrationCustomAccess = (
+    request: Partial<CodeMashHub2.SaveMarketplaceIntegrationCustomAccess> = {} as Partial<CodeMashHub2.SaveMarketplaceIntegrationCustomAccess>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.SaveMarketplaceIntegrationCustomAccessResponse> => {
+    return this.transport.send<CodeMashHub2.SaveMarketplaceIntegrationCustomAccessResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom',
       method: 'POST',
       request,
       pathParams: ['IntegrationViewId'],

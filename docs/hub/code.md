@@ -36,6 +36,9 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`invokeMarketplaceFunction`](#invokemarketplacefunction)                           | `POST`   | `/{version}/code/marketplace/functions/{FunctionViewId}/invoke`                                   | `project` |
 | [`getMarketplaceListing`](#getmarketplacelisting)                                   | `GET`    | `/{version}/code/marketplace/listings/{ListingViewId}`                                            | `project` |
 | [`testMarketplaceIntegration`](#testmarketplaceintegration)                         | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/test`                               | `project` |
+| [`getMarketplaceIntegrationAccess`](#getmarketplaceintegrationaccess)               | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access`                             | `project` |
+| [`setMarketplaceIntegrationRoleAccess`](#setmarketplaceintegrationroleaccess)       | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles`                       | `project` |
+| [`saveMarketplaceIntegrationCustomAccess`](#savemarketplaceintegrationcustomaccess) | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom`                | `project` |
 | [`getMarketplaceIntegrationTools`](#getmarketplaceintegrationtools)                 | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/tools`                              | `project` |
 | [`replaceMarketplaceIntegrationSecrets`](#replacemarketplaceintegrationsecrets)     | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets`                            | `project` |
 | [`revealMarketplaceIntegrationSecrets`](#revealmarketplaceintegrationsecrets)       | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`                     | `project` |
@@ -683,6 +686,73 @@ const result = await norbix.hub.code.testMarketplaceIntegration({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestMarketplaceIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### getMarketplaceIntegrationAccess
+
+`GET` `/{version}/code/marketplace/integrations/{IntegrationViewId}/access`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetMarketplaceIntegrationAccess`
+**Response**: `CodeMashHub2.GetMarketplaceIntegrationAccessResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getMarketplaceIntegrationAccess({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetMarketplaceIntegrationAccessResponse
+```
+
+[↑ Top](#endpoints)
+
+### setMarketplaceIntegrationRoleAccess
+
+`PUT` `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles`
+
+**Request DTO**: `CodeMashHub2.SetMarketplaceIntegrationRoleAccess`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.setMarketplaceIntegrationRoleAccess({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveMarketplaceIntegrationCustomAccess
+
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveMarketplaceIntegrationCustomAccess`
+**Response**: `CodeMashHub2.SaveMarketplaceIntegrationCustomAccessResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.saveMarketplaceIntegrationCustomAccess({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.SaveMarketplaceIntegrationCustomAccessResponse
 ```
 
 [↑ Top](#endpoints)
