@@ -41,6 +41,7 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`saveMarketplaceIntegrationCustomAccess`](#savemarketplaceintegrationcustomaccess) | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom`                | `project` |
 | [`getMarketplaceIntegrationTools`](#getmarketplaceintegrationtools)                 | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/tools`                              | `project` |
 | [`startMarketplaceIntegrationSignIn`](#startmarketplaceintegrationsignin)           | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/start`                        | `project` |
+| [`signOutMarketplaceIntegration`](#signoutmarketplaceintegration)                   | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/sign-out`                     | `project` |
 | [`replaceMarketplaceIntegrationSecrets`](#replacemarketplaceintegrationsecrets)     | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets`                            | `project` |
 | [`revealMarketplaceIntegrationSecrets`](#revealmarketplaceintegrationsecrets)       | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets/reveal`                     | `project` |
 | [`setMarketplaceIntegrationTokenMappings`](#setmarketplaceintegrationtokenmappings) | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/token-mappings`                     | `project` |
@@ -798,6 +799,27 @@ const result = await norbix.hub.code.startMarketplaceIntegrationSignIn({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.StartMarketplaceIntegrationSignInResponse
+```
+
+[↑ Top](#endpoints)
+
+### signOutMarketplaceIntegration
+
+`POST` `/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/sign-out`
+
+**Request DTO**: `CodeMashHub2.SignOutMarketplaceIntegration`
+**Response**: `CodeMashHub2.SignOutMarketplaceIntegrationResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.signOutMarketplaceIntegration({
+  IntegrationViewId: 'IntegrationViewId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.SignOutMarketplaceIntegrationResponse
 ```
 
 [↑ Top](#endpoints)
