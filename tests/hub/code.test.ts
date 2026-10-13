@@ -57,6 +57,7 @@ describe('hub.code', () => {
     expect(typeof ns['invokeMarketplaceFunction']).toBe('function');
     expect(typeof ns['getMarketplaceListing']).toBe('function');
     expect(typeof ns['testMarketplaceIntegration']).toBe('function');
+    expect(typeof ns['getMarketplaceIntegrationTools']).toBe('function');
     expect(typeof ns['replaceMarketplaceIntegrationSecrets']).toBe('function');
     expect(typeof ns['revealMarketplaceIntegrationSecrets']).toBe('function');
     expect(typeof ns['setMarketplaceIntegrationTokenMappings']).toBe('function');
@@ -732,6 +733,31 @@ describe('hub.code', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getMarketplaceIntegrationTools: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/tools', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/integrations/{IntegrationViewId}/tools',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/tools',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['getMarketplaceIntegrationTools']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
