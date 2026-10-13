@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-12 21:36:47
+Date: 2026-10-13 06:06:10
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -9476,6 +9476,9 @@ export module CodeMashHub2 {
     public succeeded: boolean;
 
     // @DataMember
+    public status?: string;
+
+    // @DataMember
     public durationMs?: number;
 
     // @DataMember
@@ -9483,6 +9486,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public vendorRequestId?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public hasDetails: boolean;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public taskId?: string;
 
     // @DataMember
     public input?: string;
@@ -23713,12 +23728,16 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetMarketplaceFunctionRunsResponse>
   {
-    /** @description The trigger whose marketplace function runs to list (trg_…). One of triggerId / taskId. */
-    // @ApiMember(Description="The trigger whose marketplace function runs to list (trg_…). One of triggerId / taskId.")
+    /** @description The marketplace function whose runs to list, from every source (func_…). One of functionId / triggerId / taskId. */
+    // @ApiMember(Description="The marketplace function whose runs to list, from every source (func_…). One of functionId / triggerId / taskId.")
+    public functionId?: string;
+
+    /** @description The trigger whose marketplace function runs to list (trg_…). One of functionId / triggerId / taskId. */
+    // @ApiMember(Description="The trigger whose marketplace function runs to list (trg_…). One of functionId / triggerId / taskId.")
     public triggerId?: string;
 
-    /** @description The scheduler task whose marketplace function runs to list (tsk_…). One of triggerId / taskId. */
-    // @ApiMember(Description="The scheduler task whose marketplace function runs to list (tsk_…). One of triggerId / taskId.")
+    /** @description The scheduler task whose marketplace function runs to list (tsk_…). One of functionId / triggerId / taskId. */
+    // @ApiMember(Description="The scheduler task whose marketplace function runs to list (tsk_…). One of functionId / triggerId / taskId.")
     public taskId?: string;
 
     /** @description How many runs, newest first: 1-50. Default 20. */
