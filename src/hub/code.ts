@@ -8,7 +8,7 @@ import { LogsModule } from './logs.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 42
+ * Endpoints: 43
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -614,6 +614,25 @@ export class CodeModule {
       target: 'hub',
       path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/tools',
       method: 'GET',
+      request,
+      pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/start
+   * Request DTO: StartMarketplaceIntegrationSignIn
+   */
+  startMarketplaceIntegrationSignIn = (
+    request: Partial<CodeMashHub2.StartMarketplaceIntegrationSignIn> = {} as Partial<CodeMashHub2.StartMarketplaceIntegrationSignIn>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.StartMarketplaceIntegrationSignInResponse> => {
+    return this.transport.send<CodeMashHub2.StartMarketplaceIntegrationSignInResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/start',
+      method: 'POST',
       request,
       pathParams: ['IntegrationViewId'],
       scope: 'project',
