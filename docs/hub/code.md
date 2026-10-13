@@ -924,3 +924,21 @@ export const handler = async (raw: unknown) => {
 ```
 
 → [`docs/code-functions.md`](../code-functions.md)
+
+## Marketplace function runs
+
+Each call of a marketplace function becomes one run row: an invoke (user, API key, AI), a trigger run or a scheduler fire. `getMarketplaceFunctionRuns` lists them — pass exactly one of `functionId` (every source, newest first, up to 50), `triggerId` or `taskId`. A row carries `status` (`ok` / `failed` / `skipped`, empty on rows written before the field existed), `durationMs`, `source`, `event`, `correlationId` and `hasDetails`.
+
+The input, steps and response of a run are written to the project log, under the row's `correlationId`, only while the environment's Norbix Logging is on — then the row says `hasDetails: true`. Read them with `getMarketplaceFunctionRunDetails` (hand-written helper over `hub.logs.getLogsByCorrelationId`, `GET /{version}/logs/audit?targetCorrelationId=…`):
+
+```ts
+const { runs = [] } = await norbix.hub.code.getMarketplaceFunctionRuns({
+  functionId: 'func_…',
+  limit: 10,
+});
+for (const run of runs) {
+  if (!run.hasDetails || !run.correlationId) continue; // logs were off for this run
+  const { items = [] } = await norbix.hub.code.getMarketplaceFunctionRunDetails(run.correlationId);
+  // items: marketplace:run:started (meta.input) → marketplace:run:step … → completed | failed | skipped
+}
+```
