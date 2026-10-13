@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-13 13:23:35
+Date: 2026-10-13 16:21:07
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7678,6 +7678,7 @@ export module CodeMashHub2 {
     public name: string;
     public visibleKey?: string;
     public scopes: string[] = [];
+    public environment?: string;
     public createdDate: string;
     public expiryDate?: string;
     public cancelledDate?: string;
@@ -9465,6 +9466,9 @@ export module CodeMashHub2 {
     // @DataMember
     public defaultNotApplied?: string;
 
+    // @DataMember
+    public canChange: boolean;
+
     public constructor(init?: Partial<MarketplaceAccessRoleDto>) {
       (Object as any).assign(this, init);
     }
@@ -9499,6 +9503,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public grantable: boolean;
+
+    // @DataMember
+    public curated: boolean;
+
+    // @DataMember
+    public excludedFromFullAccess: boolean;
 
     public constructor(init?: Partial<MarketplaceAccessToolDto>) {
       (Object as any).assign(this, init);
@@ -9606,6 +9616,12 @@ export module CodeMashHub2 {
     // @DataMember
     public notGrantable: IReadOnlyList<string>;
 
+    // @DataMember
+    public readOnlyHintOverridden: IReadOnlyList<string>;
+
+    // @DataMember
+    public excludedFromFullAccess: IReadOnlyList<string>;
+
     public constructor(init?: Partial<MarketplaceAccessChangesDto>) {
       (Object as any).assign(this, init);
     }
@@ -9682,6 +9698,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public input?: string;
+
+    // @DataMember
+    public integrationId?: string;
+
+    // @DataMember
+    public toolName?: string;
 
     public constructor(init?: Partial<MarketplaceFunctionRunDto>) {
       (Object as any).assign(this, init);
@@ -9855,6 +9877,24 @@ export module CodeMashHub2 {
     // @DataMember
     public platformApiLevel?: number;
 
+    // @DataMember
+    public platform?: string;
+
+    // @DataMember
+    public appVersion?: string;
+
+    // @DataMember
+    public installationId?: string;
+
+    // @DataMember
+    public locale?: string;
+
+    // @DataMember
+    public timeZone?: string;
+
+    // @DataMember
+    public updatedAtUtc?: string;
+
     public constructor(init?: Partial<PushDeviceListProjection>) {
       (Object as any).assign(this, init);
     }
@@ -9946,6 +9986,19 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class NotificationReadMarkDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public readAtUtc: string;
+
+    public constructor(init?: Partial<NotificationReadMarkDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class PushCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
     // @DataMember
     public subject?: string;
@@ -9955,6 +10008,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public content?: PushMessageContentDto;
+
+    // @DataMember
+    public readBy?: NotificationReadMarkDto[];
 
     public constructor(init?: Partial<PushCampaignBatchNotificationDto>) {
       super(init);
@@ -11911,6 +11967,8 @@ export module CodeMashHub2 {
     public id: number;
     public name: string;
     public key: string;
+    public environment?: string;
+    public responseStatus?: CodeMashResponseStatus;
 
     public constructor(init?: Partial<IssueServiceUserApiKeyResponse>) {
       (Object as any).assign(this, init);
@@ -11919,6 +11977,7 @@ export module CodeMashHub2 {
 
   export class ListServiceUserApiKeysResponse {
     public keys: ServiceUserApiKeyDto[] = [];
+    public responseStatus?: CodeMashResponseStatus;
 
     public constructor(init?: Partial<ListServiceUserApiKeysResponse>) {
       (Object as any).assign(this, init);
@@ -12898,6 +12957,9 @@ export module CodeMashHub2 {
     // @DataMember
     public functions: IReadOnlyList<MarketplaceAccessFunctionDto>;
 
+    // @DataMember
+    public canManage: boolean;
+
     public constructor(init?: Partial<GetMarketplaceIntegrationAccessResponse>) {
       super(init);
       (Object as any).assign(this, init);
@@ -12957,6 +13019,16 @@ export module CodeMashHub2 {
     public expiresAt?: string;
 
     public constructor(init?: Partial<StartMarketplaceIntegrationSignInResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SignOutMarketplaceIntegrationResponse extends ResponseBase {
+    public wasSignedIn: boolean;
+    public revoke?: string;
+
+    public constructor(init?: Partial<SignOutMarketplaceIntegrationResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -20137,6 +20209,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids.")
     public expandReferences: boolean;
 
+    public allLanguages: boolean;
+
     public constructor(init?: Partial<FindRecords>) {
       super(init);
       (Object as any).assign(this, init);
@@ -20168,6 +20242,8 @@ export module CodeMashHub2 {
     /** @description Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids. */
     // @ApiMember(Description="Set true to get every reference value as { id, display } (display = the target's displayField per the schema; null when the target is gone). Needs read permission on every source the schema links to (users, roles, taxonomy, collection, files) — otherwise the read is refused with CM-ERRORS-DATABASE-056 naming the source. Default false returns the stored ids.")
     public expandReferences: boolean;
+
+    public allLanguages: boolean;
 
     public constructor(init?: Partial<FindOneRecord>) {
       super(init);
@@ -24028,6 +24104,30 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/sign-out", "POST")
+  export class SignOutMarketplaceIntegration
+    extends CodeMashRequestBase
+    implements IReturn<SignOutMarketplaceIntegrationResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    public constructor(init?: Partial<SignOutMarketplaceIntegration>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SignOutMarketplaceIntegration';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new SignOutMarketplaceIntegrationResponse();
+    }
+  }
+
   // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/secrets", "PUT")
   // @DataContract
   export class ReplaceMarketplaceIntegrationSecretsRequest
@@ -24152,6 +24252,10 @@ export module CodeMashHub2 {
     /** @description The scheduler task whose marketplace function runs to list (tsk_…). One of functionId / triggerId / taskId. */
     // @ApiMember(Description="The scheduler task whose marketplace function runs to list (tsk_…). One of functionId / triggerId / taskId.")
     public taskId?: string;
+
+    /** @description The MCP connection whose tool runs to list — the calls an AI chat made to one of its tools without a saved function (int_…). One of functionId / triggerId / taskId / integrationId. */
+    // @ApiMember(Description="The MCP connection whose tool runs to list — the calls an AI chat made to one of its tools without a saved function (int_…). One of functionId / triggerId / taskId / integrationId.")
+    public integrationId?: string;
 
     /** @description How many runs, newest first: 1-50. Default 20. */
     // @ApiMember(DataType="integer", Description="How many runs, newest first: 1-50. Default 20.")

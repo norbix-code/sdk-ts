@@ -1967,6 +1967,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SignOutMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "StartLicenseDomainVerificationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
