@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-13 12:56:15
+Date: 2026-10-13 13:23:35
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -3908,6 +3908,18 @@ export module CodeMashHub2 {
     // @DataMember
     public lastValidationSteps?: MarketplaceValidationStepResultDto[];
 
+    // @DataMember
+    public signedIn: boolean;
+
+    // @DataMember
+    public signedInBy?: string;
+
+    // @DataMember
+    public signedInAt?: string;
+
+    // @DataMember
+    public tokenExpiresAt?: string;
+
     public constructor(init?: Partial<MarketplaceIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -4207,6 +4219,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public availability: MarketplaceAvailability;
+
+    // @DataMember
+    public connectSteps: IReadOnlyList<string>;
+
+    // @DataMember
+    public oAuthRedirectUrl?: string;
 
     // @DataMember
     public isOfficial: boolean;
@@ -9541,6 +9559,12 @@ export module CodeMashHub2 {
     // @DataMember
     public requiresHumanDeliveryConfirmation: boolean;
 
+    // @DataMember
+    public signedIn: boolean;
+
+    // @DataMember
+    public signedInAt?: string;
+
     public constructor(init?: Partial<MarketplaceIntegrationListProjection>) {
       (Object as any).assign(this, init);
     }
@@ -12922,6 +12946,17 @@ export module CodeMashHub2 {
     public truncated: boolean;
 
     public constructor(init?: Partial<GetMarketplaceIntegrationToolsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StartMarketplaceIntegrationSignInResponse extends ResponseBase {
+    public authorizeUrl?: string;
+    public redirectUrl?: string;
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<StartMarketplaceIntegrationSignInResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -23966,6 +24001,30 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetMarketplaceIntegrationToolsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/oauth/start", "POST")
+  export class StartMarketplaceIntegrationSignIn
+    extends CodeMashRequestBase
+    implements IReturn<StartMarketplaceIntegrationSignInResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    public constructor(init?: Partial<StartMarketplaceIntegrationSignIn>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartMarketplaceIntegrationSignIn';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartMarketplaceIntegrationSignInResponse();
     }
   }
 
