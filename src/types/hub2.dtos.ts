@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-13 09:00:52
+Date: 2026-10-13 12:56:15
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -3877,6 +3877,9 @@ export module CodeMashHub2 {
     // @DataMember
     public message?: string;
 
+    // @DataMember
+    public errorCode?: string;
+
     public constructor(init?: Partial<MarketplaceValidationStepResultDto>) {
       (Object as any).assign(this, init);
     }
@@ -5706,6 +5709,15 @@ export module CodeMashHub2 {
     public constructor(init?: Partial<SmsIntegrationRequest>) {
       (Object as any).assign(this, init);
     }
+  }
+
+  export enum MarketplaceAccessLevel {
+    None = 'None',
+    Viewer = 'Viewer',
+    FunctionsOnly = 'FunctionsOnly',
+    ReadOnly = 'ReadOnly',
+    FullAccess = 'FullAccess',
+    Manage = 'Manage',
   }
 
   export class SavePushTemplate extends CodeMashRequestBase {
@@ -9388,6 +9400,110 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class MarketplaceAccessCustomPolicyDto {
+    // @DataMember
+    public policyId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public usedByRoles: number;
+
+    public constructor(init?: Partial<MarketplaceAccessCustomPolicyDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceAccessRoleDto {
+    // @DataMember
+    public roleId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public scope: string;
+
+    // @DataMember
+    public isSystem: boolean;
+
+    // @DataMember
+    public fixed: boolean;
+
+    // @DataMember
+    public package: MarketplaceAccessLevel;
+
+    // @DataMember
+    public isCustom: boolean;
+
+    // @DataMember
+    public manage: boolean;
+
+    // @DataMember
+    public custom: IReadOnlyList<MarketplaceAccessCustomPolicyDto>;
+
+    // @DataMember
+    public defaultNotApplied?: string;
+
+    public constructor(init?: Partial<MarketplaceAccessRoleDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceAccessPackageDto {
+    // @DataMember
+    public kind: MarketplaceAccessLevel;
+
+    // @DataMember
+    public policyId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public exists: boolean;
+
+    public constructor(init?: Partial<MarketplaceAccessPackageDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceAccessToolDto {
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public readOnly: boolean;
+
+    // @DataMember
+    public grantable: boolean;
+
+    public constructor(init?: Partial<MarketplaceAccessToolDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceAccessFunctionDto {
+    // @DataMember
+    public functionId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public functionKey: string;
+
+    public constructor(init?: Partial<MarketplaceAccessFunctionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class MarketplaceIntegrationListProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -9451,6 +9567,22 @@ export module CodeMashHub2 {
     public destructiveHint?: boolean;
 
     public constructor(init?: Partial<MarketplaceMcpToolDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceAccessChangesDto {
+    // @DataMember
+    public readOnlyAdded: IReadOnlyList<string>;
+
+    // @DataMember
+    public readOnlyRemoved: IReadOnlyList<string>;
+
+    // @DataMember
+    public notGrantable: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<MarketplaceAccessChangesDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -12728,6 +12860,43 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class GetMarketplaceIntegrationAccessResponse extends ResponseBase {
+    // @DataMember
+    public roles: IReadOnlyList<MarketplaceAccessRoleDto>;
+
+    // @DataMember
+    public packages: IReadOnlyList<MarketplaceAccessPackageDto>;
+
+    // @DataMember
+    public tools: IReadOnlyList<MarketplaceAccessToolDto>;
+
+    // @DataMember
+    public functions: IReadOnlyList<MarketplaceAccessFunctionDto>;
+
+    public constructor(init?: Partial<GetMarketplaceIntegrationAccessResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SaveMarketplaceIntegrationCustomAccessResponse extends ResponseBase {
+    // @DataMember
+    public policyId?: string;
+
+    // @DataMember
+    public created: boolean;
+
+    // @DataMember
+    public usedByRoles: number;
+
+    public constructor(init?: Partial<SaveMarketplaceIntegrationCustomAccessResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetMarketplaceIntegrationResponse extends ResponseBase {
     public integration?: MarketplaceIntegrationDto;
 
@@ -12781,6 +12950,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public steps?: IReadOnlyList<MarketplaceValidationStepResultDto>;
+
+    // @DataMember
+    public accessChanges?: MarketplaceAccessChangesDto;
 
     public constructor(init?: Partial<TestMarketplaceIntegrationResponse>) {
       super(init);
@@ -23649,6 +23821,127 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetSmsCampaignMessagesResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/access", "GET")
+  export class GetMarketplaceIntegrationAccess
+    extends CodeMashRequestBase
+    implements IReturn<GetMarketplaceIntegrationAccessResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    public constructor(init?: Partial<GetMarketplaceIntegrationAccess>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMarketplaceIntegrationAccess';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMarketplaceIntegrationAccessResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles", "PUT")
+  // @DataContract
+  export class SetMarketplaceIntegrationRoleAccess
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @DataMember
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    /** @description The role's composite id: acc_…_nr_… (account / team role) or pr_…_nr_… (project role). */
+    // @DataMember
+    // @ApiMember(Description="The role's composite id: acc_…_nr_… (account / team role) or pr_…_nr_… (project role).", IsRequired=true)
+    public roleId: string;
+
+    /** @description None, Viewer, FunctionsOnly, ReadOnly or FullAccess. */
+    // @DataMember
+    // @ApiMember(Description="None, Viewer, FunctionsOnly, ReadOnly or FullAccess.")
+    public package: MarketplaceAccessLevel;
+
+    /** @description True to also give the Manage package (edit the connection, its secrets, validation and functions). */
+    // @DataMember
+    // @ApiMember(Description="True to also give the Manage package (edit the connection, its secrets, validation and functions).")
+    public manage: boolean;
+
+    public constructor(init?: Partial<SetMarketplaceIntegrationRoleAccess>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetMarketplaceIntegrationRoleAccess';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom", "POST")
+  // @DataContract
+  export class SaveMarketplaceIntegrationCustomAccess
+    extends CodeMashRequestBase
+    implements IReturn<SaveMarketplaceIntegrationCustomAccessResponse>
+  {
+    /** @description Integration view id, from get_marketplace_integrations. */
+    // @DataMember
+    // @ApiMember(Description="Integration view id, from get_marketplace_integrations.", IsRequired=true)
+    public integrationViewId: string;
+
+    /** @description The role's composite id: acc_…_nr_… or pr_…_nr_…. */
+    // @DataMember
+    // @ApiMember(Description="The role's composite id: acc_…_nr_… or pr_…_nr_….", IsRequired=true)
+    public roleId: string;
+
+    /** @description The package to start from: None, Viewer, FunctionsOnly, ReadOnly or FullAccess. */
+    // @DataMember
+    // @ApiMember(Description="The package to start from: None, Viewer, FunctionsOnly, ReadOnly or FullAccess.")
+    public basePackage: MarketplaceAccessLevel;
+
+    /** @description Tool names the role may run (from the connection's tools). */
+    // @DataMember
+    // @ApiMember(Description="Tool names the role may run (from the connection's tools).")
+    public tools: string[] = [];
+
+    /** @description Function ids (func_…) of this connection the role may run. */
+    // @DataMember
+    // @ApiMember(Description="Function ids (func_…) of this connection the role may run.")
+    public functions: string[] = [];
+
+    /** @description True to include the Manage rights (edit the connection, its secrets, validation and functions). */
+    // @DataMember
+    // @ApiMember(Description="True to include the Manage rights (edit the connection, its secrets, validation and functions).")
+    public manage: boolean;
+
+    /** @description True to write a new policy for this role only when its current custom policy is shared with other roles. */
+    // @DataMember
+    // @ApiMember(Description="True to write a new policy for this role only when its current custom policy is shared with other roles.")
+    public newPolicyForThisRoleOnly: boolean;
+
+    public constructor(init?: Partial<SaveMarketplaceIntegrationCustomAccess>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SaveMarketplaceIntegrationCustomAccess';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new SaveMarketplaceIntegrationCustomAccessResponse();
     }
   }
 
