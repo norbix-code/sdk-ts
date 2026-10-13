@@ -1,6 +1,8 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
+import { LogsModule } from './logs.js';
+
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
@@ -636,6 +638,28 @@ export class CodeModule {
       scope: 'project',
       ...options,
     });
+  };
+
+  /**
+   * Hand-written helper (not from `generate-endpoints` — keep it when the
+   * module is regenerated). The details of one marketplace function run: the
+   * project log lines filed under the run's correlation id
+   * (`marketplace:run:started` / `step` / `completed` | `failed` | `skipped`).
+   *
+   * Pass `row.correlationId` of a run from `getMarketplaceFunctionRuns`. Only a
+   * row with `hasDetails: true` has lines — they are written only while the
+   * environment's Norbix Logging is on; otherwise the list comes back empty.
+   * Same call as `norbix.hub.logs.getLogsByCorrelationId({ targetCorrelationId })`
+   * (GET /{version}/logs/audit).
+   */
+  getMarketplaceFunctionRunDetails = (
+    correlationId: string,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogsByCorrelationIdResponse> => {
+    return new LogsModule(this.transport).getLogsByCorrelationId(
+      { targetCorrelationId: correlationId },
+      options,
+    );
   };
 
   /**
