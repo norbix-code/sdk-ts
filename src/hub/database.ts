@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 73
+ * Endpoints: 74
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}

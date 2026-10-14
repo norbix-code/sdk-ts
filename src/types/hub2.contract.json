@@ -791,6 +791,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetAiContextRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetAiProjectTrigger": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1471,6 +1475,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ImportUsersRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "InsertManyRecords": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1684,6 +1692,10 @@
     "returnsBytes": false
   },
   "RepairContactRolesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RepairLoginProjectIdsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1969,6 +1981,10 @@
   },
   "SetUserAiPlan": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SharedTypeGen": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "SignOutMarketplaceIntegration": {

@@ -131,6 +131,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "FinishInvitationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "ForgetEndUserChatMemoryRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -369,6 +373,10 @@
   },
   "SetEndUserChatEntryFeedbackRequest": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SharedTypeGen": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "StartEmailVerificationRequest": {

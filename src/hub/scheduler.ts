@@ -1,6 +1,7 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
+// @hand-written:begin top
 /** A string enum, or the same value written as a plain string literal. */
 type EnumOrLiteral<E extends string> = E | `${E}`;
 
@@ -187,6 +188,7 @@ export type SchedulerTaskRunsResponse = Omit<CodeMashHub2.GetSchedulerTaskRunsRe
 export type GetSchedulerTaskRunsInput = Omit<Partial<CodeMashHub2.GetSchedulerTaskRuns>, 'id'> & {
   id: string;
 };
+// @hand-written:end
 
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
@@ -331,6 +333,7 @@ export class SchedulerModule {
     });
   };
 
+  // @hand-written:begin
   /**
    * GET /{version}/scheduler/tasks/{id}/runs
    * Request DTO: GetSchedulerTaskRuns
@@ -383,4 +386,5 @@ export class SchedulerModule {
       ...options,
     });
   };
+  // @hand-written:end
 }

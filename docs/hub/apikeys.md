@@ -21,6 +21,8 @@ Accessed as `norbix.hub.apikeys` on the [`Norbix`](../../README.md#authenticatio
 
 Fetch a single item by ID.
 
+> **Deprecated.** The gateway has no `/apikeys` endpoint (there is no such route in its history), so this call fails. Use service-user API keys: `norbix.hub.membership.listServiceUserApiKeys` / `issueServiceUserApiKey`.
+
 **Request DTO**: `CodeMashHub2.GetApiKeys`
 **Response**: `CodeMashHub2.GetApiKeysResponse`
 
@@ -40,6 +42,8 @@ const result = await norbix.hub.apikeys.getApiKeys({
 ### regenerateApiKeys
 
 `POST` `/apikeys/regenerate`
+
+> **Deprecated.** The gateway has no `/apikeys/regenerate` endpoint, so this call fails. Use `norbix.hub.membership.issueServiceUserApiKey` and `deleteServiceUserApiKey`.
 
 **Request DTO**: `CodeMashHub2.RegenerateApiKeys`
 **Response**: `CodeMashHub2.RegenerateApiKeysResponse`

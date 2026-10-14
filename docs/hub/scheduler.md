@@ -4,28 +4,6 @@
 
 Accessed as `norbix.hub.scheduler` on the [`Norbix`](../../README.md#authentication) client.
 
-The scheduler runs a task on a cron schedule. Turn the module on for the project
-once (`enableScheduler`), then save tasks.
-
-Good to know:
-
-- **Email, SMS and push campaign tasks.** A task sends a campaign (a template
-  to an audience) each time its cron fires: `type` is `EmailCampaign`,
-  `SmsCampaign` or `PushCampaign`. Webhook and code tasks (`WebhookCall`,
-  `CodeFunctionalCall`) exist in the types but the gateway refuses them for now.
-- **Cron is 5 fields, in UTC**: `minute hour day-of-month month day-of-week`.
-  `0 9 * * 1` = every Monday at 09:00 UTC. Tasks have no time zone.
-- **`initiatorUserId`** (`usr_…`) is the user the task runs as. It must be the
-  caller or a service user of the project.
-- **Module enable / disable are `PUT`** (they were `GET` before v4.6.0).
-  Disabling the module stops every task's cron.
-- **Task health.** Every task (`getSchedulerTask` item and each
-  `getSchedulerTasks` row) carries `isFailing`: `true` when its last run failed
-  or was skipped (any reason but the module being off). `lastFailureReason`
-  (e.g. `run-failed`, `initiator-not-found`) and `lastFailedAtUnix` (when the
-  current failing streak started) are set while it is failing. A good run or a
-  save turns it back to `false`. The runs themselves: `getSchedulerTaskRuns`.
-
 ## Endpoints
 
 | Method                                          | Verb     | Path                                      | Scope     |
@@ -36,8 +14,8 @@ Good to know:
 | [`disableSchedulerTask`](#disableschedulertask) | `PUT`    | `/{version}/scheduler/tasks/{Id}/disable` | `project` |
 | [`enableSchedulerTask`](#enableschedulertask)   | `PUT`    | `/{version}/scheduler/tasks/{Id}/enable`  | `project` |
 | [`getSchedulerTask`](#getschedulertask)         | `GET`    | `/{version}/scheduler/tasks/{id}`         | `project` |
-| [`getSchedulerTaskRuns`](#getschedulertaskruns) | `GET`    | `/{version}/scheduler/tasks/{id}/runs`    | `project` |
 | [`getSchedulerTasks`](#getschedulertasks)       | `GET`    | `/{version}/scheduler/tasks`              | `project` |
+| [`getSchedulerTaskRuns`](#getschedulertaskruns) | `GET`    | `/{version}/scheduler/tasks/{id}/runs`    | `project` |
 | [`saveSchedulerTask`](#saveschedulertask)       | `POST`   | `/{version}/scheduler/tasks`              | `project` |
 
 ## Reference
@@ -46,8 +24,7 @@ Good to know:
 
 `PUT` `/{version}/scheduler/disable`
 
-Turn the scheduler module off for the project. Every task's cron stops. No
-request fields.
+Disable the resource.
 
 **Request DTO**: `CodeMashHub2.DisableScheduler`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -57,7 +34,10 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-await norbix.hub.scheduler.disableScheduler();
+const result = await norbix.hub.scheduler.disableScheduler({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -66,7 +46,7 @@ await norbix.hub.scheduler.disableScheduler();
 
 `PUT` `/{version}/scheduler/enable`
 
-Turn the scheduler module on for the project. No request fields.
+Enable the resource.
 
 **Request DTO**: `CodeMashHub2.EnableScheduler`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -76,7 +56,10 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-await norbix.hub.scheduler.enableScheduler();
+const result = await norbix.hub.scheduler.enableScheduler({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -85,7 +68,7 @@ await norbix.hub.scheduler.enableScheduler();
 
 `DELETE` `/{version}/scheduler/tasks/{Id}`
 
-Delete a task. `id` goes in the path.
+Delete an item.
 
 **Request DTO**: `CodeMashHub2.DeleteSchedulerTask`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -95,7 +78,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-await norbix.hub.scheduler.deleteSchedulerTask({ id: 'tsk_123' });
+const result = await norbix.hub.scheduler.deleteSchedulerTask({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -104,7 +91,7 @@ await norbix.hub.scheduler.deleteSchedulerTask({ id: 'tsk_123' });
 
 `PUT` `/{version}/scheduler/tasks/{Id}/disable`
 
-Stop one task's cron without deleting the task. `id` goes in the path.
+Disable the resource.
 
 **Request DTO**: `CodeMashHub2.DisableSchedulerTask`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -114,7 +101,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-await norbix.hub.scheduler.disableSchedulerTask({ id: 'tsk_123' });
+const result = await norbix.hub.scheduler.disableSchedulerTask({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -123,7 +114,7 @@ await norbix.hub.scheduler.disableSchedulerTask({ id: 'tsk_123' });
 
 `PUT` `/{version}/scheduler/tasks/{Id}/enable`
 
-Start one task's cron again. `id` goes in the path.
+Enable the resource.
 
 **Request DTO**: `CodeMashHub2.EnableSchedulerTask`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -133,7 +124,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-await norbix.hub.scheduler.enableSchedulerTask({ id: 'tsk_123' });
+const result = await norbix.hub.scheduler.enableSchedulerTask({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
@@ -142,74 +137,21 @@ await norbix.hub.scheduler.enableSchedulerTask({ id: 'tsk_123' });
 
 `GET` `/{version}/scheduler/tasks/{id}`
 
-Fetch one task by id, with its task body. `id` goes in the path.
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashHub2.GetSchedulerTask`
-**Response**: `CodeMashHub2.GetSchedulerTaskResponse` (`item`)
+**Response**: `CodeMashHub2.GetSchedulerTaskResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const { item } = await norbix.hub.scheduler.getSchedulerTask({ id: 'tsk_123' });
-// item: CodeMashHub2.SchedulerTaskDto
-if (item?.isFailing) {
-  console.log(`failing since ${item.lastFailedAtUnix}: ${item.lastFailureReason}`);
-}
-```
-
-[↑ Top](#endpoints)
-
-### getSchedulerTaskRuns
-
-`GET` `/{version}/scheduler/tasks/{id}/runs`
-
-The latest runs of one task, **newest first**, read from the project's logs:
-each run fired, failed or was skipped. `id` goes in the path; `take` (1–50,
-default 10) goes in the query string. Needs `scheduler:read` on the task and
-`logging:read`.
-
-When the project's Logs module is off there is nothing to read: the answer is
-`logsEnabled: false` with an empty `runs`. For runs older than the latest 50,
-read the logs filtered by the task id:
-`norbix.hub.logs.getLogs({ module: 'Scheduler', metaKey: 'taskId', metaValue: 'tsk_123' })`.
-
-**Request DTO**: `CodeMashHub2.GetSchedulerTaskRuns` (typed as `GetSchedulerTaskRunsInput`: `id` is required)
-**Response**: `SchedulerTaskRunsResponse` (`CodeMashHub2.GetSchedulerTaskRunsResponse` with typed runs)
-
-| Field                  | Type                               | Notes                                                                             |
-| ---------------------- | ---------------------------------- | --------------------------------------------------------------------------------- |
-| `logsEnabled`          | `boolean`                          | `false` when the Logs module is off — `runs` is then empty                        |
-| `runs[].logId`         | `string`                           | id of the run's log entry                                                         |
-| `runs[].atUtc`         | `string`                           | when the run ended (UTC)                                                          |
-| `runs[].atUnix`        | `number`                           | the same, Unix seconds                                                            |
-| `runs[].outcome`       | `'Fired' \| 'Failed' \| 'Skipped'` | the gateway sends the name                                                        |
-| `runs[].reason`        | `string?`                          | stable code of a failed or skipped run (`run-failed`, `module-disabled`, …)       |
-| `runs[].detail`        | `string?`                          | the errors of a failed or skipped run                                             |
-| `runs[].correlationId` | `string?`                          | the run's request trail — `norbix.hub.logs.getLogsByCorrelationId` shows the rest |
-
-`outcome` is typed as the string the gateway sends. The generated
-`CodeMashHub2.SchedulerTaskRunOutcome` enum carries numbers (`Fired = 1`), so
-compare against the strings, not the enum.
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const { logsEnabled, runs } = await norbix.hub.scheduler.getSchedulerTaskRuns({
-  id: 'tsk_123',
-  take: 20, // optional, 1–50, default 10
+const result = await norbix.hub.scheduler.getSchedulerTask({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
 });
-
-if (!logsEnabled) {
-  console.log('Turn on the Logs module to see the run history.');
-}
-for (const run of runs) {
-  // newest first
-  console.log(run.atUtc, run.outcome, run.reason ?? '', run.detail ?? '');
-}
+// → typed as CodeMashHub2.GetSchedulerTaskResponse
 ```
 
 [↑ Top](#endpoints)
@@ -218,23 +160,43 @@ for (const run of runs) {
 
 `GET` `/{version}/scheduler/tasks`
 
-List the project's tasks, one page at a time. Optional filters `type` and
-`enabled` go in the query string.
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashHub2.GetSchedulerTasks`
-**Response**: `CodeMashHub2.GetSchedulerTasksResponse` (`list`)
+**Response**: `CodeMashHub2.GetSchedulerTasksResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
-import { CodeMashHub2 } from '@norbix.ai/ts/types/hub';
 
 const norbix = new Norbix();
 
-const { list } = await norbix.hub.scheduler.getSchedulerTasks({
-  type: CodeMashHub2.SchedulerTaskType.EmailCampaign,
-  enabled: true,
+const result = await norbix.hub.scheduler.getSchedulerTasks({
+  // See CodeMash type for the full request shape.
 });
-// list.items: CodeMashHub2.SchedulerTaskListProjection[] (each with isFailing); list.hasMore for the next page
+// → typed as CodeMashHub2.GetSchedulerTasksResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSchedulerTaskRuns
+
+`GET` `/{version}/scheduler/tasks/{id}/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSchedulerTaskRuns`
+**Response**: `CodeMashHub2.GetSchedulerTaskRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.scheduler.getSchedulerTaskRuns({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSchedulerTaskRunsResponse
 ```
 
 [↑ Top](#endpoints)
@@ -243,120 +205,20 @@ const { list } = await norbix.hub.scheduler.getSchedulerTasks({
 
 `POST` `/{version}/scheduler/tasks`
 
-Create a task, or update it when `taskId` is set. All fields go in the JSON body.
+Upsert an item (create or update).
 
-| Field             | Required | Notes                                                    |
-| ----------------- | -------- | -------------------------------------------------------- |
-| `name`            | yes      |                                                          |
-| `cron`            | yes      | 5 fields, UTC                                            |
-| `initiatorUserId` | yes      | `usr_…` — the caller or a project service user           |
-| `isEnabled`       | yes      | `false` saves the task without starting its cron         |
-| `stopOnError`     | yes      | `true` disables the task when a run fails                |
-| `task`            | yes      | `{ type, campaign, databaseIntegrationId? }` — see below |
-| `taskId`          | no       | set to update an existing task                           |
-| `description`     | no       |                                                          |
-
-`task.type` picks the channel, and `task.campaign` is the same campaign you
-would create with that notifications module:
-
-| `task.type`     | `task.campaign`                                | Required by the gateway                                                                                                                                                                                       |
-| --------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EmailCampaign` | email campaign (`SchedulerEmailCampaignInput`) | `source` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `Email`, `Collection`) and `templateId`                                                                                                               |
-| `SmsCampaign`   | SMS campaign (`SchedulerSmsCampaignInput`)     | `templateId`, `integrationId`, and the audience: `deliveryType` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `PhoneNumbers`, `Collection`) plus the settings object of the same name, e.g. `specifiedUsers` |
-| `PushCampaign`  | push campaign (`SchedulerPushCampaignInput`)   | `source` (`AllUsers`, `SpecifiedUsers`, `AccountUsers`, `Devices`, `Collection`) and `templateId`; the audience fields go with `source`                                                                       |
-
-`databaseIntegrationId` (`int_…`) is optional: without it the project's
-default database integration is used when the task fires. The body is typed
-(`SaveSchedulerTaskInput`, exported from `@norbix.ai/ts/hub` with the per-type
-inputs `EmailCampaignSchedulerTaskInput`, `SmsCampaignSchedulerTaskInput` and
-`PushCampaignSchedulerTaskInput`), so plain string values type-check without a
-cast, and a wrong `type` or a missing required field fails the typecheck.
-
-**Refused when the initiator lacks permissions.** The task runs as
-`initiatorUserId`, so the save checks that this user holds every permission
-the task needs when it fires (for a campaign task: sending that campaign). If
-not, the save fails with `CM-ERRORS-SCHEDULER-012` and nothing is saved: the
-message names each missing permission (`"{action} on {resource}"`), and the
-error's metadata carries `InitiatorUserId` and `MissingPermissions`. Give the
-user the permissions, or pick another initiator, and save again.
-
-**Request DTO**: `CodeMashHub2.SaveSchedulerTaskRequest` (task: `CodeMashHub2.EmailCampaignSchedulerTaskRequest`, `CodeMashHub2.SmsCampaignSchedulerTaskRequest` or `CodeMashHub2.PushCampaignSchedulerTaskRequest`)
-**Response**: `CodeMashHub2.IdResponse` (`id` — the task id)
+**Request DTO**: `CodeMashHub2.SaveSchedulerTaskRequest`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const { id } = await norbix.hub.scheduler.saveSchedulerTask({
-  name: 'Weekly digest',
-  cron: '0 9 * * 1', // every Monday 09:00 UTC
-  initiatorUserId: 'usr_123',
-  isEnabled: true,
-  stopOnError: false,
-  task: {
-    type: 'EmailCampaign',
-    campaign: {
-      source: 'AllUsers',
-      templateId: 'tpl_123',
-      rolesNames: ['subscriber'], // optional: only users with these roles
-    },
-  },
+const result = await norbix.hub.scheduler.saveSchedulerTask({
+  // See CodeMash type for the full request shape.
 });
-```
-
-An SMS task — every day at 08:00 UTC to two members, through one SMS provider:
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const { id } = await norbix.hub.scheduler.saveSchedulerTask({
-  name: 'Daily SMS reminder',
-  cron: '0 8 * * *',
-  initiatorUserId: 'usr_123',
-  isEnabled: true,
-  stopOnError: false,
-  task: {
-    type: 'SmsCampaign',
-    campaign: {
-      templateId: 'tmpl_sms_reminder',
-      integrationId: 'int_twilio', // the SMS provider integration
-      deliveryType: 'SpecifiedUsers',
-      specifiedUsers: {
-        recipientsSourceType: 'SpecifiedUsers', // same value as deliveryType
-        recipients: ['usr_456', 'usr_789'],
-      },
-    },
-  },
-});
-```
-
-A push task — every Friday at 18:00 UTC to all subscribers on iOS and Android:
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const { id } = await norbix.hub.scheduler.saveSchedulerTask({
-  name: 'Weekly push',
-  cron: '0 18 * * 5',
-  initiatorUserId: 'usr_123',
-  isEnabled: true,
-  stopOnError: true,
-  task: {
-    type: 'PushCampaign',
-    campaign: {
-      source: 'AllUsers',
-      templateId: 'tmpl_push_weekly',
-      integrationId: 'int_fcm', // optional: the project default push integration otherwise
-      rolesNames: ['subscriber'], // optional
-      platforms: ['Ios', 'Android'], // optional: every platform otherwise
-    },
-  },
-});
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

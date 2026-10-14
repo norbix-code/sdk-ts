@@ -13,9 +13,9 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`blockUser`](#blockuser)                                               | `PATCH`  | `/{version}/membership/auth/block`                                                           | `project` |
 | [`saveSystemUserWithPermissions`](#savesystemuserwithpermissions)       | `POST`   | `/{version}/membership/auth/register/service`                                                | `project` |
 | [`saveGuestUser`](#saveguestuser)                                       | `POST`   | `/{version}/membership/auth/register/guest`                                                  | `project` |
+| [`savePhoneUser`](#savephoneuser)                                       | `POST`   | `/{version}/membership/auth/register/phone`                                                  | `project` |
 | [`saveUserNameUser`](#saveusernameuser)                                 | `POST`   | `/{version}/membership/auth/register/user-name`                                              | `project` |
 | [`saveEmailUser`](#saveemailuser)                                       | `POST`   | `/{version}/membership/auth/register/email`                                                  | `project` |
-| [`savePhoneUser`](#savephoneuser)                                       | `POST`   | `/{version}/membership/auth/register/phone`                                                  | `project` |
 | [`savePhoneUserNameWithPermissions`](#savephoneusernamewithpermissions) | `POST`   | `/{version}/membership/auth/register/phone-with-permissions`                                 | `project` |
 | [`saveEmailUserNameWithPermissions`](#saveemailusernamewithpermissions) | `POST`   | `/{version}/membership/auth/register/email-with-permissions`                                 | `project` |
 | [`saveUserNameWithPermissions`](#saveusernamewithpermissions)           | `POST`   | `/{version}/membership/auth/register/user-name-with-permissions`                             | `project` |
@@ -25,6 +25,7 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`getUserPreferences`](#getuserpreferences)                             | `GET`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
 | [`grantContactConsent`](#grantcontactconsent)                           | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`                  | `project` |
 | [`inviteUser`](#inviteuser)                                             | `POST`   | `/{version}/membership/auth/invite`                                                          | `project` |
+| [`finishInvitation`](#finishinvitation)                                 | `POST`   | `/{version}/membership/auth/invitation/finish`                                               | `project` |
 | [`linkIdentity`](#linkidentity)                                         | `POST`   | `/{version}/membership/auth/{userId}/link-identity`                                          | `project` |
 | [`mapAuthToUser`](#mapauthtouser)                                       | `POST`   | `/{version}/membership/users/{userId}/map-auth`                                              | `project` |
 | [`assignRolePermissions`](#assignrolepermissions)                       | `PUT`    | `/{version}/membership/auth/assign-roles`                                                    | `project` |
@@ -121,6 +122,28 @@ const result = await norbix.api.membership.saveGuestUser({
 
 [↑ Top](#endpoints)
 
+### savePhoneUser
+
+`POST` `/{version}/membership/auth/register/phone`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashApi2.SavePhoneUser`
+**Response**: `CodeMashApi2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.savePhoneUser({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
 ### saveUserNameUser
 
 `POST` `/{version}/membership/auth/register/user-name`
@@ -158,28 +181,6 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.api.membership.saveEmailUser({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashApi2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### savePhoneUser
-
-`POST` `/{version}/membership/auth/register/phone`
-
-Upsert an item (create or update).
-
-**Request DTO**: `CodeMashApi2.SavePhoneUser`
-**Response**: `CodeMashApi2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.api.membership.savePhoneUser({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.IdResponse
@@ -378,6 +379,26 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.api.membership.inviteUser({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### finishInvitation
+
+`POST` `/{version}/membership/auth/invitation/finish`
+
+**Request DTO**: `CodeMashApi2.FinishInvitationRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.finishInvitation({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.EmptyResponse

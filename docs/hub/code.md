@@ -1044,6 +1044,8 @@ const result = await norbix.hub.code.invokeCodeFunction({
 
 [↑ Top](#endpoints)
 
+<!-- @hand-written:begin -->
+
 ## Cloud functions
 
 `hub.code.getCodeFunctions`, `getCodeFunctionQualifiers`, `invokeCodeFunction`, `getCodeFunctionEventSample` and `getCodeFunctionRuns` above are the Hub side: the functions a Code integration may call, their aliases and versions, a call by hand, a sample envelope and the last runs of a trigger or task.
@@ -1080,3 +1082,5 @@ for (const run of runs) {
   // items: marketplace:run:started (meta.input) → marketplace:run:step … → completed | failed | skipped
 }
 ```
+
+<!-- @hand-written:end -->

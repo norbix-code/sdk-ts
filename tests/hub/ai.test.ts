@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.ai (20 endpoints).
+ * Tests for hub.ai (26 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.ai', () => {
-  it('module exposes 20 method(s)', () => {
+  it('module exposes 26 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AiModule({} as never);
     void mod; // silence unused — we only need the type
@@ -26,6 +26,12 @@ describe('hub.ai', () => {
     const ns = (norbix.hub as unknown as Record<string, unknown>)['ai'] as Record<string, unknown>;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['saveAiProjectTrigger']).toBe('function');
+    expect(typeof ns['getAiProjectTriggers']).toBe('function');
+    expect(typeof ns['getAiProjectTrigger']).toBe('function');
+    expect(typeof ns['enableAiProjectTrigger']).toBe('function');
+    expect(typeof ns['disableAiProjectTrigger']).toBe('function');
+    expect(typeof ns['deleteAiProjectTrigger']).toBe('function');
     expect(typeof ns['deleteEmbeddingIntegration']).toBe('function');
     expect(typeof ns['getEmbeddingIntegration']).toBe('function');
     expect(typeof ns['getEmbeddingIntegrations']).toBe('function');
@@ -46,6 +52,144 @@ describe('hub.ai', () => {
     expect(typeof ns['getMcpIntegrations']).toBe('function');
     expect(typeof ns['saveMcpIntegration']).toBe('function');
     expect(typeof ns['testMcpIntegration']).toBe('function');
+  });
+
+  it('saveAiProjectTrigger: POST /{version}/ai/triggers', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['saveAiProjectTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getAiProjectTriggers: GET /{version}/ai/triggers', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['getAiProjectTriggers']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getAiProjectTrigger: GET /{version}/ai/triggers/{id}', async () => {
+    const stub = stubRequestForPath('/{version}/ai/triggers/{id}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers/{id}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['getAiProjectTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('enableAiProjectTrigger: PATCH /{version}/ai/triggers/{triggerId}/enable', async () => {
+    const stub = stubRequestForPath('/{version}/ai/triggers/{triggerId}/enable');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers/{triggerId}/enable',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['enableAiProjectTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('disableAiProjectTrigger: PATCH /{version}/ai/triggers/{triggerId}/disable', async () => {
+    const stub = stubRequestForPath('/{version}/ai/triggers/{triggerId}/disable');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers/{triggerId}/disable',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['disableAiProjectTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('deleteAiProjectTrigger: DELETE /{version}/ai/triggers/{triggerId}', async () => {
+    const stub = stubRequestForPath('/{version}/ai/triggers/{triggerId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/ai/triggers/{triggerId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['ai']!['deleteAiProjectTrigger']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('DELETE');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('deleteEmbeddingIntegration: DELETE /{version}/ai/integrations/embeddings/{Id}', async () => {

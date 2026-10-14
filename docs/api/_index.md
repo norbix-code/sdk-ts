@@ -4,17 +4,18 @@
 
 Project-scoped data operations: database collections, users, AI chat, auth, API keys.
 
-**101 endpoints across 9 modules.** Click a module
+**112 endpoints across 10 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
-| Module                             | Endpoints | Description                                                                                                                              |
-| ---------------------------------- | --------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| [`accessToken`](./access_token.md) |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
-| [`ai`](./ai.md)                    |        18 |                                                                                                                                          |
-| [`apikeys`](./apikeys.md)          |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
-| [`auth`](./auth.md)                |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
-| [`database`](./database.md)        |        22 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
-| [`echo`](./echo.md)                |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
-| [`files`](./files.md)              |        13 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
-| [`membership`](./membership.md)    |        42 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
-| [`public`](./public.md)            |         2 |                                                                                                                                          |
+| Module                                | Endpoints | Description                                                                                                                              |
+| ------------------------------------- | --------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| [`accessToken`](./access_token.md)    |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
+| [`ai`](./ai.md)                       |        18 |                                                                                                                                          |
+| [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
+| [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
+| [`database`](./database.md)           |        22 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
+| [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
+| [`files`](./files.md)                 |        14 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
+| [`membership`](./membership.md)       |        43 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
+| [`notifications`](./notifications.md) |         7 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`public`](./public.md)               |         3 |                                                                                                                                          |

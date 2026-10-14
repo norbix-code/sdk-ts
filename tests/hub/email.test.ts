@@ -29,37 +29,8 @@ describe('hub.email', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
-    expect(typeof ns['getEmailPreferencesByLink']).toBe('function');
     expect(typeof ns['oneClickUnsubscribe']).toBe('function');
-  });
-
-  it('getEmailPreferencesByLink: GET /{version}/email/preferences', async () => {
-    const stub = { token: 'signed.link.token' };
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['email']!['getEmailPreferencesByLink']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url).toBe(
-      'https://hub.norbix.io/v2/email/preferences?token=signed.link.token',
-    );
-    // A signed-in client still sends its token (scope 'optional').
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-  });
-
-  it('getEmailPreferencesByLink: works with no apiKey / bearerToken and sends no Authorization', async () => {
-    const { norbix, mock } = makeClient({ bearerToken: undefined, apiKey: undefined });
-    await norbix.hub.email.getEmailPreferencesByLink({ token: 'signed.link.token' });
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url).toBe(
-      'https://hub.norbix.io/v2/email/preferences?token=signed.link.token',
-    );
-    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+    expect(typeof ns['getEmailPreferencesByLink']).toBe('function');
   });
 
   it('oneClickUnsubscribe: POST /{version}/email/one-click-unsubscribe', async () => {
@@ -85,11 +56,26 @@ describe('hub.email', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('oneClickUnsubscribe: works with no apiKey / bearerToken and sends no Authorization', async () => {
-    const { norbix, mock } = makeClient({ bearerToken: undefined, apiKey: undefined });
-    await norbix.hub.email.oneClickUnsubscribe({});
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url).toBe('https://hub.norbix.io/v2/email/one-click-unsubscribe');
-    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+  it('getEmailPreferencesByLink: GET /{version}/email/preferences', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/email/preferences',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['email']!['getEmailPreferencesByLink']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 });

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-14 07:55:07
+Date: 2026-10-14 16:40:15
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -45,6 +45,308 @@ export module CodeMashApi2 {
     TKey,
     TValue
   >;
+
+  export class JsonSchemaFieldDto {
+    // @DataMember
+    public fieldName: string;
+
+    public constructor(init?: Partial<JsonSchemaFieldDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StringFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public format?: string;
+
+    // @DataMember
+    public pattern?: string;
+
+    // @DataMember
+    public minLength?: number;
+
+    // @DataMember
+    public maxLength?: number;
+
+    // @DataMember
+    public translateOptions?: IReadOnlyDictionary<string, string>;
+
+    // @DataMember
+    public default?: string;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<StringFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DecimalFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<DecimalFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyDefaultDto {
+    // @DataMember
+    public value: number;
+
+    // @DataMember
+    public currency: string;
+
+    public constructor(init?: Partial<CurrencyDefaultDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedCurrencies?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: CurrencyDefaultDto;
+
+    public constructor(init?: Partial<CurrencyFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BooleanFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public default?: boolean;
+
+    public constructor(init?: Partial<BooleanFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DateFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    public constructor(init?: Partial<DateFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class IntegerFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<IntegerFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GeolocationFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedTypes?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<GeolocationFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TagsFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<TagsFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FileFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public storages?: IReadOnlyList<string>;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public allowedFileType?: string;
+
+    // @DataMember
+    public maxSizeMb?: number;
+
+    public constructor(init?: Partial<FileFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public taxonomyId?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public collectionId?: string;
+
+    // @DataMember
+    public displayField?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<UserSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<RoleSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public values?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<EnumSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ObjectFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public properties: IReadOnlyList<JsonSchemaFieldDto>;
+
+    // @DataMember
+    public required?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<ObjectFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ArrayFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public items: JsonSchemaFieldDto;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public uniqueItems?: boolean;
+
+    public constructor(init?: Partial<ArrayFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class JsonFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public maxBytes?: number;
+
+    public constructor(init?: Partial<JsonFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
 
   // @DataContract(Namespace="http://codemash.io/types/")
   export class RequestBase implements IVersionBasedRequest, IHasCorrelationIdRequest {
@@ -183,6 +485,10 @@ export module CodeMashApi2 {
       super(init);
       (Object as any).assign(this, init);
     }
+  }
+
+  export interface IPublicRegistrationRequest {
+    roles?: string[];
   }
 
   export class CodeMashListPaginationRequestBase
@@ -540,6 +846,7 @@ export module CodeMashApi2 {
   export enum AuthStatus {
     Registered = 0,
     PendingValidation = 2,
+    Invited = 4,
     Active = 8,
     Unregistered = 16,
     Suspended = 32,
@@ -726,15 +1033,6 @@ export module CodeMashApi2 {
     public meta?: Object;
 
     public constructor(init?: Partial<TermDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class JsonSchemaFieldDto {
-    // @DataMember
-    public fieldName: string;
-
-    public constructor(init?: Partial<JsonSchemaFieldDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1227,6 +1525,9 @@ export module CodeMashApi2 {
     // @DataMember
     public status?: string;
 
+    // @DataMember
+    public warnings?: string[];
+
     public constructor(init?: Partial<IdResponse>) {
       super(init);
       (Object as any).assign(this, init);
@@ -1677,6 +1978,37 @@ export module CodeMashApi2 {
     public constructor(init?: Partial<GetAccessTokenResponse>) {
       (Object as any).assign(this, init);
     }
+  }
+
+  export class SharedTypeGen {
+    public typegen_StringFieldDto?: StringFieldDto;
+    public typegen_DecimalFieldDto?: DecimalFieldDto;
+    public typegen_CurrencyFieldDto?: CurrencyFieldDto;
+    public typegen_BooleanFieldDto?: BooleanFieldDto;
+    public typegen_DateFieldDto?: DateFieldDto;
+    public typegen_IntegerFieldDto?: IntegerFieldDto;
+    public typegen_GeolocationFieldDto?: GeolocationFieldDto;
+    public typegen_TagsFieldDto?: TagsFieldDto;
+    public typegen_FileFieldDto?: FileFieldDto;
+    public typegen_TaxonomySelectionFieldDto?: TaxonomySelectionFieldDto;
+    public typegen_CollectionSelectionFieldDto?: CollectionSelectionFieldDto;
+    public typegen_UserSelectionFieldDto?: UserSelectionFieldDto;
+    public typegen_RoleSelectionFieldDto?: RoleSelectionFieldDto;
+    public typegen_EnumSelectionFieldDto?: EnumSelectionFieldDto;
+    public typegen_ObjectFieldDto?: ObjectFieldDto;
+    public typegen_ArrayFieldDto?: ArrayFieldDto;
+    public typegen_JsonFieldDto?: JsonFieldDto;
+
+    public constructor(init?: Partial<SharedTypeGen>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SharedTypeGen';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {}
   }
 
   // @Route("/{version}/echo", "GET")
@@ -2279,15 +2611,48 @@ export module CodeMashApi2 {
   }
 
   /** @description Membership */
+  // @Route("/{version}/membership/auth/register/phone", "POST")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class SavePhoneUser extends SaveUser implements IReturn<IdResponse> {
+    /** @description Phone number for the new user, in E.164 format. */
+    // @DataMember
+    // @ApiMember(Description="Phone number for the new user, in E.164 format.", IsRequired=true)
+    public phone: string;
+
+    public constructor(init?: Partial<SavePhoneUser>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SavePhoneUser';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Membership */
   // @Route("/{version}/membership/auth/register/user-name", "POST")
   // @Api(Description="Membership")
   // @DataContract
-  export class SaveUserNameUser extends SaveUser implements IReturn<IdResponse> {
+  export class SaveUserNameUser
+    extends SaveUser
+    implements IReturn<IdResponse>, IPublicRegistrationRequest
+  {
     // @DataMember
     public password: string;
 
     // @DataMember
     public userName: string;
+
+    /** @description Optional roles from the project's "Permitted user registration roles". Empty = the default registration role. */
+    // @DataMember
+    // @ApiMember(Description="Optional roles from the project's \"Permitted user registration roles\". Empty = the default registration role.")
+    public roles?: string[];
 
     public constructor(init?: Partial<SaveUserNameUser>) {
       super(init);
@@ -2308,12 +2673,20 @@ export module CodeMashApi2 {
   // @Route("/{version}/membership/auth/register/email", "POST")
   // @Api(Description="Membership")
   // @DataContract
-  export class SaveEmailUser extends SaveUser implements IReturn<IdResponse> {
+  export class SaveEmailUser
+    extends SaveUser
+    implements IReturn<IdResponse>, IPublicRegistrationRequest
+  {
     // @DataMember
     public password: string;
 
     // @DataMember
     public email: string;
+
+    /** @description Optional roles from the project's "Permitted user registration roles". Empty = the default registration role. */
+    // @DataMember
+    // @ApiMember(Description="Optional roles from the project's \"Permitted user registration roles\". Empty = the default registration role.")
+    public roles?: string[];
 
     public constructor(init?: Partial<SaveEmailUser>) {
       super(init);
@@ -2321,31 +2694,6 @@ export module CodeMashApi2 {
     }
     public getTypeName() {
       return 'SaveEmailUser';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Membership */
-  // @Route("/{version}/membership/auth/register/phone", "POST")
-  // @Api(Description="Membership")
-  // @DataContract
-  export class SavePhoneUser extends SaveUser implements IReturn<IdResponse> {
-    /** @description Phone number for the new user, in E.164 format. */
-    // @DataMember
-    // @ApiMember(Description="Phone number for the new user, in E.164 format.", IsRequired=true)
-    public phone: string;
-
-    public constructor(init?: Partial<SavePhoneUser>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'SavePhoneUser';
     }
     public getMethod() {
       return 'POST';
@@ -2542,6 +2890,31 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Filter to these specific user ids.")
     public userIds?: string[];
 
+    /** @description Free text, case-insensitive: matches email, user name, display / first / last name or phone. */
+    // @DataMember
+    // @ApiMember(Description="Free text, case-insensitive: matches email, user name, display / first / last name or phone.")
+    public search?: string;
+
+    /** @description Case-insensitive part of the email. */
+    // @DataMember
+    // @ApiMember(Description="Case-insensitive part of the email.")
+    public email?: string;
+
+    /** @description Case-insensitive part of the user name. */
+    // @DataMember
+    // @ApiMember(Description="Case-insensitive part of the user name.")
+    public userName?: string;
+
+    /** @description Status names, any of: Registered, PendingValidation, Active, Unregistered, Suspended, InActive, Blocked. */
+    // @DataMember
+    // @ApiMember(Description="Status names, any of: Registered, PendingValidation, Active, Unregistered, Suspended, InActive, Blocked.")
+    public statuses?: string[];
+
+    /** @description Login type names, any of: Service, Email, UserName, Phone, Guest, Social. */
+    // @DataMember
+    // @ApiMember(Description="Login type names, any of: Service, Email, UserName, Phone, Guest, Social.")
+    public types?: string[];
+
     public constructor(init?: Partial<GetUsersRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -2651,6 +3024,54 @@ export module CodeMashApi2 {
     }
     public getTypeName() {
       return 'InviteUserRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Membership */
+  // @Route("/{version}/membership/auth/invitation/finish", "POST")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class FinishInvitationRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description One-time invitation token from the e-mail link (the #token= fragment). */
+    // @DataMember
+    // @ApiMember(Description="One-time invitation token from the e-mail link (the #token= fragment).", IsRequired=true)
+    public token: string;
+
+    /** @description The user's password. Validated against the project's complexity policy. */
+    // @DataMember
+    // @ApiMember(Description="The user's password. Validated against the project's complexity policy.", IsRequired=true)
+    public password: string;
+
+    /** @description Optional display name. */
+    // @DataMember
+    // @ApiMember(Description="Optional display name.")
+    public displayName?: string;
+
+    /** @description Optional first name. */
+    // @DataMember
+    // @ApiMember(Description="Optional first name.")
+    public firstName?: string;
+
+    /** @description Optional last name. */
+    // @DataMember
+    // @ApiMember(Description="Optional last name.")
+    public lastName?: string;
+
+    public constructor(init?: Partial<FinishInvitationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'FinishInvitationRequest';
     }
     public getMethod() {
       return 'POST';
@@ -5006,302 +5427,6 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new RegenerateApiKeysResponse();
-    }
-  }
-
-  // @sdk-api-field-dtos: the Api /types surface does not export the JsonSchemaFieldDto
-  // subclasses (gateway ticket 11-code C22); kept from the previous Api file until the
-  // Api host anchors them like the Hub does.
-  export class ArrayFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public items: JsonSchemaFieldDto;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public uniqueItems?: boolean;
-
-    public constructor(init?: Partial<ArrayFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class BooleanFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public default?: boolean;
-
-    public constructor(init?: Partial<BooleanFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public collectionId?: string;
-
-    // @DataMember
-    public displayField?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyDefaultDto {
-    // @DataMember
-    public value: number;
-
-    // @DataMember
-    public currency: string;
-
-    public constructor(init?: Partial<CurrencyDefaultDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedCurrencies?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: CurrencyDefaultDto;
-
-    public constructor(init?: Partial<CurrencyFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DateFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    public constructor(init?: Partial<DateFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DecimalFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<DecimalFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public values?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<EnumSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class FileFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public storages?: IReadOnlyList<string>;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public allowedFileType?: string;
-
-    // @DataMember
-    public maxSizeMb?: number;
-
-    public constructor(init?: Partial<FileFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GeolocationFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedTypes?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<GeolocationFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class IntegerFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<IntegerFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class JsonFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public maxBytes?: number;
-
-    public constructor(init?: Partial<JsonFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ObjectFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public properties: IReadOnlyList<JsonSchemaFieldDto>;
-
-    // @DataMember
-    public required?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<ObjectFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<RoleSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class StringFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public format?: string;
-
-    // @DataMember
-    public pattern?: string;
-
-    // @DataMember
-    public minLength?: number;
-
-    // @DataMember
-    public maxLength?: number;
-
-    // @DataMember
-    public translateOptions?: IReadOnlyDictionary<string, string>;
-
-    // @DataMember
-    public default?: string;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<StringFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TagsFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<TagsFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public taxonomyId?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<UserSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
     }
   }
 }

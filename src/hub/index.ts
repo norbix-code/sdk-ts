@@ -30,6 +30,7 @@ import { TriggersModule } from './triggers.js';
 import { WebhooksModule } from './webhooks.js';
 import { WellKnownModule } from './well_known.js';
 
+// @hand-written:begin top
 export type {
   EmailCampaignSchedulerTaskInput,
   GetSchedulerTaskRunsInput,
@@ -44,6 +45,7 @@ export type {
   SchedulerTaskRunsResponse,
   SmsCampaignSchedulerTaskInput,
 } from './scheduler.js';
+// @hand-written:end
 
 /**
  * Auto-generated namespace exposing every hub endpoint group.
