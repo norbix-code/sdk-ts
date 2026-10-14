@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-13 16:21:07
+Date: 2026-10-14 07:55:10
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -24,8 +24,6 @@ export module CodeMashHub2 {
   export interface IReturnVoid {
     createResponse(): void;
   }
-  export type JsonObject = { [key: string]: unknown };
-  export interface IGet {}
 
   export interface IHasSessionId {
     sessionId?: string;
@@ -2152,14 +2150,7 @@ export module CodeMashHub2 {
   }
 
   // @DataContract(Namespace="http://codemash.io/types/")
-  export class RequestBase
-    implements ICultureBasedRequest, IVersionBasedRequest, IHasCorrelationIdRequest
-  {
-    /** @description Specify culture code when your response from the API should be localised. E.g.: en */
-    // @DataMember
-    // @ApiMember(DataType="string", Description="Specify culture code when your response from the API should be localised. E.g.: en", Name="CultureCode", ParameterType="header")
-    public cultureCode?: string;
-
+  export class RequestBase implements IVersionBasedRequest, IHasCorrelationIdRequest {
     /** @description TimeZone */
     // @DataMember
     // @ApiMember(DataType="string", Description="TimeZone", Name="TimeZoneId", ParameterType="header")
@@ -2168,7 +2159,7 @@ export module CodeMashHub2 {
     /** @description The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3 */
     // @DataMember
     // @ApiMember(DataType="string", Description="The CodeMash API version used to fetch data from the API. If not specified, the last version will be used.  E.g.: v3", IsRequired=true, Name="version", ParameterType="path")
-    public version?: string | number;
+    public version: string;
 
     /** @description CorrelationId for each request */
     // @DataMember
@@ -5202,12 +5193,8 @@ export module CodeMashHub2 {
     }
   }
 
-  export interface ICultureBasedRequest {
-    cultureCode?: string;
-  }
-
   export interface IVersionBasedRequest {
-    version?: string | number;
+    version: string;
   }
 
   export interface IHasCorrelationIdRequest {
@@ -5888,34 +5875,6 @@ export module CodeMashHub2 {
     CI = 'CI',
     Staging = 'Staging',
     Production = 'Production',
-  }
-
-  // @DataContract
-  export class EchoLicenseDto {
-    // @DataMember(Name="domain")
-    public domain?: string;
-
-    // @DataMember(Name="accountId")
-    public accountId?: string;
-
-    // @DataMember(Name="email")
-    public email?: string;
-
-    // @DataMember(Name="release")
-    public release?: string;
-
-    // @DataMember(Name="expire")
-    public expire: number;
-
-    // @DataMember(Name="isTrial")
-    public isTrial: boolean;
-
-    // @DataMember(Name="cap")
-    public cap: number;
-
-    public constructor(init?: Partial<EchoLicenseDto>) {
-      (Object as any).assign(this, init);
-    }
   }
 
   export class EchoRegionDto {
@@ -7546,6 +7505,34 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class InstallationLicenseDetailsDto {
+    // @DataMember(Name="domain")
+    public domain?: string;
+
+    // @DataMember(Name="accountId")
+    public accountId?: string;
+
+    // @DataMember(Name="email")
+    public email?: string;
+
+    // @DataMember(Name="release")
+    public release?: string;
+
+    // @DataMember(Name="expire")
+    public expire: number;
+
+    // @DataMember(Name="isTrial")
+    public isTrial: boolean;
+
+    // @DataMember(Name="cap")
+    public cap: number;
+
+    public constructor(init?: Partial<InstallationLicenseDetailsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class InstallationLicenseStatusDto {
     // @DataMember(Name="storedMode")
     public storedMode: string;
@@ -7591,6 +7578,15 @@ export module CodeMashHub2 {
 
     // @DataMember(Name="message")
     public message?: string;
+
+    // @DataMember(Name="license")
+    public license?: InstallationLicenseDetailsDto;
+
+    // @DataMember(Name="licensingDocsUrl")
+    public licensingDocsUrl?: string;
+
+    // @DataMember(Name="askForEnterpriseLicenseEmail")
+    public askForEnterpriseLicenseEmail?: string;
 
     public constructor(init?: Partial<InstallationLicenseStatusDto>) {
       (Object as any).assign(this, init);
@@ -10669,7 +10665,7 @@ export module CodeMashHub2 {
     contentLength: number;
     files?: IHttpFile[];
     urlReferrer?: string;
-    requestAborted: any;
+    requestAborted: CancellationToken;
   }
 
   export interface IResponse {
@@ -10874,6 +10870,31 @@ export module CodeMashHub2 {
     public marketingPreferences?: { [index: string]: ChannelSubscriptionStateDto };
 
     public constructor(init?: Partial<UserDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ContactRolesRepairDto {
+    // @DataMember(Name="dryRun")
+    public dryRun: boolean;
+
+    // @DataMember(Name="contactsWithoutRoles")
+    public contactsWithoutRoles: number;
+
+    // @DataMember(Name="contactsToRepair")
+    public contactsToRepair: number;
+
+    // @DataMember(Name="contactsRepaired")
+    public contactsRepaired: number;
+
+    // @DataMember(Name="contactsWithoutLoginRoleIds")
+    public contactsWithoutLoginRoleIds: number;
+
+    // @DataMember(Name="legacyRoleNamesIgnored")
+    public legacyRoleNamesIgnored: number;
+
+    public constructor(init?: Partial<ContactRolesRepairDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -11473,8 +11494,6 @@ export module CodeMashHub2 {
   }
 
   export class EchoResponse {
-    public containerName?: string;
-    public ip: string;
     public release: CodeMashRelease;
     public runtime: CodeMashRuntime;
     public managedServiceHubUrl: string;
@@ -11483,18 +11502,10 @@ export module CodeMashHub2 {
     public apiUrl: string;
     public apiVersion: string;
     public hubVersion: string;
-    public mjmlUrl: string;
     public adminUrlTemplate?: string;
-    public license?: EchoLicenseDto;
-    public askForEnterpriseLicenseEmail?: string;
     public emailServiceConfigured: boolean;
     public rootBootstrapPasswordSource?: string;
     public regions?: EchoRegionDto[];
-    public isProductionInstallation: boolean;
-    public licensingMode: string;
-    public graceDaysLeft?: number;
-    public installationDomain?: string;
-    public licensingDocsUrl?: string;
     public agent?: EchoAgentDto;
     public hostingPlatform?: EchoHostingPlatformDto;
 
@@ -13978,6 +13989,15 @@ export module CodeMashHub2 {
     public nextCursor?: string;
 
     public constructor(init?: Partial<GetAllContactsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RepairContactRolesResponse extends ResponseBase {
+    public result?: ContactRolesRepairDto;
+
+    public constructor(init?: Partial<RepairContactRolesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -19046,6 +19066,11 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetDatabaseTaxonomyTreeResponse>
   {
+    /** @description Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions. */
+    // @DataMember
+    // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
+    public allLanguages: boolean;
+
     /** @description When true, each taxonomy node also carries its own term tree (heavier response). */
     // @DataMember
     // @ApiMember(Description="When true, each taxonomy node also carries its own term tree (heavier response).")
@@ -19213,6 +19238,11 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetDatabaseTaxonomyTermResponse>
   {
+    /** @description Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions. */
+    // @DataMember
+    // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
+    public allLanguages: boolean;
+
     /** @description Taxonomy id from get_database_taxonomies. */
     // @DataMember
     // @ApiMember(Description="Taxonomy id from get_database_taxonomies.", IsRequired=true)
@@ -19251,6 +19281,11 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetDatabaseMergedTermTreeResponse>
   {
+    /** @description Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions. */
+    // @DataMember
+    // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
+    public allLanguages: boolean;
+
     /** @description Root taxonomy slug/name (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them. */
     // @DataMember
     // @ApiMember(Description="Root taxonomy slug/name (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them.", IsRequired=true)
@@ -19284,6 +19319,11 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetDatabaseTaxonomyTermTreeResponse>
   {
+    /** @description Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions. */
+    // @DataMember
+    // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
+    public allLanguages: boolean;
+
     /** @description Taxonomy slug/name to fetch the term tree for, from get_database_taxonomies. */
     // @DataMember
     // @ApiMember(Description="Taxonomy slug/name to fetch the term tree for, from get_database_taxonomies.", IsRequired=true)
@@ -28563,6 +28603,32 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Repair contact roles from their logins */
+  // @Route("/{version}/membership/users/repair-roles", "POST")
+  // @Api(Description="Repair contact roles from their logins")
+  export class RepairContactRolesRequest
+    extends CodeMashRequestBase
+    implements IReturn<RepairContactRolesResponse>
+  {
+    /** @description True (default) = only count what would change. False = write. */
+    // @ApiMember(Description="True (default) = only count what would change. False = write.")
+    public dryRun: boolean;
+
+    public constructor(init?: Partial<RepairContactRolesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RepairContactRolesRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RepairContactRolesResponse();
     }
   }
 
