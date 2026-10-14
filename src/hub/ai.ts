@@ -6,10 +6,124 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: ai
- * Endpoints: 20
+ * Endpoints: 26
  */
 export class AiModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * POST /{version}/ai/triggers
+   * Request DTO: SaveAiProjectTrigger
+   */
+  saveAiProjectTrigger = (
+    request: Partial<CodeMashHub2.SaveAiProjectTrigger> = {} as Partial<CodeMashHub2.SaveAiProjectTrigger>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/ai/triggers
+   * Request DTO: GetAiProjectTriggers
+   */
+  getAiProjectTriggers = (
+    request: Partial<CodeMashHub2.GetAiProjectTriggers> = {} as Partial<CodeMashHub2.GetAiProjectTriggers>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAiTriggersResponse> => {
+    return this.transport.send<CodeMashHub2.GetAiTriggersResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/ai/triggers/{id}
+   * Request DTO: GetAiProjectTrigger
+   */
+  getAiProjectTrigger = (
+    request: Partial<CodeMashHub2.GetAiProjectTrigger> = {} as Partial<CodeMashHub2.GetAiProjectTrigger>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAiTriggerResponse> => {
+    return this.transport.send<CodeMashHub2.GetAiTriggerResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers/{id}',
+      method: 'GET',
+      request,
+      pathParams: ['id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/ai/triggers/{triggerId}/enable
+   * Request DTO: EnableAiProjectTrigger
+   */
+  enableAiProjectTrigger = (
+    request: Partial<CodeMashHub2.EnableAiProjectTrigger> = {} as Partial<CodeMashHub2.EnableAiProjectTrigger>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers/{triggerId}/enable',
+      method: 'PATCH',
+      request,
+      pathParams: ['triggerId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/ai/triggers/{triggerId}/disable
+   * Request DTO: DisableAiProjectTrigger
+   */
+  disableAiProjectTrigger = (
+    request: Partial<CodeMashHub2.DisableAiProjectTrigger> = {} as Partial<CodeMashHub2.DisableAiProjectTrigger>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers/{triggerId}/disable',
+      method: 'PATCH',
+      request,
+      pathParams: ['triggerId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/ai/triggers/{triggerId}
+   * Request DTO: DeleteAiProjectTrigger
+   */
+  deleteAiProjectTrigger = (
+    request: Partial<CodeMashHub2.DeleteAiProjectTrigger> = {} as Partial<CodeMashHub2.DeleteAiProjectTrigger>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/ai/triggers/{triggerId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['triggerId'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * DELETE /{version}/ai/integrations/embeddings/{Id}

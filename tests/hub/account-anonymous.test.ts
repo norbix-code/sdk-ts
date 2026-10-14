@@ -9,7 +9,8 @@ import { createMockFetch } from '../_helpers.js';
  * caller that has no token and no account id yet. The SDK sends them with
  * the `'unauthenticated'` scope: no `Authorization` header, no token check,
  * no account-scope check. `verifyAccount` carries its account id in the
- * request only (query string), never from the client.
+ * request only (JSON body — the gateway made it a POST in 4ece218e6), never
+ * from the client.
  */
 
 const HUB = 'https://hub.norbix.io';
@@ -59,7 +60,7 @@ const cases: Array<{ name: string; call: Call; method: string; path: string }> =
   {
     name: 'hub.account.verifyAccount',
     call: (n) => n.hub.account.verifyAccount({ accountId: 'acc-1', token: 'verify-1' }),
-    method: 'GET',
+    method: 'POST',
     path: '/v2/account/verify',
   },
 ];
@@ -78,12 +79,12 @@ describe('hub.account — anonymous calls (no token, no accountId)', () => {
     expect(sent.headers.has('norbix-account-id')).toBe(false);
   });
 
-  it('hub.account.verifyAccount: accountId and token travel in the query', async () => {
+  it('hub.account.verifyAccount: accountId and token travel in the body', async () => {
     const { norbix, mock } = anonymousClient();
     await norbix.hub.account.verifyAccount({ accountId: 'acc-1', token: 'verify-1' });
 
-    const query = new URL(mock.lastCall!.url).searchParams;
-    expect(query.get('accountId')).toBe('acc-1');
-    expect(query.get('token')).toBe('verify-1');
+    const body = JSON.parse(mock.lastCall!.body ?? '{}') as Record<string, unknown>;
+    expect(body['accountId']).toBe('acc-1');
+    expect(body['token']).toBe('verify-1');
   });
 });

@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 45
+ * Endpoints: 48
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -42,6 +42,44 @@ export class MembershipModule {
       target: 'hub',
       path: '/{version}/membership/enable',
       method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/import
+   * Request DTO: ImportUsersRequest
+   */
+  importUsers = (
+    request: Partial<CodeMashHub2.ImportUsersRequest> = {} as Partial<CodeMashHub2.ImportUsersRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ImportUsersResponse> => {
+    return this.transport.send<CodeMashHub2.ImportUsersResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/import',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/repair-logins
+   * Request DTO: RepairLoginProjectIdsRequest
+   */
+  repairLoginProjectIds = (
+    request: Partial<CodeMashHub2.RepairLoginProjectIdsRequest> = {} as Partial<CodeMashHub2.RepairLoginProjectIdsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RepairLoginProjectIdsResponse> => {
+    return this.transport.send<CodeMashHub2.RepairLoginProjectIdsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/repair-logins',
+      method: 'POST',
       request,
       pathParams: [],
       scope: 'project',
@@ -671,6 +709,25 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/users/{userId}/ai-plan
+   * Request DTO: SetUserAiPlan
+   */
+  setUserAiPlan = (
+    request: Partial<CodeMashHub2.SetUserAiPlan> = {} as Partial<CodeMashHub2.SetUserAiPlan>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{userId}/ai-plan',
+      method: 'PUT',
+      request,
+      pathParams: ['userId'],
       scope: 'project',
       ...options,
     });

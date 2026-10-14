@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 113
+ * Endpoints: 121
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -50,7 +50,7 @@ export class AccountModule {
   };
 
   /**
-   * GET /{version}/account/verify/resend
+   * POST /{version}/account/verify/resend
    * Request DTO: ResendAccountVerificationToken
    */
   resendAccountVerificationToken = (
@@ -60,7 +60,7 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/verify/resend',
-      method: 'GET',
+      method: 'POST',
       request,
       pathParams: [],
       scope: 'project',
@@ -165,9 +165,9 @@ export class AccountModule {
   };
 
   /**
-   * GET /{version}/account/verify
+   * POST /{version}/account/verify
    * Anonymous — no token needed. The account id travels in the request
-   * (`accountId`, query string), not from the client.
+   * (`accountId`), not from the client.
    * Request DTO: VerifyAccount
    */
   verifyAccount = (
@@ -177,7 +177,7 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/verify',
-      method: 'GET',
+      method: 'POST',
       request,
       pathParams: [],
       scope: 'unauthenticated',
@@ -548,6 +548,44 @@ export class AccountModule {
   };
 
   /**
+   * PATCH /{version}/account/projects/{projectId}/settings/brand/expose
+   * Request DTO: UpdateProjectExposeBrand
+   */
+  updateProjectExposeBrand = (
+    request: Partial<CodeMashHub2.UpdateProjectExposeBrand> = {} as Partial<CodeMashHub2.UpdateProjectExposeBrand>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/settings/brand/expose',
+      method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/projects/{projectId}/settings/auth/expose
+   * Request DTO: UpdateProjectExposeAuth
+   */
+  updateProjectExposeAuth = (
+    request: Partial<CodeMashHub2.UpdateProjectExposeAuth> = {} as Partial<CodeMashHub2.UpdateProjectExposeAuth>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/settings/auth/expose',
+      method: 'PATCH',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/account/projects/{projectId}/settings/admin-portal/service-user
    * Request DTO: AssignAdminPortalServiceUserRequest
    */
@@ -605,6 +643,101 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/projects/{projectId}/ai/credits/checkout
+   * Request DTO: CreateAiCreditPackCheckoutRequest
+   */
+  createAiCreditPackCheckout = (
+    request: Partial<CodeMashHub2.CreateAiCreditPackCheckoutRequest> = {} as Partial<CodeMashHub2.CreateAiCreditPackCheckoutRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CreateAiCreditPackCheckoutResponse> => {
+    return this.transport.send<CodeMashHub2.CreateAiCreditPackCheckoutResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/credits/checkout',
+      method: 'POST',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/ai/plans
+   * Request DTO: GetProjectAiPlans
+   */
+  getProjectAiPlans = (
+    request: Partial<CodeMashHub2.GetProjectAiPlans> = {} as Partial<CodeMashHub2.GetProjectAiPlans>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetProjectAiPlansResponse> => {
+    return this.transport.send<CodeMashHub2.GetProjectAiPlansResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/plans',
+      method: 'GET',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/projects/{projectId}/ai/plans
+   * Request DTO: UpdateProjectAiPlans
+   */
+  updateProjectAiPlans = (
+    request: Partial<CodeMashHub2.UpdateProjectAiPlans> = {} as Partial<CodeMashHub2.UpdateProjectAiPlans>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.UpdateProjectAiPlansResponse> => {
+    return this.transport.send<CodeMashHub2.UpdateProjectAiPlansResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/plans',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/projects/{projectId}/ai/plans/assignments
+   * Request DTO: UpdateProjectAiPlanAssignments
+   */
+  updateProjectAiPlanAssignments = (
+    request: Partial<CodeMashHub2.UpdateProjectAiPlanAssignments> = {} as Partial<CodeMashHub2.UpdateProjectAiPlanAssignments>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/plans/assignments',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/ai/plans/users
+   * Request DTO: GetProjectAiUserPlans
+   */
+  getProjectAiUserPlans = (
+    request: Partial<CodeMashHub2.GetProjectAiUserPlans> = {} as Partial<CodeMashHub2.GetProjectAiUserPlans>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetProjectAiUserPlansResponse> => {
+    return this.transport.send<CodeMashHub2.GetProjectAiUserPlansResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/plans/users',
+      method: 'GET',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/account/projects/{projectId}/ai/settings
    * Request DTO: GetProjectAiSettings
    */
@@ -634,6 +767,25 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/ai/settings',
+      method: 'PUT',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/projects/{projectId}/ai/knowledge
+   * Request DTO: UpdateProjectAiKnowledge
+   */
+  updateProjectAiKnowledge = (
+    request: Partial<CodeMashHub2.UpdateProjectAiKnowledge> = {} as Partial<CodeMashHub2.UpdateProjectAiKnowledge>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/ai/knowledge',
       method: 'PUT',
       request,
       pathParams: ['projectId'],
@@ -957,44 +1109,6 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/settings/legal/expose',
-      method: 'PATCH',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PATCH /{version}/account/projects/{projectId}/settings/brand/expose
-   * Request DTO: UpdateProjectExposeBrand
-   */
-  updateProjectExposeBrand = (
-    request: Partial<CodeMashHub2.UpdateProjectExposeBrand> = {} as Partial<CodeMashHub2.UpdateProjectExposeBrand>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/settings/brand/expose',
-      method: 'PATCH',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PATCH /{version}/account/projects/{projectId}/settings/auth/expose
-   * Request DTO: UpdateProjectExposeAuth
-   */
-  updateProjectExposeAuth = (
-    request: Partial<CodeMashHub2.UpdateProjectExposeAuth> = {} as Partial<CodeMashHub2.UpdateProjectExposeAuth>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/settings/auth/expose',
       method: 'PATCH',
       request,
       pathParams: ['projectId'],
@@ -1651,6 +1765,25 @@ export class AccountModule {
   };
 
   /**
+   * GET /{version}/account/licenses/{Id}/key
+   * Request DTO: GetLicenseKey
+   */
+  getLicenseKey = (
+    request: Partial<CodeMashHub2.GetLicenseKey> = {} as Partial<CodeMashHub2.GetLicenseKey>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLicenseKeyResponse> => {
+    return this.transport.send<CodeMashHub2.GetLicenseKeyResponse>({
+      target: 'hub',
+      path: '/{version}/account/licenses/{Id}/key',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/ai/service-users
    * Request DTO: CreateAiServiceUserRequest
    */
@@ -1756,6 +1889,25 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.GetAgentOnboardingResponse>({
       target: 'hub',
       path: '/{version}/account/agent/onboarding',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/ai/context
+   * Request DTO: GetAiContextRequest
+   */
+  getAiContext = (
+    request: Partial<CodeMashHub2.GetAiContextRequest> = {} as Partial<CodeMashHub2.GetAiContextRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAiContextResponse> => {
+    return this.transport.send<CodeMashHub2.GetAiContextResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/context',
       method: 'GET',
       request,
       pathParams: [],

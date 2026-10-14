@@ -264,7 +264,7 @@ describe('Headers + scoping', () => {
       { envSource: {} },
     );
     await call(norbix, 'hub', 'account', 'verifyAccount', { accountId: 'a1', token: 't1' });
-    expect(new URL(captured!.url).searchParams.get('accountId')).toBe('a1');
+    expect(JSON.parse(String(captured!.init.body))).toMatchObject({ accountId: 'a1' });
     expect(new Headers(captured!.init.headers).has('Authorization')).toBe(false);
   });
 });

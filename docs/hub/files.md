@@ -33,6 +33,7 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 | [`getFile`](#getfile)                                           | `GET`    | `/{version}/files/item`                         | `project` |
 | [`getFileById`](#getfilebyid)                                   | `GET`    | `/{version}/files/item/by-id`                   | `project` |
 | [`getFolderFiles`](#getfolderfiles)                             | `GET`    | `/{version}/files/folder`                       | `project` |
+| [`useFile`](#usefile)                                           | `POST`   | `/{version}/files/item/use`                     | `project` |
 
 ## Reference
 
@@ -501,7 +502,7 @@ const result = await norbix.hub.files.getFile({
 
 `GET` `/{version}/files/item/by-id`
 
-Fetch one file by its stable id (`filesIntegrationId` + `id` in the query) — the id a file field on a record stores. Same answer shape as the API call: `file`, `isPublic`, `publicUrl`.
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashHub2.GetFileById`
 **Response**: `CodeMashHub2.GetFileByIdResponse`
@@ -512,8 +513,7 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.files.getFileById({
-  filesIntegrationId: 'filesIntegrationId-here',
-  id: 'id-here',
+  // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetFileByIdResponse
 ```
@@ -538,6 +538,26 @@ const result = await norbix.hub.files.getFolderFiles({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetFolderFilesResponse
+```
+
+[↑ Top](#endpoints)
+
+### useFile
+
+`POST` `/{version}/files/item/use`
+
+**Request DTO**: `CodeMashHub2.UseFileRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.useFile({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

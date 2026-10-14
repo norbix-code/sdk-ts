@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 13
+ * Endpoints: 14
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -253,6 +253,25 @@ export class FilesModule {
     return this.transport.send<CodeMashApi2.TestFilesIntegrationResponse>({
       target: 'api',
       path: '/{version}/files/{filesIntegrationId}/test',
+      method: 'POST',
+      request,
+      pathParams: ['filesIntegrationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/{filesIntegrationId}/use
+   * Request DTO: UseFileRequest
+   */
+  useFile = (
+    request: Partial<CodeMashApi2.UseFileRequest> = {} as Partial<CodeMashApi2.UseFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/files/{filesIntegrationId}/use',
       method: 'POST',
       request,
       pathParams: ['filesIntegrationId'],

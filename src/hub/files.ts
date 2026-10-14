@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 23
+ * Endpoints: 24
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -441,6 +441,25 @@ export class FilesModule {
       target: 'hub',
       path: '/{version}/files/folder',
       method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/use
+   * Request DTO: UseFileRequest
+   */
+  useFile = (
+    request: Partial<CodeMashHub2.UseFileRequest> = {} as Partial<CodeMashHub2.UseFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/files/item/use',
+      method: 'POST',
       request,
       pathParams: [],
       scope: 'project',

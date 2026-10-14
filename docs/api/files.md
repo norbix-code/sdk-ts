@@ -23,6 +23,7 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 | [`getPublicFile`](#getpublicfile)               | `GET`    | `/{version}/files/public/{PublicId}/{Name*}`       | `project` |
 | [`requestUploadUrl`](#requestuploadurl)         | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
 | [`testFilesIntegration`](#testfilesintegration) | `POST`   | `/{version}/files/{filesIntegrationId}/test`       | `project` |
+| [`useFile`](#usefile)                           | `POST`   | `/{version}/files/{filesIntegrationId}/use`        | `project` |
 
 ## Reference
 
@@ -162,7 +163,7 @@ const result = await norbix.api.files.downloadFileApi({
 
 `GET` `/{version}/files/{filesIntegrationId}/by-id/{id}`
 
-Fetch one file by its stable id — the id a file field on a record stores, and the `id` an expanded reference (`expandReferences: true`) returns. The answer carries the file's `resource`, `path`, `isPublic` and `publicUrl`. An id no storage of the integration holds answers not found.
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashApi2.GetFileByIdRequest`
 **Response**: `CodeMashApi2.GetFileByIdResponse`
@@ -175,6 +176,7 @@ const norbix = new Norbix();
 const result = await norbix.api.files.getFileById({
   filesIntegrationId: 'filesIntegrationId-here',
   id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.GetFileByIdResponse
 ```
@@ -312,6 +314,27 @@ const result = await norbix.api.files.testFilesIntegration({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.TestFilesIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### useFile
+
+`POST` `/{version}/files/{filesIntegrationId}/use`
+
+**Request DTO**: `CodeMashApi2.UseFileRequest`
+**Response**: `CodeMashApi2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.files.useFile({
+  filesIntegrationId: 'filesIntegrationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.IdResponse
 ```
 
 [↑ Top](#endpoints)

@@ -6,10 +6,30 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: public
- * Endpoints: 2
+ * Endpoints: 3
  */
 export class PublicModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/public/projects/{ProjectId}/brand/{Kind}
+   * Request DTO: GetPublicProjectBrandAsset
+   */
+  getPublicProjectBrandAsset = (
+    request: Partial<CodeMashHub2.GetPublicProjectBrandAsset> = {} as Partial<CodeMashHub2.GetPublicProjectBrandAsset>,
+    options: RequestOverrideOptions = {},
+  ): Promise<Uint8Array> => {
+    return this.transport.send<Uint8Array>({
+      target: 'hub',
+      path: '/{version}/public/projects/{ProjectId}/brand/{Kind}',
+      method: 'GET',
+      request,
+      pathParams: ['ProjectId', 'Kind'],
+      scope: 'unauthenticated',
+      responseType: 'binary',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/public/projects/{ProjectId}/config

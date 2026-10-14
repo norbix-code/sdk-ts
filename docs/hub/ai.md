@@ -8,6 +8,12 @@ Accessed as `norbix.hub.ai` on the [`Norbix`](../../README.md#authentication) cl
 
 | Method                                                      | Verb     | Path                                              | Scope     |
 | ----------------------------------------------------------- | -------- | ------------------------------------------------- | --------- |
+| [`saveAiProjectTrigger`](#saveaiprojecttrigger)             | `POST`   | `/{version}/ai/triggers`                          | `project` |
+| [`getAiProjectTriggers`](#getaiprojecttriggers)             | `GET`    | `/{version}/ai/triggers`                          | `project` |
+| [`getAiProjectTrigger`](#getaiprojecttrigger)               | `GET`    | `/{version}/ai/triggers/{id}`                     | `project` |
+| [`enableAiProjectTrigger`](#enableaiprojecttrigger)         | `PATCH`  | `/{version}/ai/triggers/{triggerId}/enable`       | `project` |
+| [`disableAiProjectTrigger`](#disableaiprojecttrigger)       | `PATCH`  | `/{version}/ai/triggers/{triggerId}/disable`      | `project` |
+| [`deleteAiProjectTrigger`](#deleteaiprojecttrigger)         | `DELETE` | `/{version}/ai/triggers/{triggerId}`              | `project` |
 | [`deleteEmbeddingIntegration`](#deleteembeddingintegration) | `DELETE` | `/{version}/ai/integrations/embeddings/{Id}`      | `project` |
 | [`getEmbeddingIntegration`](#getembeddingintegration)       | `GET`    | `/{version}/ai/integrations/embeddings/{Id}`      | `project` |
 | [`getEmbeddingIntegrations`](#getembeddingintegrations)     | `GET`    | `/{version}/ai/integrations/embeddings`           | `project` |
@@ -30,6 +36,142 @@ Accessed as `norbix.hub.ai` on the [`Norbix`](../../README.md#authentication) cl
 | [`testMcpIntegration`](#testmcpintegration)                 | `POST`   | `/{version}/ai/integrations/mcp/test`             | `project` |
 
 ## Reference
+
+### saveAiProjectTrigger
+
+`POST` `/{version}/ai/triggers`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveAiProjectTrigger`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.saveAiProjectTrigger({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAiProjectTriggers
+
+`GET` `/{version}/ai/triggers`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAiProjectTriggers`
+**Response**: `CodeMashHub2.GetAiTriggersResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.getAiProjectTriggers({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAiTriggersResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAiProjectTrigger
+
+`GET` `/{version}/ai/triggers/{id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAiProjectTrigger`
+**Response**: `CodeMashHub2.GetAiTriggerResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.getAiProjectTrigger({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAiTriggerResponse
+```
+
+[↑ Top](#endpoints)
+
+### enableAiProjectTrigger
+
+`PATCH` `/{version}/ai/triggers/{triggerId}/enable`
+
+Enable the resource.
+
+**Request DTO**: `CodeMashHub2.EnableAiProjectTrigger`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.enableAiProjectTrigger({
+  triggerId: 'triggerId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### disableAiProjectTrigger
+
+`PATCH` `/{version}/ai/triggers/{triggerId}/disable`
+
+Disable the resource.
+
+**Request DTO**: `CodeMashHub2.DisableAiProjectTrigger`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.disableAiProjectTrigger({
+  triggerId: 'triggerId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteAiProjectTrigger
+
+`DELETE` `/{version}/ai/triggers/{triggerId}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteAiProjectTrigger`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.ai.deleteAiProjectTrigger({
+  triggerId: 'triggerId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
 
 ### deleteEmbeddingIntegration
 

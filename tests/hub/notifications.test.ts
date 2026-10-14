@@ -29,6 +29,7 @@ describe('hub.notifications', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['createSmsCampaign']).toBe('function');
     expect(typeof ns['disableEmail']).toBe('function');
     expect(typeof ns['getEmailDisableDependencies']).toBe('function');
     expect(typeof ns['enableEmail']).toBe('function');
@@ -100,7 +101,6 @@ describe('hub.notifications', () => {
     expect(typeof ns['saveSmsIntegration']).toBe('function');
     expect(typeof ns['setSmsIntegrationAsDefault']).toBe('function');
     expect(typeof ns['testSmsIntegration']).toBe('function');
-    expect(typeof ns['createSmsCampaign']).toBe('function');
     expect(typeof ns['deleteSmsCampaign']).toBe('function');
     expect(typeof ns['getSmsCampaign']).toBe('function');
     expect(typeof ns['getSmsCampaigns']).toBe('function');
@@ -153,6 +153,29 @@ describe('hub.notifications', () => {
     expect(typeof ns['updateUserNotificationsPreferences']).toBe('function');
     expect(typeof ns['grantContactConsent']).toBe('function');
     expect(typeof ns['unsubscribeContact']).toBe('function');
+  });
+
+  it('createSmsCampaign: POST /{version}/notifications/sms/campaigns', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/notifications/sms/campaigns',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['notifications']!['createSmsCampaign']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('disableEmail: PUT /{version}/notifications/email/disable', async () => {
@@ -1794,29 +1817,6 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('createSmsCampaign: POST /{version}/notifications/sms/campaigns', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/sms/campaigns',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['notifications']!['createSmsCampaign']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
   it('deleteSmsCampaign: DELETE /{version}/notifications/sms/campaigns/{id}', async () => {
     const stub = stubRequestForPath('/{version}/notifications/sms/campaigns/{id}');
     const expected = expectedUrl({
@@ -2977,13 +2977,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('grantContactConsent: POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent', async () => {
+  it('grantContactConsent: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
       version: 'v2',
       stub,
     });
@@ -3002,13 +3002,13 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('unsubscribeContact: POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe', async () => {
+  it('unsubscribeContact: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe', async () => {
     const stub = stubRequestForPath(
-      '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
     );
     const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
       version: 'v2',
       stub,
     });

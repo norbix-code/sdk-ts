@@ -12,6 +12,8 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | ------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | --------- |
 | [`disableMembership`](#disablemembership)                                 | `PUT`    | `/{version}/membership/disable`                                       | `project` |
 | [`enableMembership`](#enablemembership)                                   | `PUT`    | `/{version}/membership/enable`                                        | `project` |
+| [`importUsers`](#importusers)                                             | `POST`   | `/{version}/membership/users/import`                                  | `project` |
+| [`repairLoginProjectIds`](#repairloginprojectids)                         | `POST`   | `/{version}/membership/users/repair-logins`                           | `project` |
 | [`issueServiceUserApiKey`](#issueserviceuserapikey)                       | `POST`   | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
 | [`listServiceUserApiKeys`](#listserviceuserapikeys)                       | `GET`    | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
 | [`deleteServiceUserApiKey`](#deleteserviceuserapikey)                     | `DELETE` | `/{version}/membership/users/{Id}/api-keys/{KeyId}`                   | `project` |
@@ -45,11 +47,13 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`updatePasswordComplexity`](#updatepasswordcomplexity)                   | `PUT`    | `/{version}/membership/authorization/password-complexity`             | `project` |
 | [`getAuthenticationSettings`](#getauthenticationsettings)                 | `GET`    | `/{version}/membership/authentication`                                | `project` |
 | [`updateAuthenticationSettings`](#updateauthenticationsettings)           | `PUT`    | `/{version}/membership/authentication`                                | `project` |
+| [`setUserAiPlan`](#setuseraiplan)                                         | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                        | `project` |
 | [`createContact`](#createcontact)                                         | `POST`   | `/{version}/membership/users`                                         | `project` |
 | [`deleteContact`](#deletecontact)                                         | `DELETE` | `/{version}/membership/users/{contactId}`                             | `project` |
 | [`getContact`](#getcontact)                                               | `GET`    | `/{version}/membership/users/{contactId}`                             | `project` |
 | [`getAllContacts`](#getallcontacts)                                       | `GET`    | `/{version}/membership/users`                                         | `project` |
 | [`mergeContacts`](#mergecontacts)                                         | `POST`   | `/{version}/membership/users/merge`                                   | `project` |
+| [`repairContactRoles`](#repaircontactroles)                               | `POST`   | `/{version}/membership/users/repair-roles`                            | `project` |
 | [`updateContact`](#updatecontact)                                         | `PATCH`  | `/{version}/membership/users/{contactId}`                             | `project` |
 | [`addContactIdentity`](#addcontactidentity)                               | `POST`   | `/{version}/membership/users/{contactId}/identities`                  | `project` |
 | [`promoteContactIdentity`](#promotecontactidentity)                       | `POST`   | `/{version}/membership/users/{contactId}/identities/{authId}/promote` | `project` |
@@ -97,6 +101,46 @@ const result = await norbix.hub.membership.enableMembership({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### importUsers
+
+`POST` `/{version}/membership/users/import`
+
+**Request DTO**: `CodeMashHub2.ImportUsersRequest`
+**Response**: `CodeMashHub2.ImportUsersResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.importUsers({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ImportUsersResponse
+```
+
+[↑ Top](#endpoints)
+
+### repairLoginProjectIds
+
+`POST` `/{version}/membership/users/repair-logins`
+
+**Request DTO**: `CodeMashHub2.RepairLoginProjectIdsRequest`
+**Response**: `CodeMashHub2.RepairLoginProjectIdsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.repairLoginProjectIds({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RepairLoginProjectIdsResponse
 ```
 
 [↑ Top](#endpoints)
@@ -836,6 +880,27 @@ const result = await norbix.hub.membership.updateAuthenticationSettings({
 
 [↑ Top](#endpoints)
 
+### setUserAiPlan
+
+`PUT` `/{version}/membership/users/{userId}/ai-plan`
+
+**Request DTO**: `CodeMashHub2.SetUserAiPlan`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.setUserAiPlan({
+  userId: 'userId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### createContact
 
 `POST` `/{version}/membership/users`
@@ -942,6 +1007,26 @@ const result = await norbix.hub.membership.mergeContacts({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### repairContactRoles
+
+`POST` `/{version}/membership/users/repair-roles`
+
+**Request DTO**: `CodeMashHub2.RepairContactRolesRequest`
+**Response**: `CodeMashHub2.RepairContactRolesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.repairContactRoles({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RepairContactRolesResponse
 ```
 
 [↑ Top](#endpoints)

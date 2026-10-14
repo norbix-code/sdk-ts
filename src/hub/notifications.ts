@@ -12,6 +12,25 @@ export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
 
   /**
+   * POST /{version}/notifications/sms/campaigns
+   * Request DTO: CreateSmsCampaignRequest
+   */
+  createSmsCampaign = (
+    request: Partial<CodeMashHub2.CreateSmsCampaignRequest> = {} as Partial<CodeMashHub2.CreateSmsCampaignRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/sms/campaigns',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * PUT /{version}/notifications/email/disable
    * Request DTO: DisableEmail
    */
@@ -1361,25 +1380,6 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/sms/campaigns
-   * Request DTO: CreateSmsCampaignRequest
-   */
-  createSmsCampaign = (
-    request: Partial<CodeMashHub2.CreateSmsCampaignRequest> = {} as Partial<CodeMashHub2.CreateSmsCampaignRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.IdResponse> => {
-    return this.transport.send<CodeMashHub2.IdResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/sms/campaigns',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * DELETE /{version}/notifications/sms/campaigns/{id}
    * Request DTO: DeleteSmsCampaign
    */
@@ -2294,6 +2294,7 @@ export class NotificationsModule {
   /**
    * GET /{version}/notifications/user/preferences
    * Request DTO: GetUserNotificationPreferences
+   * @deprecated The Hub route was removed on purpose (gateway 09c43c9ff; it had answered 410 Gone before). Use `norbix.api.membership.getUserPreferences({ id })` — the id is in the path and the answer is `{ preferences }`, so this method cannot be redirected without changing its types.
    */
   getUserNotificationPreferences = (
     request: Partial<CodeMashHub2.GetUserNotificationPreferences> = {} as Partial<CodeMashHub2.GetUserNotificationPreferences>,
@@ -2313,6 +2314,7 @@ export class NotificationsModule {
   /**
    * PUT /{version}/notifications/user/preferences
    * Request DTO: UpdateUserNotificationsPreferences
+   * @deprecated The Hub route was removed on purpose (gateway 09c43c9ff). Use `norbix.api.membership.updateUserPreferences({ id, blockAllMarketingMessages, blockedTags })` — note it takes BLOCKED tags, where this method took subscribed ones.
    */
   updateUserNotificationsPreferences = (
     request: Partial<CodeMashHub2.UpdateUserNotificationsPreferences> = {} as Partial<CodeMashHub2.UpdateUserNotificationsPreferences>,
@@ -2330,16 +2332,17 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/consent
    * Request DTO: GrantContactConsentRequest
+   * @deprecated The endpoint lives on the API, not the Hub (the Hub route was planned, never built). This method now calls the API route; prefer `norbix.api.membership.grantContactConsent`.
    */
   grantContactConsent = (
     request: Partial<CodeMashHub2.GrantContactConsentRequest> = {} as Partial<CodeMashHub2.GrantContactConsentRequest>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.EmptyResponse> => {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/consent',
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/consent',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],
@@ -2349,16 +2352,17 @@ export class NotificationsModule {
   };
 
   /**
-   * POST /{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe
    * Request DTO: UnsubscribeContactRequest
+   * @deprecated The endpoint lives on the API, not the Hub (the Hub route was planned, never built). This method now calls the API route; prefer `norbix.api.membership.unsubscribeContact`.
    */
   unsubscribeContact = (
     request: Partial<CodeMashHub2.UnsubscribeContactRequest> = {} as Partial<CodeMashHub2.UnsubscribeContactRequest>,
     options: RequestOverrideOptions = {},
   ): Promise<CodeMashHub2.EmptyResponse> => {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/notifications/contacts/{contactId}/marketing-state/{channel}/unsubscribe',
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe',
       method: 'POST',
       request,
       pathParams: ['contactId', 'channel'],

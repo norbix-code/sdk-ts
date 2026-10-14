@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 42
+ * Endpoints: 43
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -69,6 +69,25 @@ export class MembershipModule {
   };
 
   /**
+   * POST /{version}/membership/auth/register/phone
+   * Request DTO: SavePhoneUser
+   */
+  savePhoneUser = (
+    request: Partial<CodeMashApi2.SavePhoneUser> = {} as Partial<CodeMashApi2.SavePhoneUser>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/register/phone',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/membership/auth/register/user-name
    * Request DTO: SaveUserNameUser
    */
@@ -98,25 +117,6 @@ export class MembershipModule {
     return this.transport.send<CodeMashApi2.IdResponse>({
       target: 'api',
       path: '/{version}/membership/auth/register/email',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/membership/auth/register/phone
-   * Request DTO: SavePhoneUser
-   */
-  savePhoneUser = (
-    request: Partial<CodeMashApi2.SavePhoneUser> = {} as Partial<CodeMashApi2.SavePhoneUser>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.IdResponse> => {
-    return this.transport.send<CodeMashApi2.IdResponse>({
-      target: 'api',
-      path: '/{version}/membership/auth/register/phone',
       method: 'POST',
       request,
       pathParams: [],
@@ -288,6 +288,25 @@ export class MembershipModule {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
       path: '/{version}/membership/auth/invite',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/auth/invitation/finish
+   * Request DTO: FinishInvitationRequest
+   */
+  finishInvitation = (
+    request: Partial<CodeMashApi2.FinishInvitationRequest> = {} as Partial<CodeMashApi2.FinishInvitationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/invitation/finish',
       method: 'POST',
       request,
       pathParams: [],

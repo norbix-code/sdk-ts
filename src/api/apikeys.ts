@@ -16,6 +16,7 @@ export class ApikeysModule {
    * Aliases:
    *   - POST /apikeys/{Environment}
    * Request DTO: GetApiKeys
+   * @deprecated The gateway has no `/apikeys` endpoint, so this call fails. Use service-user API keys (`norbix.hub.membership.listServiceUserApiKeys`).
    */
   getApiKeys = (
     request: Partial<CodeMashApi2.GetApiKeys> = {} as Partial<CodeMashApi2.GetApiKeys>,
@@ -37,6 +38,7 @@ export class ApikeysModule {
    * Aliases:
    *   - POST /apikeys/regenerate/{Environment}
    * Request DTO: RegenerateApiKeys
+   * @deprecated The gateway has no `/apikeys/regenerate` endpoint, so this call fails. Use `norbix.hub.membership.issueServiceUserApiKey`.
    */
   regenerateApiKeys = (
     request: Partial<CodeMashApi2.RegenerateApiKeys> = {} as Partial<CodeMashApi2.RegenerateApiKeys>,

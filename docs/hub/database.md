@@ -569,14 +569,6 @@ const result = await norbix.hub.database.applyDatabaseSchemaBundle({
 
 Delete an item.
 
-> **Also drops the schema's records.** Deleting a schema also drops its records
-> (its MongoDB collection, with its indexes) in the request environment — in every
-> active database integration of that environment. For a schema with AI embed on,
-> its records are also removed from the AI knowledge. The delete is **refused**
-> (and nothing is dropped) while a saved aggregate or a trigger still uses the
-> schema. The request and response shape did not change. A retry is safe
-> (idempotent).
-
 **Request DTO**: `CodeMashHub2.DeleteDatabaseSchemaRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
 
@@ -687,7 +679,7 @@ const result = await norbix.hub.database.getDatabaseSchemaDraft({
 
 `GET` `/{version}/database/schemas/{Id}/index-status`
 
-The last schema-index run of one collection in the request's environment. Norbix creates a published collection's obvious indexes itself — `idx_<field>` per reference field, `uniq_<field>` per `unique` field, `idx_<field>__id` for the records list's default sort, at most 8 — on publish, on a default-sort change and on promotion. `status` is `null` before the first run; otherwise `status.state` is `building`, `ready`, `refused` (a database refused `createIndex`) or `partial`, with one entry per database under `status.integrations` (`wanted`, `created`, `dropped`, `overCap`, `refusedReason`).
+Fetch a single item by ID.
 
 **Request DTO**: `CodeMashHub2.GetDatabaseSchemaIndexStatus`
 **Response**: `CodeMashHub2.GetDatabaseSchemaIndexStatusResponse`
@@ -697,18 +689,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const { status } = await norbix.hub.database.getDatabaseSchemaIndexStatus({
-  id: 'sch_4kX9mQvR2tYw7ZbC1dFgHj',
+const result = await norbix.hub.database.getDatabaseSchemaIndexStatus({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
 });
-console.log(status?.state); // 'building' | 'ready' | 'refused' | 'partial'
-for (const db of status?.integrations ?? []) {
-  console.log(
-    db.integrationId,
-    db.state,
-    db.created,
-    db.overCap.map((i) => i.name),
-  );
-}
+// → typed as CodeMashHub2.GetDatabaseSchemaIndexStatusResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1102,7 +1087,7 @@ const result = await norbix.hub.database.executeRecordsAggregate({
 
 `GET` `/{version}/database/collections/{collectionName}`
 
-Search / paginate items. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
+Search / paginate items.
 
 **Request DTO**: `CodeMashHub2.FindRecords`
 **Response**: `CodeMashHub2.FindRecordsResponse`
@@ -1125,7 +1110,7 @@ const result = await norbix.hub.database.findRecords({
 
 `GET` `/{version}/database/collections/{collectionName}/{id}`
 
-Fetch one record by id. Takes `expandReferences: true` to read every reference field as `{ id, display }` — see [Reading references](../database-rules.md#reading-references--expandreferences).
+Search / paginate items.
 
 **Request DTO**: `CodeMashHub2.FindOneRecord`
 **Response**: `CodeMashHub2.FindOneRecordResponse`
@@ -1262,7 +1247,7 @@ const result = await norbix.hub.database.seedCollectionRecords({
 
 `PUT` `/{version}/database/collections/{collectionName}/many`
 
-Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
+Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdateManyRecords`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -1285,7 +1270,7 @@ const result = await norbix.hub.database.updateManyRecords({
 
 `PUT` `/{version}/database/collections/{collectionName}/{id}`
 
-Update an existing item. Keys may be nested paths; `arrayFilters` picks the list elements a `$[name]` path changes — see [Nested documents and arrays](../database-rules.md#nested-documents-and-arrays).
+Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdateOneRecord`
 **Response**: `CodeMashHub2.EmptyResponse`

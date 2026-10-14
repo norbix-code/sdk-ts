@@ -6,45 +6,16 @@ Accessed as `norbix.hub.email` on the [`Norbix`](../../README.md#authentication)
 
 ## Endpoints
 
-| Method                                                    | Verb   | Path                                     | Scope      |
-| --------------------------------------------------------- | ------ | ---------------------------------------- | ---------- |
-| [`getEmailPreferencesByLink`](#getemailpreferencesbylink) | `GET`  | `/{version}/email/preferences`           | `optional` |
-| [`oneClickUnsubscribe`](#oneclickunsubscribe)             | `POST` | `/{version}/email/one-click-unsubscribe` | `optional` |
+| Method                                                    | Verb   | Path                                     | Scope     |
+| --------------------------------------------------------- | ------ | ---------------------------------------- | --------- |
+| [`oneClickUnsubscribe`](#oneclickunsubscribe)             | `POST` | `/{version}/email/one-click-unsubscribe` | `project` |
+| [`getEmailPreferencesByLink`](#getemailpreferencesbylink) | `GET`  | `/{version}/email/preferences`           | `project` |
 
 ## Reference
-
-### getEmailPreferencesByLink
-
-`GET` `/{version}/email/preferences`
-
-Reads the marketing e-mail preferences of the person a signed unsubscribe link
-belongs to. Pass the `token` from the e-mail's Preferences or Unsubscribe link.
-No sign-in is needed — the signed token is the key — so the call works on a
-client with no `apiKey` / `bearerToken` (scope `optional`: a token is sent only
-when the client has one).
-
-**Request DTO**: `CodeMashHub2.GetEmailPreferencesByLinkRequest`
-**Response**: `CodeMashHub2.GetEmailPreferencesByLinkResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.email.getEmailPreferencesByLink({
-  token: 'token-from-the-link',
-});
-// result.item → { emailAddress, unsubscribedFromMarketing, blockReasons }
-```
-
-[↑ Top](#endpoints)
 
 ### oneClickUnsubscribe
 
 `POST` `/{version}/email/one-click-unsubscribe`
-
-Public one-click unsubscribe from a signed e-mail link. No sign-in is needed
-(scope `optional`: a token is sent only when the client has one).
 
 **Request DTO**: `CodeMashHub2.OneClickUnsubscribeRequest`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -58,6 +29,28 @@ const result = await norbix.hub.email.oneClickUnsubscribe({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailPreferencesByLink
+
+`GET` `/{version}/email/preferences`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailPreferencesByLinkRequest`
+**Response**: `CodeMashHub2.GetEmailPreferencesByLinkResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.email.getEmailPreferencesByLink({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailPreferencesByLinkResponse
 ```
 
 [↑ Top](#endpoints)

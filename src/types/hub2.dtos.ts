@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-14 07:55:10
+Date: 2026-10-14 16:40:18
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -2348,6 +2348,9 @@ export module CodeMashHub2 {
     // @DataMember
     public languages?: string[];
 
+    // @DataMember
+    public recordIds?: string[];
+
     public constructor(init?: Partial<EmailToCollectionRecordsDeliverySettingsDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -2420,6 +2423,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public languages?: string[];
+
+    // @DataMember
+    public recordIds?: string[];
 
     public constructor(init?: Partial<PushToCollectionRecordsDeliverySettingsDto>) {
       super(init);
@@ -2503,6 +2509,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public languages?: string[];
+
+    // @DataMember
+    public recordIds?: string[];
 
     public constructor(init?: Partial<SmsToCollectionRecordsDeliverySettingsDto>) {
       super(init);
@@ -3660,6 +3669,9 @@ export module CodeMashHub2 {
     // @DataMember
     public status?: string;
 
+    // @DataMember
+    public warnings?: string[];
+
     public constructor(init?: Partial<IdResponse>) {
       super(init);
       (Object as any).assign(this, init);
@@ -4513,308 +4525,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class JsonSchemaFieldDto {
-    // @DataMember
-    public fieldName: string;
-
-    public constructor(init?: Partial<JsonSchemaFieldDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class StringFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public format?: string;
-
-    // @DataMember
-    public pattern?: string;
-
-    // @DataMember
-    public minLength?: number;
-
-    // @DataMember
-    public maxLength?: number;
-
-    // @DataMember
-    public translateOptions?: IReadOnlyDictionary<string, string>;
-
-    // @DataMember
-    public default?: string;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<StringFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DecimalFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<DecimalFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyDefaultDto {
-    // @DataMember
-    public value: number;
-
-    // @DataMember
-    public currency: string;
-
-    public constructor(init?: Partial<CurrencyDefaultDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CurrencyFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedCurrencies?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multipleOf?: number;
-
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: CurrencyDefaultDto;
-
-    public constructor(init?: Partial<CurrencyFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class BooleanFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public default?: boolean;
-
-    public constructor(init?: Partial<BooleanFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class DateFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    public constructor(init?: Partial<DateFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class IntegerFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minimum?: number;
-
-    // @DataMember
-    public maximum?: number;
-
-    // @DataMember
-    public default?: number;
-
-    // @DataMember
-    public unique?: boolean;
-
-    public constructor(init?: Partial<IntegerFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GeolocationFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public allowedTypes?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<GeolocationFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TagsFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<TagsFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class FileFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public storages?: IReadOnlyList<string>;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public allowedFileType?: string;
-
-    // @DataMember
-    public maxSizeMb?: number;
-
-    public constructor(init?: Partial<FileFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public taxonomyId?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public collectionId?: string;
-
-    // @DataMember
-    public displayField?: string;
-
-    // @DataMember
-    public multiple: boolean;
-
-    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<UserSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public displayField?: string;
-
-    public constructor(init?: Partial<RoleSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public values?: IReadOnlyList<string>;
-
-    // @DataMember
-    public multiple: boolean;
-
-    // @DataMember
-    public default?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<EnumSelectionFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ObjectFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public properties: IReadOnlyList<JsonSchemaFieldDto>;
-
-    // @DataMember
-    public required?: IReadOnlyList<string>;
-
-    public constructor(init?: Partial<ObjectFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ArrayFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public items: JsonSchemaFieldDto;
-
-    // @DataMember
-    public minItems?: number;
-
-    // @DataMember
-    public maxItems?: number;
-
-    // @DataMember
-    public uniqueItems?: boolean;
-
-    public constructor(init?: Partial<ArrayFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class JsonFieldDto extends JsonSchemaFieldDto {
-    // @DataMember
-    public maxBytes?: number;
-
-    public constructor(init?: Partial<JsonFieldDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export enum CodeFunctionSource {
     Database = 'Database',
     Membership = 'Membership',
@@ -5195,6 +4905,308 @@ export module CodeMashHub2 {
     }
   }
 
+  export class JsonSchemaFieldDto {
+    // @DataMember
+    public fieldName: string;
+
+    public constructor(init?: Partial<JsonSchemaFieldDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StringFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public format?: string;
+
+    // @DataMember
+    public pattern?: string;
+
+    // @DataMember
+    public minLength?: number;
+
+    // @DataMember
+    public maxLength?: number;
+
+    // @DataMember
+    public translateOptions?: IReadOnlyDictionary<string, string>;
+
+    // @DataMember
+    public default?: string;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<StringFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DecimalFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<DecimalFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyDefaultDto {
+    // @DataMember
+    public value: number;
+
+    // @DataMember
+    public currency: string;
+
+    public constructor(init?: Partial<CurrencyDefaultDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CurrencyFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedCurrencies?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multipleOf?: number;
+
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: CurrencyDefaultDto;
+
+    public constructor(init?: Partial<CurrencyFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BooleanFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public default?: boolean;
+
+    public constructor(init?: Partial<BooleanFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DateFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    public constructor(init?: Partial<DateFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class IntegerFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minimum?: number;
+
+    // @DataMember
+    public maximum?: number;
+
+    // @DataMember
+    public default?: number;
+
+    // @DataMember
+    public unique?: boolean;
+
+    public constructor(init?: Partial<IntegerFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GeolocationFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public allowedTypes?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<GeolocationFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TagsFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<TagsFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FileFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public storages?: IReadOnlyList<string>;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public allowedFileType?: string;
+
+    // @DataMember
+    public maxSizeMb?: number;
+
+    public constructor(init?: Partial<FileFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TaxonomySelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public taxonomyId?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<TaxonomySelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CollectionSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public collectionId?: string;
+
+    // @DataMember
+    public displayField?: string;
+
+    // @DataMember
+    public multiple: boolean;
+
+    public constructor(init?: Partial<CollectionSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class UserSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<UserSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RoleSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public displayField?: string;
+
+    public constructor(init?: Partial<RoleSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EnumSelectionFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public values?: IReadOnlyList<string>;
+
+    // @DataMember
+    public multiple: boolean;
+
+    // @DataMember
+    public default?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<EnumSelectionFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ObjectFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public properties: IReadOnlyList<JsonSchemaFieldDto>;
+
+    // @DataMember
+    public required?: IReadOnlyList<string>;
+
+    public constructor(init?: Partial<ObjectFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ArrayFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public items: JsonSchemaFieldDto;
+
+    // @DataMember
+    public minItems?: number;
+
+    // @DataMember
+    public maxItems?: number;
+
+    // @DataMember
+    public uniqueItems?: boolean;
+
+    public constructor(init?: Partial<ArrayFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class JsonFieldDto extends JsonSchemaFieldDto {
+    // @DataMember
+    public maxBytes?: number;
+
+    public constructor(init?: Partial<JsonFieldDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export interface IVersionBasedRequest {
     version?: string | number;
   }
@@ -5431,6 +5443,81 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum Gender {
+    Male = 'Male',
+    Female = 'Female',
+    Other = 'Other',
+  }
+
+  export enum MarketingBlockReason {
+    Unspecified = 'Unspecified',
+    Unsubscribed = 'Unsubscribed',
+    Complaint = 'Complaint',
+    HardBounce = 'HardBounce',
+    InvalidEmail = 'InvalidEmail',
+    AdminBlock = 'AdminBlock',
+  }
+
+  export class UserGeneralInfoDto {
+    public phone?: string;
+    public primaryEmail?: string;
+    public displayName?: string;
+    public firstName?: string;
+    public lastName?: string;
+    public fullName?: string;
+    public addressLine1?: string;
+    public addressLine2?: string;
+    public country?: string;
+    public city?: string;
+    public state?: string;
+    public postalCode?: string;
+    public company?: string;
+    public gender?: Gender;
+    public birthDate?: number;
+    public timeZone?: string;
+    public language?: string;
+    public blockAllMarketingMessages: boolean;
+    public blockedTags?: { [index: string]: HashSet<string> };
+    public blockReasons?: MarketingBlockReason[];
+    public extraMetadata?: string;
+    public notes?: string;
+
+    public constructor(init?: Partial<UserGeneralInfoDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ImportUserRowDto {
+    // @DataMember(Name="email")
+    public email?: string;
+
+    // @DataMember(Name="userName")
+    public userName?: string;
+
+    // @DataMember(Name="userGeneralInfo")
+    public userGeneralInfo?: UserGeneralInfoDto;
+
+    // @DataMember(Name="roles")
+    public roles?: string[];
+
+    // @DataMember(Name="createdOn")
+    public createdOn?: number;
+
+    // @DataMember(Name="hashFormat")
+    public hashFormat?: string;
+
+    // @DataMember(Name="passwordHash")
+    public passwordHash?: string;
+
+    // @DataMember(Name="passwordSalt")
+    public passwordSalt?: string;
+
+    public constructor(init?: Partial<ImportUserRowDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class DeleteTrigger extends CodeMashRequestBase {
     // @DataMember
@@ -5568,6 +5655,12 @@ export module CodeMashHub2 {
   export class SchemaListColumnDto {
     // @DataMember
     public field: string;
+
+    // @DataMember
+    public primary: boolean;
+
+    // @DataMember
+    public linkReference: boolean;
 
     public constructor(init?: Partial<SchemaListColumnDto>) {
       (Object as any).assign(this, init);
@@ -6608,6 +6701,9 @@ export module CodeMashHub2 {
     public customPolicies?: PolicyItemDto[];
 
     // @DataMember
+    public systemRoleAttachments?: RoleItemDto[];
+
+    // @DataMember
     public authorization?: AuthorizationDto;
 
     // @DataMember
@@ -7236,53 +7332,10 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum Gender {
-    Male = 'Male',
-    Female = 'Female',
-    Other = 'Other',
-  }
-
-  export enum MarketingBlockReason {
-    Unspecified = 'Unspecified',
-    Unsubscribed = 'Unsubscribed',
-    Complaint = 'Complaint',
-    HardBounce = 'HardBounce',
-    InvalidEmail = 'InvalidEmail',
-    AdminBlock = 'AdminBlock',
-  }
-
-  export class UserGeneralInfoDto {
-    public phone?: string;
-    public primaryEmail?: string;
-    public displayName?: string;
-    public firstName?: string;
-    public lastName?: string;
-    public fullName?: string;
-    public addressLine1?: string;
-    public addressLine2?: string;
-    public country?: string;
-    public city?: string;
-    public state?: string;
-    public postalCode?: string;
-    public company?: string;
-    public gender?: Gender;
-    public birthDate?: number;
-    public timeZone?: string;
-    public language?: string;
-    public blockAllMarketingMessages: boolean;
-    public blockedTags?: { [index: string]: HashSet<string> };
-    public blockReasons?: MarketingBlockReason[];
-    public extraMetadata?: string;
-    public notes?: string;
-
-    public constructor(init?: Partial<UserGeneralInfoDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   export enum AuthStatus {
     Registered = 0,
     PendingValidation = 2,
+    Invited = 4,
     Active = 8,
     Unregistered = 16,
     Suspended = 32,
@@ -7671,6 +7724,100 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class ImportUserErrorDto {
+    // @DataMember(Name="code")
+    public code?: string;
+
+    // @DataMember(Name="message")
+    public message: string;
+
+    public constructor(init?: Partial<ImportUserErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ImportUserOutcomeDto {
+    // @DataMember(Name="row")
+    public row: number;
+
+    // @DataMember(Name="login")
+    public login?: string;
+
+    // @DataMember(Name="outcome")
+    public outcome: string;
+
+    // @DataMember(Name="userId")
+    public userId?: string;
+
+    // @DataMember(Name="errors")
+    public errors: ImportUserErrorDto[] = [];
+
+    public constructor(init?: Partial<ImportUserOutcomeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class UsersImportDto {
+    // @DataMember(Name="dryRun")
+    public dryRun: boolean;
+
+    // @DataMember(Name="received")
+    public received: number;
+
+    // @DataMember(Name="imported")
+    public imported: number;
+
+    // @DataMember(Name="valid")
+    public valid: number;
+
+    // @DataMember(Name="existing")
+    public existing: number;
+
+    // @DataMember(Name="invalid")
+    public invalid: number;
+
+    // @DataMember(Name="failed")
+    public failed: number;
+
+    // @DataMember(Name="rows")
+    public rows: ImportUserOutcomeDto[] = [];
+
+    public constructor(init?: Partial<UsersImportDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class LoginProjectRepairDto {
+    // @DataMember(Name="dryRun")
+    public dryRun: boolean;
+
+    // @DataMember(Name="loginsWithoutProject")
+    public loginsWithoutProject: number;
+
+    // @DataMember(Name="loginsToRepair")
+    public loginsToRepair: number;
+
+    // @DataMember(Name="loginsRepaired")
+    public loginsRepaired: number;
+
+    // @DataMember(Name="accountLoginsSkipped")
+    public accountLoginsSkipped: number;
+
+    // @DataMember(Name="otherProjectLoginsSkipped")
+    public otherProjectLoginsSkipped: number;
+
+    // @DataMember(Name="loginsWithoutEvidence")
+    public loginsWithoutEvidence: number;
+
+    public constructor(init?: Partial<LoginProjectRepairDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class ServiceUserApiKeyDto {
     public id: number;
     public name: string;
@@ -7911,6 +8058,30 @@ export module CodeMashHub2 {
 
     // @DataMember
     public passwordComplexity?: PasswordComplexityDto;
+
+    // @DataMember
+    public defaultRoles?: string[];
+
+    // @DataMember
+    public allowedRegistrationRoles?: string[];
+
+    // @DataMember
+    public allowGuestUsers: boolean;
+
+    // @DataMember
+    public guestCleanupPeriodDays?: number;
+
+    // @DataMember
+    public allowEmailRegistration: boolean;
+
+    // @DataMember
+    public allowUsernameRegistration: boolean;
+
+    // @DataMember
+    public inviteOnly: boolean;
+
+    // @DataMember
+    public allowAnyoneToSignUp: boolean;
 
     public constructor(init?: Partial<MembershipAuthorizationViewDto>) {
       (Object as any).assign(this, init);
@@ -10123,6 +10294,73 @@ export module CodeMashHub2 {
     }
   }
 
+  export class AiProjectContextCallerWireDto {
+    public kind: string;
+    public name?: string;
+    public accountId?: string;
+
+    public constructor(init?: Partial<AiProjectContextCallerWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AiProjectContextIntegrationWireDto {
+    public id: string;
+    public name?: string;
+    public kind?: string;
+    public enabled?: boolean;
+    public defaultIn: string[] = [];
+    public env?: string;
+
+    public constructor(init?: Partial<AiProjectContextIntegrationWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AiProjectContextModuleWireDto {
+    public name: string;
+    public integrationsReadable?: boolean;
+    public integrations?: AiProjectContextIntegrationWireDto[];
+
+    public constructor(init?: Partial<AiProjectContextModuleWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AiProjectContextProjectWireDto {
+    public id: string;
+    public name: string;
+    public uniqueName?: string;
+    public access: string;
+    public description?: string;
+    public defaultLanguage?: string;
+    public languages: string[] = [];
+    public environments?: string[];
+    public primaryRegion?: string;
+    public additionalRegions?: string[];
+    public corsOrigins?: string[];
+    public apiHost?: string;
+    public adminUrl?: string;
+    public marketingUrl?: string;
+    public adminPortalEnabled?: boolean;
+    public modules?: AiProjectContextModuleWireDto[];
+
+    public constructor(init?: Partial<AiProjectContextProjectWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AiProjectContextWireDto {
+    public version: string;
+    public caller: AiProjectContextCallerWireDto;
+    public projects: AiProjectContextProjectWireDto[] = [];
+    public hints: string[] = [];
+
+    public constructor(init?: Partial<AiProjectContextWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class AiToolManifestParameter {
     public name: string;
     public type: string;
@@ -11976,6 +12214,24 @@ export module CodeMashHub2 {
     }
   }
 
+  export class ImportUsersResponse extends ResponseBase {
+    public result?: UsersImportDto;
+
+    public constructor(init?: Partial<ImportUsersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RepairLoginProjectIdsResponse extends ResponseBase {
+    public result?: LoginProjectRepairDto;
+
+    public constructor(init?: Partial<RepairLoginProjectIdsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class IssueServiceUserApiKeyResponse {
     public id: number;
     public name: string;
@@ -13526,6 +13782,18 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetAiContextResponse extends ResponseBase {
+    public version?: string;
+    public unchanged: boolean;
+    public context?: AiProjectContextWireDto;
+    public markdown?: string;
+
+    public constructor(init?: Partial<GetAiContextResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetAiToolsResponse extends ResponseBase {
     public tools?: AiToolManifestItem[];
 
@@ -13630,6 +13898,7 @@ export module CodeMashHub2 {
     public valid: boolean;
     public issues?: ScaffoldIssue[];
     public collections?: string[];
+    public warnings?: ScaffoldIssue[];
 
     public constructor(init?: Partial<ValidateSchemaResponse>) {
       super(init);
@@ -15145,23 +15414,6 @@ export module CodeMashHub2 {
     public typegen_243_ActionPendingEntryWireDto?: ActionPendingEntryWireDto;
     public typegen_244_NoticeEntryWireDto?: NoticeEntryWireDto;
     public typegen_245_ConversationSnapshotEntryWireDto?: ConversationSnapshotEntryWireDto;
-    public typegen_252_StringFieldDto?: StringFieldDto;
-    public typegen_253_DecimalFieldDto?: DecimalFieldDto;
-    public typegen_254_CurrencyFieldDto?: CurrencyFieldDto;
-    public typegen_255_BooleanFieldDto?: BooleanFieldDto;
-    public typegen_256_DateFieldDto?: DateFieldDto;
-    public typegen_257_IntegerFieldDto?: IntegerFieldDto;
-    public typegen_258_GeolocationFieldDto?: GeolocationFieldDto;
-    public typegen_259_TagsFieldDto?: TagsFieldDto;
-    public typegen_260_FileFieldDto?: FileFieldDto;
-    public typegen_261_TaxonomySelectionFieldDto?: TaxonomySelectionFieldDto;
-    public typegen_262_CollectionSelectionFieldDto?: CollectionSelectionFieldDto;
-    public typegen_263_UserSelectionFieldDto?: UserSelectionFieldDto;
-    public typegen_264_RoleSelectionFieldDto?: RoleSelectionFieldDto;
-    public typegen_265_EnumSelectionFieldDto?: EnumSelectionFieldDto;
-    public typegen_266_ObjectFieldDto?: ObjectFieldDto;
-    public typegen_267_ArrayFieldDto?: ArrayFieldDto;
-    public typegen_268_JsonFieldDto?: JsonFieldDto;
     public typegen_269_FunctionRefDto?: FunctionRefDto;
     public typegen_270_CodeFunctionEventDto?: CodeFunctionEventDto;
     public typegen_271_CodeFunctionContextDto?: CodeFunctionContextDto;
@@ -15187,6 +15439,37 @@ export module CodeMashHub2 {
     }
     public getMethod() {
       return 'GET';
+    }
+    public createResponse() {}
+  }
+
+  export class SharedTypeGen {
+    public typegen_StringFieldDto?: StringFieldDto;
+    public typegen_DecimalFieldDto?: DecimalFieldDto;
+    public typegen_CurrencyFieldDto?: CurrencyFieldDto;
+    public typegen_BooleanFieldDto?: BooleanFieldDto;
+    public typegen_DateFieldDto?: DateFieldDto;
+    public typegen_IntegerFieldDto?: IntegerFieldDto;
+    public typegen_GeolocationFieldDto?: GeolocationFieldDto;
+    public typegen_TagsFieldDto?: TagsFieldDto;
+    public typegen_FileFieldDto?: FileFieldDto;
+    public typegen_TaxonomySelectionFieldDto?: TaxonomySelectionFieldDto;
+    public typegen_CollectionSelectionFieldDto?: CollectionSelectionFieldDto;
+    public typegen_UserSelectionFieldDto?: UserSelectionFieldDto;
+    public typegen_RoleSelectionFieldDto?: RoleSelectionFieldDto;
+    public typegen_EnumSelectionFieldDto?: EnumSelectionFieldDto;
+    public typegen_ObjectFieldDto?: ObjectFieldDto;
+    public typegen_ArrayFieldDto?: ArrayFieldDto;
+    public typegen_JsonFieldDto?: JsonFieldDto;
+
+    public constructor(init?: Partial<SharedTypeGen>) {
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SharedTypeGen';
+    }
+    public getMethod() {
+      return 'POST';
     }
     public createResponse() {}
   }
@@ -16147,8 +16430,8 @@ export module CodeMashHub2 {
   // @Route("/{version}/account/projects/{projectId}/settings/admin-url", "PATCH")
   // @Api(Description="Updates the project's admin-portal URL override")
   export class UpdateProjectAdminUrl extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    /** @description Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr_{id}.admin.{host} address. */
-    // @ApiMember(Description="Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr_{id}.admin.{host} address.")
+    /** @description Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr-{project hex}.admin.{host} address. */
+    // @ApiMember(Description="Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr-{project hex}.admin.{host} address.")
     public url?: string;
 
     public constructor(init?: Partial<UpdateProjectAdminUrl>) {
@@ -16583,8 +16866,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The complete new list of allowed origin URLs, e.g. [\"https://app.example.com\", \"https://example.com\"]. An entry with no scheme (e.g. \"example.com\") defaults to https. Whatever is not in this list stops being allowed.")
     public origins?: string[];
 
-    /** @description Optional. true removes the project's own Admin Portal origin (pr_{projectId}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API. */
-    // @ApiMember(Description="Optional. true removes the project's own Admin Portal origin (pr_{projectId}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API.")
+    /** @description Optional. true removes the project's own Admin Portal origin (pr-{project hex}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API. */
+    // @ApiMember(Description="Optional. true removes the project's own Admin Portal origin (pr-{project hex}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API.")
     public removeAdminPortalOrigin?: boolean;
 
     public constructor(init?: Partial<UpdateProjectAllowedOrigins>) {
@@ -17921,6 +18204,66 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Import users with their existing password hashes */
+  // @Route("/{version}/membership/users/import", "POST")
+  // @Api(Description="Import users with their existing password hashes")
+  export class ImportUsersRequest
+    extends CodeMashRequestBase
+    implements IReturn<ImportUsersResponse>
+  {
+    /** @description True (default) = check every row and write nothing. False = write. */
+    // @ApiMember(Description="True (default) = check every row and write nothing. False = write.")
+    public dryRun: boolean;
+
+    /** @description True = do not add the project's default roles (as 'ignoreUserRegistersAsRole' on registration). */
+    // @ApiMember(Description="True = do not add the project's default roles (as 'ignoreUserRegistersAsRole' on registration).")
+    public ignoreDefaultRoles: boolean;
+
+    /** @description The users to import, 1 to 1000 per request. */
+    // @ApiMember(Description="The users to import, 1 to 1000 per request.", IsRequired=true)
+    public users: ImportUserRowDto[] = [];
+
+    public constructor(init?: Partial<ImportUsersRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ImportUsersRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new ImportUsersResponse();
+    }
+  }
+
+  /** @description Repair project logins stored without a project id */
+  // @Route("/{version}/membership/users/repair-logins", "POST")
+  // @Api(Description="Repair project logins stored without a project id")
+  export class RepairLoginProjectIdsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RepairLoginProjectIdsResponse>
+  {
+    /** @description True (default) = only count what would change. False = write. */
+    // @ApiMember(Description="True (default) = only count what would change. False = write.")
+    public dryRun: boolean;
+
+    public constructor(init?: Partial<RepairLoginProjectIdsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RepairLoginProjectIdsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RepairLoginProjectIdsResponse();
+    }
+  }
+
   /** @description Membership */
   // @Route("/{version}/membership/users/{Id}/api-keys", "POST")
   // @Api(Description="Membership")
@@ -18665,11 +19008,26 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EmptyResponse>
   {
+    /** @description Single-setting change (dashboard tabs), e.g. 'DefaultRegisterRole' with userRegistersAsRole, or 'PasswordComplexity'. Unknown values are refused. Leave empty to change defaultRoles / allowedRegistrationRoles / allowGuestUsers / guestCleanupPeriodDays — only the fields you send change. */
+    // @ApiMember(Description="Single-setting change (dashboard tabs), e.g. 'DefaultRegisterRole' with userRegistersAsRole, or 'PasswordComplexity'. Unknown values are refused. Leave empty to change defaultRoles / allowedRegistrationRoles / allowGuestUsers / guestCleanupPeriodDays — only the fields you send change.")
     public setting?: string;
+
+    /** @description Role names given to a user who registers without naming roles. Omit = keep; [] = none. */
+    // @ApiMember(Description="Role names given to a user who registers without naming roles. Omit = keep; [] = none.")
     public defaultRoles?: string[];
+
+    /** @description Role names a user may pick when registering. Omit = keep; [] = none. */
+    // @ApiMember(Description="Role names a user may pick when registering. Omit = keep; [] = none.")
     public allowedRegistrationRoles?: string[];
-    public allowGuestUsers: boolean;
+
+    /** @description Whether guest (anonymous) users may be created. Omit = keep. When sent, guestCleanupPeriodDays is taken with it (null = never clean up). */
+    // @ApiMember(Description="Whether guest (anonymous) users may be created. Omit = keep. When sent, guestCleanupPeriodDays is taken with it (null = never clean up).")
+    public allowGuestUsers?: boolean;
+
+    /** @description Days after which inactive guests are removed; null or 0 = never. Omit both guest fields = keep. */
+    // @ApiMember(Description="Days after which inactive guests are removed; null or 0 = never. Omit both guest fields = keep.")
     public guestCleanupPeriodDays?: number;
+
     public userRegistersAsRole?: string;
     public guestRegistersAsRole?: string;
     public allowedRegisterRoles?: string[];
@@ -18683,6 +19041,18 @@ export module CodeMashHub2 {
     public emailVerificationExpiration?: number;
     public deactivationExpiration?: number;
     public defaultSubscribeToNews: boolean;
+    /** @description "Email registration": the public register/email route accepts sign-ups. Omit = keep. */
+    // @ApiMember(Description="\"Email registration\": the public register/email route accepts sign-ups. Omit = keep.")
+    public allowEmailRegistration?: boolean;
+
+    /** @description "Invite-only": public sign-up (email and username) is refused; only invitations create users. Omit = keep. */
+    // @ApiMember(Description="\"Invite-only\": public sign-up (email and username) is refused; only invitations create users. Omit = keep.")
+    public inviteOnly?: boolean;
+
+    /** @description "Allow anyone to sign up": grants (true) / revokes (false) membership:register on the project's Guest role. Omit = keep. */
+    // @ApiMember(Description="\"Allow anyone to sign up\": grants (true) / revokes (false) membership:register on the project's Guest role. Omit = keep.")
+    public allowAnyoneToSignUp?: boolean;
+
     public minLength: number;
     public maxLength?: number;
     public minNumbers?: number;
@@ -26378,6 +26748,29 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description The AI project-context summary: the projects the caller may work on, with their settings — never a secret. */
+  // @Route("/{version}/account/ai/context", "GET")
+  // @Api(Description="The AI project-context summary: the projects the caller may work on, with their settings — never a secret.")
+  export class GetAiContextRequest extends RequestBase implements IReturn<GetAiContextResponse> {
+    public projectId?: string;
+    public format?: string;
+    public knownVersion?: string;
+
+    public constructor(init?: Partial<GetAiContextRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAiContextRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAiContextResponse();
+    }
+  }
+
   /** @description Lists the AI tools this host exposes (external-agent bridge). */
   // @Route("/{version}/account/ai/tools", "GET")
   // @Api(Description="Lists the AI tools this host exposes (external-agent bridge).")
@@ -28565,6 +28958,30 @@ export module CodeMashHub2 {
     /** @description How many contacts to return per page (default 50). */
     // @ApiMember(Description="How many contacts to return per page (default 50).")
     public pageSize?: number;
+
+    /** @description Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email. */
+    // @ApiMember(Description="Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email.")
+    public search?: string;
+
+    /** @description Case-insensitive part of the email (primary email or any login's email). */
+    // @ApiMember(Description="Case-insensitive part of the email (primary email or any login's email).")
+    public email?: string;
+
+    /** @description Case-insensitive part of any login's user name. */
+    // @ApiMember(Description="Case-insensitive part of any login's user name.")
+    public userName?: string;
+
+    /** @description Login status names, any of: Registered, PendingValidation, Active, Unregistered, Suspended, InActive, Blocked. */
+    // @ApiMember(Description="Login status names, any of: Registered, PendingValidation, Active, Unregistered, Suspended, InActive, Blocked.")
+    public statuses?: string[];
+
+    /** @description Login type names, any of: Service, Email, UserName, Phone, Guest, Social. */
+    // @ApiMember(Description="Login type names, any of: Service, Email, UserName, Phone, Guest, Social.")
+    public types?: string[];
+
+    /** @description Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them. */
+    // @ApiMember(Description="Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them.")
+    public roleNames?: string[];
 
     public constructor(init?: Partial<GetAllContacts>) {
       super(init);
