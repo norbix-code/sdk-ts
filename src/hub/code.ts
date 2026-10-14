@@ -1,7 +1,7 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
 
-import { LogsModule } from './logs.js';
+import { LogsModule } from './logs.js'; // @hand-written
 
 /**
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
@@ -755,28 +755,6 @@ export class CodeModule {
   };
 
   /**
-   * Hand-written helper (not from `generate-endpoints` — keep it when the
-   * module is regenerated). The details of one marketplace function run: the
-   * project log lines filed under the run's correlation id
-   * (`marketplace:run:started` / `step` / `completed` | `failed` | `skipped`).
-   *
-   * Pass `row.correlationId` of a run from `getMarketplaceFunctionRuns`. Only a
-   * row with `hasDetails: true` has lines — they are written only while the
-   * environment's Norbix Logging is on; otherwise the list comes back empty.
-   * Same call as `norbix.hub.logs.getLogsByCorrelationId({ targetCorrelationId })`
-   * (GET /{version}/logs/audit).
-   */
-  getMarketplaceFunctionRunDetails = (
-    correlationId: string,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetLogsByCorrelationIdResponse> => {
-    return new LogsModule(this.transport).getLogsByCorrelationId(
-      { targetCorrelationId: correlationId },
-      options,
-    );
-  };
-
-  /**
    * GET /{version}/code/functions
    * Request DTO: GetCodeFunctions
    */
@@ -870,4 +848,29 @@ export class CodeModule {
       ...options,
     });
   };
+
+  // @hand-written:begin
+  /**
+   * Hand-written helper (not from `generate-endpoints`; the generator keeps
+   * the `@hand-written` block and import when it regenerates this module).
+   * The details of one marketplace function run: the project log lines filed
+   * under the run's correlation id
+   * (`marketplace:run:started` / `step` / `completed` | `failed` | `skipped`).
+   *
+   * Pass `row.correlationId` of a run from `getMarketplaceFunctionRuns`. Only a
+   * row with `hasDetails: true` has lines — they are written only while the
+   * environment's Norbix Logging is on; otherwise the list comes back empty.
+   * Same call as `norbix.hub.logs.getLogsByCorrelationId({ targetCorrelationId })`
+   * (GET /{version}/logs/audit).
+   */
+  getMarketplaceFunctionRunDetails = (
+    correlationId: string,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogsByCorrelationIdResponse> => {
+    return new LogsModule(this.transport).getLogsByCorrelationId(
+      { targetCorrelationId: correlationId },
+      options,
+    );
+  };
+  // @hand-written:end
 }
