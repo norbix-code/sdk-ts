@@ -173,7 +173,19 @@ const norbix = new Norbix({ apiKey: '<api_key>', projectId: 'proj_123' });
 
 // User mode — exchange credentials for a JWT
 const norbix = new Norbix({ projectId: 'proj_123' });
-await norbix.login({ userName: 'alice@team.io', password: 'secret' });
+const { userId } = await norbix.login({ userName: 'alice@team.io', password: 'secret' }); // usr_…
+```
+
+**Service-user API keys.** A key issued to a service user (`ak-…`) is just another `apiKey` — the SDK sends it as `Authorization: Bearer ak-…`, which the gateway accepts like `X-Api-Key`. Issuing a key (`norbix.hub.membership.issueServiceUserApiKey`) answers with `id`, `environment` and the `key` itself — shown **once**, store it then.
+
+**Project users get no refresh token.** Sign-in answers a project user with a bearer token and `userId` (`usr_…`), but no `refreshToken`, and the SDK never keeps the credentials. When the token expires, the next call fails with a `NorbixError` of status 401 — show your sign-in screen and call `login(...)` again:
+
+```ts
+try {
+  await norbix.collection('orders').find();
+} catch (err) {
+  if (err instanceof NorbixError && err.status === 401) showSignIn();
+}
 ```
 
 ### Default base URLs
@@ -214,6 +226,7 @@ NORBIX_API_KEY=sk_live_...
 NORBIX_PROJECT_ID=proj_123
 NORBIX_ACCOUNT_ID=acc_456            # optional, sent as the norbix-account-id header
 NORBIX_REGION=nb-eu-germany          # optional, pins requests to a Norbix region (see Regions)
+NORBIX_LANGUAGE=lt                   # optional, sent as Accept-Language (see Language)
 NORBIX_API_URL=https://api.norbix.ai            # override for self-hosted, e.g. https://api.norbix.isidos.lt
 NORBIX_HUB_URL=https://hub.norbix.ai            # override for self-hosted, e.g. https://hub.norbix.isidos.lt
 ```
@@ -276,6 +289,31 @@ await norbix.hub.regions.updateProjectRegions({
 ```
 
 `hub.account.createProject` accepts the same `primaryRegion` / `additionalRegions` fields, project DTOs report `primaryRegion`, `additionalRegions`, and the combined `regions[]`, and the `echo` endpoint lists the regions a deployment exposes with their regional endpoints. Full reference: [`docs/hub/regions.md`](./docs/hub/regions.md).
+
+### Language
+
+The only language input is the standard **`Accept-Language`** header. Set it once on the client, switch it at runtime, or override it per call — a single tag or a weighted list:
+
+```ts
+const norbix = new Norbix({ projectId: 'proj_123', apiKey, language: 'lt-LT, en;q=0.8' });
+norbix.setLanguage('de'); // every later call
+await norbix.collection('articles').find({}, { language: 'en' }); // this call only
+norbix.setLanguage(undefined); // stop sending it
+```
+
+Resolution: per-call `language` → client `language` / `setLanguage` → `NORBIX_LANGUAGE`. With none of them, no header is sent and the project's **default language** applies; the same happens when nothing in the list matches a project language. The gateway answers with `Content-Language` (the language it used) and `Vary: Accept-Language`; read it with the `onResponse` hook:
+
+```ts
+new Norbix({
+  projectId,
+  apiKey,
+  onResponse: ({ contentLanguage }) => console.log(contentLanguage),
+});
+```
+
+To read **every** translation instead of one language, pass `allLanguages: true` on record reads (`find`, `findOne`, `findOwn` — also on `norbix.collection(...)`) and term reads (`findTerms`, `findTermTree`, …); translated fields then come back as full translation objects.
+
+> **Removed:** the `cultureCode` request field and the `CultureCode` / `norbix-language` headers. The gateway ignores them; use `language` instead.
 
 ### SSR / multi-tenant safe usage
 
@@ -397,6 +435,36 @@ await norbix.hub.account.setAdminPortalEnabled({ projectId, enabled: true });
 ```
 
 Full lists: [`docs/hub/ai.md`](./docs/hub/ai.md), [`docs/hub/account.md`](./docs/hub/account.md).
+
+## Push for end users (`norbix.notifications.push`)
+
+A signed-in project user registers this device for push and reads their own push messages. The calls run on the API host with the user's token (they wrap the generated `norbix.api.notifications.*` methods).
+
+```ts
+const { id } = await norbix.notifications.push.registerDevice({
+  provider: 'expo', // expo | fcm | apns
+  token: expoPushToken,
+  platform: 'ios', // ios | android | web
+  osName: 'iOS',
+  osVersion: '18.1',
+  appVersion: '2.4.1',
+  deviceName: "Anna's iPhone",
+  modelName: 'iPhone 15',
+  brand: 'Apple',
+  manufacturer: 'Apple',
+  installationId,
+  locale: 'lt-LT',
+  timeZone: 'Europe/Vilnius',
+}); // id: pnd_…
+
+await norbix.notifications.push.listDevices();
+await norbix.notifications.push.removeDevice(id);
+await norbix.notifications.push.removeDeviceByToken(expoPushToken); // e.g. on sign-out
+
+const page = await norbix.notifications.push.listMessages({ unreadOnly: true, pageSize: 20 });
+await norbix.notifications.push.markMessageRead(page.list?.items?.[0]?.id ?? '');
+await norbix.notifications.push.markAllMessagesRead();
+```
 
 ## Hub example
 

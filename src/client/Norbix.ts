@@ -1,6 +1,7 @@
 import { ApiNamespace } from '../api/index.js';
 import { HubNamespace } from '../hub/index.js';
 import { CollectionResource } from '../resources/collection.js';
+import { PushResource } from '../resources/push.js';
 import { NorbixSseClient, aiChatClient } from '../sse/client.js';
 import { NorbixInboxClient } from '../sse/inbox.js';
 import type { NorbixSseClientOptions } from '../sse/types.js';
@@ -39,6 +40,12 @@ const DEFAULT_RETRY = { maxRetries: 2, baseDelayMs: 250, maxDelayMs: 5_000 } as 
 export class Norbix {
   public readonly api: ApiNamespace;
   public readonly hub: HubNamespace;
+  /**
+   * End-user notifications. `notifications.push` registers this app's device
+   * for push and reads / marks the signed-in user's push messages (API host,
+   * project-user token).
+   */
+  public readonly notifications: { readonly push: PushResource };
 
   private cfg: ResolvedNorbixConfig;
   private transport: Transport;
@@ -135,6 +142,7 @@ export class Norbix {
       accountId: config.accountId ?? env.accountId,
       env: config.env ?? env.env ?? 'PROD',
       region: config.region ?? env.region,
+      language: config.language || env.language || undefined,
       baseUrl: {
         api: baseUrlApi,
         hub: baseUrlHub,
@@ -156,6 +164,7 @@ export class Norbix {
     this.transport = new Transport(this.cfg);
     this.api = new ApiNamespace(this.transport);
     this.hub = new HubNamespace(this.transport);
+    this.notifications = { push: new PushResource(this.api.notifications) };
   }
 
   /**
@@ -181,7 +190,11 @@ export class Norbix {
    * Exchange credentials for a JWT bearer token. On success, the token is
    * stored on the client and used for every subsequent call (it takes
    * precedence over any configured `apiKey`). The full /auth response is
-   * returned so the caller can also access refreshToken, userId, etc.
+   * returned so the caller can also read `userId` (`usr_…`), etc.
+   *
+   * Project users get **no refresh token**: when the bearer token expires the
+   * call fails with 401 (`NorbixError`, status 401) and the app shows its
+   * sign-in again. The SDK never keeps the credentials.
    *
    * The login call itself runs unauthenticated — no Authorization header is
    * sent for /auth even if a token is already configured.
@@ -262,6 +275,22 @@ export class Norbix {
   /** Current Norbix region the client targets (e.g. `nb-eu-germany`), if any. */
   getRegion(): string | undefined {
     return this.cfg.region;
+  }
+
+  /**
+   * Switch the language all subsequent requests ask for (sent as the
+   * `Accept-Language` header — `lt`, or a weighted list such as
+   * `lt-LT, en;q=0.8`). Pass `undefined` to stop sending it; the project's
+   * default language then applies. Per-call `language` overrides still take
+   * precedence for individual requests.
+   */
+  setLanguage(language: string | undefined): void {
+    this.cfg.language = language || undefined;
+  }
+
+  /** Current `Accept-Language` value the client sends, if any. */
+  getLanguage(): string | undefined {
+    return this.cfg.language;
   }
 
   /** True when the client has either a JWT bearer token or an API key. */
@@ -375,7 +404,7 @@ export class Norbix {
   with(
     overrides: Pick<
       NorbixConfig,
-      'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region'
+      'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region' | 'language'
     >,
   ): Norbix {
     const next: NorbixConfig = {
@@ -385,6 +414,7 @@ export class Norbix {
       accountId: overrides.accountId ?? this.cfg.accountId,
       env: overrides.env ?? this.cfg.env,
       region: overrides.region ?? this.cfg.region,
+      language: overrides.language ?? this.cfg.language,
       // Pass `undefined` for SDK-default base URLs so the new instance
       // recomposes them for its own (possibly overridden) region instead of
       // inheriting a URL composed for the old region as if it were custom.

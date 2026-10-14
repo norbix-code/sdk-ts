@@ -24,6 +24,7 @@
  *   NORBIX_PROJECT_ID
  *   NORBIX_ACCOUNT_ID
  *   NORBIX_REGION
+ *   NORBIX_LANGUAGE
  *   NORBIX_API_URL
  *   NORBIX_HUB_URL
  *   NORBIX_API_VERSION
@@ -83,6 +84,22 @@ export interface NorbixConfig {
   region?: string;
 
   /**
+   * Language the caller wants answers in, sent as the standard
+   * `Accept-Language` header on every request — a single tag (`lt`) or a
+   * weighted list (`lt-LT, en;q=0.8`). The gateway picks the best match among
+   * the project's languages and falls back to the project's default language
+   * when nothing matches; it says which one it used in `Content-Language`
+   * (see `onResponse`). There is no default — when unset no header is sent.
+   * `Accept-Language` is the only language input: the old `cultureCode`
+   * request field and the `CultureCode` / `norbix-language` headers are gone.
+   * Falls back to `NORBIX_LANGUAGE`.
+   *
+   * Override per call via the `language` option on any request, or switch the
+   * client default at runtime with `setLanguage(...)`.
+   */
+  language?: string;
+
+  /**
    * Override default base URLs. Useful for self-hosted deployments,
    * staging environments, or pointing the SDK at localhost in tests.
    * Each URL falls back to its env var (`NORBIX_API_URL`, `NORBIX_HUB_URL`).
@@ -111,8 +128,17 @@ export interface NorbixConfig {
   /** Hook called once per request before it is sent. */
   onRequest?: (info: { url: string; method: string; headers: Headers }) => void;
 
-  /** Hook called once per response, regardless of success/failure. */
-  onResponse?: (info: { url: string; status: number; durationMs: number }) => void;
+  /**
+   * Hook called once per response, regardless of success/failure.
+   * `contentLanguage` is the `Content-Language` the gateway answered with (the
+   * language it actually used for translated fields), when it sent one.
+   */
+  onResponse?: (info: {
+    url: string;
+    status: number;
+    durationMs: number;
+    contentLanguage?: string;
+  }) => void;
 
   /**
    * Transport retry policy for transient failures (429/5xx/network/timeout).
@@ -132,6 +158,9 @@ export interface NorbixConfig {
    * the transport will call this to obtain a new bearer token and retry once.
    *
    * The callback should return the new JWT bearer token string (without "Bearer ").
+   *
+   * Project users get no refresh token from sign-in: when their bearer token
+   * expires the call fails with 401 and the app shows sign-in again.
    */
   refreshBearerToken?: (info: { url: string; status: 401 }) => Promise<string | undefined>;
 
@@ -162,6 +191,8 @@ export interface ResolvedNorbixConfig {
   env: string;
   /** Resolved Norbix region (e.g. `nb-eu-germany`). No default — may be unset. */
   region?: string;
+  /** Resolved `Accept-Language` value. No default — may be unset. */
+  language?: string;
   baseUrl: { api: string; hub: string };
   apiVersion: string;
   hubVersion: string;
@@ -191,7 +222,12 @@ export interface LoginCredentials {
 /** Shape of a successful /auth response. Just the fields the SDK uses. */
 export interface LoginResponse {
   bearerToken?: string;
+  /**
+   * Not sent to project users — on 401 the app shows sign-in again. Only
+   * account (Hub) sign-ins may still carry one.
+   */
   refreshToken?: string;
+  /** The user's id, `usr_…`. */
   userId?: string;
   userName?: string;
   displayName?: string;
