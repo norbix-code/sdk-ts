@@ -14,8 +14,15 @@ export type { LoginCredentials, LoginResponse, NorbixConfig } from './client/typ
 export { loadEnvConfig } from './client/env.js';
 export type { EnvConfig } from './client/env.js';
 export { NORBIX_HUB_URL, NORBIX_API_URL } from './client/constants.js';
-export { CollectionResource } from './resources/index.js';
-export type { ReferenceDisplay, WithExpandedReferences } from './resources/index.js';
+export { CollectionResource, PushResource } from './resources/index.js';
+export type {
+  ListPushMessagesInput,
+  PushPlatform,
+  PushProvider,
+  ReferenceDisplay,
+  RegisterPushDeviceInput,
+  WithExpandedReferences,
+} from './resources/index.js';
 export {
   CODE_FUNCTION_SPEC_VERSION,
   CodeFunctionEvent,

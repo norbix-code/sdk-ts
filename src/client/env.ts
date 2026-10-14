@@ -15,6 +15,7 @@ export type NorbixEnvKey =
   | 'NORBIX_ACCOUNT_ID'
   | 'NORBIX_ENV'
   | 'NORBIX_REGION'
+  | 'NORBIX_LANGUAGE'
   | 'NORBIX_API_URL'
   | 'NORBIX_HUB_URL'
   | 'NORBIX_API_VERSION'
@@ -47,6 +48,7 @@ export interface EnvConfig {
   accountId?: string;
   env?: string;
   region?: string;
+  language?: string;
   apiUrl?: string;
   hubUrl?: string;
   apiVersion?: string;
@@ -69,6 +71,7 @@ export function loadEnvConfig(source?: Record<string, string | undefined>): EnvC
   setIfPresent('accountId', readEnv('NORBIX_ACCOUNT_ID', source));
   setIfPresent('env', readEnv('NORBIX_ENV', source));
   setIfPresent('region', readEnv('NORBIX_REGION', source));
+  setIfPresent('language', readEnv('NORBIX_LANGUAGE', source));
   setIfPresent('apiUrl', readEnv('NORBIX_API_URL', source));
   setIfPresent('hubUrl', readEnv('NORBIX_HUB_URL', source));
   setIfPresent('apiVersion', readEnv('NORBIX_API_VERSION', source));

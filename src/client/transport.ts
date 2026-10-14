@@ -55,6 +55,11 @@ export interface RequestOptions<TBody = unknown> {
    */
   region?: string;
   /**
+   * Per-call language override, sent as `Accept-Language`. Falls back to the
+   * client's configured `language`; when neither is set no header is sent.
+   */
+  language?: string;
+  /**
    * How to read a successful response body. `json` (the default) parses it as
    * JSON. `binary` returns the raw bytes as a `Uint8Array` — for endpoints
    * that answer with a file rather than a document, such as a download or a
@@ -80,6 +85,12 @@ export interface RequestOverrideOptions {
    * only — the request URL is never rewritten per call.
    */
   region?: string;
+  /**
+   * Per-call language override (`lt`, `lt-LT, en;q=0.8`), sent as the
+   * `Accept-Language` header for this single call. Falls back to the client's
+   * configured `language`.
+   */
+  language?: string;
 }
 
 export type TransportMiddleware = (ctx: {
@@ -168,6 +179,12 @@ export class Transport {
     const region = opts.region ?? this.cfg.region;
     if (region) headers.set('nb-region', region);
 
+    // Language. `Accept-Language` is the gateway's only language input; the
+    // per-call value wins over the client default, and nothing is sent when
+    // neither is set (the project's default language then applies).
+    const language = opts.language ?? this.cfg.language;
+    if (language) headers.set('Accept-Language', language);
+
     if (body !== undefined) headers.set('Content-Type', 'application/json');
 
     const timeoutMs = opts.timeoutMs ?? this.cfg.timeoutMs;
@@ -207,7 +224,12 @@ export class Transport {
       }
 
       if (res) {
-        this.cfg.onResponse?.({ url, status: res.status, durationMs: Date.now() - startedAt });
+        this.cfg.onResponse?.({
+          url,
+          status: res.status,
+          durationMs: Date.now() - startedAt,
+          contentLanguage: res.headers?.get?.('content-language') ?? undefined,
+        });
 
         // Optional 401 refresh flow: refresh once, then retry the original request.
         // An `'optional'` call sent without a token got its 401 from the link
