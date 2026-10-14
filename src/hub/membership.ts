@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 44
+ * Endpoints: 45
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -763,6 +763,25 @@ export class MembershipModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/membership/users/merge',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/repair-roles
+   * Request DTO: RepairContactRolesRequest
+   */
+  repairContactRoles = (
+    request: Partial<CodeMashHub2.RepairContactRolesRequest> = {} as Partial<CodeMashHub2.RepairContactRolesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RepairContactRolesResponse> => {
+    return this.transport.send<CodeMashHub2.RepairContactRolesResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/repair-roles',
       method: 'POST',
       request,
       pathParams: [],

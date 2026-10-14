@@ -71,6 +71,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DeleteOwnPushDeviceByTokenRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteOwnPushDeviceRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DeleteUserRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -163,6 +171,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetOwnPushDevicesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetOwnPushMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetPublicFileRequest": {
     "requiresAuth": false,
     "returnsBytes": true
@@ -247,6 +263,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "MarkAllOwnPushMessagesReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MarkOwnPushMessageReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "PasskeyAuthenticationOptionsRequest": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -269,6 +293,10 @@
   },
   "RefreshPasskeyTokenRequest": {
     "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "RegisterOwnPushDeviceRequest": {
+    "requiresAuth": true,
     "returnsBytes": false
   },
   "RenameEndUserChatSessionRequest": {
