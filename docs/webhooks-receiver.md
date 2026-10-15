@@ -110,6 +110,7 @@ receiver.onAll(
 | Database   | `Database.RecordInserted`, `RecordUpdated`, `RecordDeleted`, `RecordReplaced`, `RecordResponsibilityChanged`, `RecordsInserted`, `RecordsUpdated`, `RecordsDeleted` |
 | Membership | `Membership.UserRegistered`, `UserInvited`, `UserVerified`, `UserUpdated`, `UserDeleted`, `UserBlocked`, `UserReactivated`                                          |
 | Files      | `Files.FileUploaded`, `FileDeleted`                                                                                                                                 |
+| Payments   | `Payments.WebhookReceived`                                                                                                                                          |
 
 Full list: `NORBIX_WEBHOOK_EVENT_NAMES` · grouped: `NORBIX_WEBHOOK_EVENT_GROUPS`.
 
@@ -229,9 +230,31 @@ events give the **entity directly**. Arbitrary mutations give `{ from, to }`.
 | `database.record.updated` / `replaced`                 | `{ from: T; to: T }`             |
 | `database.records.inserted`                            | `T[]`                            |
 | `files.file.uploaded`                                  | `FileResourceRefDto`             |
+| `payments.webhook.received`                            | `PaymentFactDto`                 |
 
 Wrapper ids (user id, schema, record ids) live on `event.metadata`. For manual
 typing outside `receiver.on`, use `NorbixWebhookPayload<'event.name'>`.
+
+### Payments
+
+Every payment provider callback (Stripe, Apple In-App, Google In-App, Paddle, …)
+reaches your endpoint as ONE event, `payments.webhook.received`. The payload is
+the normalized payment fact — the provider's raw body never leaves Norbix. Branch
+on the provider's own event name, which is `payload.eventName`:
+
+```ts
+receiver.on(NorbixWebhookEvents.Payments.WebhookReceived, async (payment, event) => {
+  // payment: PaymentFactDto — provider, eventName, status, amountMinor, currency, externalIds, …
+  if (payment.eventName === 'payment_intent.succeeded' && payment.status === 'Succeeded') {
+    await markOrderPaid(payment.externalIds?.paymentIntent, payment.amountMinor, payment.currency);
+  }
+  // event.metadata.payment = { provider, providerEventId, eventName } — de-duplicate on providerEventId
+});
+```
+
+`amountMinor` is in minor units (cents); it is absent for events with no amount
+(subscription changes, Google Play notifications). Subscribe a destination to
+`payments.webhook.received` and point a Payments trigger with a Webhook action at it.
 
 ## Configuration
 
