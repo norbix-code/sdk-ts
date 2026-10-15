@@ -29,6 +29,12 @@ describe('webhooks payload types', () => {
     >().toEqualTypeOf<NorbixWebhookMutation<CodeMashHub2.UserDto>>();
   });
 
+  it('payments.webhook.received payload is the normalized payment fact', () => {
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.webhook.received'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentFactDto>();
+  });
+
   it('database.records.inserted payload is the document array', () => {
     expectTypeOf<
       NorbixWebhookPayload<'database.records.inserted', CodeMashHub2.UserDto>

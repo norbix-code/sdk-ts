@@ -42,6 +42,9 @@ export interface NorbixWebhookPayloadMap<TDocument = Record<string, unknown>> {
   // files — entity
   'files.file.uploaded': CodeMashHub2.FileResourceRefDto;
   'files.file.deleted': NorbixWebhookFileDeleted;
+  // payments — the normalized payment fact (never the provider's raw payload).
+  // The provider's own event name is `eventName`; amounts are minor units.
+  'payments.webhook.received': CodeMashHub2.PaymentFactDto;
 }
 
 /** Resolve the typed payload for a known event (with optional document type). */
@@ -63,6 +66,8 @@ export interface NorbixWebhookEventMetadata {
   record?: { id: string };
   /** Record ids for batch database events. */
   records?: { ids: string[] };
-  /** Integration id for files.* events (and database events that carry it). */
+  /** Integration id for files.* and payments.* events (and database events that carry it). */
   integrationId?: string;
+  /** payments.* events: the provider and its own event id / name (e.g. Stripe `evt_…`, `payment_intent.succeeded`). */
+  payment?: { provider: string; providerEventId: string; eventName: string };
 }

@@ -20,6 +20,7 @@ export const NORBIX_WEBHOOK_EVENT_NAMES = [
   'membership.user.reactivated',
   'files.file.uploaded',
   'files.file.deleted',
+  'payments.webhook.received',
 ] as const;
 
 export type NorbixWebhookEventName = (typeof NORBIX_WEBHOOK_EVENT_NAMES)[number];
@@ -54,6 +55,15 @@ export const NorbixWebhookEvents = {
   Files: {
     FileUploaded: 'files.file.uploaded',
     FileDeleted: 'files.file.deleted',
+  },
+  Payments: {
+    /**
+     * A payment provider (Stripe, Apple In-App, Google In-App, …) called the
+     * project's payments webhook. The payload is the normalized payment fact;
+     * the provider's own event name (`payment_intent.succeeded`, …) is
+     * `payload.eventName`.
+     */
+    WebhookReceived: 'payments.webhook.received',
   },
 } as const satisfies Record<string, Record<string, NorbixWebhookEventName>>;
 
@@ -95,5 +105,10 @@ export const NORBIX_WEBHOOK_EVENT_GROUPS: NorbixWebhookEventGroup[] = [
     group: 'files',
     label: 'Files',
     events: ['files.file.uploaded', 'files.file.deleted'],
+  },
+  {
+    group: 'payments',
+    label: 'Payments',
+    events: ['payments.webhook.received'],
   },
 ];

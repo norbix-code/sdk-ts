@@ -19,6 +19,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
  * - Entity events  → `payload` is the entity (user / document / file).
  * - Mutation events → `payload` is `{ from, to }`.
  * - Batch events   → `payload` is the array.
+ * - Payments events → `payload` is the normalized payment fact.
  *
  * Wrapper ids (record id, schema, user id, …) are moved onto `metadata`.
  * Unknown events fall back to `payload = envelope.data`, `metadata = {}`.
@@ -92,6 +93,25 @@ export function normalizeNorbixWebhook(envelope: NorbixWebhookEnvelope): NorbixW
       default:
         return { payload: data, metadata };
     }
+  }
+
+  // Payments: the whole data object IS the normalized fact; lift the
+  // provider ids onto metadata so a handler can de-duplicate / look them up.
+  if (event.startsWith('payments.')) {
+    const metadata: NorbixWebhookEventMetadata = {};
+    if (typeof d.integrationId === 'string') metadata.integrationId = d.integrationId;
+    if (
+      typeof d.provider === 'string' &&
+      typeof d.providerEventId === 'string' &&
+      typeof d.eventName === 'string'
+    ) {
+      metadata.payment = {
+        provider: d.provider,
+        providerEventId: d.providerEventId,
+        eventName: d.eventName,
+      };
+    }
+    return { payload: data, metadata };
   }
 
   return { payload: data, metadata: {} };

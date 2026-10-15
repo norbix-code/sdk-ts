@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  NorbixWebhookEvents,
   NorbixWebhookReceiver,
   NORBIX_WEBHOOK_HEADERS,
   NorbixWebhookSignatureError,
@@ -168,6 +169,52 @@ describe('NorbixWebhookReceiver', () => {
     });
 
     expect(handler.mock.calls[0]?.[0]).toEqual({ from, to });
+  });
+
+  it('hands a payment delivery to its handler as the fact, provider ids on metadata', async () => {
+    // The shape a payments Webhook trigger delivers (gateway L4
+    // PaymentsTriggerFiresWebhookE2ETests): event = the one Norbix name,
+    // data = the normalized fact, never the provider's raw payload.
+    const fact = {
+      integrationId: 'int_stripe',
+      provider: 'Stripe',
+      providerEventId: 'evt_1',
+      eventName: 'payment_intent.succeeded',
+      status: 'Succeeded',
+      amountMinor: 1099,
+      currency: 'USD',
+      externalIds: { customer: 'cus_1', paymentIntent: 'pi_1' },
+      occurredOn: '2026-10-12T07:59:00Z',
+      receivedOn: '2026-10-12T07:59:30Z',
+    };
+    const receiver = new NorbixWebhookReceiver();
+    const handler = vi.fn();
+    receiver.on(NorbixWebhookEvents.Payments.WebhookReceived, handler);
+
+    const result = await receiver.handle({
+      rawBody: JSON.stringify({
+        id: 'dlv_p',
+        eventId: 'evt_change_1',
+        event: 'payments.webhook.received',
+        createdOn: '2026-10-12T08:00:00Z',
+        accountId: 'acc_1',
+        projectId: 'pr_1',
+        triggerId: 'trg_p',
+        data: fact,
+      }),
+      headers: {},
+    });
+
+    expect(result.handled).toBe(true);
+    expect(handler.mock.calls[0]?.[0]).toEqual(fact);
+    const event = handler.mock.calls[0]?.[1];
+    expect(event.name).toBe('payments.webhook.received');
+    expect(event.metadata.integrationId).toBe('int_stripe');
+    expect(event.metadata.payment).toEqual({
+      provider: 'Stripe',
+      providerEventId: 'evt_1',
+      eventName: 'payment_intent.succeeded',
+    });
   });
 
   it('lifts schema + record id onto event.metadata for db events', async () => {
