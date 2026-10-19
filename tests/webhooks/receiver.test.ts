@@ -217,6 +217,85 @@ describe('NorbixWebhookReceiver', () => {
     });
   });
 
+  it('payments.order.paid hands over the stored order and lifts its ids onto metadata', async () => {
+    const orderEvent = {
+      orderEventId: 'ord_2ToIiRM03X63TZaJ2dJdv2:2',
+      event: 'payments.order.paid',
+      from: 'CheckoutStarted',
+      to: 'Paid',
+      reason: 'paid in attempt 1',
+      order: {
+        id: 'ord_2ToIiRM03X63TZaJ2dJdv2',
+        env: 'PROD',
+        buyerUserId: 'usr_1szWVIyZFBV8HfvC4SfVw',
+        merchantReference: 'ad-1042-promo-1',
+        currency: 'EUR',
+        priceVersion: '2026-10-01',
+        lines: [
+          {
+            sku: 'star-day',
+            title: 'Star × day',
+            quantity: 21,
+            unitAmountMinor: 30,
+            amountMinor: 630,
+          },
+        ],
+        totalMinor: 630,
+        metadata: { adId: 'ad_1042' },
+        status: 'Paid',
+        checkouts: [],
+        settledMinor: 630,
+        refundedMinor: 0,
+        providerPaymentId: 'mnt-1',
+        mismatches: [],
+      },
+      payment: {
+        integrationId: 'int_montonio',
+        provider: 'Montonio',
+        providerEventId: 'order:mnt-1:PAID',
+        orderId: 'ord_2ToIiRM03X63TZaJ2dJdv2',
+        eventName: 'order.paid',
+        status: 'Succeeded',
+        amountMinor: 630,
+        currency: 'EUR',
+        receivedOn: '2026-10-19T09:54:43Z',
+      },
+    };
+    const receiver = new NorbixWebhookReceiver();
+    const handler = vi.fn();
+    receiver.on(NorbixWebhookEvents.Payments.OrderPaid, handler);
+
+    const result = await receiver.handle({
+      rawBody: JSON.stringify({
+        id: 'dlv_o',
+        eventId: 'evt_order_1',
+        event: 'payments.order.paid',
+        createdOn: '2026-10-19T09:54:44Z',
+        accountId: 'acc_1',
+        projectId: 'pr_1',
+        triggerId: 'trg_o',
+        data: orderEvent,
+      }),
+      headers: {},
+    });
+
+    expect(result.handled).toBe(true);
+    expect(handler.mock.calls[0]?.[0]).toEqual(orderEvent);
+    const event = handler.mock.calls[0]?.[1];
+    expect(event.name).toBe('payments.order.paid');
+    expect(event.metadata.integrationId).toBe('int_montonio');
+    expect(event.metadata.payment).toEqual({
+      provider: 'Montonio',
+      providerEventId: 'order:mnt-1:PAID',
+      eventName: 'order.paid',
+    });
+    expect(event.metadata.order).toEqual({
+      id: 'ord_2ToIiRM03X63TZaJ2dJdv2',
+      orderEventId: 'ord_2ToIiRM03X63TZaJ2dJdv2:2',
+      status: 'Paid',
+    });
+  });
+
   it('lifts schema + record id onto event.metadata for db events', async () => {
     const doc = { id: 'rec_1', email: 'a@b.io' };
     const receiver = new NorbixWebhookReceiver();

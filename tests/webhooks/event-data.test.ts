@@ -35,6 +35,24 @@ describe('webhooks payload types', () => {
     >().toEqualTypeOf<CodeMashHub2.PaymentFactDto>();
   });
 
+  it('every payments.order.* payload is the stored order event', () => {
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.order.paid'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentOrderEventDto>();
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.order.partially_refunded'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentOrderEventDto>();
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.order.refunded'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentOrderEventDto>();
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.order.reversed'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentOrderEventDto>();
+    expectTypeOf<
+      NorbixWebhookPayload<'payments.order.expired'>
+    >().toEqualTypeOf<CodeMashHub2.PaymentOrderEventDto>();
+  });
+
   it('database.records.inserted payload is the document array', () => {
     expectTypeOf<
       NorbixWebhookPayload<'database.records.inserted', CodeMashHub2.UserDto>

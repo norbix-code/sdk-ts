@@ -99,17 +99,29 @@ export function normalizeNorbixWebhook(envelope: NorbixWebhookEnvelope): NorbixW
   // provider ids onto metadata so a handler can de-duplicate / look them up.
   if (event.startsWith('payments.')) {
     const metadata: NorbixWebhookEventMetadata = {};
-    if (typeof d.integrationId === 'string') metadata.integrationId = d.integrationId;
+    // payments.order.*: the data is the order event; its `payment` is the fact.
+    const isOrderEvent = event.startsWith('payments.order.');
+    const fact = (isOrderEvent ? d.payment : d) as Record<string, unknown> | undefined;
+    if (typeof fact?.integrationId === 'string') metadata.integrationId = fact.integrationId;
     if (
-      typeof d.provider === 'string' &&
-      typeof d.providerEventId === 'string' &&
-      typeof d.eventName === 'string'
+      typeof fact?.provider === 'string' &&
+      typeof fact.providerEventId === 'string' &&
+      typeof fact.eventName === 'string'
     ) {
       metadata.payment = {
-        provider: d.provider,
-        providerEventId: d.providerEventId,
-        eventName: d.eventName,
+        provider: fact.provider,
+        providerEventId: fact.providerEventId,
+        eventName: fact.eventName,
       };
+    }
+    const order = d.order as Record<string, unknown> | undefined;
+    if (
+      isOrderEvent &&
+      typeof order?.id === 'string' &&
+      typeof d.orderEventId === 'string' &&
+      typeof order.status === 'string'
+    ) {
+      metadata.order = { id: order.id, orderEventId: d.orderEventId, status: order.status };
     }
     return { payload: data, metadata };
   }

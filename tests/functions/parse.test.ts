@@ -304,6 +304,69 @@ describe('CodeFunctionEvent typed views', () => {
     );
   });
 
+  it('asPaymentOrder() for a payments order event, and asPayment() is its callback', () => {
+    const orderEvent = {
+      orderEventId: 'ord_2ToIiRM03X63TZaJ2dJdv2:2',
+      event: 'payments.order.paid',
+      from: 'CheckoutStarted',
+      to: 'Paid',
+      reason: 'paid in attempt 1',
+      order: {
+        id: 'ord_2ToIiRM03X63TZaJ2dJdv2',
+        env: 'PROD',
+        buyerUserId: 'usr_1szWVIyZFBV8HfvC4SfVw',
+        merchantReference: 'ad-1042-promo-1',
+        currency: 'EUR',
+        priceVersion: '2026-10-01',
+        lines: [
+          {
+            sku: 'star-day',
+            title: 'Star × day',
+            quantity: 21,
+            unitAmountMinor: 30,
+            amountMinor: 630,
+          },
+        ],
+        totalMinor: 630,
+        metadata: { adId: 'ad_1042' },
+        status: 'Paid',
+        checkouts: [],
+        settledMinor: 630,
+        refundedMinor: 0,
+        providerPaymentId: 'mnt-1',
+        mismatches: [],
+      },
+      payment: {
+        integrationId: 'int_montonio',
+        provider: 'Montonio',
+        providerEventId: 'order:mnt-1:PAID',
+        orderId: 'ord_2ToIiRM03X63TZaJ2dJdv2',
+        eventName: 'order.paid',
+        status: 'Succeeded',
+        amountMinor: 630,
+        currency: 'EUR',
+        receivedOn: '2026-10-19T09:54:43Z',
+      },
+    };
+    const event = parseFunctionEvent(
+      envelope('payments', 'payments.order.paid', {
+        order: orderEvent,
+        payment: orderEvent.payment,
+      }),
+    );
+    const order = event.asPaymentOrder();
+    expect(order.orderEventId).toBe('ord_2ToIiRM03X63TZaJ2dJdv2:2');
+    expect(order.order.status).toBe('Paid');
+    expect(order.order.settledMinor).toBe(630);
+    expect(order.order.metadata?.adId).toBe('ad_1042');
+    expect(event.asPayment().providerEventId).toBe('order:mnt-1:PAID');
+    expect(() =>
+      parseFunctionEvent(
+        envelope('payments', 'payments.webhook.received', { payment: orderEvent.payment }),
+      ).asPaymentOrder(),
+    ).toThrow(/asPaymentOrder\(\) is for a payments order \(payments\.order\.\*\) event/);
+  });
+
   it('payload() for a manual invoke, undefined when the call sent none', () => {
     const withPayload = parseFunctionEvent(
       envelope('manual', 'manual.invoke', { payload: { orderId: '6ac54a59212c29912eaddd81' } }),

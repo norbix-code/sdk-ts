@@ -45,6 +45,13 @@ export interface NorbixWebhookPayloadMap<TDocument = Record<string, unknown>> {
   // payments — the normalized payment fact (never the provider's raw payload).
   // The provider's own event name is `eventName`; amounts are minor units.
   'payments.webhook.received': CodeMashHub2.PaymentFactDto;
+  // payments — a stored order changed: the order as stored, with the callback
+  // that changed it; `orderEventId` is the de-duplication key.
+  'payments.order.paid': CodeMashHub2.PaymentOrderEventDto;
+  'payments.order.partially_refunded': CodeMashHub2.PaymentOrderEventDto;
+  'payments.order.refunded': CodeMashHub2.PaymentOrderEventDto;
+  'payments.order.reversed': CodeMashHub2.PaymentOrderEventDto;
+  'payments.order.expired': CodeMashHub2.PaymentOrderEventDto;
 }
 
 /** Resolve the typed payload for a known event (with optional document type). */
@@ -70,4 +77,6 @@ export interface NorbixWebhookEventMetadata {
   integrationId?: string;
   /** payments.* events: the provider and its own event id / name (e.g. Stripe `evt_…`, `payment_intent.succeeded`). */
   payment?: { provider: string; providerEventId: string; eventName: string };
+  /** payments.order.* events: the stored order, its status after the change and the de-duplication key. */
+  order?: { id: string; orderEventId: string; status: string };
 }

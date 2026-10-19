@@ -68,6 +68,15 @@ export class CodeFunctionEvent implements CodeMashHub2.CodeFunctionEventDto {
     return this.requireSlot('payment', 'asPayment');
   }
 
+  /**
+   * Payments order trigger (`payments.order.*`) — `data.order`: the stored order
+   * after the change, with `orderEventId` to de-duplicate on. `asPayment()` still
+   * returns the callback that made the change.
+   */
+  asPaymentOrder(): CodeMashHub2.PaymentOrderEventDto {
+    return this.requireSlot('order', 'asPaymentOrder');
+  }
+
   /** AI trigger — `data.ai`. */
   asAiUsage(): CodeMashHub2.AiUsageEventDto {
     return this.requireSlot('ai', 'asAiUsage');
@@ -145,6 +154,7 @@ const slotSource: Record<Slot, string> = {
   user: 'membership',
   file: 'files',
   payment: 'payments',
+  order: 'payments order (payments.order.*)',
   ai: 'ai',
   task: 'scheduler',
   payload: 'manual / scheduler',
