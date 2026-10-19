@@ -21,6 +21,11 @@ export const NORBIX_WEBHOOK_EVENT_NAMES = [
   'files.file.uploaded',
   'files.file.deleted',
   'payments.webhook.received',
+  'payments.order.paid',
+  'payments.order.partially_refunded',
+  'payments.order.refunded',
+  'payments.order.reversed',
+  'payments.order.expired',
 ] as const;
 
 export type NorbixWebhookEventName = (typeof NORBIX_WEBHOOK_EVENT_NAMES)[number];
@@ -64,6 +69,20 @@ export const NorbixWebhookEvents = {
      * `payload.eventName`.
      */
     WebhookReceived: 'payments.webhook.received',
+    /**
+     * A verified provider callback made a stored payment order Paid. The payload
+     * is the order as stored after the change (`PaymentOrderEventDto`);
+     * de-duplicate on `payload.orderEventId` — it is the same on every retry.
+     */
+    OrderPaid: 'payments.order.paid',
+    /** Part of a paid order was refunded (`payload.order.refundedMinor`). */
+    OrderPartiallyRefunded: 'payments.order.partially_refunded',
+    /** The whole order was refunded. */
+    OrderRefunded: 'payments.order.refunded',
+    /** The provider reversed (voided) the payment. */
+    OrderReversed: 'payments.order.reversed',
+    /** The checkout ran out without a payment. */
+    OrderExpired: 'payments.order.expired',
   },
 } as const satisfies Record<string, Record<string, NorbixWebhookEventName>>;
 
@@ -109,6 +128,13 @@ export const NORBIX_WEBHOOK_EVENT_GROUPS: NorbixWebhookEventGroup[] = [
   {
     group: 'payments',
     label: 'Payments',
-    events: ['payments.webhook.received'],
+    events: [
+      'payments.webhook.received',
+      'payments.order.paid',
+      'payments.order.partially_refunded',
+      'payments.order.refunded',
+      'payments.order.reversed',
+      'payments.order.expired',
+    ],
   },
 ];
