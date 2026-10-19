@@ -9,6 +9,7 @@ import { EchoModule } from './echo.js';
 import { FilesModule } from './files.js';
 import { MembershipModule } from './membership.js';
 import { NotificationsModule } from './notifications.js';
+import { PaymentsModule } from './payments.js';
 import { PublicModule } from './public.js';
 
 /**
@@ -25,6 +26,7 @@ export class ApiNamespace {
   public readonly files: FilesModule;
   public readonly membership: MembershipModule;
   public readonly notifications: NotificationsModule;
+  public readonly payments: PaymentsModule;
   public readonly public: PublicModule;
 
   constructor(transport: Transport) {
@@ -37,6 +39,7 @@ export class ApiNamespace {
     this.files = new FilesModule(transport);
     this.membership = new MembershipModule(transport);
     this.notifications = new NotificationsModule(transport);
+    this.payments = new PaymentsModule(transport);
     this.public = new PublicModule(transport);
   }
 }

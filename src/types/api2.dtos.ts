@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-14 16:40:15
+Date: 2026-10-19 10:55:02
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -549,6 +549,25 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class PaymentOrderLineInput {
+    // @DataMember
+    public sku?: string;
+
+    // @DataMember
+    public title?: string;
+
+    // @DataMember
+    public quantity: number;
+
+    // @DataMember
+    public unitAmountMinor: number;
+
+    public constructor(init?: Partial<PaymentOrderLineInput>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export enum CodeMashRelease {
     NotSet = 'NotSet',
     Community = 'Community',
@@ -1032,6 +1051,9 @@ export module CodeMashApi2 {
     // @DataMember
     public meta?: Object;
 
+    // @DataMember
+    public origin?: string;
+
     public constructor(init?: Partial<TermDto>) {
       (Object as any).assign(this, init);
     }
@@ -1058,6 +1080,15 @@ export module CodeMashApi2 {
     }
   }
 
+  export class SchemaUniqueIndexDto {
+    // @DataMember
+    public fields: string[] = [];
+
+    public constructor(init?: Partial<SchemaUniqueIndexDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class SchemaSettingsDto {
     // @DataMember
     public softDelete: boolean;
@@ -1067,6 +1098,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public description?: string;
+
+    // @DataMember
+    public uniqueIndexes?: SchemaUniqueIndexDto[];
 
     public constructor(init?: Partial<SchemaSettingsDto>) {
       (Object as any).assign(this, init);
@@ -1410,6 +1444,140 @@ export module CodeMashApi2 {
     public readAtUtc?: string;
 
     public constructor(init?: Partial<OwnPushMessageDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderLineDto {
+    // @DataMember
+    public sku: string;
+
+    // @DataMember
+    public title: string;
+
+    // @DataMember
+    public quantity: number;
+
+    // @DataMember
+    public unitAmountMinor: number;
+
+    // @DataMember
+    public amountMinor: number;
+
+    public constructor(init?: Partial<PaymentOrderLineDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderCheckoutDto {
+    // @DataMember
+    public attempt: number;
+
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerOrderId: string;
+
+    // @DataMember
+    public providerReference: string;
+
+    // @DataMember
+    public paymentUrl: string;
+
+    // @DataMember
+    public method: string;
+
+    // @DataMember
+    public startedOnUtc: string;
+
+    // @DataMember
+    public expiresAtUtc: string;
+
+    public constructor(init?: Partial<PaymentOrderCheckoutDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public buyerUserId: string;
+
+    // @DataMember
+    public merchantReference: string;
+
+    // @DataMember
+    public currency: string;
+
+    // @DataMember
+    public priceVersion: string;
+
+    // @DataMember
+    public lines: PaymentOrderLineDto[] = [];
+
+    // @DataMember
+    public totalMinor: number;
+
+    // @DataMember
+    public metadata: { [index: string]: string } = {};
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public createdOnUtc: string;
+
+    // @DataMember
+    public updatedOnUtc: string;
+
+    // @DataMember
+    public checkouts: PaymentOrderCheckoutDto[] = [];
+
+    // @DataMember
+    public settledMinor?: number;
+
+    // @DataMember
+    public refundedMinor: number;
+
+    // @DataMember
+    public paidOnUtc?: string;
+
+    // @DataMember
+    public providerPaymentId?: string;
+
+    // @DataMember
+    public mismatches: string[] = [];
+
+    public constructor(init?: Partial<PaymentOrderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class InAppNotificationDto {
+    public id: string;
+    public projectId: string;
+    public userId: string;
+    public channel: string;
+    public eventName: string;
+    public payloadJson?: string;
+    public isRead: boolean;
+    public seenAtUtc?: string;
+    public readAtUtc?: string;
+    public createdAtUtc: string;
+
+    public constructor(init?: Partial<InAppNotificationDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1910,6 +2078,67 @@ export module CodeMashApi2 {
     public list?: PaginatedResponse<OwnPushMessageDto>;
 
     public constructor(init?: Partial<GetOwnPushMessagesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPaymentOrderResponse extends ResponseBase {
+    public item?: PaymentOrderDto;
+
+    public constructor(init?: Partial<GetPaymentOrderResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPaymentOrdersResponse extends ResponseBase {
+    public list?: PaginatedResponse<PaymentOrderDto>;
+
+    public constructor(init?: Partial<GetPaymentOrdersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StartPaymentCheckoutResponse extends ResponseBase {
+    public checkout?: PaymentOrderCheckoutDto;
+    public reused: boolean;
+    public order?: PaymentOrderDto;
+
+    public constructor(init?: Partial<StartPaymentCheckoutResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetNotificationInboxResponse extends ResponseBase {
+    public list?: PaginatedResponse<InAppNotificationDto>;
+
+    public constructor(init?: Partial<GetNotificationInboxResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetUnreadCountResponse extends ResponseBase {
+    public count: number;
+
+    public constructor(init?: Partial<GetUnreadCountResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MarkNotificationReadResponse extends ResponseBase {
+    public constructor(init?: Partial<MarkNotificationReadResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MarkAllNotificationsReadResponse extends ResponseBase {
+    public constructor(init?: Partial<MarkAllNotificationsReadResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3008,10 +3237,20 @@ export module CodeMashApi2 {
   // @Api(Description="Membership")
   // @DataContract
   export class InviteUserRequest extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    /** @description Email address the invitation is sent to. */
+    /** @description Email address the invitation is sent to. It cannot be changed later. */
     // @DataMember
-    // @ApiMember(Description="Email address the invitation is sent to.", IsRequired=true)
+    // @ApiMember(Description="Email address the invitation is sent to. It cannot be changed later.", IsRequired=true)
     public email: string;
+
+    /** @description The invited person's full name, e.g. "Rūta Petraitė". Stored as the full name, first name (first word) and last name (the rest). The user may change it when finishing. */
+    // @DataMember
+    // @ApiMember(Description="The invited person's full name, e.g. \"Rūta Petraitė\". Stored as the full name, first name (first word) and last name (the rest). The user may change it when finishing.")
+    public fullName?: string;
+
+    /** @description Optional. How e-mails greet the person ("Hi {salutation},"), e.g. "Rūta". Stored as the display name. When empty the full name is used. The user may change it when finishing. */
+    // @DataMember
+    // @ApiMember(Description="Optional. How e-mails greet the person (\"Hi {salutation},\"), e.g. \"Rūta\". Stored as the display name. When empty the full name is used. The user may change it when finishing.")
+    public salutation?: string;
 
     /** @description Database integration id. Optional — defaults to the request environment's default integration. */
     // @DataMember
@@ -3051,19 +3290,29 @@ export module CodeMashApi2 {
     // @ApiMember(Description="The user's password. Validated against the project's complexity policy.", IsRequired=true)
     public password: string;
 
-    /** @description Optional display name. */
+    /** @description Optional. The user's full name; replaces the one the admin entered (full name, first name = first word, last name = the rest). Empty = keep the admin's. */
     // @DataMember
-    // @ApiMember(Description="Optional display name.")
+    // @ApiMember(Description="Optional. The user's full name; replaces the one the admin entered (full name, first name = first word, last name = the rest). Empty = keep the admin's.")
+    public fullName?: string;
+
+    /** @description Optional. How e-mails greet the user (stored as the display name). Empty = keep the admin's, or the full name when the admin gave none. */
+    // @DataMember
+    // @ApiMember(Description="Optional. How e-mails greet the user (stored as the display name). Empty = keep the admin's, or the full name when the admin gave none.")
+    public salutation?: string;
+
+    /** @description Optional. Older form of Salutation (the display name); Salutation wins when both are sent. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Older form of Salutation (the display name); Salutation wins when both are sent.")
     public displayName?: string;
 
-    /** @description Optional first name. */
+    /** @description Optional first name; wins over the one taken from FullName. */
     // @DataMember
-    // @ApiMember(Description="Optional first name.")
+    // @ApiMember(Description="Optional first name; wins over the one taken from FullName.")
     public firstName?: string;
 
-    /** @description Optional last name. */
+    /** @description Optional last name; wins over the one taken from FullName. */
     // @DataMember
-    // @ApiMember(Description="Optional last name.")
+    // @ApiMember(Description="Optional last name; wins over the one taken from FullName.")
     public lastName?: string;
 
     public constructor(init?: Partial<FinishInvitationRequest>) {
@@ -3913,7 +4162,9 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
+    /** @description The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…). */
     // @DataMember
+    // @ApiMember(Description="The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…).", IsRequired=true)
     public taxonomyName: string;
 
     // @DataMember
@@ -3981,7 +4232,9 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
+    /** @description The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…). */
     // @DataMember
+    // @ApiMember(Description="The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…).", IsRequired=true)
     public taxonomyName: string;
 
     // @DataMember
@@ -4024,7 +4277,9 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
+    /** @description The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…). */
     // @DataMember
+    // @ApiMember(Description="The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…).", IsRequired=true)
     public taxonomyName: string;
 
     // @DataMember
@@ -4067,7 +4322,9 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
+    /** @description The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…). */
     // @DataMember
+    // @ApiMember(Description="The taxonomy: its name (slug or title; URL-encode spaces) or its id (txn_…).", IsRequired=true)
     public taxonomyName: string;
 
     // @DataMember
@@ -5080,8 +5337,8 @@ export module CodeMashApi2 {
     extends CodeMashRequestBase
     implements IReturn<IdResponse>
   {
-    /** @description Who issued the token: expo (getExpoPushTokenAsync), fcm (Android / Firebase) or apns (iOS). */
-    // @ApiMember(Description="Who issued the token: expo (getExpoPushTokenAsync), fcm (Android / Firebase) or apns (iOS).", IsRequired=true)
+    /** @description Who issued the token: fcm (Android / Firebase) or apns (iOS). The NATIVE device token — in an Expo app use getDevicePushTokenAsync(). Expo push tokens (provider 'expo') are refused. */
+    // @ApiMember(Description="Who issued the token: fcm (Android / Firebase) or apns (iOS). The NATIVE device token — in an Expo app use getDevicePushTokenAsync(). Expo push tokens (provider 'expo') are refused.", IsRequired=true)
     public provider: string;
 
     /** @description The push token, exactly as the provider gave it. */
@@ -5286,6 +5543,247 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Stores a payment order with a fixed price for one of the project's users. Server only (service user API key). */
+  // @Route("/{version}/payments/orders", "POST")
+  // @Api(Description="Stores a payment order with a fixed price for one of the project's users. Server only (service user API key).")
+  export class CreatePaymentOrderRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    /** @description The user the order is for (usr_…). */
+    // @ApiMember(Description="The user the order is for (usr_…).", IsRequired=true)
+    public buyerUserId: string;
+
+    /** @description The project's own order reference, unique per project and environment (1–64 of A–Z a–z 0–9 . _ : -). */
+    // @ApiMember(Description="The project's own order reference, unique per project and environment (1–64 of A–Z a–z 0–9 . _ : -).", IsRequired=true)
+    public merchantReference: string;
+
+    /** @description 8–128 characters. Same key + same body = the stored order; same key + other body = 409. May be sent as the Idempotency-Key header instead. */
+    // @ApiMember(Description="8–128 characters. Same key + same body = the stored order; same key + other body = 409. May be sent as the Idempotency-Key header instead.")
+    public idempotencyKey?: string;
+
+    /** @description EUR. */
+    // @ApiMember(Description="EUR.", IsRequired=true)
+    public currency: string;
+
+    /** @description The version of the price list the server priced the lines with. */
+    // @ApiMember(Description="The version of the price list the server priced the lines with.", IsRequired=true)
+    public priceVersion: string;
+
+    /** @description 1–50 lines: sku, title, quantity, unitAmountMinor (cents). Norbix computes the amounts and the total. */
+    // @ApiMember(Description="1–50 lines: sku, title, quantity, unitAmountMinor (cents). Norbix computes the amounts and the total.", IsRequired=true)
+    public lines: PaymentOrderLineInput[] = [];
+
+    /** @description Up to 20 project values (e.g. adId). No personal or billing data. */
+    // @ApiMember(Description="Up to 20 project values (e.g. adId). No personal or billing data.")
+    public metadata?: { [index: string]: string };
+
+    public constructor(init?: Partial<CreatePaymentOrderRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreatePaymentOrderRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Reads one payment order. A buyer reads only their own orders. */
+  // @Route("/{version}/payments/orders/{Id}", "GET")
+  // @Api(Description="Reads one payment order. A buyer reads only their own orders.")
+  export class GetPaymentOrderRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetPaymentOrderResponse>
+  {
+    /** @description The order id (ord_…). */
+    // @ApiMember(Description="The order id (ord_…).", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetPaymentOrderRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPaymentOrderRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPaymentOrderResponse();
+    }
+  }
+
+  /** @description Lists payment orders, newest first. A buyer gets only their own orders. */
+  // @Route("/{version}/payments/orders", "GET")
+  // @Api(Description="Lists payment orders, newest first. A buyer gets only their own orders.")
+  export class GetPaymentOrdersRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPaymentOrdersResponse>
+  {
+    /** @description Server only: one buyer's orders (usr_…). A buyer always gets their own. */
+    // @ApiMember(Description="Server only: one buyer's orders (usr_…). A buyer always gets their own.")
+    public buyerUserId?: string;
+
+    /** @description Only the order with this merchant reference. */
+    // @ApiMember(Description="Only the order with this merchant reference.")
+    public merchantReference?: string;
+
+    /** @description Only orders in this status (Created, CheckoutStarted, Paid, …). */
+    // @ApiMember(Description="Only orders in this status (Created, CheckoutStarted, Paid, …).")
+    public status?: string;
+
+    public constructor(init?: Partial<GetPaymentOrdersRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPaymentOrdersRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPaymentOrdersResponse();
+    }
+  }
+
+  /** @description Opens a Montonio checkout for a stored order and answers where the buyer pays. The buyer (own order) or the server. */
+  // @Route("/{version}/payments/orders/{Id}/checkout", "POST")
+  // @Api(Description="Opens a Montonio checkout for a stored order and answers where the buyer pays. The buyer (own order) or the server.")
+  export class StartPaymentCheckoutRequest
+    extends CodeMashRequestBase
+    implements IReturn<StartPaymentCheckoutResponse>
+  {
+    /** @description The order id (ord_…). */
+    // @ApiMember(Description="The order id (ord_…).", IsRequired=true)
+    public id: string;
+
+    /** @description The Montonio integration (int_…) of the project in the request's environment. */
+    // @ApiMember(Description="The Montonio integration (int_…) of the project in the request's environment.", IsRequired=true)
+    public integrationId: string;
+
+    /** @description bankLink (default), card, applePay or googlePay. */
+    // @ApiMember(Description="bankLink (default), card, applePay or googlePay.")
+    public method?: string;
+
+    /** @description Where the buyer comes back after paying; its origin must be one of the project's allowed origins. */
+    // @ApiMember(Description="Where the buyer comes back after paying; its origin must be one of the project's allowed origins.", IsRequired=true)
+    public returnUrl: string;
+
+    /** @description Bank links only: the country whose banks are shown first (default LT). */
+    // @ApiMember(Description="Bank links only: the country whose banks are shown first (default LT).")
+    public preferredCountry?: string;
+
+    /** @description Bank links only: one bank to open directly (the provider's bank code). */
+    // @ApiMember(Description="Bank links only: one bank to open directly (the provider's bank code).")
+    public preferredProvider?: string;
+
+    public constructor(init?: Partial<StartPaymentCheckoutRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartPaymentCheckoutRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartPaymentCheckoutResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox", "GET")
+  export class GetNotificationInboxRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetNotificationInboxResponse>
+  {
+    public unreadOnly: boolean;
+    public channel?: string;
+
+    public constructor(init?: Partial<GetNotificationInboxRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetNotificationInboxRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetNotificationInboxResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/unread-count", "GET")
+  export class GetUnreadCountRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetUnreadCountResponse>
+  {
+    public constructor(init?: Partial<GetUnreadCountRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetUnreadCountRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetUnreadCountResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/{notificationId}/read", "POST")
+  export class MarkNotificationReadRequest
+    extends CodeMashRequestBase
+    implements IReturn<MarkNotificationReadResponse>
+  {
+    public notificationId: string;
+
+    public constructor(init?: Partial<MarkNotificationReadRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MarkNotificationReadRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new MarkNotificationReadResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/read-all", "POST")
+  export class MarkAllNotificationsReadRequest
+    extends CodeMashRequestBase
+    implements IReturn<MarkAllNotificationsReadResponse>
+  {
+    public constructor(init?: Partial<MarkAllNotificationsReadRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MarkAllNotificationsReadRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new MarkAllNotificationsReadResponse();
     }
   }
 

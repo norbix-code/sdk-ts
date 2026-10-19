@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-14 16:40:18
+Date: 2026-10-19 10:55:03
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -357,6 +357,9 @@ export module CodeMashHub2 {
     OnInserted = 'OnInserted',
     OnDeleted = 'OnDeleted',
     OnUpdated = 'OnUpdated',
+    OnInsertedMany = 'OnInsertedMany',
+    OnUpdatedMany = 'OnUpdatedMany',
+    OnDeletedMany = 'OnDeletedMany',
   }
 
   export class SchemaTriggerRequest extends SaveTriggerRequest {
@@ -391,6 +394,7 @@ export module CodeMashHub2 {
     OnOrderCreated = 'OnOrderCreated',
     OnOrderPaid = 'OnOrderPaid',
     OnWebhookCallReceived = 'OnWebhookCallReceived',
+    OnOrderPaymentChanged = 'OnOrderPaymentChanged',
   }
 
   export class PaymentTriggerRequest extends SaveTriggerRequest {
@@ -973,6 +977,7 @@ export module CodeMashHub2 {
     CheckOutCom = 'CheckOutCom',
     Mollie = 'Mollie',
     Worldpay = 'Worldpay',
+    Montonio = 'Montonio',
   }
 
   export class PaymentIntegrationRequest {
@@ -1094,6 +1099,104 @@ export module CodeMashHub2 {
     public webhookPackageName?: string;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MontonioPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public accessKey: string;
+    public secretKey: string;
+    public isSandbox: boolean;
+    public locale?: string;
+
+    public constructor(init?: Partial<MontonioPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ShopifyPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public shopDomain: string;
+    public webhookSecret: string;
+
+    public constructor(init?: Partial<ShopifyPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class WooCommercePaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public storeUrl: string;
+    public webhookSecret: string;
+
+    public constructor(init?: Partial<WooCommercePaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MagentoPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public storeUrl: string;
+    public webhookSecret: string;
+
+    public constructor(init?: Partial<MagentoPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BraintreePaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public merchantId: string;
+    public environment: string;
+    public privateKey: string;
+    public webhookSecret?: string;
+
+    public constructor(init?: Partial<BraintreePaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AuthorizeNetPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public merchantLoginId: string;
+    public environment: string;
+    public transactionKey: string;
+    public webhookSignatureKey?: string;
+
+    public constructor(init?: Partial<AuthorizeNetPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CheckOutComPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public merchantAccount: string;
+    public environment: string;
+    public secretKey: string;
+    public webhookSecret?: string;
+
+    public constructor(init?: Partial<CheckOutComPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class WorldpayPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public merchantCode: string;
+    public environment: string;
+    public apiKey: string;
+    public webhookSecret?: string;
+
+    public constructor(init?: Partial<WorldpayPaymentIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -2901,6 +3004,180 @@ export module CodeMashHub2 {
     }
   }
 
+  export class MontonioPaymentIntegrationDto extends PaymentsIntegrationDto {
+    public accessKey: string;
+    public isSandbox: boolean;
+    public locale?: string;
+
+    public constructor(init?: Partial<MontonioPaymentIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderLineDto {
+    // @DataMember
+    public sku: string;
+
+    // @DataMember
+    public title: string;
+
+    // @DataMember
+    public quantity: number;
+
+    // @DataMember
+    public unitAmountMinor: number;
+
+    // @DataMember
+    public amountMinor: number;
+
+    public constructor(init?: Partial<PaymentOrderLineDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderCheckoutDto {
+    // @DataMember
+    public attempt: number;
+
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerOrderId: string;
+
+    // @DataMember
+    public providerReference: string;
+
+    // @DataMember
+    public paymentUrl: string;
+
+    // @DataMember
+    public method: string;
+
+    // @DataMember
+    public startedOnUtc: string;
+
+    // @DataMember
+    public expiresAtUtc: string;
+
+    public constructor(init?: Partial<PaymentOrderCheckoutDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public buyerUserId: string;
+
+    // @DataMember
+    public merchantReference: string;
+
+    // @DataMember
+    public currency: string;
+
+    // @DataMember
+    public priceVersion: string;
+
+    // @DataMember
+    public lines: PaymentOrderLineDto[] = [];
+
+    // @DataMember
+    public totalMinor: number;
+
+    // @DataMember
+    public metadata: { [index: string]: string } = {};
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public createdOnUtc: string;
+
+    // @DataMember
+    public updatedOnUtc: string;
+
+    // @DataMember
+    public checkouts: PaymentOrderCheckoutDto[] = [];
+
+    // @DataMember
+    public settledMinor?: number;
+
+    // @DataMember
+    public refundedMinor: number;
+
+    // @DataMember
+    public paidOnUtc?: string;
+
+    // @DataMember
+    public providerPaymentId?: string;
+
+    // @DataMember
+    public mismatches: string[] = [];
+
+    public constructor(init?: Partial<PaymentOrderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentEventDto {
+    public integrationId: string;
+    public provider: string;
+    public providerEventId: string;
+    public orderId?: string;
+    public eventName: string;
+    public status: string;
+    public amountMinor?: number;
+    public currency?: string;
+    public externalIds?: { [index: string]: string };
+    public occurredOn?: string;
+    public receivedOn: string;
+
+    public constructor(init?: Partial<PaymentEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PaymentOrderEventDto {
+    // @DataMember
+    public orderEventId: string;
+
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public from: string;
+
+    // @DataMember
+    public to: string;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public order: PaymentOrderDto;
+
+    // @DataMember
+    public payment: PaymentEventDto;
+
+    public constructor(init?: Partial<PaymentOrderEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class MembershipIntegrationDto extends IntegrationDto {
     public provider: MembershipProvider;
 
@@ -3627,6 +3904,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public updatedAtUnix?: number;
+
+    // @DataMember
+    public endsAtUnix?: number;
+
+    // @DataMember
+    public hasEnded: boolean;
 
     // @DataMember
     public isFailing: boolean;
@@ -4650,6 +4933,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class DatabaseRecordsBatchDto {
+    // @DataMember
+    public ids: string[] = [];
+
+    // @DataMember
+    public count: number;
+
+    // @DataMember
+    public truncated: boolean;
+
+    // @DataMember
+    public documents?: { [index: string]: Object }[];
+
+    public constructor(init?: Partial<DatabaseRecordsBatchDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class DatabaseRecordChangeDto {
     // @DataMember
     public collection: string;
@@ -4677,6 +4979,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public newRef?: DocumentRefDto;
+
+    // @DataMember
+    public records?: DatabaseRecordsBatchDto;
 
     public constructor(init?: Partial<DatabaseRecordChangeDto>) {
       (Object as any).assign(this, init);
@@ -4725,6 +5030,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public providerEventId: string;
+
+    // @DataMember
+    public orderId?: string;
 
     // @DataMember
     public eventName: string;
@@ -4813,6 +5121,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public payment?: PaymentFactDto;
+
+    // @DataMember
+    public order?: PaymentOrderEventDto;
 
     // @DataMember
     public ai?: AiUsageEventDto;
@@ -5619,6 +5930,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class SchemaUniqueIndexDto {
+    // @DataMember
+    public fields: string[] = [];
+
+    public constructor(init?: Partial<SchemaUniqueIndexDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class SchemaSettingsDto {
     // @DataMember
     public softDelete: boolean;
@@ -5628,6 +5948,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public description?: string;
+
+    // @DataMember
+    public uniqueIndexes?: SchemaUniqueIndexDto[];
 
     public constructor(init?: Partial<SchemaSettingsDto>) {
       (Object as any).assign(this, init);
@@ -5685,6 +6008,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public defaultSort?: SchemaListSortDto;
+
+    // @DataMember
+    public filters: string[] = [];
 
     public constructor(init?: Partial<SchemaListSettingsDto>) {
       (Object as any).assign(this, init);
@@ -5904,6 +6230,8 @@ export module CodeMashHub2 {
     }
   }
 
+  export interface INoSessionCookies {}
+
   export enum EmbeddingProvider {
     Voyage = 'Voyage',
     OpenAI = 'OpenAI',
@@ -6096,6 +6424,17 @@ export module CodeMashHub2 {
     }
   }
 
+  export class TriggerActivationTestProblem {
+    public code: string;
+    public message: string;
+    public line: number;
+    public column: number;
+
+    public constructor(init?: Partial<TriggerActivationTestProblem>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class AccountOwnerDto {
     // @DataMember
@@ -6280,6 +6619,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class PromotionTermChangeDto {
+    // @DataMember
+    public taxonomyId: string;
+
+    // @DataMember
+    public termId: string;
+
+    // @DataMember
+    public slug?: string;
+
+    // @DataMember
+    public change: string;
+
+    public constructor(init?: Partial<PromotionTermChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class PromotionResultDto {
     // @DataMember
     public contentMirrored: PromotionItemDto[] = [];
@@ -6298,6 +6656,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public blockers: PromotionBlockerDto[] = [];
+
+    // @DataMember
+    public termChanges: PromotionTermChangeDto[] = [];
+
+    // @DataMember
+    public warnings: PromotionBlockerDto[] = [];
 
     // @DataMember
     public fromVersion?: number;
@@ -7049,6 +7413,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public additionalRegions?: ProjectRegionDto[];
+
+    // @DataMember
+    public modulesCount: number;
+
+    // @DataMember
+    public usersCount: number;
 
     public constructor(init?: Partial<ProjectListItemDto>) {
       (Object as any).assign(this, init);
@@ -8182,6 +8552,9 @@ export module CodeMashHub2 {
     public description?: string;
 
     // @DataMember
+    public env?: string;
+
+    // @DataMember
     public termsMetaDataSchema?: DataSchemaDto;
 
     // @DataMember
@@ -8231,6 +8604,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public dependencyRefs?: TaxonomyRef[];
+
+    // @DataMember
+    public env?: string;
 
     public constructor(init?: Partial<TaxonomyListProjection>) {
       (Object as any).assign(this, init);
@@ -8360,6 +8736,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public meta?: Object;
+
+    // @DataMember
+    public origin?: string;
 
     public constructor(init?: Partial<TermDto>) {
       (Object as any).assign(this, init);
@@ -9412,6 +9791,9 @@ export module CodeMashHub2 {
     // @DataMember
     public content?: EmailMessageContentDto;
 
+    // @DataMember
+    public transactionalKind?: string;
+
     public constructor(init?: Partial<EmailCampaignBatchNotificationDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -10187,6 +10569,23 @@ export module CodeMashHub2 {
     }
   }
 
+  export class InAppNotificationDto {
+    public id: string;
+    public projectId: string;
+    public userId: string;
+    public channel: string;
+    public eventName: string;
+    public payloadJson?: string;
+    public isRead: boolean;
+    public seenAtUtc?: string;
+    public readAtUtc?: string;
+    public createdAtUtc: string;
+
+    public constructor(init?: Partial<InAppNotificationDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class PaymentsWebhookLogEntry {
     public integrationId: string;
     public source: string;
@@ -10948,6 +11347,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public lastFailedAtUnix?: number;
+
+    // @DataMember
+    public endsAtUnix?: number;
+
+    // @DataMember
+    public hasEnded: boolean;
 
     // @DataMember
     public viewId: string;
@@ -11778,11 +12183,39 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class GetTriggerDefinitionResponse extends ResponseBase {
+    // @DataMember
+    public trigger?: SaveTriggerRequest;
+
+    public constructor(init?: Partial<GetTriggerDefinitionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class GetTriggersNeedingAttentionResponse extends ResponseBase {
     // @DataMember
     public items: TriggerAttentionDto[] = [];
 
     public constructor(init?: Partial<GetTriggersNeedingAttentionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TestTriggerPreExecuteCodeResponse extends ResponseBase {
+    // @DataMember
+    public outcome: string;
+
+    // @DataMember
+    public triggerRuns: boolean;
+
+    // @DataMember
+    public problems: TriggerActivationTestProblem[] = [];
+
+    public constructor(init?: Partial<TestTriggerPreExecuteCodeResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13638,6 +14071,38 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetNotificationInboxResponse extends ResponseBase {
+    public list?: PaginatedResponse<InAppNotificationDto>;
+
+    public constructor(init?: Partial<GetNotificationInboxResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetUnreadCountResponse extends ResponseBase {
+    public count: number;
+
+    public constructor(init?: Partial<GetUnreadCountResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MarkNotificationReadResponse extends ResponseBase {
+    public constructor(init?: Partial<MarkNotificationReadResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class MarkAllNotificationsReadResponse extends ResponseBase {
+    public constructor(init?: Partial<MarkAllNotificationsReadResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetPaymentsWebhookLogResponse extends ResponseBase {
     public list?: IReadOnlyList<PaymentsWebhookLogEntry>;
 
@@ -15222,6 +15687,14 @@ export module CodeMashHub2 {
     public typegen_53_StripePaymentIntegrationRequest?: StripePaymentIntegrationRequest;
     public typegen_54_AppleInAppPaymentIntegrationRequest?: AppleInAppPaymentIntegrationRequest;
     public typegen_55_GoogleInAppPaymentIntegrationRequest?: GoogleInAppPaymentIntegrationRequest;
+    public typegen_285_MontonioPaymentIntegrationRequest?: MontonioPaymentIntegrationRequest;
+    public typegen_287_ShopifyPaymentIntegrationRequest?: ShopifyPaymentIntegrationRequest;
+    public typegen_288_WooCommercePaymentIntegrationRequest?: WooCommercePaymentIntegrationRequest;
+    public typegen_289_MagentoPaymentIntegrationRequest?: MagentoPaymentIntegrationRequest;
+    public typegen_290_BraintreePaymentIntegrationRequest?: BraintreePaymentIntegrationRequest;
+    public typegen_291_AuthorizeNetPaymentIntegrationRequest?: AuthorizeNetPaymentIntegrationRequest;
+    public typegen_292_CheckOutComPaymentIntegrationRequest?: CheckOutComPaymentIntegrationRequest;
+    public typegen_293_WorldpayPaymentIntegrationRequest?: WorldpayPaymentIntegrationRequest;
     public typegen_56_EdgeWebPushIntegrationRequest?: EdgeWebPushIntegrationRequest;
     public typegen_57_ChromePluginPushIntegrationRequest?: ChromePluginPushIntegrationRequest;
     public typegen_58_SafariPushIntegrationRequest?: SafariPushIntegrationRequest;
@@ -15305,6 +15778,8 @@ export module CodeMashHub2 {
     public typegen_188_AuthorizeNetPaymentIntegrationDto?: AuthorizeNetPaymentIntegrationDto;
     public typegen_189_CheckOutComPaymentIntegrationDto?: CheckOutComPaymentIntegrationDto;
     public typegen_190_WorldpayPaymentIntegrationDto?: WorldpayPaymentIntegrationDto;
+    public typegen_286_MontonioPaymentIntegrationDto?: MontonioPaymentIntegrationDto;
+    public typegen_294_PaymentOrderEventDto?: PaymentOrderEventDto;
     public typegen_128_AppleSignInMembershipIntegrationDto?: AppleSignInMembershipIntegrationDto;
     public typegen_129_GitHubMembershipIntegrationDto?: GitHubMembershipIntegrationDto;
     public typegen_130_GoogleMembershipIntegrationDto?: GoogleMembershipIntegrationDto;
@@ -15557,6 +16032,44 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Get one trigger in the shape its save takes (read → change → save) */
+  // @Route("/{version}/triggers/{id}/definition", "GET")
+  // @Api(Description="Get one trigger in the shape its save takes (read → change → save)")
+  // @DataContract
+  export class GetTriggerDefinition
+    extends CodeMashRequestBase
+    implements IReturn<GetTriggerDefinitionResponse>
+  {
+    /** @description The trigger id (trg_…). */
+    // @DataMember
+    // @ApiMember(Description="The trigger id (trg_…).", IsRequired=true)
+    public id: string;
+
+    /** @description Which module the trigger belongs to: Schema, Membership, Files, Payments or Ai. */
+    // @DataMember
+    // @ApiMember(Description="Which module the trigger belongs to: Schema, Membership, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    /** @description The collection (schema) id the trigger watches. Required for Schema triggers. */
+    // @DataMember
+    // @ApiMember(Description="The collection (schema) id the trigger watches. Required for Schema triggers.")
+    public schemaId?: string;
+
+    public constructor(init?: Partial<GetTriggerDefinition>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTriggerDefinition';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetTriggerDefinitionResponse();
+    }
+  }
+
   /** @description Get triggers that need attention */
   // @Route("/{version}/triggers/attention", "GET")
   // @Api(Description="Get triggers that need attention")
@@ -15582,6 +16095,59 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetTriggersNeedingAttentionResponse();
+    }
+  }
+
+  /** @description Test a trigger's pre-action code against a sample record */
+  // @Route("/{version}/triggers/pre-execute-code/test", "POST")
+  // @Api(Description="Test a trigger's pre-action code against a sample record")
+  // @DataContract
+  export class TestTriggerPreExecuteCode
+    extends CodeMashRequestBase
+    implements IReturn<TestTriggerPreExecuteCodeResponse>
+  {
+    /** @description The code to test, as saved in preExecuteCode: C# statements ending in 'return true;' or 'return false;', e.g. 'return New.status == "published";'. */
+    // @DataMember
+    // @ApiMember(Description="The code to test, as saved in preExecuteCode: C# statements ending in 'return true;' or 'return false;', e.g. 'return New.status == \"published\";'.", IsRequired=true)
+    public code: string;
+
+    /** @description Which kind of trigger the code is for: Schema, Membership, Files, Payments or Ai. */
+    // @DataMember
+    // @ApiMember(Description="Which kind of trigger the code is for: Schema, Membership, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    /** @description The sample record AFTER the change (the code's New), as a JSON object. Omit = empty (a delete). */
+    // @DataMember
+    // @ApiMember(Description="The sample record AFTER the change (the code's New), as a JSON object. Omit = empty (a delete).")
+    public newRecord?: string;
+
+    /** @description The sample record BEFORE the change (the code's Old), as a JSON object. Omit = empty (an insert). */
+    // @DataMember
+    // @ApiMember(Description="The sample record BEFORE the change (the code's Old), as a JSON object. Omit = empty (an insert).")
+    public oldRecord?: string;
+
+    /** @description What the code sees as Event.Kind: Inserted, Updated, Deleted or Other. Omit = Updated when both records are given, Inserted when only newRecord, Deleted when only oldRecord. */
+    // @DataMember
+    // @ApiMember(Description="What the code sees as Event.Kind: Inserted, Updated, Deleted or Other. Omit = Updated when both records are given, Inserted when only newRecord, Deleted when only oldRecord.")
+    public eventKind?: string;
+
+    /** @description What the code sees as Event.Name, e.g. database.record.updated. Optional. */
+    // @DataMember
+    // @ApiMember(Description="What the code sees as Event.Name, e.g. database.record.updated. Optional.")
+    public eventName?: string;
+
+    public constructor(init?: Partial<TestTriggerPreExecuteCode>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TestTriggerPreExecuteCode';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new TestTriggerPreExecuteCodeResponse();
     }
   }
 
@@ -18149,6 +18715,31 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/ai/service-users/{Id}", "PUT")
+  export class UpdateAiServiceUserRequest extends RequestBase implements IReturn<EmptyResponse> {
+    /** @description The service user id (aisu_…). */
+    // @ApiMember(Description="The service user id (aisu_…).", IsRequired=true)
+    public id: string;
+
+    /** @description The new name, unique in the account, e.g. "Claude Code on my laptop". */
+    // @ApiMember(Description="The new name, unique in the account, e.g. \"Claude Code on my laptop\".", IsRequired=true)
+    public name: string;
+
+    public constructor(init?: Partial<UpdateAiServiceUserRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateAiServiceUserRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/ai/service-users/{Id}", "DELETE")
   export class DeleteAiServiceUserRequest extends RequestBase implements IReturn<EmptyResponse> {
     /** @description The service user id (aisu_…). */
@@ -19534,9 +20125,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EmptyResponse>
   {
-    /** @description Taxonomy id that owns the term, from get_database_taxonomies. */
+    /** @description Taxonomy id that owns the term, from get_database_taxonomies — or the taxonomy name (slug or title). */
     // @DataMember
-    // @ApiMember(Description="Taxonomy id that owns the term, from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy id that owns the term, from get_database_taxonomies — or the taxonomy name (slug or title).", IsRequired=true)
     public taxonomyId: string;
 
     /** @description Term id to delete, from get_database_taxonomy_term_tree. */
@@ -19572,9 +20163,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EmptyResponse>
   {
-    /** @description Taxonomy id whose terms to delete, from get_database_taxonomies. */
+    /** @description Taxonomy id whose terms to delete, from get_database_taxonomies — or the taxonomy name (slug or title). */
     // @DataMember
-    // @ApiMember(Description="Taxonomy id whose terms to delete, from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy id whose terms to delete, from get_database_taxonomies — or the taxonomy name (slug or title).", IsRequired=true)
     public taxonomyId: string;
 
     /** @description Optional database integration id. When omitted, the project's default database integration is used. */
@@ -19615,9 +20206,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
-    /** @description Taxonomy id from get_database_taxonomies. */
+    /** @description Taxonomy id from get_database_taxonomies — or the taxonomy name (slug or title). */
     // @DataMember
-    // @ApiMember(Description="Taxonomy id from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy id from get_database_taxonomies — or the taxonomy name (slug or title).", IsRequired=true)
     public taxonomyId: string;
 
     /** @description Term id from get_database_taxonomy_term_tree. */
@@ -19658,9 +20249,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
-    /** @description Root taxonomy slug/name (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them. */
+    /** @description Root taxonomy slug/name or id, txn_… (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them. */
     // @DataMember
-    // @ApiMember(Description="Root taxonomy slug/name (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them.", IsRequired=true)
+    // @ApiMember(Description="Root taxonomy slug/name or id, txn_… (from get_database_taxonomies). Its terms are the roots; child-taxonomy terms nest under them.", IsRequired=true)
     public taxonomyName: string;
 
     /** @description Optional database integration id. When omitted, the project's default database integration is used. */
@@ -19696,9 +20287,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Set true to keep name / description as stored even when Accept-Language is sent (editors). The full translations are always in names / descriptions.")
     public allLanguages: boolean;
 
-    /** @description Taxonomy slug/name to fetch the term tree for, from get_database_taxonomies. */
+    /** @description Taxonomy slug/name (or its id, txn_…) to fetch the term tree for, from get_database_taxonomies. */
     // @DataMember
-    // @ApiMember(Description="Taxonomy slug/name to fetch the term tree for, from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy slug/name (or its id, txn_…) to fetch the term tree for, from get_database_taxonomies.", IsRequired=true)
     public taxonomyName: string;
 
     /** @description Optional term id to root the returned tree at a sub-tree instead of the whole taxonomy. */
@@ -19739,9 +20330,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<IdResponse>
   {
-    /** @description Taxonomy id to insert the term into, from get_database_taxonomies. */
+    /** @description Taxonomy id to insert the term into, from get_database_taxonomies — or the taxonomy name (slug or title). */
     // @DataMember
-    // @ApiMember(Description="Taxonomy id to insert the term into, from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy id to insert the term into, from get_database_taxonomies — or the taxonomy name (slug or title).", IsRequired=true)
     public taxonomyId: string;
 
     /** @description Optional database integration id. When omitted, the project's default database integration is used. */
@@ -19777,9 +20368,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EmptyResponse>
   {
-    /** @description Taxonomy id that owns the term, from get_database_taxonomies. */
+    /** @description Taxonomy id that owns the term, from get_database_taxonomies — or the taxonomy name (slug or title). */
     // @DataMember
-    // @ApiMember(Description="Taxonomy id that owns the term, from get_database_taxonomies.", IsRequired=true)
+    // @ApiMember(Description="Taxonomy id that owns the term, from get_database_taxonomies — or the taxonomy name (slug or title).", IsRequired=true)
     public taxonomyId: string;
 
     /** @description Term id to update, from get_database_taxonomy_term_tree. */
@@ -25417,9 +26008,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The push integration id to test. Get it from get_push_integrations.", IsRequired=true)
     public integrationId: string;
 
-    /** @description The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Fake integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily. */
+    /** @description The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Sandbox integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily. */
     // @DataMember
-    // @ApiMember(Description="The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Fake integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily.")
+    // @ApiMember(Description="The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Sandbox integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily.")
     public testToken?: string;
 
     /** @description The delivery family of TestToken: ios, android, chrome (any browser web push) or safari. Requires TestToken. */
@@ -25952,6 +26543,91 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetPushCampaignMessagesResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox", "GET")
+  export class GetNotificationInboxRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetNotificationInboxResponse>
+  {
+    public unreadOnly: boolean;
+    public channel?: string;
+
+    public constructor(init?: Partial<GetNotificationInboxRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetNotificationInboxRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetNotificationInboxResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/unread-count", "GET")
+  export class GetUnreadCountRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetUnreadCountResponse>
+  {
+    public constructor(init?: Partial<GetUnreadCountRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetUnreadCountRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetUnreadCountResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/{notificationId}/read", "POST")
+  export class MarkNotificationReadRequest
+    extends CodeMashRequestBase
+    implements IReturn<MarkNotificationReadResponse>
+  {
+    public notificationId: string;
+
+    public constructor(init?: Partial<MarkNotificationReadRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MarkNotificationReadRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new MarkNotificationReadResponse();
+    }
+  }
+
+  // @Route("/{version}/notifications/inbox/read-all", "POST")
+  export class MarkAllNotificationsReadRequest
+    extends CodeMashRequestBase
+    implements IReturn<MarkAllNotificationsReadResponse>
+  {
+    public constructor(init?: Partial<MarkAllNotificationsReadRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MarkAllNotificationsReadRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new MarkAllNotificationsReadResponse();
     }
   }
 
@@ -27547,7 +28223,7 @@ export module CodeMashHub2 {
   // @Api(Description="Starts a browser sign-in for the Norbix CLI (OAuth device authorization, RFC 8628): a device code for polling and a user code the person confirms on the dashboard.")
   export class AuthDeviceStartRequest
     extends RequestBase
-    implements IReturn<AuthDeviceStartResponse>
+    implements IReturn<AuthDeviceStartResponse>, INoSessionCookies
   {
     /** @description Who asks, shown on the dashboard, e.g. "norbix-cli". 1–80 printable characters. */
     // @ApiMember(Description="Who asks, shown on the dashboard, e.g. \"norbix-cli\". 1–80 printable characters.", IsRequired=true)
@@ -27581,7 +28257,7 @@ export module CodeMashHub2 {
   // @Api(Description="Polls a CLI browser sign-in (RFC 8628). Always HTTP 200: an error name (authorization_pending, slow_down, access_denied, expired_token, invalid_grant, invalid_request) or the tokens, once.")
   export class AuthDeviceTokenRequest
     extends RequestBase
-    implements IReturn<AuthDeviceTokenResponse>
+    implements IReturn<AuthDeviceTokenResponse>, INoSessionCookies
   {
     /** @description The deviceCode from POST /auth/device/start. */
     // @ApiMember(Description="The deviceCode from POST /auth/device/start.", IsRequired=true)
@@ -27670,7 +28346,7 @@ export module CodeMashHub2 {
   // @Route("/.well-known/oauth-protected-resource", "GET")
   // @Route("/.well-known/oauth-protected-resource/{Path*}", "GET")
   // @Api(Description="OAuth protected-resource metadata (RFC 9728) for the Hub MCP endpoint.")
-  export class OAuthProtectedResourceMetadataRequest implements IReturn<string> {
+  export class OAuthProtectedResourceMetadataRequest implements IReturn<string>, INoSessionCookies {
     public path?: string;
 
     public constructor(init?: Partial<OAuthProtectedResourceMetadataRequest>) {
@@ -27691,7 +28367,9 @@ export module CodeMashHub2 {
   // @Route("/.well-known/oauth-authorization-server", "GET")
   // @Route("/.well-known/oauth-authorization-server/{Path*}", "GET")
   // @Api(Description="OAuth authorization-server metadata (RFC 8414).")
-  export class OAuthAuthorizationServerMetadataRequest implements IReturn<string> {
+  export class OAuthAuthorizationServerMetadataRequest
+    implements IReturn<string>, INoSessionCookies
+  {
     public path?: string;
 
     public constructor(init?: Partial<OAuthAuthorizationServerMetadataRequest>) {
@@ -27711,7 +28389,7 @@ export module CodeMashHub2 {
   /** @description Registers an MCP client for OAuth (RFC 7591). Public clients only: PKCE, no secret. */
   // @Route("/{version}/oauth/register", "POST")
   // @Api(Description="Registers an MCP client for OAuth (RFC 7591). Public clients only: PKCE, no secret.")
-  export class OAuthRegisterRequest implements IReturn<string> {
+  export class OAuthRegisterRequest implements IReturn<string>, INoSessionCookies {
     public version?: string;
     public requestStream: string;
 
@@ -27732,7 +28410,7 @@ export module CodeMashHub2 {
   /** @description OAuth authorization endpoint: checks the request and redirects to the dashboard consent screen. */
   // @Route("/{version}/oauth/authorize", "GET")
   // @Api(Description="OAuth authorization endpoint: checks the request and redirects to the dashboard consent screen.")
-  export class OAuthAuthorizeRequest implements IReturn<string> {
+  export class OAuthAuthorizeRequest implements IReturn<string>, INoSessionCookies {
     public version?: string;
 
     public constructor(init?: Partial<OAuthAuthorizeRequest>) {
@@ -27873,7 +28551,7 @@ export module CodeMashHub2 {
   /** @description OAuth token endpoint: authorization code (PKCE S256) or refresh token → access token. */
   // @Route("/{version}/oauth/token", "POST")
   // @Api(Description="OAuth token endpoint: authorization code (PKCE S256) or refresh token → access token.")
-  export class OAuthTokenRequest implements IReturn<string> {
+  export class OAuthTokenRequest implements IReturn<string>, INoSessionCookies {
     public version?: string;
 
     public constructor(init?: Partial<OAuthTokenRequest>) {
@@ -27893,7 +28571,7 @@ export module CodeMashHub2 {
   /** @description OAuth token revocation (RFC 7009): revokes the grant behind a refresh or access token. */
   // @Route("/{version}/oauth/revoke", "POST")
   // @Api(Description="OAuth token revocation (RFC 7009): revokes the grant behind a refresh or access token.")
-  export class OAuthRevokeRequest implements IReturn<string> {
+  export class OAuthRevokeRequest implements IReturn<string>, INoSessionCookies {
     public version?: string;
 
     public constructor(init?: Partial<OAuthRevokeRequest>) {
@@ -28789,6 +29467,9 @@ export module CodeMashHub2 {
     public stopOnError: boolean;
 
     // @DataMember
+    public endsAtUnix?: number;
+
+    // @DataMember
     public task: SchedulerTaskRequest;
 
     public constructor(init?: Partial<SaveSchedulerTaskRequest>) {
@@ -28925,8 +29606,8 @@ export module CodeMashHub2 {
   // @Route("/{version}/membership/users/{contactId}", "GET")
   // @Api(Description="Get a contact")
   export class GetContact extends CodeMashRequestBase implements IReturn<GetContactResponse> {
-    /** @description The contact id (ct_…) to fetch. Get it from get_all_contacts. */
-    // @ApiMember(Description="The contact id (ct_…) to fetch. Get it from get_all_contacts.", IsRequired=true)
+    /** @description The contact id (ct_…) to fetch, or a login id (usr_…) — then the contact that owns that login is returned. Get it from get_all_contacts. */
+    // @ApiMember(Description="The contact id (ct_…) to fetch, or a login id (usr_…) — then the contact that owns that login is returned. Get it from get_all_contacts.", IsRequired=true)
     public contactId: string;
 
     public constructor(init?: Partial<GetContact>) {

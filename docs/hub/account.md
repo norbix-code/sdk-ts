@@ -107,6 +107,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`listAiServiceUsers`](#listaiserviceusers)                                   | `GET`    | `/{version}/account/ai/service-users`                                        | `project` |
 | [`rotateAiServiceUserKey`](#rotateaiserviceuserkey)                           | `POST`   | `/{version}/account/ai/service-users/{Id}/keys`                              | `project` |
 | [`revokeAiServiceUserKey`](#revokeaiserviceuserkey)                           | `DELETE` | `/{version}/account/ai/service-users/{Id}/keys/{KeyId}`                      | `project` |
+| [`updateAiServiceUser`](#updateaiserviceuser)                                 | `PUT`    | `/{version}/account/ai/service-users/{Id}`                                   | `project` |
 | [`deleteAiServiceUser`](#deleteaiserviceuser)                                 | `DELETE` | `/{version}/account/ai/service-users/{Id}`                                   | `project` |
 | [`getAgentOnboarding`](#getagentonboarding)                                   | `GET`    | `/{version}/account/agent/onboarding`                                        | `project` |
 | [`getAiContext`](#getaicontext)                                               | `GET`    | `/{version}/account/ai/context`                                              | `project` |
@@ -2272,6 +2273,29 @@ const norbix = new Norbix();
 const result = await norbix.hub.account.revokeAiServiceUserKey({
   Id: 'Id-here',
   KeyId: 'KeyId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateAiServiceUser
+
+`PUT` `/{version}/account/ai/service-users/{Id}`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateAiServiceUserRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateAiServiceUser({
+  Id: 'Id-here',
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse

@@ -1207,6 +1207,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetNotificationInboxRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetPasskeySettings": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1459,7 +1463,15 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetTriggerDefinition": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetTriggersNeedingAttention": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetUnreadCountRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1539,7 +1551,15 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "MarkAllNotificationsReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "MarkNeedsYouDoneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MarkNotificationReadRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2071,6 +2091,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "TestTriggerPreExecuteCode": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "UnArchiveEmailTemplateRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2092,6 +2116,10 @@
     "returnsBytes": false
   },
   "UpdateAccountRole": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateAiServiceUserRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

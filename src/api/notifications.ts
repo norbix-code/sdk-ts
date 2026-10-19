@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 7
+ * Endpoints: 11
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -136,6 +136,82 @@ export class NotificationsModule {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
       path: '/{version}/notifications/push/messages/read',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/inbox
+   * Request DTO: GetNotificationInboxRequest
+   */
+  getNotificationInbox = (
+    request: Partial<CodeMashApi2.GetNotificationInboxRequest> = {} as Partial<CodeMashApi2.GetNotificationInboxRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetNotificationInboxResponse> => {
+    return this.transport.send<CodeMashApi2.GetNotificationInboxResponse>({
+      target: 'api',
+      path: '/{version}/notifications/inbox',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/inbox/unread-count
+   * Request DTO: GetUnreadCountRequest
+   */
+  getUnreadCount = (
+    request: Partial<CodeMashApi2.GetUnreadCountRequest> = {} as Partial<CodeMashApi2.GetUnreadCountRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetUnreadCountResponse> => {
+    return this.transport.send<CodeMashApi2.GetUnreadCountResponse>({
+      target: 'api',
+      path: '/{version}/notifications/inbox/unread-count',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/inbox/{notificationId}/read
+   * Request DTO: MarkNotificationReadRequest
+   */
+  markNotificationRead = (
+    request: Partial<CodeMashApi2.MarkNotificationReadRequest> = {} as Partial<CodeMashApi2.MarkNotificationReadRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.MarkNotificationReadResponse> => {
+    return this.transport.send<CodeMashApi2.MarkNotificationReadResponse>({
+      target: 'api',
+      path: '/{version}/notifications/inbox/{notificationId}/read',
+      method: 'POST',
+      request,
+      pathParams: ['notificationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/inbox/read-all
+   * Request DTO: MarkAllNotificationsReadRequest
+   */
+  markAllNotificationsRead = (
+    request: Partial<CodeMashApi2.MarkAllNotificationsReadRequest> = {} as Partial<CodeMashApi2.MarkAllNotificationsReadRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.MarkAllNotificationsReadResponse> => {
+    return this.transport.send<CodeMashApi2.MarkAllNotificationsReadResponse>({
+      target: 'api',
+      path: '/{version}/notifications/inbox/read-all',
       method: 'POST',
       request,
       pathParams: [],
