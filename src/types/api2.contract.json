@@ -47,6 +47,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "CreatePaymentOrderRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DeleteEndUserChatAttachmentRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -175,11 +179,23 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetNotificationInboxRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetOwnPushDevicesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
   "GetOwnPushMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentOrderRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentOrdersRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -200,6 +216,10 @@
     "returnsBytes": false
   },
   "GetSignedUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetUnreadCountRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -267,7 +287,15 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "MarkAllNotificationsReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "MarkAllOwnPushMessagesReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MarkNotificationReadRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -384,6 +412,10 @@
     "returnsBytes": false
   },
   "StartEndUserChatTurnRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StartPaymentCheckoutRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

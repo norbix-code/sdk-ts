@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 121
+ * Endpoints: 122
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -1854,6 +1854,25 @@ export class AccountModule {
       method: 'DELETE',
       request,
       pathParams: ['Id', 'KeyId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/ai/service-users/{Id}
+   * Request DTO: UpdateAiServiceUserRequest
+   */
+  updateAiServiceUser = (
+    request: Partial<CodeMashHub2.UpdateAiServiceUserRequest> = {} as Partial<CodeMashHub2.UpdateAiServiceUserRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/ai/service-users/{Id}',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

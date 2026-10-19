@@ -130,6 +130,10 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`previewPushNotification`](#previewpushnotification)                           | `GET`    | `/{version}/notifications/push/preview`                                            | `project` |
 | [`stopPushCampaign`](#stoppushcampaign)                                         | `POST`   | `/{version}/notifications/push/campaigns/{Id}/stop`                                | `project` |
 | [`getPushCampaignMessages`](#getpushcampaignmessages)                           | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages`                    | `project` |
+| [`getNotificationInbox`](#getnotificationinbox)                                 | `GET`    | `/{version}/notifications/inbox`                                                   | `project` |
+| [`getUnreadCount`](#getunreadcount)                                             | `GET`    | `/{version}/notifications/inbox/unread-count`                                      | `project` |
+| [`markNotificationRead`](#marknotificationread)                                 | `POST`   | `/{version}/notifications/inbox/{notificationId}/read`                             | `project` |
+| [`markAllNotificationsRead`](#markallnotificationsread)                         | `POST`   | `/{version}/notifications/inbox/read-all`                                          | `project` |
 | [`getUserNotificationPreferences`](#getusernotificationpreferences)             | `GET`    | `/{version}/notifications/user/preferences`                                        | `project` |
 | [`updateUserNotificationsPreferences`](#updateusernotificationspreferences)     | `PUT`    | `/{version}/notifications/user/preferences`                                        | `project` |
 | [`grantContactConsent`](#grantcontactconsent)                                   | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`        | `project` |
@@ -2815,6 +2819,91 @@ const result = await norbix.hub.notifications.getPushCampaignMessages({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetPushCampaignMessagesResponse
+```
+
+[↑ Top](#endpoints)
+
+### getNotificationInbox
+
+`GET` `/{version}/notifications/inbox`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetNotificationInboxRequest`
+**Response**: `CodeMashHub2.GetNotificationInboxResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getNotificationInbox({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetNotificationInboxResponse
+```
+
+[↑ Top](#endpoints)
+
+### getUnreadCount
+
+`GET` `/{version}/notifications/inbox/unread-count`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetUnreadCountRequest`
+**Response**: `CodeMashHub2.GetUnreadCountResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getUnreadCount({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetUnreadCountResponse
+```
+
+[↑ Top](#endpoints)
+
+### markNotificationRead
+
+`POST` `/{version}/notifications/inbox/{notificationId}/read`
+
+**Request DTO**: `CodeMashHub2.MarkNotificationReadRequest`
+**Response**: `CodeMashHub2.MarkNotificationReadResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.markNotificationRead({
+  notificationId: 'notificationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.MarkNotificationReadResponse
+```
+
+[↑ Top](#endpoints)
+
+### markAllNotificationsRead
+
+`POST` `/{version}/notifications/inbox/read-all`
+
+**Request DTO**: `CodeMashHub2.MarkAllNotificationsReadRequest`
+**Response**: `CodeMashHub2.MarkAllNotificationsReadResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.markAllNotificationsRead({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.MarkAllNotificationsReadResponse
 ```
 
 [↑ Top](#endpoints)

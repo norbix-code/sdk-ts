@@ -4,7 +4,7 @@
 
 Project-scoped data operations: database collections, users, AI chat, auth, API keys.
 
-**112 endpoints across 10 modules.** Click a module
+**120 endpoints across 11 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -17,5 +17,6 @@ name for the full method reference and TypeScript examples.
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`files`](./files.md)                 |        14 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
 | [`membership`](./membership.md)       |        43 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
-| [`notifications`](./notifications.md) |         7 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`notifications`](./notifications.md) |        11 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`payments`](./payments.md)           |         4 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`public`](./public.md)               |         3 |                                                                                                                                          |

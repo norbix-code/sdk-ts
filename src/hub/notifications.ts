@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 124
+ * Endpoints: 128
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -2286,6 +2286,82 @@ export class NotificationsModule {
       method: 'GET',
       request,
       pathParams: ['campaignId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/inbox
+   * Request DTO: GetNotificationInboxRequest
+   */
+  getNotificationInbox = (
+    request: Partial<CodeMashHub2.GetNotificationInboxRequest> = {} as Partial<CodeMashHub2.GetNotificationInboxRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetNotificationInboxResponse> => {
+    return this.transport.send<CodeMashHub2.GetNotificationInboxResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/inbox',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/notifications/inbox/unread-count
+   * Request DTO: GetUnreadCountRequest
+   */
+  getUnreadCount = (
+    request: Partial<CodeMashHub2.GetUnreadCountRequest> = {} as Partial<CodeMashHub2.GetUnreadCountRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetUnreadCountResponse> => {
+    return this.transport.send<CodeMashHub2.GetUnreadCountResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/inbox/unread-count',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/inbox/{notificationId}/read
+   * Request DTO: MarkNotificationReadRequest
+   */
+  markNotificationRead = (
+    request: Partial<CodeMashHub2.MarkNotificationReadRequest> = {} as Partial<CodeMashHub2.MarkNotificationReadRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.MarkNotificationReadResponse> => {
+    return this.transport.send<CodeMashHub2.MarkNotificationReadResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/inbox/{notificationId}/read',
+      method: 'POST',
+      request,
+      pathParams: ['notificationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/inbox/read-all
+   * Request DTO: MarkAllNotificationsReadRequest
+   */
+  markAllNotificationsRead = (
+    request: Partial<CodeMashHub2.MarkAllNotificationsReadRequest> = {} as Partial<CodeMashHub2.MarkAllNotificationsReadRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.MarkAllNotificationsReadResponse> => {
+    return this.transport.send<CodeMashHub2.MarkAllNotificationsReadResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/inbox/read-all',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });
