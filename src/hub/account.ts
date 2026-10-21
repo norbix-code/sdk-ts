@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 122
+ * Endpoints: 128
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -405,6 +405,25 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.PromoteEnvironmentResponse>({
       target: 'hub',
       path: '/{version}/account/projects/environments/promote/rollback',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/projects/environments/built-ins/repair
+   * Request DTO: RepairEnvironmentBuiltInsRequest
+   */
+  repairEnvironmentBuiltIns = (
+    request: Partial<CodeMashHub2.RepairEnvironmentBuiltInsRequest> = {} as Partial<CodeMashHub2.RepairEnvironmentBuiltInsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RepairEnvironmentBuiltInsResponse> => {
+    return this.transport.send<CodeMashHub2.RepairEnvironmentBuiltInsResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/environments/built-ins/repair',
       method: 'POST',
       request,
       pathParams: [],
@@ -1366,6 +1385,44 @@ export class AccountModule {
   };
 
   /**
+   * DELETE /{version}/account/team/member/{MemberId}
+   * Request DTO: RemoveTeamMember
+   */
+  removeTeamMember = (
+    request: Partial<CodeMashHub2.RemoveTeamMember> = {} as Partial<CodeMashHub2.RemoveTeamMember>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/member/{MemberId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['MemberId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/team/member/role-environments
+   * Request DTO: SetTeamMemberRoleEnvironmentsRequest
+   */
+  setTeamMemberRoleEnvironments = (
+    request: Partial<CodeMashHub2.SetTeamMemberRoleEnvironmentsRequest> = {} as Partial<CodeMashHub2.SetTeamMemberRoleEnvironmentsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/member/role-environments',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/account/team/roles
    * Request DTO: GetAccountTeamRoles
    */
@@ -1396,6 +1453,63 @@ export class AccountModule {
       target: 'hub',
       path: '/{version}/account/team/member/invite',
       method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/team/invitations
+   * Request DTO: GetAccountTeamInvitations
+   */
+  getAccountTeamInvitations = (
+    request: Partial<CodeMashHub2.GetAccountTeamInvitations> = {} as Partial<CodeMashHub2.GetAccountTeamInvitations>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetAccountTeamInvitationsResponse> => {
+    return this.transport.send<CodeMashHub2.GetAccountTeamInvitationsResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/invitations',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/account/team/invitations/{InvitationId}
+   * Request DTO: CancelTeamInvitation
+   */
+  cancelTeamInvitation = (
+    request: Partial<CodeMashHub2.CancelTeamInvitation> = {} as Partial<CodeMashHub2.CancelTeamInvitation>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/invitations/{InvitationId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['InvitationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/team/member
+   * Request DTO: UpdateTeamMember
+   */
+  updateTeamMember = (
+    request: Partial<CodeMashHub2.UpdateTeamMember> = {} as Partial<CodeMashHub2.UpdateTeamMember>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/member',
+      method: 'PUT',
       request,
       pathParams: [],
       scope: 'project',

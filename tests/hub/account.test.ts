@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (122 endpoints).
+ * Tests for hub.account (128 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 122 method(s)', () => {
+  it('module exposes 128 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -50,6 +50,7 @@ describe('hub.account', () => {
     expect(typeof ns['setEnvironmentRank']).toBe('function');
     expect(typeof ns['promoteEnvironment']).toBe('function');
     expect(typeof ns['rollbackPromotion']).toBe('function');
+    expect(typeof ns['repairEnvironmentBuiltIns']).toBe('function');
     expect(typeof ns['getProjectEnvironments']).toBe('function');
     expect(typeof ns['getProject']).toBe('function');
     expect(typeof ns['getProjects']).toBe('function');
@@ -100,8 +101,13 @@ describe('hub.account', () => {
     expect(typeof ns['getAccountCollaborators']).toBe('function');
     expect(typeof ns['getAccountPasswordPolicy']).toBe('function');
     expect(typeof ns['getAccountTeamPolicies']).toBe('function');
+    expect(typeof ns['removeTeamMember']).toBe('function');
+    expect(typeof ns['setTeamMemberRoleEnvironments']).toBe('function');
     expect(typeof ns['getAccountTeamRoles']).toBe('function');
     expect(typeof ns['sendInviteToTeamMember']).toBe('function');
+    expect(typeof ns['getAccountTeamInvitations']).toBe('function');
+    expect(typeof ns['cancelTeamInvitation']).toBe('function');
+    expect(typeof ns['updateTeamMember']).toBe('function');
     expect(typeof ns['updateAccountPolicy']).toBe('function');
     expect(typeof ns['updateAccountRole']).toBe('function');
     expect(typeof ns['accountHasPasskey']).toBe('function');
@@ -640,6 +646,29 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['rollbackPromotion']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('repairEnvironmentBuiltIns: POST /{version}/account/projects/environments/built-ins/repair', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/projects/environments/built-ins/repair',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['repairEnvironmentBuiltIns']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
@@ -1816,6 +1845,52 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
+  it('removeTeamMember: DELETE /{version}/account/team/member/{MemberId}', async () => {
+    const stub = stubRequestForPath('/{version}/account/team/member/{MemberId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/member/{MemberId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['removeTeamMember']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('DELETE');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('setTeamMemberRoleEnvironments: PUT /{version}/account/team/member/role-environments', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/member/role-environments',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['setTeamMemberRoleEnvironments']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
   it('getAccountTeamRoles: GET /{version}/account/team/roles', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -1857,6 +1932,75 @@ describe('hub.account', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getAccountTeamInvitations: GET /{version}/account/team/invitations', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/invitations',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getAccountTeamInvitations']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('cancelTeamInvitation: DELETE /{version}/account/team/invitations/{InvitationId}', async () => {
+    const stub = stubRequestForPath('/{version}/account/team/invitations/{InvitationId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/invitations/{InvitationId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['cancelTeamInvitation']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('DELETE');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('updateTeamMember: PUT /{version}/account/team/member', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/member',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['updateTeamMember']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

@@ -31,6 +31,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`setEnvironmentRank`](#setenvironmentrank)                                   | `PATCH`  | `/{version}/account/projects/environments/{environmentName}/rank`            | `project` |
 | [`promoteEnvironment`](#promoteenvironment)                                   | `POST`   | `/{version}/account/projects/environments/promote`                           | `project` |
 | [`rollbackPromotion`](#rollbackpromotion)                                     | `POST`   | `/{version}/account/projects/environments/promote/rollback`                  | `project` |
+| [`repairEnvironmentBuiltIns`](#repairenvironmentbuiltins)                     | `POST`   | `/{version}/account/projects/environments/built-ins/repair`                  | `project` |
 | [`getProjectEnvironments`](#getprojectenvironments)                           | `GET`    | `/{version}/account/projects/environments`                                   | `project` |
 | [`getProject`](#getproject)                                                   | `GET`    | `/{version}/account/projects/{projectId}`                                    | `project` |
 | [`getProjects`](#getprojects)                                                 | `GET`    | `/{version}/account/projects`                                                | `project` |
@@ -81,8 +82,13 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getAccountCollaborators`](#getaccountcollaborators)                         | `GET`    | `/{version}/account/collaborators`                                           | `project` |
 | [`getAccountPasswordPolicy`](#getaccountpasswordpolicy)                       | `GET`    | `/{version}/account/team/password-policy`                                    | `project` |
 | [`getAccountTeamPolicies`](#getaccountteampolicies)                           | `GET`    | `/{version}/account/team/policies`                                           | `project` |
+| [`removeTeamMember`](#removeteammember)                                       | `DELETE` | `/{version}/account/team/member/{MemberId}`                                  | `project` |
+| [`setTeamMemberRoleEnvironments`](#setteammemberroleenvironments)             | `PUT`    | `/{version}/account/team/member/role-environments`                           | `project` |
 | [`getAccountTeamRoles`](#getaccountteamroles)                                 | `GET`    | `/{version}/account/team/roles`                                              | `project` |
 | [`sendInviteToTeamMember`](#sendinvitetoteammember)                           | `POST`   | `/{version}/account/team/member/invite`                                      | `project` |
+| [`getAccountTeamInvitations`](#getaccountteaminvitations)                     | `GET`    | `/{version}/account/team/invitations`                                        | `project` |
+| [`cancelTeamInvitation`](#cancelteaminvitation)                               | `DELETE` | `/{version}/account/team/invitations/{InvitationId}`                         | `project` |
+| [`updateTeamMember`](#updateteammember)                                       | `PUT`    | `/{version}/account/team/member`                                             | `project` |
 | [`updateAccountPolicy`](#updateaccountpolicy)                                 | `PUT`    | `/{version}/account/team/policies`                                           | `project` |
 | [`updateAccountRole`](#updateaccountrole)                                     | `PUT`    | `/{version}/account/team/roles`                                              | `project` |
 | [`accountHasPasskey`](#accounthaspasskey)                                     | `POST`   | `/{version}/account/userauth/has-passkey`                                    | `project` |
@@ -591,6 +597,26 @@ const result = await norbix.hub.account.rollbackPromotion({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.PromoteEnvironmentResponse
+```
+
+[↑ Top](#endpoints)
+
+### repairEnvironmentBuiltIns
+
+`POST` `/{version}/account/projects/environments/built-ins/repair`
+
+**Request DTO**: `CodeMashHub2.RepairEnvironmentBuiltInsRequest`
+**Response**: `CodeMashHub2.RepairEnvironmentBuiltInsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.repairEnvironmentBuiltIns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RepairEnvironmentBuiltInsResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1730,6 +1756,47 @@ const result = await norbix.hub.account.getAccountTeamPolicies({
 
 [↑ Top](#endpoints)
 
+### removeTeamMember
+
+`DELETE` `/{version}/account/team/member/{MemberId}`
+
+**Request DTO**: `CodeMashHub2.RemoveTeamMember`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.removeTeamMember({
+  MemberId: 'MemberId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### setTeamMemberRoleEnvironments
+
+`PUT` `/{version}/account/team/member/role-environments`
+
+**Request DTO**: `CodeMashHub2.SetTeamMemberRoleEnvironmentsRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.setTeamMemberRoleEnvironments({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getAccountTeamRoles
 
 `GET` `/{version}/account/team/roles`
@@ -1770,6 +1837,71 @@ const result = await norbix.hub.account.sendInviteToTeamMember({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAccountTeamInvitations
+
+`GET` `/{version}/account/team/invitations`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetAccountTeamInvitations`
+**Response**: `CodeMashHub2.GetAccountTeamInvitationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getAccountTeamInvitations({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetAccountTeamInvitationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### cancelTeamInvitation
+
+`DELETE` `/{version}/account/team/invitations/{InvitationId}`
+
+**Request DTO**: `CodeMashHub2.CancelTeamInvitation`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.cancelTeamInvitation({
+  InvitationId: 'InvitationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateTeamMember
+
+`PUT` `/{version}/account/team/member`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateTeamMember`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateTeamMember({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
