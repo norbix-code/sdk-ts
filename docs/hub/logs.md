@@ -21,6 +21,7 @@ Accessed as `norbix.hub.logs` on the [`Norbix`](../../README.md#authentication) 
 | [`testLoggingIntegration`](#testloggingintegration)       | `POST`   | `/{version}/logs/integrations/test`         | `project` |
 | [`cleanLogs`](#cleanlogs)                                 | `POST`   | `/{version}/logs/clean`                     | `project` |
 | [`getLogsByCorrelationId`](#getlogsbycorrelationid)       | `GET`    | `/{version}/logs/audit`                     | `project` |
+| [`getLog`](#getlog)                                       | `GET`    | `/{version}/logs/{Id}`                      | `project` |
 | [`getLogs`](#getlogs)                                     | `GET`    | `/{version}/logs`                           | `project` |
 | [`getLogSettings`](#getlogsettings)                       | `GET`    | `/{version}/logs/settings`                  | `project` |
 | [`saveLogSettings`](#savelogsettings)                     | `POST`   | `/{version}/logs/settings`                  | `project` |
@@ -271,6 +272,29 @@ const result = await norbix.hub.logs.getLogsByCorrelationId({
 
 [↑ Top](#endpoints)
 
+### getLog
+
+`GET` `/{version}/logs/{Id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetLog`
+**Response**: `CodeMashHub2.GetLogResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.logs.getLog({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetLogResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getLogs
 
 `GET` `/{version}/logs`
@@ -336,3 +360,52 @@ const result = await norbix.hub.logs.saveLogSettings({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## Reading one entry
+
+`getLog({ id })` returns one entry (`item`) by the `id` of a `getLogs` row.
+
+```ts
+const { item } = await norbix.hub.logs.getLog({ id: row.id });
+```
+
+## Log settings: absent = unchanged
+
+`saveLogSettings` changes only the settings you send. A field you leave out
+keeps its current value:
+
+```ts
+await norbix.hub.logs.saveLogSettings({ skipHttpBodyMeta: true }); // the other two stay as they are
+```
+
+## Logging integrations: test after you save
+
+**Nothing is delivered to a logging integration until its last test passed.**
+After `saveLoggingIntegration` (a new one or a change), call
+`testLoggingIntegration` with its id; send the test again after every change.
+
+```ts
+const { id } = await norbix.hub.logs.saveLoggingIntegration({
+  integration: {
+    provider: 'MongoDB',
+    integrationName: 'Audit store',
+    isEnabled: true,
+    connectionString: 'mongodb://db.example:27017',
+    databaseName: 'logs', // optional
+  },
+});
+const test = await norbix.hub.logs.testLoggingIntegration({ integrationId: id });
+```
+
+Providers you can save include MongoDB (`connectionString`, optional
+`databaseName`), Datadog (`site` is one of the seven Datadog sites) and AWS
+CloudWatch (`region`, `logGroup`, `logStream`, `accessKey`, `secretKey`); the
+request types are in `CodeMashHub2.*LoggingIntegrationRequest`.
+
+To write your app's own lines, see [`docs/api/logs.md`](../api/logs.md).
+
+Tests: `tests/hub/logs.test.ts`.
+
+<!-- @hand-written:end -->
