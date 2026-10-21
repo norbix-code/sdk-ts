@@ -1119,6 +1119,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetLog": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetLogSettings": {
     "requiresAuth": true,
     "returnsBytes": false

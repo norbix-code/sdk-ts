@@ -327,6 +327,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "RegisterFilesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RegisterOwnPushDeviceRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -465,6 +469,10 @@
   },
   "VerifyPasskeyRegistrationRequest": {
     "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "WriteLogs": {
+    "requiresAuth": true,
     "returnsBytes": false
   }
 }

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-21 09:44:23
+Date: 2026-10-21 18:12:03
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -5206,6 +5206,31 @@ export module CodeMashHub2 {
     public payload?: { [index: string]: string };
 
     public constructor(init?: Partial<MarketplaceFunctionSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AwsCloudWatchLoggingIntegrationRequest extends LoggingIntegrationRequest {
+    public provider: LoggingProvider;
+    public region: string;
+    public logGroup: string;
+    public logStream: string;
+    public accessKey: string;
+    public secretKey: string;
+
+    public constructor(init?: Partial<AwsCloudWatchLoggingIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AwsCloudWatchLoggingIntegrationDto extends LoggingIntegrationDto {
+    public region: string;
+    public logGroup: string;
+    public logStream: string;
+
+    public constructor(init?: Partial<AwsCloudWatchLoggingIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -10998,6 +11023,9 @@ export module CodeMashHub2 {
     public env: string;
 
     // @DataMember
+    public origin: string;
+
+    // @DataMember
     public meta?: IReadOnlyDictionary<string, string>;
 
     public constructor(init?: Partial<TenantLogEntryDto>) {
@@ -14556,6 +14584,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetLogResponse extends ResponseBase {
+    public item?: TenantLogEntryDto;
+
+    public constructor(init?: Partial<GetLogResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetLogsResponse extends ResponseBase {
     public list?: PaginatedResponse<TenantLogEntryDto>;
 
@@ -16257,6 +16294,8 @@ export module CodeMashHub2 {
     public typegen_282_FakeCodeIntegrationRequest?: FakeCodeIntegrationRequest;
     public typegen_283_CodeFunctionSchedulerTaskRequest?: CodeFunctionSchedulerTaskRequest;
     public typegen_284_MarketplaceFunctionSchedulerTaskRequest?: MarketplaceFunctionSchedulerTaskRequest;
+    public typegen_285_AwsCloudWatchLoggingIntegrationRequest?: AwsCloudWatchLoggingIntegrationRequest;
+    public typegen_286_AwsCloudWatchLoggingIntegrationDto?: AwsCloudWatchLoggingIntegrationDto;
 
     public constructor(init?: Partial<InternalsTypeGen>) {
       (Object as any).assign(this, init);
@@ -27856,6 +27895,29 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Fetch one tenant log entry by id */
+  // @Route("/{version}/logs/{Id}", "GET")
+  // @Api(Description="Fetch one tenant log entry by id")
+  export class GetLog extends CodeMashRequestBase implements IReturn<GetLogResponse> {
+    /** @description The log entry id (24 hex characters), from a get_logs row. */
+    // @ApiMember(Description="The log entry id (24 hex characters), from a get_logs row.", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetLog>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetLog';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetLogResponse();
+    }
+  }
+
   /** @description Fetch a filtered, cursor-paged list of tenant log entries */
   // @Route("/{version}/logs", "GET")
   // @Api(Description="Fetch a filtered, cursor-paged list of tenant log entries")
@@ -27943,17 +28005,17 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<SaveLogSettingsResponse>
   {
-    /** @description Drop log entries from requests originating from the Norbix studio (cloud dashboard). */
-    // @ApiMember(Description="Drop log entries from requests originating from the Norbix studio (cloud dashboard).")
-    public skipCloudDashboardLogs: boolean;
+    /** @description Drop log entries from requests originating from the Norbix studio (cloud dashboard). Not sent = unchanged. */
+    // @ApiMember(Description="Drop log entries from requests originating from the Norbix studio (cloud dashboard). Not sent = unchanged.")
+    public skipCloudDashboardLogs?: boolean;
 
-    /** @description Strip request/response body meta off http:request / http:response log entries. */
-    // @ApiMember(Description="Strip request/response body meta off http:request / http:response log entries.")
-    public skipHttpBodyMeta: boolean;
+    /** @description Strip request/response body meta off http:request / http:response log entries. Not sent = unchanged. */
+    // @ApiMember(Description="Strip request/response body meta off http:request / http:response log entries. Not sent = unchanged.")
+    public skipHttpBodyMeta?: boolean;
 
-    /** @description Turn on tenant-visible log entries for AI chat turns. Default false. */
-    // @ApiMember(Description="Turn on tenant-visible log entries for AI chat turns. Default false.")
-    public aiChatLoggingEnabled: boolean;
+    /** @description Turn on tenant-visible log entries for AI chat turns. Default false. Not sent = unchanged. */
+    // @ApiMember(Description="Turn on tenant-visible log entries for AI chat turns. Default false. Not sent = unchanged.")
+    public aiChatLoggingEnabled?: boolean;
 
     public constructor(init?: Partial<SaveLogSettings>) {
       super(init);
