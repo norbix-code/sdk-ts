@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-19 10:55:03
+Date: 2026-10-21 09:44:23
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1074,14 +1074,14 @@ export module CodeMashHub2 {
 
   export class AppleInAppPaymentIntegrationRequest extends PaymentIntegrationRequest {
     public provider: PaymentGatewayPlatform;
-    public merchantIdentifier: string;
-    public merchantDomain: string;
-    public displayName: string;
-    public merchantIdentityCertificateP12Base64: string;
-    public merchantIdentityCertificatePassword: string;
-    public paymentProcessingCertificateP12Base64: string;
-    public paymentProcessingCertificatePassword: string;
-    public webhookBundleId?: string;
+    public webhookBundleId: string;
+    public merchantIdentifier?: string;
+    public merchantDomain?: string;
+    public displayName?: string;
+    public merchantIdentityCertificateP12Base64?: string;
+    public merchantIdentityCertificatePassword?: string;
+    public paymentProcessingCertificateP12Base64?: string;
+    public paymentProcessingCertificatePassword?: string;
 
     public constructor(init?: Partial<AppleInAppPaymentIntegrationRequest>) {
       super(init);
@@ -1091,12 +1091,12 @@ export module CodeMashHub2 {
 
   export class GoogleInAppPaymentIntegrationRequest extends PaymentIntegrationRequest {
     public provider: PaymentGatewayPlatform;
-    public merchantId: string;
-    public merchantName: string;
-    public gateway: string;
-    public privateKeyOrToken: string;
+    public webhookPackageName: string;
+    public merchantId?: string;
+    public merchantName?: string;
+    public gateway?: string;
+    public privateKeyOrToken?: string;
     public gatewayMerchantId?: string;
-    public webhookPackageName?: string;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationRequest>) {
       super(init);
@@ -1194,7 +1194,7 @@ export module CodeMashHub2 {
     public merchantCode: string;
     public environment: string;
     public apiKey: string;
-    public webhookSecret?: string;
+    public webhookSecret: string;
 
     public constructor(init?: Partial<WorldpayPaymentIntegrationRequest>) {
       super(init);
@@ -2856,9 +2856,10 @@ export module CodeMashHub2 {
   }
 
   export class AppleInAppPaymentIntegrationDto extends PaymentsIntegrationDto {
-    public merchantIdentifier: string;
-    public merchantDomain: string;
-    public displayName: string;
+    public webhookBundleId?: string;
+    public merchantIdentifier?: string;
+    public merchantDomain?: string;
+    public displayName?: string;
 
     public constructor(init?: Partial<AppleInAppPaymentIntegrationDto>) {
       super(init);
@@ -2867,9 +2868,10 @@ export module CodeMashHub2 {
   }
 
   export class GoogleInAppPaymentIntegrationDto extends PaymentsIntegrationDto {
-    public merchantId: string;
-    public merchantName: string;
-    public gateway: string;
+    public webhookPackageName?: string;
+    public merchantId?: string;
+    public merchantName?: string;
+    public gateway?: string;
     public gatewayMerchantId?: string;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationDto>) {
@@ -2932,7 +2934,6 @@ export module CodeMashHub2 {
 
   export class ShopifyPaymentIntegrationDto extends PaymentsIntegrationDto {
     public shopDomain: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<ShopifyPaymentIntegrationDto>) {
       super(init);
@@ -2942,7 +2943,6 @@ export module CodeMashHub2 {
 
   export class WooCommercePaymentIntegrationDto extends PaymentsIntegrationDto {
     public storeUrl: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<WooCommercePaymentIntegrationDto>) {
       super(init);
@@ -2952,7 +2952,6 @@ export module CodeMashHub2 {
 
   export class MagentoPaymentIntegrationDto extends PaymentsIntegrationDto {
     public storeUrl: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<MagentoPaymentIntegrationDto>) {
       super(init);
@@ -2963,7 +2962,6 @@ export module CodeMashHub2 {
   export class BraintreePaymentIntegrationDto extends PaymentsIntegrationDto {
     public merchantId: string;
     public environment: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<BraintreePaymentIntegrationDto>) {
       super(init);
@@ -2974,7 +2972,6 @@ export module CodeMashHub2 {
   export class AuthorizeNetPaymentIntegrationDto extends PaymentsIntegrationDto {
     public merchantLoginId: string;
     public environment: string;
-    public webhookSignatureKey?: string;
 
     public constructor(init?: Partial<AuthorizeNetPaymentIntegrationDto>) {
       super(init);
@@ -2985,7 +2982,6 @@ export module CodeMashHub2 {
   export class CheckOutComPaymentIntegrationDto extends PaymentsIntegrationDto {
     public merchantAccount: string;
     public environment: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<CheckOutComPaymentIntegrationDto>) {
       super(init);
@@ -2996,7 +2992,6 @@ export module CodeMashHub2 {
   export class WorldpayPaymentIntegrationDto extends PaymentsIntegrationDto {
     public merchantCode: string;
     public environment: string;
-    public webhookSecret?: string;
 
     public constructor(init?: Partial<WorldpayPaymentIntegrationDto>) {
       super(init);
@@ -5612,6 +5607,28 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class PromotionIntegrationChoiceDto {
+    /** @description The SOURCE integration id (int_…), as listed in the preview's integrations[].id. */
+    // @DataMember
+    // @ApiMember(Description="The SOURCE integration id (int_…), as listed in the preview's integrations[].id.", IsRequired=true)
+    public id: string;
+
+    /** @description 'seed' = copy the integration (with its secret) into the target; 'skip' = leave it out; 'map' = point the promoted content at an existing target integration of the same module (mapToId). */
+    // @DataMember
+    // @ApiMember(Description="'seed' = copy the integration (with its secret) into the target; 'skip' = leave it out; 'map' = point the promoted content at an existing target integration of the same module (mapToId).", IsRequired=true)
+    public action: string;
+
+    /** @description Only for 'map': the TARGET integration id (same module), from the preview's integrations[].targets[].id. */
+    // @DataMember
+    // @ApiMember(Description="Only for 'map': the TARGET integration id (same module), from the preview's integrations[].targets[].id.")
+    public mapToId?: string;
+
+    public constructor(init?: Partial<PromotionIntegrationChoiceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AiPlanModelDto {
     // @DataMember
     public llmIntegrationId: string;
@@ -5741,6 +5758,20 @@ export module CodeMashHub2 {
     }
   }
 
+  export class TeamMemberRoleInput {
+    /** @description Account role id (acc_…_nr_…) or its template id (GUID), as get_account_team_roles lists it. */
+    // @ApiMember(Description="Account role id (acc_…_nr_…) or its template id (GUID), as get_account_team_roles lists it.", IsRequired=true)
+    public roleId: string;
+
+    /** @description Environment names the role applies in, e.g. ["TEST"]. Empty or omitted = every environment. */
+    // @ApiMember(Description="Environment names the role applies in, e.g. [\"TEST\"]. Empty or omitted = every environment.")
+    public environments?: string[];
+
+    public constructor(init?: Partial<TeamMemberRoleInput>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class AiProjectRoleIdsDto {
     // @DataMember
@@ -5750,6 +5781,19 @@ export module CodeMashHub2 {
     public roleIds: string[] = [];
 
     public constructor(init?: Partial<AiProjectRoleIdsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RoleEnvironmentsDto {
+    // @DataMember
+    public roleId: string;
+
+    // @DataMember
+    public environments: string[] = [];
+
+    public constructor(init?: Partial<RoleEnvironmentsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -5951,6 +5995,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public uniqueIndexes?: SchemaUniqueIndexDto[];
+
+    // @DataMember
+    public endUserOwnRecords?: boolean;
 
     public constructor(init?: Partial<SchemaSettingsDto>) {
       (Object as any).assign(this, init);
@@ -6587,6 +6634,173 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class PromotionSummaryDto {
+    // @DataMember
+    public added: number;
+
+    // @DataMember
+    public changed: number;
+
+    // @DataMember
+    public unchanged: number;
+
+    // @DataMember
+    public deleted: number;
+
+    // @DataMember
+    public kept: number;
+
+    // @DataMember
+    public skipped: number;
+
+    // @DataMember
+    public recordsAtRisk: number;
+
+    // @DataMember
+    public integrationsSeeded: number;
+
+    // @DataMember
+    public integrationsSkipped: number;
+
+    // @DataMember
+    public integrationsMapped: number;
+
+    // @DataMember
+    public integrationsRemoved: number;
+
+    // @DataMember
+    public isNoOp: boolean;
+
+    public constructor(init?: Partial<PromotionSummaryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PromotionItemChangeDto {
+    // @DataMember
+    public type: string;
+
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name?: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public matchedBy?: string;
+
+    // @DataMember
+    public previousTargetId?: string;
+
+    // @DataMember
+    public builtIn: boolean;
+
+    // @DataMember
+    public recordCount?: number;
+
+    // @DataMember
+    public note?: string;
+
+    public constructor(init?: Partial<PromotionItemChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PromotionIntegrationTargetDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public isDefault: boolean;
+
+    public constructor(init?: Partial<PromotionIntegrationTargetDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PromotionIntegrationChangeDto {
+    // @DataMember
+    public module: string;
+
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public defaultAction: string;
+
+    // @DataMember
+    public action?: string;
+
+    // @DataMember
+    public targetId?: string;
+
+    // @DataMember
+    public mapToId?: string;
+
+    // @DataMember
+    public holdsSecret: boolean;
+
+    // @DataMember
+    public isFake: boolean;
+
+    // @DataMember
+    public realSender: boolean;
+
+    // @DataMember
+    public targets: PromotionIntegrationTargetDto[] = [];
+
+    // @DataMember
+    public warning?: string;
+
+    // @DataMember
+    public note?: string;
+
+    public constructor(init?: Partial<PromotionIntegrationChangeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PromotionNotPromotedDto {
+    // @DataMember
+    public area: string;
+
+    // @DataMember
+    public scope: string;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public count?: number;
+
+    public constructor(init?: Partial<PromotionNotPromotedDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class PromotionItemDto {
     // @DataMember
     public type: string;
@@ -6640,6 +6854,21 @@ export module CodeMashHub2 {
   // @DataContract
   export class PromotionResultDto {
     // @DataMember
+    public summary: PromotionSummaryDto;
+
+    // @DataMember
+    public items: PromotionItemChangeDto[] = [];
+
+    // @DataMember
+    public integrations: PromotionIntegrationChangeDto[] = [];
+
+    // @DataMember
+    public notPromoted: PromotionNotPromotedDto[] = [];
+
+    // @DataMember
+    public requiresConfirmation: boolean;
+
+    // @DataMember
     public contentMirrored: PromotionItemDto[] = [];
 
     // @DataMember
@@ -6669,7 +6898,29 @@ export module CodeMashHub2 {
     // @DataMember
     public wasDryRun: boolean;
 
+    // @DataMember
+    public promoted?: boolean;
+
+    // @DataMember
+    public message?: string;
+
     public constructor(init?: Partial<PromotionResultDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class BuiltInRepairDto {
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public items: PromotionItemChangeDto[] = [];
+
+    // @DataMember
+    public isNoOp: boolean;
+
+    public constructor(init?: Partial<BuiltInRepairDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -6678,6 +6929,9 @@ export module CodeMashHub2 {
   export class ProjectEnvironmentsDto {
     // @DataMember
     public environments: string[] = [];
+
+    // @DataMember
+    public promotionOrder: string[] = [];
 
     public constructor(init?: Partial<ProjectEnvironmentsDto>) {
       (Object as any).assign(this, init);
@@ -7763,6 +8017,18 @@ export module CodeMashHub2 {
     }
   }
 
+  export class TeamInvitationDto {
+    public id: string;
+    public email: string;
+    public roles: string[] = [];
+    public sentOn: string;
+    public expiresOn: string;
+
+    public constructor(init?: Partial<TeamInvitationDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class AccountPasskeyListItemDto {
     public credentialId: string;
     public friendlyName: string;
@@ -8031,6 +8297,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public isSystem: boolean;
+
+    // @DataMember
+    public environments: string[] = [];
 
     public constructor(init?: Partial<AiRoleDto>) {
       (Object as any).assign(this, init);
@@ -8794,6 +9063,44 @@ export module CodeMashHub2 {
     public linkedFields: string[] = [];
 
     public constructor(init?: Partial<AppliedCollectionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EndUserOwnRecordsRowDto {
+    // @DataMember(Name="schemaId")
+    public schemaId: string;
+
+    // @DataMember(Name="schemaName")
+    public schemaName: string;
+
+    // @DataMember(Name="hasRecordOwner")
+    public hasRecordOwner: boolean;
+
+    // @DataMember(Name="endUserOwnRecords")
+    public endUserOwnRecords: boolean;
+
+    // @DataMember(Name="action")
+    public action: string;
+
+    public constructor(init?: Partial<EndUserOwnRecordsRowDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EndUserOwnRecordsReportDto {
+    // @DataMember(Name="dryRun")
+    public dryRun: boolean;
+
+    // @DataMember(Name="env")
+    public env: string;
+
+    // @DataMember(Name="schemas")
+    public schemas: EndUserOwnRecordsRowDto[] = [];
+
+    public constructor(init?: Partial<EndUserOwnRecordsReportDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10447,6 +10754,23 @@ export module CodeMashHub2 {
     public updatedAtUtc?: string;
 
     public constructor(init?: Partial<PushDeviceListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TeamPushDeviceListProjection extends PushDeviceListProjection {
+    // @DataMember
+    public ownerKind: string;
+
+    // @DataMember
+    public ownerName?: string;
+
+    // @DataMember
+    public ownerEmail?: string;
+
+    public constructor(init?: Partial<TeamPushDeviceListProjection>) {
+      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -12297,6 +12621,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class RepairEnvironmentBuiltInsResponse extends ResponseBase {
+    public items: BuiltInRepairDto[] = [];
+
+    public constructor(init?: Partial<RepairEnvironmentBuiltInsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetProjectEnvironmentsResponse extends ResponseBase {
     public item?: ProjectEnvironmentsDto;
 
@@ -12472,6 +12805,15 @@ export module CodeMashHub2 {
     public roles?: AccountTeamRoleDto[];
 
     public constructor(init?: Partial<GetAccountTeamRolesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetAccountTeamInvitationsResponse extends ResponseBase {
+    public items: TeamInvitationDto[] = [];
+
+    public constructor(init?: Partial<GetAccountTeamInvitationsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -12886,6 +13228,15 @@ export module CodeMashHub2 {
     public errors: string[] = [];
 
     public constructor(init?: Partial<ApplyDatabaseSchemaBundleResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EndUserOwnRecordsReportResponse extends ResponseBase {
+    public result?: EndUserOwnRecordsReportDto;
+
+    public constructor(init?: Partial<EndUserOwnRecordsReportResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13980,6 +14331,7 @@ export module CodeMashHub2 {
 
   export class GetPushDevicesResponse extends ResponseBase {
     public list?: PaginatedResponse<PushDeviceListProjection>;
+    public teamDevices: TeamPushDeviceListProjection[] = [];
 
     public constructor(init?: Partial<GetPushDevicesResponse>) {
       super(init);
@@ -16688,6 +17040,16 @@ export module CodeMashHub2 {
     // @ApiMember(Description="When true, only returns the promotion plan (including deletions) without applying it or copying secrets. Use this to preview before a real run.")
     public dryRun: boolean;
 
+    /** @description Must be true for a real run that deletes a collection holding records in the target (the preview lists each with recordCount). Without it the run refuses and changes nothing. */
+    // @DataMember
+    // @ApiMember(Description="Must be true for a real run that deletes a collection holding records in the target (the preview lists each with recordCount). Without it the run refuses and changes nothing.")
+    public confirmRecordLoss: boolean;
+
+    /** @description Per source integration id: action 'seed' (copy it with its secret into the target), 'skip' (leave it out) or 'map' (mapToId: a target integration of the same module the promoted content should use). Missing ids use the default: Fake providers 'seed' (unless the target already has its own Fake of that module), everything else 'skip'. */
+    // @DataMember
+    // @ApiMember(Description="Per source integration id: action 'seed' (copy it with its secret into the target), 'skip' (leave it out) or 'map' (mapToId: a target integration of the same module the promoted content should use). Missing ids use the default: Fake providers 'seed' (unless the target already has its own Fake of that module), everything else 'skip'.")
+    public integrationChoices?: PromotionIntegrationChoiceDto[];
+
     public constructor(init?: Partial<PromoteEnvironmentRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -16719,6 +17081,16 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The fromVersion anchor returned by the promote_environment call being rolled back.", IsRequired=true)
     public fromVersion: number;
 
+    /** @description When true, only returns the rollback plan without applying it. */
+    // @DataMember
+    // @ApiMember(Description="When true, only returns the rollback plan without applying it.")
+    public dryRun: boolean;
+
+    /** @description Must be true when the rollback deletes a collection holding records in the target. */
+    // @DataMember
+    // @ApiMember(Description="Must be true when the rollback deletes a collection holding records in the target.")
+    public confirmRecordLoss: boolean;
+
     public constructor(init?: Partial<RollbackPromotionRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -16731,6 +17103,37 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new PromoteEnvironmentResponse();
+    }
+  }
+
+  // @Route("/{version}/account/projects/environments/built-ins/repair", "POST")
+  // @DataContract
+  export class RepairEnvironmentBuiltInsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RepairEnvironmentBuiltInsResponse>
+  {
+    /** @description The environment to repair. Empty = every environment except PROD. */
+    // @DataMember
+    // @ApiMember(Description="The environment to repair. Empty = every environment except PROD.")
+    public environmentName?: string;
+
+    /** @description When true, only returns what would be done. */
+    // @DataMember
+    // @ApiMember(Description="When true, only returns what would be done.")
+    public dryRun: boolean;
+
+    public constructor(init?: Partial<RepairEnvironmentBuiltInsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RepairEnvironmentBuiltInsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RepairEnvironmentBuiltInsResponse();
     }
   }
 
@@ -17998,6 +18401,61 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Removes a team member from the account */
+  // @Route("/{version}/account/team/member/{MemberId}", "DELETE")
+  // @Api(Description="Removes a team member from the account")
+  export class RemoveTeamMember extends RequestBase implements IReturn<IdResponse> {
+    /** @description The team member's id (usr_…), as get_account_collaborators lists it. */
+    // @ApiMember(Description="The team member's id (usr_…), as get_account_collaborators lists it.", IsRequired=true, ParameterType="path")
+    public memberId: string;
+
+    public constructor(init?: Partial<RemoveTeamMember>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RemoveTeamMember';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/account/team/member/role-environments", "PUT")
+  export class SetTeamMemberRoleEnvironmentsRequest
+    extends RequestBase
+    implements IReturn<IdResponse>
+  {
+    /** @description The team member's id (usr_…), as GET /account/collaborators lists it. */
+    // @ApiMember(Description="The team member's id (usr_…), as GET /account/collaborators lists it.", IsRequired=true)
+    public memberId: string;
+
+    /** @description The account role the member holds: its id (acc_…_nr_…) or its template id (GUID, as GetAccountTeamRoles lists it). */
+    // @ApiMember(Description="The account role the member holds: its id (acc_…_nr_…) or its template id (GUID, as GetAccountTeamRoles lists it).", IsRequired=true)
+    public roleId: string;
+
+    /** @description Environment names, e.g. ["TEST"]. Empty = every environment. */
+    // @ApiMember(Description="Environment names, e.g. [\"TEST\"]. Empty = every environment.")
+    public environments?: string[];
+
+    public constructor(init?: Partial<SetTeamMemberRoleEnvironmentsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetTeamMemberRoleEnvironmentsRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
   // @Route("/{version}/account/team/roles", "GET")
   export class GetAccountTeamRoles
     extends RequestBase
@@ -18042,6 +18500,82 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Lists the account's pending team invitations */
+  // @Route("/{version}/account/team/invitations", "GET")
+  // @Api(Description="Lists the account's pending team invitations")
+  export class GetAccountTeamInvitations
+    extends RequestBase
+    implements IReturn<GetAccountTeamInvitationsResponse>
+  {
+    public constructor(init?: Partial<GetAccountTeamInvitations>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAccountTeamInvitations';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAccountTeamInvitationsResponse();
+    }
+  }
+
+  /** @description Cancels a pending team invitation */
+  // @Route("/{version}/account/team/invitations/{InvitationId}", "DELETE")
+  // @Api(Description="Cancels a pending team invitation")
+  export class CancelTeamInvitation extends RequestBase implements IReturn<IdResponse> {
+    /** @description The invitation id, as get_account_team_invitations lists it. */
+    // @ApiMember(Description="The invitation id, as get_account_team_invitations lists it.", IsRequired=true, ParameterType="path")
+    public invitationId: string;
+
+    public constructor(init?: Partial<CancelTeamInvitation>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CancelTeamInvitation';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Updates a team member's display name and/or account roles */
+  // @Route("/{version}/account/team/member", "PUT")
+  // @Api(Description="Updates a team member's display name and/or account roles")
+  export class UpdateTeamMember extends RequestBase implements IReturn<IdResponse> {
+    /** @description The team member's id (usr_…), as get_account_collaborators lists it. */
+    // @ApiMember(Description="The team member's id (usr_…), as get_account_collaborators lists it.", IsRequired=true)
+    public memberId: string;
+
+    /** @description New display name. Omit to keep the current one. */
+    // @ApiMember(Description="New display name. Omit to keep the current one.")
+    public displayName?: string;
+
+    /** @description The member's account roles after the change — REPLACES the current ones. Omit to keep the roles; an empty list removes every account role (the member stays on the team). */
+    // @ApiMember(Description="The member's account roles after the change — REPLACES the current ones. Omit to keep the roles; an empty list removes every account role (the member stays on the team).")
+    public roles?: TeamMemberRoleInput[];
+
+    public constructor(init?: Partial<UpdateTeamMember>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateTeamMember';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new IdResponse();
     }
   }
 
@@ -18626,6 +19160,10 @@ export module CodeMashHub2 {
     /** @description Project roles to give: [{ projectId, roleIds: [pr_…_nr_…] }]. Without an account role the service user is pinned to these projects. */
     // @ApiMember(Description="Project roles to give: [{ projectId, roleIds: [pr_…_nr_…] }]. Without an account role the service user is pinned to these projects.")
     public projectRoles?: AiProjectRoleIdsDto[];
+
+    /** @description Optional "Applies in" per role (N41): [{ roleId, environments: ["TEST"] }]. A role given here applies only in those environments (requests in another environment get 403 CM-ERRORS-MEMBERSHIP-041). No entry or an empty list = every environment. */
+    // @ApiMember(Description="Optional \"Applies in\" per role (N41): [{ roleId, environments: [\"TEST\"] }]. A role given here applies only in those environments (requests in another environment get 403 CM-ERRORS-MEMBERSHIP-041). No entry or an empty list = every environment.")
+    public roleEnvironments?: RoleEnvironmentsDto[];
 
     public constructor(init?: Partial<CreateAiServiceUserRequest>) {
       super(init);
@@ -20502,6 +21040,36 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description List the endUserOwnRecords switch of every schema (and turn it on for named schemas) */
+  // @Route("/{version}/database/schemas/end-user-own-records", "POST")
+  // @Api(Description="List the endUserOwnRecords switch of every schema (and turn it on for named schemas)")
+  export class EndUserOwnRecordsReportRequest
+    extends CodeMashRequestBase
+    implements IReturn<EndUserOwnRecordsReportResponse>
+  {
+    /** @description True (default) = only list. False = turn the switch on for the schemas in 'enable'. */
+    // @ApiMember(Description="True (default) = only list. False = turn the switch on for the schemas in 'enable'.")
+    public dryRun: boolean;
+
+    /** @description Schema names to turn the switch ON for (only with dryRun:false). Empty = change nothing. */
+    // @ApiMember(Description="Schema names to turn the switch ON for (only with dryRun:false). Empty = change nothing.")
+    public enable: string[] = [];
+
+    public constructor(init?: Partial<EndUserOwnRecordsReportRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'EndUserOwnRecordsReportRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EndUserOwnRecordsReportResponse();
     }
   }
 

@@ -103,6 +103,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "CancelTeamInvitation": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ChangeRecordResponsibility": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -727,6 +731,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "EndUserOwnRecordsReportRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ExecuteRecordsAggregate": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -768,6 +776,10 @@
     "returnsBytes": false
   },
   "GetAccountStatus": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountTeamInvitations": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1683,6 +1695,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RemoveTeamMember": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RemoveWebhookDestinationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1712,6 +1728,10 @@
     "returnsBytes": false
   },
   "RepairContactRolesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RepairEnvironmentBuiltInsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1999,6 +2019,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SetTeamMemberRoleEnvironmentsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SetUserAiPlan": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2272,6 +2296,10 @@
     "returnsBytes": false
   },
   "UpdateSmsTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateTeamMember": {
     "requiresAuth": true,
     "returnsBytes": false
   },
