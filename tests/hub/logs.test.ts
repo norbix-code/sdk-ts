@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.logs (14 endpoints).
+ * Tests for hub.logs (15 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.logs', () => {
-  it('module exposes 14 method(s)', () => {
+  it('module exposes 15 method(s)', () => {
     const mock = createMockFetch();
     const mod = new LogsModule({} as never);
     void mod; // silence unused — we only need the type
@@ -40,6 +40,7 @@ describe('hub.logs', () => {
     expect(typeof ns['testLoggingIntegration']).toBe('function');
     expect(typeof ns['cleanLogs']).toBe('function');
     expect(typeof ns['getLogsByCorrelationId']).toBe('function');
+    expect(typeof ns['getLog']).toBe('function');
     expect(typeof ns['getLogs']).toBe('function');
     expect(typeof ns['getLogSettings']).toBe('function');
     expect(typeof ns['saveLogSettings']).toBe('function');
@@ -298,6 +299,29 @@ describe('hub.logs', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
+  it('getLog: GET /{version}/logs/{Id}', async () => {
+    const stub = stubRequestForPath('/{version}/logs/{Id}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/logs/{Id}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['logs']!['getLog']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
   it('getLogs: GET /{version}/logs', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -382,6 +406,43 @@ describe('hub.logs', () => {
     expect(url.searchParams.get('metaKey')).toBe('taskId');
     expect(url.searchParams.get('metaValue')).toBe('tsk_123');
     expect(mock.lastCall?.body).toBeUndefined();
+  });
+  it('getLog: the id goes in the path, not in the query', async () => {
+    const { norbix, mock } = makeClient({});
+    await norbix.hub.logs.getLog({ id: '66b2f0a1c2d3e4f5a6b7c8d9' });
+    expect(mock.lastCall?.method).toBe('GET');
+    const url = new URL(mock.lastCall!.url);
+    expect(`${url.origin}${url.pathname}`).toBe(
+      'https://hub.norbix.io/v2/logs/66b2f0a1c2d3e4f5a6b7c8d9',
+    );
+    expect(url.searchParams.has('id')).toBe(false);
+  });
+
+  it('saveLogSettings: only the settings given are sent (absent = unchanged)', async () => {
+    const { norbix, mock } = makeClient({});
+    await norbix.hub.logs.saveLogSettings({ skipHttpBodyMeta: true });
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ skipHttpBodyMeta: true });
+  });
+
+  it('saveLoggingIntegration (MongoDB) then testLoggingIntegration with the new id', async () => {
+    const { norbix, mock } = makeClient({});
+    await norbix.hub.logs.saveLoggingIntegration({
+      integration: {
+        provider: 'MongoDB',
+        integrationName: 'Audit store',
+        isEnabled: true,
+        connectionString: 'mongodb://db.example:27017',
+        databaseName: 'logs',
+      } as never,
+    });
+    expect(mock.lastCall?.url).toBe('https://hub.norbix.io/v2/logs/integrations');
+    expect(JSON.parse(mock.lastCall!.body!).integration.provider).toBe('MongoDB');
+
+    await norbix.hub.logs.testLoggingIntegration({ integrationId: 'lgi_1' });
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe('https://hub.norbix.io/v2/logs/integrations/test');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ integrationId: 'lgi_1' });
   });
   // @hand-written:end
 });

@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: logs
- * Endpoints: 14
+ * Endpoints: 15
  */
 export class LogsModule {
   constructor(private readonly transport: Transport) {}
@@ -215,6 +215,25 @@ export class LogsModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/logs/{Id}
+   * Request DTO: GetLog
+   */
+  getLog = (
+    request: Partial<CodeMashHub2.GetLog> = {} as Partial<CodeMashHub2.GetLog>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetLogResponse> => {
+    return this.transport.send<CodeMashHub2.GetLogResponse>({
+      target: 'hub',
+      path: '/{version}/logs/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });
