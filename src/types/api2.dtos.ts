@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-19 10:55:02
+Date: 2026-10-21 18:12:02
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -544,6 +544,62 @@ export module CodeMashApi2 {
     public endingBefore?: string;
 
     public constructor(init?: Partial<PagingArgs>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RegisterFileItem {
+    // @DataMember
+    public path?: string;
+
+    // @DataMember
+    public ownerUserId?: string;
+
+    // @DataMember
+    public contentType?: string;
+
+    // @DataMember
+    public sizeBytes?: number;
+
+    // @DataMember
+    public fileName?: string;
+
+    public constructor(init?: Partial<RegisterFileItem>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class WriteLogEntry {
+    /** @description information (default), warning or error. */
+    // @ApiMember(Description="information (default), warning or error.")
+    public level?: string;
+
+    /** @description A short line, 1–200 characters — what the Logs list shows. */
+    // @ApiMember(Description="A short line, 1–200 characters — what the Logs list shows.", IsRequired=true)
+    public title: string;
+
+    /** @description Details, at most 8 000 characters. */
+    // @ApiMember(Description="Details, at most 8 000 characters.")
+    public message?: string;
+
+    /** @description Your own code for this kind of line, e.g. order:paid — lower case letters, digits and _ . : -, at most 64. Stored as app:<code>; app:log when empty. */
+    // @ApiMember(Description="Your own code for this kind of line, e.g. order:paid — lower case letters, digits and _ . : -, at most 64. Stored as app:<code>; app:log when empty.")
+    public eventCode?: string;
+
+    /** @description Groups your lines into one flow in the Logs details view: at most 64 letters, digits, _ or -. Empty = the id of this request. */
+    // @ApiMember(Description="Groups your lines into one flow in the Logs details view: at most 64 letters, digits, _ or -. Empty = the id of this request.")
+    public correlationId?: string;
+
+    /** @description When it happened (UTC). Empty = when Norbix received it. At most 7 days old and at most 5 minutes ahead. */
+    // @ApiMember(Description="When it happened (UTC). Empty = when Norbix received it. At most 7 days old and at most 5 minutes ahead.")
+    public timestamp?: string;
+
+    /** @description Extra fields, at most 20; key at most 64, value at most 2 000 characters. Values under secret-looking keys (password, token, apiKey …) are masked. */
+    // @ApiMember(Description="Extra fields, at most 20; key at most 64, value at most 2 000 characters. Values under secret-looking keys (password, token, apiKey …) are masked.")
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<WriteLogEntry>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1102,6 +1158,9 @@ export module CodeMashApi2 {
     // @DataMember
     public uniqueIndexes?: SchemaUniqueIndexDto[];
 
+    // @DataMember
+    public endUserOwnRecords?: boolean;
+
     public constructor(init?: Partial<SchemaSettingsDto>) {
       (Object as any).assign(this, init);
     }
@@ -1351,6 +1410,23 @@ export module CodeMashApi2 {
     public inherited: boolean;
 
     public constructor(init?: Partial<PublicFolderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RegisterFileResult {
+    public index: number;
+    public path?: string;
+    public ownerUserId?: string;
+    public status?: string;
+    public fileId?: string;
+    public verified?: boolean;
+    public warning?: string;
+    public errorCode?: string;
+    public errorStatus?: number;
+    public error?: string;
+
+    public constructor(init?: Partial<RegisterFileResult>) {
       (Object as any).assign(this, init);
     }
   }
@@ -2045,6 +2121,19 @@ export module CodeMashApi2 {
     }
   }
 
+  export class RegisterFilesResponse extends ResponseBase {
+    public dryRun: boolean;
+    public registered: number;
+    public unchanged: number;
+    public failed: number;
+    public items?: RegisterFileResult[];
+
+    public constructor(init?: Partial<RegisterFilesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class RequestUploadUrlResponse extends ResponseBase {
     public url?: string;
 
@@ -2078,6 +2167,15 @@ export module CodeMashApi2 {
     public list?: PaginatedResponse<OwnPushMessageDto>;
 
     public constructor(init?: Partial<GetOwnPushMessagesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class WriteLogsResponse extends ResponseBase {
+    public accepted: number;
+
+    public constructor(init?: Partial<WriteLogsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -4944,6 +5042,12 @@ export module CodeMashApi2 {
     // @DataMember
     public fileName?: string;
 
+    // @DataMember
+    public ownerUserId?: string;
+
+    // @DataMember
+    public reassignOwner?: boolean;
+
     public constructor(init?: Partial<CommitUploadRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -5244,6 +5348,41 @@ export module CodeMashApi2 {
   }
 
   /** @description Files */
+  // @Route("/{version}/files/{filesIntegrationId}/register", "POST")
+  // @Api(Description="Files")
+  // @DataContract
+  export class RegisterFilesRequest
+    extends CodeMashRequestBase
+    implements IReturn<RegisterFilesResponse>
+  {
+    // @DataMember
+    public filesIntegrationId: string;
+
+    // @DataMember
+    public items?: RegisterFileItem[];
+
+    // @DataMember
+    public reassignOwner?: boolean;
+
+    // @DataMember
+    public dryRun?: boolean;
+
+    public constructor(init?: Partial<RegisterFilesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RegisterFilesRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RegisterFilesResponse();
+    }
+  }
+
+  /** @description Files */
   // @Route("/{version}/files/{filesIntegrationId}/upload-url", "POST")
   // @Api(Description="Files")
   // @DataContract
@@ -5262,6 +5401,12 @@ export module CodeMashApi2 {
 
     // @DataMember
     public expirationSeconds?: number;
+
+    // @DataMember
+    public ownerUserId?: string;
+
+    // @DataMember
+    public reassignOwner?: boolean;
 
     public constructor(init?: Partial<RequestUploadUrlRequest>) {
       super(init);
@@ -5314,6 +5459,12 @@ export module CodeMashApi2 {
 
     // @DataMember
     public path: string;
+
+    // @DataMember
+    public ownerUserId?: string;
+
+    // @DataMember
+    public reassignOwner?: boolean;
 
     public constructor(init?: Partial<UseFileRequest>) {
       super(init);
@@ -5543,6 +5694,29 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Send your app's own log entries to the project's logs. */
+  // @Route("/{version}/logs", "POST")
+  // @Api(Description="Send your app's own log entries to the project's logs.")
+  export class WriteLogs extends CodeMashRequestBase implements IReturn<WriteLogsResponse> {
+    /** @description 1–100 entries. */
+    // @ApiMember(Description="1–100 entries.", IsRequired=true)
+    public entries: WriteLogEntry[] = [];
+
+    public constructor(init?: Partial<WriteLogs>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'WriteLogs';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WriteLogsResponse();
     }
   }
 
