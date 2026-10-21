@@ -7,6 +7,7 @@ import { AuthModule } from './auth.js';
 import { DatabaseModule } from './database.js';
 import { EchoModule } from './echo.js';
 import { FilesModule } from './files.js';
+import { LogsModule } from './logs.js';
 import { MembershipModule } from './membership.js';
 import { NotificationsModule } from './notifications.js';
 import { PaymentsModule } from './payments.js';
@@ -24,6 +25,7 @@ export class ApiNamespace {
   public readonly database: DatabaseModule;
   public readonly echo: EchoModule;
   public readonly files: FilesModule;
+  public readonly logs: LogsModule;
   public readonly membership: MembershipModule;
   public readonly notifications: NotificationsModule;
   public readonly payments: PaymentsModule;
@@ -37,6 +39,7 @@ export class ApiNamespace {
     this.database = new DatabaseModule(transport);
     this.echo = new EchoModule(transport);
     this.files = new FilesModule(transport);
+    this.logs = new LogsModule(transport);
     this.membership = new MembershipModule(transport);
     this.notifications = new NotificationsModule(transport);
     this.payments = new PaymentsModule(transport);

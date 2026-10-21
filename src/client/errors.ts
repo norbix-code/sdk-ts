@@ -56,6 +56,14 @@ export class NorbixError extends Error {
   public readonly fieldErrors: NorbixErrorItem[];
   public readonly raw?: unknown;
   public readonly url?: string;
+  /**
+   * Seconds to wait before trying again, from the answer's `Retry-After`
+   * header. Set when the gateway sent one — for example a 429
+   * `CM-ERRORS-LOGGING-003` from `norbix.api.logs.writeLogs` when the
+   * project's per-minute quota is used up. A POST is never retried by the SDK,
+   * so the caller decides when to send again.
+   */
+  public readonly retryAfterSeconds?: number;
 
   constructor(opts: {
     message: string;
@@ -64,6 +72,7 @@ export class NorbixError extends Error {
     fieldErrors?: NorbixErrorItem[];
     raw?: unknown;
     url?: string;
+    retryAfterSeconds?: number;
   }) {
     super(opts.message);
     this.name = 'NorbixError';
@@ -72,6 +81,7 @@ export class NorbixError extends Error {
     this.fieldErrors = opts.fieldErrors ?? [];
     this.raw = opts.raw;
     this.url = opts.url;
+    this.retryAfterSeconds = opts.retryAfterSeconds;
   }
 
   /** Same value as `status`. The name every Norbix SDK uses for it. */
@@ -129,6 +139,7 @@ export class NorbixAuthError extends NorbixError {
     fieldErrors?: NorbixErrorItem[];
     url?: string;
     raw?: unknown;
+    retryAfterSeconds?: number;
   }) {
     super({
       message: opts.message,
@@ -137,6 +148,7 @@ export class NorbixAuthError extends NorbixError {
       fieldErrors: opts.fieldErrors ?? [],
       raw: opts.raw,
       url: opts.url,
+      retryAfterSeconds: opts.retryAfterSeconds,
     });
     this.name = 'NorbixAuthError';
   }
@@ -150,6 +162,7 @@ export class NorbixValidationError extends NorbixError {
     fieldErrors?: NorbixErrorItem[];
     url?: string;
     raw?: unknown;
+    retryAfterSeconds?: number;
   }) {
     super({
       message: opts.message,
@@ -158,6 +171,7 @@ export class NorbixValidationError extends NorbixError {
       fieldErrors: opts.fieldErrors ?? [],
       raw: opts.raw,
       url: opts.url,
+      retryAfterSeconds: opts.retryAfterSeconds,
     });
     this.name = 'NorbixValidationError';
   }
@@ -238,9 +252,22 @@ export function readErrorBody(
 }
 
 /** Build the right NorbixError for a status + an already parsed body. */
-export function errorFromBody(args: { status: number; raw: unknown; url?: string }): NorbixError {
+export function errorFromBody(args: {
+  status: number;
+  raw: unknown;
+  url?: string;
+  retryAfterSeconds?: number;
+}): NorbixError {
   const { message, code, fieldErrors } = readErrorBody(args.raw, args.status);
-  const opts = { message, status: args.status, code, fieldErrors, raw: args.raw, url: args.url };
+  const opts = {
+    message,
+    status: args.status,
+    code,
+    fieldErrors,
+    raw: args.raw,
+    url: args.url,
+    retryAfterSeconds: args.retryAfterSeconds,
+  };
 
   if (args.status === 401 || args.status === 403) return new NorbixAuthError(opts);
   if (args.status === 400) return new NorbixValidationError(opts);
@@ -264,5 +291,23 @@ export async function fromResponse(res: Response, url: string): Promise<NorbixEr
     // ignore — an unreadable body still gives the status
   }
 
-  return errorFromBody({ status: res.status, raw, url });
+  return errorFromBody({
+    status: res.status,
+    raw,
+    url,
+    retryAfterSeconds: retryAfterSecondsOf(res.headers?.get?.('retry-after') ?? undefined),
+  });
+}
+
+/**
+ * A `Retry-After` header as whole seconds: the number itself, or the seconds
+ * until an HTTP date (never below 0). `undefined` when absent or unreadable.
+ */
+export function retryAfterSecondsOf(value: string | null | undefined): number | undefined {
+  if (value === null || value === undefined || value.trim() === '') return undefined;
+  const s = Number(value);
+  if (Number.isFinite(s) && s >= 0) return Math.ceil(s);
+  const at = Date.parse(value);
+  if (!Number.isNaN(at)) return Math.max(0, Math.ceil((at - Date.now()) / 1000));
+  return undefined;
 }
