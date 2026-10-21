@@ -351,6 +351,7 @@ Default base URL: `https://api.norbix.ai`. **8 modules · 66 endpoints.**
 | 🔑 `apikeys`     | List + regenerate per-environment API keys                                                    | [`docs/api/apikeys.md`](./docs/api/apikeys.md)           |
 | 🪪 `accessToken` | Refresh-token exchange                                                                        | [`docs/api/access_token.md`](./docs/api/access_token.md) |
 | 🩺 `echo`        | Gateway smoke check                                                                           | [`docs/api/echo.md`](./docs/api/echo.md)                 |
+| 📊 `logs`        | Write your app's own log lines (`write` / `writeLogs`) to the project's Logs                  | [`docs/api/logs.md`](./docs/api/logs.md)                 |
 
 > Email/push/SMS notifications, payments, and code execution are configured on the **Hub** surface and surfaced at runtime through integration triggers — they are not separate API modules. File storage now has its own `files` API module: it issues signed upload URLs so clients upload binary content directly to storage, never streaming bytes through the Norbix API.
 
@@ -372,7 +373,7 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 | 📨 `email`                | Email module switches                                                   | [`docs/hub/email.md`](./docs/hub/email.md)                 |
 | 💳 `payments`             | Payment integrations, triggers, tests, module settings                  | [`docs/hub/payments.md`](./docs/hub/payments.md)           |
 | 🤖 `ai`                   | LLM and MCP integration configuration and tests                         | [`docs/hub/ai.md`](./docs/hub/ai.md)                       |
-| 📊 `logs`                 | Logging integrations and module settings                                | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
+| 📊 `logs`                 | Read logs (list, one entry, trail), settings, integrations and tests    | [`docs/hub/logs.md`](./docs/hub/logs.md)                   |
 | 👥 `membership`           | Roles, policies, users, preferences, integrations, triggers             | [`docs/hub/membership.md`](./docs/hub/membership.md)       |
 | ⏰ `scheduler`            | Scheduler module, tasks and their run history                           | [`docs/hub/scheduler.md`](./docs/hub/scheduler.md)         |
 | 🪝 `webhooks`             | Webhook integrations, destinations, tests, module settings              | [`docs/hub/webhooks.md`](./docs/hub/webhooks.md)           |
@@ -757,6 +758,11 @@ try {
   throw err;
 }
 ```
+
+When the answer carries a `Retry-After` header (a 429 from
+`norbix.api.logs.write` when the project's per-minute log quota is used up),
+`err.retryAfterSeconds` holds it in seconds. The SDK retries a 429 by itself
+only for GET and DELETE; anything else is yours to send again.
 
 `message` and `errorCode` are the gateway's own. The gateway puts them inside
 `responseStatus.errors[]`, so a `NorbixError` reads that list first, takes the
