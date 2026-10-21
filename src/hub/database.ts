@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 74
+ * Endpoints: 75
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -443,6 +443,25 @@ export class DatabaseModule {
       method: 'DELETE',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/schemas/end-user-own-records
+   * Request DTO: EndUserOwnRecordsReportRequest
+   */
+  endUserOwnRecordsReport = (
+    request: Partial<CodeMashHub2.EndUserOwnRecordsReportRequest> = {} as Partial<CodeMashHub2.EndUserOwnRecordsReportRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EndUserOwnRecordsReportResponse> => {
+    return this.transport.send<CodeMashHub2.EndUserOwnRecordsReportResponse>({
+      target: 'hub',
+      path: '/{version}/database/schemas/end-user-own-records',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

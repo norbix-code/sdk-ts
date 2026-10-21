@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 14
+ * Endpoints: 15
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -219,6 +219,25 @@ export class FilesModule {
       pathParams: ['PublicId', 'Name*'],
       scope: 'unauthenticated',
       responseType: 'binary',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/{filesIntegrationId}/register
+   * Request DTO: RegisterFilesRequest
+   */
+  registerFiles = (
+    request: Partial<CodeMashApi2.RegisterFilesRequest> = {} as Partial<CodeMashApi2.RegisterFilesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.RegisterFilesResponse> => {
+    return this.transport.send<CodeMashApi2.RegisterFilesResponse>({
+      target: 'api',
+      path: '/{version}/files/{filesIntegrationId}/register',
+      method: 'POST',
+      request,
+      pathParams: ['filesIntegrationId'],
+      scope: 'project',
       ...options,
     });
   };

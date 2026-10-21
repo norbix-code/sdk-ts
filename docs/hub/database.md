@@ -33,6 +33,7 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`applyDatabaseSchemaBundle`](#applydatabaseschemabundle)                 | `POST`   | `/{version}/database/schemas/apply-bundle`                                          | `project` |
 | [`deleteDatabaseSchema`](#deletedatabaseschema)                           | `DELETE` | `/{version}/database/schemas/{Id}`                                                  | `project` |
 | [`discardDatabaseSchemaDraft`](#discarddatabaseschemadraft)               | `DELETE` | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`endUserOwnRecordsReport`](#enduserownrecordsreport)                     | `POST`   | `/{version}/database/schemas/end-user-own-records`                                  | `project` |
 | [`getDatabaseSchema`](#getdatabaseschema)                                 | `GET`    | `/{version}/database/schemas/{id}`                                                  | `project` |
 | [`getDatabaseSchemas`](#getdatabaseschemas)                               | `GET`    | `/{version}/database/schemas`                                                       | `project` |
 | [`getDatabaseSchemaDraft`](#getdatabaseschemadraft)                       | `GET`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
@@ -603,6 +604,26 @@ const result = await norbix.hub.database.discardDatabaseSchemaDraft({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### endUserOwnRecordsReport
+
+`POST` `/{version}/database/schemas/end-user-own-records`
+
+**Request DTO**: `CodeMashHub2.EndUserOwnRecordsReportRequest`
+**Response**: `CodeMashHub2.EndUserOwnRecordsReportResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.endUserOwnRecordsReport({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EndUserOwnRecordsReportResponse
 ```
 
 [↑ Top](#endpoints)

@@ -21,6 +21,7 @@ Accessed as `norbix.api.files` on the [`Norbix`](../../README.md#authentication)
 | [`getSignedUrl`](#getsignedurl)                 | `GET`    | `/{version}/files/{filesIntegrationId}/sign`       | `project` |
 | [`listFiles`](#listfiles)                       | `GET`    | `/{version}/files/{filesIntegrationId}`            | `project` |
 | [`getPublicFile`](#getpublicfile)               | `GET`    | `/{version}/files/public/{PublicId}/{Name*}`       | `project` |
+| [`registerFiles`](#registerfiles)               | `POST`   | `/{version}/files/{filesIntegrationId}/register`   | `project` |
 | [`requestUploadUrl`](#requestuploadurl)         | `POST`   | `/{version}/files/{filesIntegrationId}/upload-url` | `project` |
 | [`testFilesIntegration`](#testfilesintegration) | `POST`   | `/{version}/files/{filesIntegrationId}/test`       | `project` |
 | [`useFile`](#usefile)                           | `POST`   | `/{version}/files/{filesIntegrationId}/use`        | `project` |
@@ -270,6 +271,29 @@ const result = await norbix.api.files.getPublicFile({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.Blob
+```
+
+[↑ Top](#endpoints)
+
+### registerFiles
+
+`POST` `/{version}/files/{filesIntegrationId}/register`
+
+Register a new entry.
+
+**Request DTO**: `CodeMashApi2.RegisterFilesRequest`
+**Response**: `CodeMashApi2.RegisterFilesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.files.registerFiles({
+  filesIntegrationId: 'filesIntegrationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.RegisterFilesResponse
 ```
 
 [↑ Top](#endpoints)
