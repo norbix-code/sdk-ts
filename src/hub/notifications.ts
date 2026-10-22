@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 128
+ * Endpoints: 129
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -2020,6 +2020,25 @@ export class NotificationsModule {
       method: 'POST',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/notifications/push/devices/{Id}
+   * Request DTO: DeletePushDevice
+   */
+  deletePushDevice = (
+    request: Partial<CodeMashHub2.DeletePushDevice> = {} as Partial<CodeMashHub2.DeletePushDevice>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/devices/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

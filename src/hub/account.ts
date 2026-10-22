@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 128
+ * Endpoints: 130
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -446,6 +446,44 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/account/projects/environments/{environmentName}/admin-url
+   * Request DTO: UpdateEnvironmentAdminUrl
+   */
+  updateEnvironmentAdminUrl = (
+    request: Partial<CodeMashHub2.UpdateEnvironmentAdminUrl> = {} as Partial<CodeMashHub2.UpdateEnvironmentAdminUrl>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/environments/{environmentName}/admin-url',
+      method: 'PATCH',
+      request,
+      pathParams: ['environmentName'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/environments/{environmentName}/admin-url
+   * Request DTO: GetEnvironmentAdminUrl
+   */
+  getEnvironmentAdminUrl = (
+    request: Partial<CodeMashHub2.GetEnvironmentAdminUrl> = {} as Partial<CodeMashHub2.GetEnvironmentAdminUrl>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetEnvironmentAdminUrlResponse> => {
+    return this.transport.send<CodeMashHub2.GetEnvironmentAdminUrlResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/environments/{environmentName}/admin-url',
+      method: 'GET',
+      request,
+      pathParams: ['environmentName'],
       scope: 'project',
       ...options,
     });

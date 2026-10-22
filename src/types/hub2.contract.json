@@ -427,6 +427,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DeletePushDevice": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DeletePushIntegrationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1056,6 +1060,10 @@
     "returnsBytes": false
   },
   "GetEmbeddingIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEnvironmentAdminUrl": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2184,6 +2192,10 @@
     "returnsBytes": false
   },
   "UpdateEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateEnvironmentAdminUrl": {
     "requiresAuth": true,
     "returnsBytes": false
   },

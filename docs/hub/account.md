@@ -33,6 +33,8 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`rollbackPromotion`](#rollbackpromotion)                                     | `POST`   | `/{version}/account/projects/environments/promote/rollback`                  | `project` |
 | [`repairEnvironmentBuiltIns`](#repairenvironmentbuiltins)                     | `POST`   | `/{version}/account/projects/environments/built-ins/repair`                  | `project` |
 | [`getProjectEnvironments`](#getprojectenvironments)                           | `GET`    | `/{version}/account/projects/environments`                                   | `project` |
+| [`updateEnvironmentAdminUrl`](#updateenvironmentadminurl)                     | `PATCH`  | `/{version}/account/projects/environments/{environmentName}/admin-url`       | `project` |
+| [`getEnvironmentAdminUrl`](#getenvironmentadminurl)                           | `GET`    | `/{version}/account/projects/environments/{environmentName}/admin-url`       | `project` |
 | [`getProject`](#getproject)                                                   | `GET`    | `/{version}/account/projects/{projectId}`                                    | `project` |
 | [`getProjects`](#getprojects)                                                 | `GET`    | `/{version}/account/projects`                                                | `project` |
 | [`getAccountRegions`](#getaccountregions)                                     | `GET`    | `/{version}/account/regions`                                                 | `project` |
@@ -639,6 +641,52 @@ const result = await norbix.hub.account.getProjectEnvironments({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetProjectEnvironmentsResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateEnvironmentAdminUrl
+
+`PATCH` `/{version}/account/projects/environments/{environmentName}/admin-url`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashHub2.UpdateEnvironmentAdminUrl`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.updateEnvironmentAdminUrl({
+  environmentName: 'environmentName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEnvironmentAdminUrl
+
+`GET` `/{version}/account/projects/environments/{environmentName}/admin-url`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEnvironmentAdminUrl`
+**Response**: `CodeMashHub2.GetEnvironmentAdminUrlResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getEnvironmentAdminUrl({
+  environmentName: 'environmentName-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEnvironmentAdminUrlResponse
 ```
 
 [↑ Top](#endpoints)

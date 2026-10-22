@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (128 endpoints).
+ * Tests for hub.account (130 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 128 method(s)', () => {
+  it('module exposes 130 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -52,6 +52,8 @@ describe('hub.account', () => {
     expect(typeof ns['rollbackPromotion']).toBe('function');
     expect(typeof ns['repairEnvironmentBuiltIns']).toBe('function');
     expect(typeof ns['getProjectEnvironments']).toBe('function');
+    expect(typeof ns['updateEnvironmentAdminUrl']).toBe('function');
+    expect(typeof ns['getEnvironmentAdminUrl']).toBe('function');
     expect(typeof ns['getProject']).toBe('function');
     expect(typeof ns['getProjects']).toBe('function');
     expect(typeof ns['getAccountRegions']).toBe('function');
@@ -692,6 +694,56 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['getProjectEnvironments']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('updateEnvironmentAdminUrl: PATCH /{version}/account/projects/environments/{environmentName}/admin-url', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/projects/environments/{environmentName}/admin-url',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/projects/environments/{environmentName}/admin-url',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['updateEnvironmentAdminUrl']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getEnvironmentAdminUrl: GET /{version}/account/projects/environments/{environmentName}/admin-url', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/account/projects/environments/{environmentName}/admin-url',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/projects/environments/{environmentName}/admin-url',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getEnvironmentAdminUrl']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');

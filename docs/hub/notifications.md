@@ -116,6 +116,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`setPushIntegrationAsDefault`](#setpushintegrationasdefault)                   | `PUT`    | `/{version}/notifications/push/integrations/{Id}/default`                          | `project` |
 | [`testPushIntegration`](#testpushintegration)                                   | `POST`   | `/{version}/notifications/push/integrations/test`                                  | `project` |
 | [`registerDevice`](#registerdevice)                                             | `POST`   | `/{version}/notifications/push/devices`                                            | `project` |
+| [`deletePushDevice`](#deletepushdevice)                                         | `DELETE` | `/{version}/notifications/push/devices/{Id}`                                       | `project` |
 | [`getPushDevice`](#getpushdevice)                                               | `GET`    | `/{version}/notifications/push/devices/{id}`                                       | `project` |
 | [`getPushDevices`](#getpushdevices)                                             | `GET`    | `/{version}/notifications/push/devices`                                            | `project` |
 | [`getPushCampaignAudienceCount`](#getpushcampaignaudiencecount)                 | `POST`   | `/{version}/notifications/push/campaigns/audience-count`                           | `project` |
@@ -2501,6 +2502,29 @@ const result = await norbix.hub.notifications.registerDevice({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deletePushDevice
+
+`DELETE` `/{version}/notifications/push/devices/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeletePushDevice`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.deletePushDevice({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)
