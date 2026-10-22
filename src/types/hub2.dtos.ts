@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 14:07:46
+Date: 2026-10-22 17:52:52
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6956,12 +6956,37 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class EnvironmentAdminUrlDto {
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public adminUrl?: string;
+
+    // @DataMember
+    public effectiveAdminUrl?: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public note?: string;
+
+    public constructor(init?: Partial<EnvironmentAdminUrlDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class ProjectEnvironmentsDto {
     // @DataMember
     public environments: string[] = [];
 
     // @DataMember
     public promotionOrder: string[] = [];
+
+    // @DataMember
+    public adminUrls: EnvironmentAdminUrlDto[] = [];
 
     public constructor(init?: Partial<ProjectEnvironmentsDto>) {
       (Object as any).assign(this, init);
@@ -7041,6 +7066,19 @@ export module CodeMashHub2 {
     public allTags: TagDefinitionDto[] = [];
 
     public constructor(init?: Partial<NotificationSettingsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectEnvironmentAdminUrlDto {
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public url: string;
+
+    public constructor(init?: Partial<ProjectEnvironmentAdminUrlDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7561,6 +7599,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public allowedOrigins?: string[];
+
+    // @DataMember
+    public environmentAdminUrls?: ProjectEnvironmentAdminUrlDto[];
 
     // @DataMember
     public exposeBrandToAdminPortal: boolean;
@@ -12672,6 +12713,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetEnvironmentAdminUrlResponse extends ResponseBase {
+    public item?: EnvironmentAdminUrlDto;
+
+    public constructor(init?: Partial<GetEnvironmentAdminUrlResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetProjectResponse extends ResponseBase {
     public item?: ProjectDto;
 
@@ -14612,6 +14662,10 @@ export module CodeMashHub2 {
     public skipHttpBodyMeta: boolean;
     public aiChatLoggingEnabled: boolean;
     public hasNorbixLogging: boolean;
+    public env: string;
+    public lastEntryAtUtc?: string;
+    public lastStoredAtUtc?: string;
+    public storageWarning?: string;
 
     public constructor(init?: Partial<GetLogSettingsResponse>) {
       super(init);
@@ -17202,6 +17256,63 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/projects/environments/{environmentName}/admin-url", "PATCH")
+  // @DataContract
+  export class UpdateEnvironmentAdminUrl
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description Name of the environment (from get_project_environments), e.g. 'TEST' or 'PROD'. */
+    // @DataMember
+    // @ApiMember(Description="Name of the environment (from get_project_environments), e.g. 'TEST' or 'PROD'.", IsRequired=true)
+    public environmentName: string;
+
+    /** @description The environment's admin portal address, e.g. https://test-admin.example.com. https, host and optional path, no query. Empty clears it (the project admin URL is used). */
+    // @DataMember
+    // @ApiMember(Description="The environment's admin portal address, e.g. https://test-admin.example.com. https, host and optional path, no query. Empty clears it (the project admin URL is used).")
+    public url?: string;
+
+    public constructor(init?: Partial<UpdateEnvironmentAdminUrl>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateEnvironmentAdminUrl';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/account/projects/environments/{environmentName}/admin-url", "GET")
+  // @DataContract
+  export class GetEnvironmentAdminUrl
+    extends CodeMashRequestBase
+    implements IReturn<GetEnvironmentAdminUrlResponse>
+  {
+    /** @description Name of the environment (from get_project_environments), e.g. 'TEST'. */
+    // @DataMember
+    // @ApiMember(Description="Name of the environment (from get_project_environments), e.g. 'TEST'.", IsRequired=true)
+    public environmentName: string;
+
+    public constructor(init?: Partial<GetEnvironmentAdminUrl>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEnvironmentAdminUrl';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEnvironmentAdminUrlResponse();
+    }
+  }
+
   /** @description Gets project info. */
   // @Route("/{version}/account/projects/{projectId}", "GET")
   // @Api(Description="Gets project info.")
@@ -18130,8 +18241,8 @@ export module CodeMashHub2 {
   // @Route("/{version}/account/projects/{projectId}/settings/name", "PATCH")
   // @Api(Description="Updates project name")
   export class UpdateProjectName extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    /** @description The new project name, unique per account. */
-    // @ApiMember(Description="The new project name, unique per account.", IsRequired=true)
+    /** @description The new project name, unique per account. The short name (slug) in Cloud addresses is made from it; the project id does not change. */
+    // @ApiMember(Description="The new project name, unique per account. The short name (slug) in Cloud addresses is made from it; the project id does not change.", IsRequired=true)
     public name: string;
 
     public constructor(init?: Partial<UpdateProjectName>) {
@@ -26688,6 +26799,33 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Deletes a registered push device */
+  // @Route("/{version}/notifications/push/devices/{Id}", "DELETE")
+  // @Api(Description="Deletes a registered push device")
+  export class DeletePushDevice extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    /** @description The device id (pnd_…) to delete. Get it from get_push_devices. */
+    // @ApiMember(Description="The device id (pnd_…) to delete. Get it from get_push_devices.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default for the environment. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default for the environment.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<DeletePushDevice>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeletePushDevice';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Gets a registered push device */
   // @Route("/{version}/notifications/push/devices/{id}", "GET")
   // @Api(Description="Gets a registered push device")
@@ -30198,6 +30336,10 @@ export module CodeMashHub2 {
     /** @description Contact's last name (optional). */
     // @ApiMember(Description="Contact's last name (optional).")
     public lastName?: string;
+
+    /** @description Tags to put on the new contact — free labels campaigns and segments select by, normalised like any tag. */
+    // @ApiMember(Description="Tags to put on the new contact — free labels campaigns and segments select by, normalised like any tag.")
+    public tags?: string[];
 
     public constructor(init?: Partial<CreateContactRequest>) {
       super(init);

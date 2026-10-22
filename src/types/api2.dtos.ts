@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 14:07:44
+Date: 2026-10-22 17:52:52
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -480,6 +480,11 @@ export module CodeMashApi2 {
   export class SaveUserWithRolesBase extends SaveUser {
     // @DataMember
     public roles: string[] = [];
+
+    /** @description Tags to put on the new user's contact (free labels campaigns and segments select by, normalised like any tag). Only here, on the routes that need membership:create — a public self sign-up cannot tag itself. Ignored for a service user (no contact). */
+    // @DataMember
+    // @ApiMember(Description="Tags to put on the new user's contact (free labels campaigns and segments select by, normalised like any tag). Only here, on the routes that need membership:create — a public self sign-up cannot tag itself. Ignored for a service user (no contact).")
+    public tags?: string[];
 
     public constructor(init?: Partial<SaveUserWithRolesBase>) {
       super(init);
@@ -1952,6 +1957,30 @@ export module CodeMashApi2 {
 
     // @DataMember
     public integrationProblem?: string;
+
+    // @DataMember
+    public templateId?: string;
+
+    // @DataMember
+    public templateName?: string;
+
+    // @DataMember
+    public templateSource?: string;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public languageRule?: string;
+
+    // @DataMember
+    public templateLanguages?: string[];
+
+    // @DataMember
+    public fallback?: string;
+
+    // @DataMember
+    public mjmlRenderer?: string;
 
     public constructor(init?: Partial<SendTestPasswordResetResponse>) {
       super(init);
