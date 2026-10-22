@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**590 endpoints across 27 modules.** Click a module
+**589 endpoints across 26 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -21,7 +21,6 @@ name for the full method reference and TypeScript examples.
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`email`](./email.md)                 |         2 |                                                                                                                                          |
 | [`files`](./files.md)                 |        24 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
-| [`internal`](./internal.md)           |         1 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        15 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        48 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |

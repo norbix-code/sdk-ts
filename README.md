@@ -384,7 +384,6 @@ Default base URL: `https://hub.norbix.ai`. **18 modules · 315 endpoints.**
 | 🔑 `apikeys`              | List + regenerate Hub API keys                                          | [`docs/hub/apikeys.md`](./docs/hub/apikeys.md)             |
 | 🪪 `accessToken`          | Refresh-token exchange                                                  | [`docs/hub/access_token.md`](./docs/hub/access_token.md)   |
 | 🩺 `echo`                 | Gateway smoke check                                                     | [`docs/hub/echo.md`](./docs/hub/echo.md)                   |
-| 🛠️ `internal`             | Internal helpers                                                        | [`docs/hub/internal.md`](./docs/hub/internal.md)           |
 | 📦 `resources`            | Resolve resource references                                             | [`docs/hub/resources.md`](./docs/hub/resources.md)         |
 | 🚦 `triggers`             | Triggers that need attention (for example a missing provider)           | [`docs/hub/triggers.md`](./docs/hub/triggers.md)           |
 
