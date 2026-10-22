@@ -38,6 +38,7 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
 | [`requestPasswordReset`](#requestpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/request`                                      | `project` |
 | [`confirmPasswordReset`](#confirmpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/confirm`                                      | `project` |
+| [`sendTestPasswordReset`](#sendtestpasswordreset)                       | `POST`   | `/{version}/membership/userauth/password/reset/test`                                         | `project` |
 | [`passkeyAuthenticationOptions`](#passkeyauthenticationoptions)         | `POST`   | `/{version}/membership/userauth/passkey/authentication-options`                              | `project` |
 | [`verifyPasskeyAuthentication`](#verifypasskeyauthentication)           | `POST`   | `/{version}/membership/userauth/passkey/verify-authentication`                               | `project` |
 | [`listPasskeys`](#listpasskeys)                                         | `GET`    | `/{version}/membership/userauth/passkeys`                                                    | `project` |
@@ -107,7 +108,7 @@ const result = await norbix.api.membership.saveSystemUserWithPermissions({
 Upsert an item (create or update).
 
 **Request DTO**: `CodeMashApi2.SaveGuestUser`
-**Response**: `CodeMashApi2.IdResponse`
+**Response**: `CodeMashApi2.SaveGuestUserResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -117,7 +118,7 @@ const norbix = new Norbix();
 const result = await norbix.api.membership.saveGuestUser({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashApi2.IdResponse
+// → typed as CodeMashApi2.SaveGuestUserResponse
 ```
 
 [↑ Top](#endpoints)
@@ -660,6 +661,28 @@ const result = await norbix.api.membership.confirmPasswordReset({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### sendTestPasswordReset
+
+`POST` `/{version}/membership/userauth/password/reset/test`
+
+Send a message / invitation.
+
+**Request DTO**: `CodeMashApi2.SendTestPasswordResetRequest`
+**Response**: `CodeMashApi2.SendTestPasswordResetResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.sendTestPasswordReset({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.SendTestPasswordResetResponse
 ```
 
 [↑ Top](#endpoints)

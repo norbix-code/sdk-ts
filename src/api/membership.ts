@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 43
+ * Endpoints: 44
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -56,8 +56,8 @@ export class MembershipModule {
   saveGuestUser = (
     request: Partial<CodeMashApi2.SaveGuestUser> = {} as Partial<CodeMashApi2.SaveGuestUser>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.IdResponse> => {
-    return this.transport.send<CodeMashApi2.IdResponse>({
+  ): Promise<CodeMashApi2.SaveGuestUserResponse> => {
+    return this.transport.send<CodeMashApi2.SaveGuestUserResponse>({
       target: 'api',
       path: '/{version}/membership/auth/register/guest',
       method: 'POST',
@@ -535,6 +535,25 @@ export class MembershipModule {
     return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
       target: 'api',
       path: '/{version}/membership/userauth/password/reset/confirm',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/password/reset/test
+   * Request DTO: SendTestPasswordResetRequest
+   */
+  sendTestPasswordReset = (
+    request: Partial<CodeMashApi2.SendTestPasswordResetRequest> = {} as Partial<CodeMashApi2.SendTestPasswordResetRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.SendTestPasswordResetResponse> => {
+    return this.transport.send<CodeMashApi2.SendTestPasswordResetResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/password/reset/test',
       method: 'POST',
       request,
       pathParams: [],

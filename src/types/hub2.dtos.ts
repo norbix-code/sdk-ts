@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 07:37:54
+Date: 2026-10-22 09:43:23
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -3135,6 +3135,7 @@ export module CodeMashHub2 {
     public provider: string;
     public providerEventId: string;
     public orderId?: string;
+    public buyerUserId?: string;
     public eventName: string;
     public status: string;
     public amountMinor?: number;

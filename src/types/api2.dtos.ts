@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 07:37:54
+Date: 2026-10-22 09:43:21
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1876,6 +1876,20 @@ export module CodeMashApi2 {
     }
   }
 
+  // @DataContract
+  export class SaveGuestUserResponse extends IdResponse {
+    // @DataMember
+    public userName?: string;
+
+    // @DataMember
+    public password?: string;
+
+    public constructor(init?: Partial<SaveGuestUserResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetUserResponse extends ResponseBase {
     public user?: AuthDto;
 
@@ -1905,6 +1919,41 @@ export module CodeMashApi2 {
 
   export class PasskeyOkResponse extends ResponseBase {
     public constructor(init?: Partial<PasskeyOkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SendTestPasswordResetResponse extends ResponseBase {
+    // @DataMember
+    public queued: boolean;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public expiresAtUtc?: string;
+
+    // @DataMember
+    public integrationId?: string;
+
+    // @DataMember
+    public integrationName?: string;
+
+    // @DataMember
+    public provider?: string;
+
+    // @DataMember
+    public integrationProblem?: string;
+
+    public constructor(init?: Partial<SendTestPasswordResetResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -2921,7 +2970,7 @@ export module CodeMashApi2 {
   // @Route("/{version}/membership/auth/register/guest", "POST")
   // @Api(Description="Membership")
   // @DataContract
-  export class SaveGuestUser extends SaveUser implements IReturn<IdResponse> {
+  export class SaveGuestUser extends SaveUser implements IReturn<SaveGuestUserResponse> {
     public constructor(init?: Partial<SaveGuestUser>) {
       super(init);
       (Object as any).assign(this, init);
@@ -2933,7 +2982,7 @@ export module CodeMashApi2 {
       return 'POST';
     }
     public createResponse() {
-      return new IdResponse();
+      return new SaveGuestUserResponse();
     }
   }
 
@@ -3833,6 +3882,34 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new PasskeyOkResponse();
+    }
+  }
+
+  /** @description Membership · Password */
+  // @Route("/{version}/membership/userauth/password/reset/test", "POST")
+  // @Api(Description="Membership · Password")
+  // @DataContract
+  export class SendTestPasswordResetRequest
+    extends CodeMashRequestBase
+    implements IReturn<SendTestPasswordResetResponse>
+  {
+    /** @description Email address of the project user (a login in the request environment). */
+    // @DataMember
+    // @ApiMember(Description="Email address of the project user (a login in the request environment).", IsRequired=true)
+    public email: string;
+
+    public constructor(init?: Partial<SendTestPasswordResetRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SendTestPasswordResetRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new SendTestPasswordResetResponse();
     }
   }
 
