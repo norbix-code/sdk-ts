@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-21 18:12:03
+Date: 2026-10-22 07:37:54
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -712,7 +712,10 @@ export module CodeMashHub2 {
 
   export class DataDogLoggingIntegrationRequest extends LoggingIntegrationRequest {
     public provider: LoggingProvider;
+    /** @description The Datadog site of your account, one of: datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, datadoghq.eu, ap1.datadoghq.com, ap2.datadoghq.com, ddog-gov.com (DataDogSites.All). */
+    // @ApiMember(Description="The Datadog site of your account, one of: datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, datadoghq.eu, ap1.datadoghq.com, ap2.datadoghq.com, ddog-gov.com (DataDogSites.All).", IsRequired=true)
     public site: string;
+
     public serviceName: string;
     public environment: string;
     public apiKey: string;
@@ -1108,7 +1111,7 @@ export module CodeMashHub2 {
     public provider: PaymentGatewayPlatform;
     public accessKey: string;
     public secretKey: string;
-    public isSandbox: boolean;
+    public isSandbox?: boolean;
     public locale?: string;
 
     public constructor(init?: Partial<MontonioPaymentIntegrationRequest>) {
@@ -2130,7 +2133,7 @@ export module CodeMashHub2 {
     public contentType?: string;
 
     // @DataMember
-    public includeRawPayload: boolean;
+    public includeRawPayload?: boolean;
 
     // @DataMember
     public mappedTokens?: TokenMappingDto[];
@@ -6119,7 +6122,7 @@ export module CodeMashHub2 {
     public integrationId?: string;
     public provider: EmailValidationProvider;
     public integrationName: string;
-    public isEnabled: boolean;
+    public isEnabled?: boolean;
 
     public constructor(init?: Partial<EmailValidationIntegrationRequest>) {
       (Object as any).assign(this, init);
@@ -6313,7 +6316,7 @@ export module CodeMashHub2 {
     public integrationId?: string;
     public provider: EmbeddingProvider;
     public integrationName: string;
-    public isEnabled: boolean;
+    public isEnabled?: boolean;
     public endpoint?: string;
     public model: string;
     public dimension: number;
@@ -19379,9 +19382,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<ImportUsersResponse>
   {
-    /** @description True (default) = check every row and write nothing. False = write. */
-    // @ApiMember(Description="True (default) = check every row and write nothing. False = write.")
-    public dryRun: boolean;
+    /** @description True = check every row and write nothing. False = write. Empty = true (check only, write nothing). */
+    // @ApiMember(Description="True = check every row and write nothing. False = write. Empty = true (check only, write nothing).")
+    public dryRun?: boolean;
 
     /** @description True = do not add the project's default roles (as 'ignoreUserRegistersAsRole' on registration). */
     // @ApiMember(Description="True = do not add the project's default roles (as 'ignoreUserRegistersAsRole' on registration).")
@@ -19413,9 +19416,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<RepairLoginProjectIdsResponse>
   {
-    /** @description True (default) = only count what would change. False = write. */
-    // @ApiMember(Description="True (default) = only count what would change. False = write.")
-    public dryRun: boolean;
+    /** @description True = only count what would change. False = write. Empty = true (only count). */
+    // @ApiMember(Description="True = only count what would change. False = write. Empty = true (only count).")
+    public dryRun?: boolean;
 
     public constructor(init?: Partial<RepairLoginProjectIdsRequest>) {
       super(init);
@@ -19948,9 +19951,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Number of recovery codes generated at signup. Allowed range: 5-20.")
     public recoveryCodeCount: number;
 
-    /** @description Whether recovery codes are generated automatically at signup. */
-    // @ApiMember(Description="Whether recovery codes are generated automatically at signup.")
-    public generateRecoveryCodesAtSignup: boolean;
+    /** @description Whether recovery codes are generated automatically at signup. Empty = true (generated). */
+    // @ApiMember(Description="Whether recovery codes are generated automatically at signup. Empty = true (generated).")
+    public generateRecoveryCodesAtSignup?: boolean;
 
     /** @description Accepted authenticator types: 'Any', 'Platform', or 'CrossPlatform'. */
     // @ApiMember(Description="Accepted authenticator types: 'Any', 'Platform', or 'CrossPlatform'.")
@@ -21008,10 +21011,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="true = mark free-text fields (title, body, excerpt …) translatable for multilingual content. Default false.")
     public translatable: boolean;
 
-    /** @description false = leave every collection as a draft instead of publishing v1. Default true. */
+    /** @description false = leave every collection as a draft instead of publishing v1. Empty = true (publish v1). */
     // @DataMember
-    // @ApiMember(Description="false = leave every collection as a draft instead of publishing v1. Default true.")
-    public publish: boolean;
+    // @ApiMember(Description="false = leave every collection as a draft instead of publishing v1. Empty = true (publish v1).")
+    public publish?: boolean;
 
     public constructor(init?: Partial<ApplyDatabaseSchemaBundleRequest>) {
       super(init);
@@ -21089,9 +21092,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EndUserOwnRecordsReportResponse>
   {
-    /** @description True (default) = only list. False = turn the switch on for the schemas in 'enable'. */
-    // @ApiMember(Description="True (default) = only list. False = turn the switch on for the schemas in 'enable'.")
-    public dryRun: boolean;
+    /** @description True = only list. False = turn the switch on for the schemas in 'enable'. Empty = true (only list). */
+    // @ApiMember(Description="True = only list. False = turn the switch on for the schemas in 'enable'. Empty = true (only list).")
+    public dryRun?: boolean;
 
     /** @description Schema names to turn the switch ON for (only with dryRun:false). Empty = change nothing. */
     // @ApiMember(Description="Schema names to turn the switch ON for (only with dryRun:false). Empty = change nothing.")
@@ -29879,9 +29882,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Destination-specific static headers sent with every delivery to this destination. These win over the integration-wide extra headers on duplicate keys.")
     public extraHeaders?: { [index: string]: string };
 
-    /** @description Whether this destination is enabled for delivery. Defaults to true. */
-    // @ApiMember(Description="Whether this destination is enabled for delivery. Defaults to true.")
-    public isEnabled: boolean;
+    /** @description Whether this destination is enabled for delivery. Empty = true (enabled). */
+    // @ApiMember(Description="Whether this destination is enabled for delivery. Empty = true (enabled).")
+    public isEnabled?: boolean;
 
     public constructor(init?: Partial<SaveWebhookDestinationRequest>) {
       super(init);
@@ -30343,9 +30346,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<RepairContactRolesResponse>
   {
-    /** @description True (default) = only count what would change. False = write. */
-    // @ApiMember(Description="True (default) = only count what would change. False = write.")
-    public dryRun: boolean;
+    /** @description True = only count what would change. False = write. Empty = true (only count). */
+    // @ApiMember(Description="True = only count what would change. False = write. Empty = true (only count).")
+    public dryRun?: boolean;
 
     public constructor(init?: Partial<RepairContactRolesRequest>) {
       super(init);
