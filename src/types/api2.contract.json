@@ -395,6 +395,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SendTestPasswordResetRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SetContactRolesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
