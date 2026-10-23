@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 17:52:52
+Date: 2026-10-23 09:36:01
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -5936,9 +5936,9 @@ export module CodeMashApi2 {
     }
   }
 
-  /** @description Opens a Montonio checkout for a stored order and answers where the buyer pays. The buyer (own order) or the server. */
+  /** @description Opens a provider checkout (Montonio or Neopay) for a stored order and answers where the buyer pays. The buyer (own order) or the server. */
   // @Route("/{version}/payments/orders/{Id}/checkout", "POST")
-  // @Api(Description="Opens a Montonio checkout for a stored order and answers where the buyer pays. The buyer (own order) or the server.")
+  // @Api(Description="Opens a provider checkout (Montonio or Neopay) for a stored order and answers where the buyer pays. The buyer (own order) or the server.")
   export class StartPaymentCheckoutRequest
     extends CodeMashRequestBase
     implements IReturn<StartPaymentCheckoutResponse>
@@ -5947,12 +5947,12 @@ export module CodeMashApi2 {
     // @ApiMember(Description="The order id (ord_…).", IsRequired=true)
     public id: string;
 
-    /** @description The Montonio integration (int_…) of the project in the request's environment. */
-    // @ApiMember(Description="The Montonio integration (int_…) of the project in the request's environment.", IsRequired=true)
+    /** @description The checkout integration (int_…, Montonio or Neopay) of the project in the request's environment. */
+    // @ApiMember(Description="The checkout integration (int_…, Montonio or Neopay) of the project in the request's environment.", IsRequired=true)
     public integrationId: string;
 
-    /** @description bankLink (default), card, applePay or googlePay. */
-    // @ApiMember(Description="bankLink (default), card, applePay or googlePay.")
+    /** @description bankLink (default), card, applePay or googlePay (the wallets: Montonio only). */
+    // @ApiMember(Description="bankLink (default), card, applePay or googlePay (the wallets: Montonio only).")
     public method?: string;
 
     /** @description Where the buyer comes back after paying; its origin must be one of the project's allowed origins. */

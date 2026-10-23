@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-22 17:52:52
+Date: 2026-10-23 09:36:06
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -981,6 +981,7 @@ export module CodeMashHub2 {
     Mollie = 'Mollie',
     Worldpay = 'Worldpay',
     Montonio = 'Montonio',
+    Neopay = 'Neopay',
   }
 
   export class PaymentIntegrationRequest {
@@ -1115,6 +1116,20 @@ export module CodeMashHub2 {
     public locale?: string;
 
     public constructor(init?: Partial<MontonioPaymentIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class NeopayPaymentIntegrationRequest extends PaymentIntegrationRequest {
+    public provider: PaymentGatewayPlatform;
+    public projectId: string;
+    public projectKey: string;
+    public isSandbox?: boolean;
+    public country?: string;
+    public locale?: string;
+
+    public constructor(init?: Partial<NeopayPaymentIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3008,6 +3023,18 @@ export module CodeMashHub2 {
     public locale?: string;
 
     public constructor(init?: Partial<MontonioPaymentIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class NeopayPaymentIntegrationDto extends PaymentsIntegrationDto {
+    public projectId: string;
+    public isSandbox: boolean;
+    public country?: string;
+    public locale?: string;
+
+    public constructor(init?: Partial<NeopayPaymentIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16136,6 +16163,7 @@ export module CodeMashHub2 {
     public typegen_54_AppleInAppPaymentIntegrationRequest?: AppleInAppPaymentIntegrationRequest;
     public typegen_55_GoogleInAppPaymentIntegrationRequest?: GoogleInAppPaymentIntegrationRequest;
     public typegen_285_MontonioPaymentIntegrationRequest?: MontonioPaymentIntegrationRequest;
+    public typegen_295_NeopayPaymentIntegrationRequest?: NeopayPaymentIntegrationRequest;
     public typegen_287_ShopifyPaymentIntegrationRequest?: ShopifyPaymentIntegrationRequest;
     public typegen_288_WooCommercePaymentIntegrationRequest?: WooCommercePaymentIntegrationRequest;
     public typegen_289_MagentoPaymentIntegrationRequest?: MagentoPaymentIntegrationRequest;
@@ -16227,6 +16255,7 @@ export module CodeMashHub2 {
     public typegen_189_CheckOutComPaymentIntegrationDto?: CheckOutComPaymentIntegrationDto;
     public typegen_190_WorldpayPaymentIntegrationDto?: WorldpayPaymentIntegrationDto;
     public typegen_286_MontonioPaymentIntegrationDto?: MontonioPaymentIntegrationDto;
+    public typegen_296_NeopayPaymentIntegrationDto?: NeopayPaymentIntegrationDto;
     public typegen_294_PaymentOrderEventDto?: PaymentOrderEventDto;
     public typegen_128_AppleSignInMembershipIntegrationDto?: AppleSignInMembershipIntegrationDto;
     public typegen_129_GitHubMembershipIntegrationDto?: GitHubMembershipIntegrationDto;
