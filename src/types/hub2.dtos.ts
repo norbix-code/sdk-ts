@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-23 09:36:06
+Date: 2026-10-23 15:27:12
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -24203,7 +24203,7 @@ export module CodeMashHub2 {
   // @Api(Description="Clone an email template")
   export class CloneEmailTemplateRequest
     extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
+    implements IReturn<IdResponse>
   {
     /** @description The email template id to clone. Get it from get_email_templates. */
     // @ApiMember(Description="The email template id to clone. Get it from get_email_templates.", IsRequired=true)
@@ -24220,7 +24220,7 @@ export module CodeMashHub2 {
       return 'POST';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 
@@ -24874,10 +24874,7 @@ export module CodeMashHub2 {
   /** @description Clones sms template */
   // @Route("/{version}/notifications/sms/templates/{Id}/clone", "POST")
   // @Api(Description="Clones sms template")
-  export class CloneSmsTemplateRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
+  export class CloneSmsTemplateRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
     /** @description The SMS template id to clone. Get it from get_sms_templates. */
     // @ApiMember(Description="The SMS template id to clone. Get it from get_sms_templates.", IsRequired=true)
     public id: string;
@@ -24893,7 +24890,7 @@ export module CodeMashHub2 {
       return 'POST';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 
@@ -26288,10 +26285,7 @@ export module CodeMashHub2 {
   /** @description Clones push template */
   // @Route("/{version}/notifications/push/templates/{Id}/clone", "POST")
   // @Api(Description="Clones push template")
-  export class ClonePushTemplateRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
+  export class ClonePushTemplateRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
     /** @description The push template id to clone. Get it from get_push_templates. */
     // @ApiMember(Description="The push template id to clone. Get it from get_push_templates.", IsRequired=true)
     public id: string;
@@ -26307,7 +26301,7 @@ export module CodeMashHub2 {
       return 'POST';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 

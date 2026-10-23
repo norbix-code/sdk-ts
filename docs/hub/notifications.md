@@ -859,7 +859,7 @@ const result = await norbix.hub.notifications.archiveEmailTemplate({
 Duplicate an existing resource.
 
 **Request DTO**: `CodeMashHub2.CloneEmailTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -870,7 +870,7 @@ const result = await norbix.hub.notifications.cloneEmailTemplate({
   Id: 'Id-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1333,7 +1333,7 @@ const result = await norbix.hub.notifications.archiveSmsTemplate({
 Duplicate an existing resource.
 
 **Request DTO**: `CodeMashHub2.CloneSmsTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -1344,7 +1344,7 @@ const result = await norbix.hub.notifications.cloneSmsTemplate({
   Id: 'Id-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2071,7 +2071,7 @@ const result = await norbix.hub.notifications.archivePushTemplate({
 Duplicate an existing resource.
 
 **Request DTO**: `CodeMashHub2.ClonePushTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -2082,7 +2082,7 @@ const result = await norbix.hub.notifications.clonePushTemplate({
   Id: 'Id-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

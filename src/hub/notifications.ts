@@ -626,8 +626,8 @@ export class NotificationsModule {
   cloneEmailTemplate = (
     request: Partial<CodeMashHub2.CloneEmailTemplateRequest> = {} as Partial<CodeMashHub2.CloneEmailTemplateRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/notifications/email/templates/{Id}/clone',
       method: 'POST',
@@ -1025,8 +1025,8 @@ export class NotificationsModule {
   cloneSmsTemplate = (
     request: Partial<CodeMashHub2.CloneSmsTemplateRequest> = {} as Partial<CodeMashHub2.CloneSmsTemplateRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/notifications/sms/templates/{Id}/clone',
       method: 'POST',
@@ -1652,8 +1652,8 @@ export class NotificationsModule {
   clonePushTemplate = (
     request: Partial<CodeMashHub2.ClonePushTemplateRequest> = {} as Partial<CodeMashHub2.ClonePushTemplateRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/notifications/push/templates/{Id}/clone',
       method: 'POST',
