@@ -36,6 +36,30 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`invokeMarketplaceFunction`](#invokemarketplacefunction)                           | `POST`   | `/{version}/code/marketplace/functions/{FunctionViewId}/invoke`                                   | `project` |
 | [`getMarketplaceListing`](#getmarketplacelisting)                                   | `GET`    | `/{version}/code/marketplace/listings/{ListingViewId}`                                            | `project` |
 | [`testMarketplaceIntegration`](#testmarketplaceintegration)                         | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/test`                               | `project` |
+| [`saveCodeWorkflow`](#savecodeworkflow)                                             | `PUT`    | `/{version}/code/workflows`                                                                       | `project` |
+| [`publishCodeWorkflow`](#publishcodeworkflow)                                       | `POST`   | `/{version}/code/workflows/{Id}/publish`                                                          | `project` |
+| [`getCodeWorkflowDraft`](#getcodeworkflowdraft)                                     | `GET`    | `/{version}/code/workflows/{Id}/draft`                                                            | `project` |
+| [`discardCodeWorkflowDraft`](#discardcodeworkflowdraft)                             | `DELETE` | `/{version}/code/workflows/{Id}/draft`                                                            | `project` |
+| [`getCodeWorkflowVersions`](#getcodeworkflowversions)                               | `GET`    | `/{version}/code/workflows/{Id}/versions`                                                         | `project` |
+| [`getCodeWorkflowVersionDiff`](#getcodeworkflowversiondiff)                         | `GET`    | `/{version}/code/workflows/{Id}/versions/diff`                                                    | `project` |
+| [`validateCodeWorkflow`](#validatecodeworkflow)                                     | `POST`   | `/{version}/code/workflows/validate`                                                              | `project` |
+| [`getCodeWorkflows`](#getcodeworkflows)                                             | `GET`    | `/{version}/code/workflows`                                                                       | `project` |
+| [`getCodeWorkflow`](#getcodeworkflow)                                               | `GET`    | `/{version}/code/workflows/{Id}`                                                                  | `project` |
+| [`deleteCodeWorkflow`](#deletecodeworkflow)                                         | `DELETE` | `/{version}/code/workflows/{Id}`                                                                  | `project` |
+| [`enableCodeWorkflow`](#enablecodeworkflow)                                         | `PUT`    | `/{version}/code/workflows/{Id}/enable`                                                           | `project` |
+| [`disableCodeWorkflow`](#disablecodeworkflow)                                       | `PUT`    | `/{version}/code/workflows/{Id}/disable`                                                          | `project` |
+| [`getCodeWorkflowSchema`](#getcodeworkflowschema)                                   | `GET`    | `/{version}/code/workflows/schema`                                                                | `project` |
+| [`enableCodeWorkflows`](#enablecodeworkflows)                                       | `PUT`    | `/{version}/code/workflows/enable`                                                                | `project` |
+| [`disableCodeWorkflows`](#disablecodeworkflows)                                     | `PUT`    | `/{version}/code/workflows/disable`                                                               | `project` |
+| [`invokeCodeWorkflow`](#invokecodeworkflow)                                         | `POST`   | `/{version}/code/workflows/{Id}/invoke`                                                           | `project` |
+| [`getCodeWorkflowRuns`](#getcodeworkflowruns)                                       | `GET`    | `/{version}/code/workflows/{Id}/runs`                                                             | `project` |
+| [`getCodeWorkflowWaitingRuns`](#getcodeworkflowwaitingruns)                         | `GET`    | `/{version}/code/workflows/runs`                                                                  | `project` |
+| [`getCodeWorkflowRun`](#getcodeworkflowrun)                                         | `GET`    | `/{version}/code/workflows/runs/{RunId}`                                                          | `project` |
+| [`getCodeWorkflowRunLogs`](#getcodeworkflowrunlogs)                                 | `GET`    | `/{version}/code/workflows/runs/{RunId}/logs`                                                     | `project` |
+| [`resumeCodeWorkflowRun`](#resumecodeworkflowrun)                                   | `POST`   | `/{version}/code/workflows/runs/{RunId}/resume`                                                   | `project` |
+| [`resumeCodeWorkflowRunByKey`](#resumecodeworkflowrunbykey)                         | `POST`   | `/{version}/code/workflows/{Id}/resume`                                                           | `project` |
+| [`retryCodeWorkflowRunStep`](#retrycodeworkflowrunstep)                             | `POST`   | `/{version}/code/workflows/runs/{RunId}/retry`                                                    | `project` |
+| [`cancelCodeWorkflowRun`](#cancelcodeworkflowrun)                                   | `POST`   | `/{version}/code/workflows/runs/{RunId}/cancel`                                                   | `project` |
 | [`getMarketplaceIntegrationAccess`](#getmarketplaceintegrationaccess)               | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access`                             | `project` |
 | [`setMarketplaceIntegrationRoleAccess`](#setmarketplaceintegrationroleaccess)       | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles`                       | `project` |
 | [`saveMarketplaceIntegrationCustomAccess`](#savemarketplaceintegrationcustomaccess) | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom`                | `project` |
@@ -688,6 +712,535 @@ const result = await norbix.hub.code.testMarketplaceIntegration({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestMarketplaceIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveCodeWorkflow
+
+`PUT` `/{version}/code/workflows`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveCodeWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.saveCodeWorkflow({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### publishCodeWorkflow
+
+`POST` `/{version}/code/workflows/{Id}/publish`
+
+**Request DTO**: `CodeMashHub2.PublishCodeWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.publishCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowDraft
+
+`GET` `/{version}/code/workflows/{Id}/draft`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowDraft`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowDraft({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### discardCodeWorkflowDraft
+
+`DELETE` `/{version}/code/workflows/{Id}/draft`
+
+**Request DTO**: `CodeMashHub2.DiscardCodeWorkflowDraft`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.discardCodeWorkflowDraft({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowVersions
+
+`GET` `/{version}/code/workflows/{Id}/versions`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowVersions`
+**Response**: `CodeMashHub2.WorkflowVersionsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowVersions({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowVersionsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowVersionDiff
+
+`GET` `/{version}/code/workflows/{Id}/versions/diff`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowVersionDiff`
+**Response**: `CodeMashHub2.WorkflowVersionDiffResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowVersionDiff({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowVersionDiffResponse
+```
+
+[↑ Top](#endpoints)
+
+### validateCodeWorkflow
+
+`POST` `/{version}/code/workflows/validate`
+
+**Request DTO**: `CodeMashHub2.ValidateCodeWorkflow`
+**Response**: `CodeMashHub2.ValidateCodeWorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.validateCodeWorkflow({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ValidateCodeWorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflows
+
+`GET` `/{version}/code/workflows`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflows`
+**Response**: `CodeMashHub2.WorkflowsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflows({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflow
+
+`GET` `/{version}/code/workflows/{Id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteCodeWorkflow
+
+`DELETE` `/{version}/code/workflows/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteCodeWorkflow`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.deleteCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### enableCodeWorkflow
+
+`PUT` `/{version}/code/workflows/{Id}/enable`
+
+Enable the resource.
+
+**Request DTO**: `CodeMashHub2.EnableCodeWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.enableCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### disableCodeWorkflow
+
+`PUT` `/{version}/code/workflows/{Id}/disable`
+
+Disable the resource.
+
+**Request DTO**: `CodeMashHub2.DisableCodeWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.disableCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowSchema
+
+`GET` `/{version}/code/workflows/schema`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowSchema`
+**Response**: `CodeMashHub2.WorkflowSchemaResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowSchema({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowSchemaResponse
+```
+
+[↑ Top](#endpoints)
+
+### enableCodeWorkflows
+
+`PUT` `/{version}/code/workflows/enable`
+
+Enable the resource.
+
+**Request DTO**: `CodeMashHub2.EnableCodeWorkflows`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.enableCodeWorkflows({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### disableCodeWorkflows
+
+`PUT` `/{version}/code/workflows/disable`
+
+Disable the resource.
+
+**Request DTO**: `CodeMashHub2.DisableCodeWorkflows`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.disableCodeWorkflows({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### invokeCodeWorkflow
+
+`POST` `/{version}/code/workflows/{Id}/invoke`
+
+**Request DTO**: `CodeMashHub2.InvokeCodeWorkflow`
+**Response**: `CodeMashHub2.InvokeCodeWorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.invokeCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.InvokeCodeWorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowRuns
+
+`GET` `/{version}/code/workflows/{Id}/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowRuns`
+**Response**: `CodeMashHub2.WorkflowRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowRuns({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowWaitingRuns
+
+`GET` `/{version}/code/workflows/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowWaitingRuns`
+**Response**: `CodeMashHub2.WorkflowRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowWaitingRuns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowRun
+
+`GET` `/{version}/code/workflows/runs/{RunId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowRun`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowRun({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowRunLogs
+
+`GET` `/{version}/code/workflows/runs/{RunId}/logs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowRunLogs`
+**Response**: `CodeMashHub2.WorkflowRunLogsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowRunLogs({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunLogsResponse
+```
+
+[↑ Top](#endpoints)
+
+### resumeCodeWorkflowRun
+
+`POST` `/{version}/code/workflows/runs/{RunId}/resume`
+
+**Request DTO**: `CodeMashHub2.ResumeCodeWorkflowRun`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.resumeCodeWorkflowRun({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### resumeCodeWorkflowRunByKey
+
+`POST` `/{version}/code/workflows/{Id}/resume`
+
+**Request DTO**: `CodeMashHub2.ResumeCodeWorkflowRunByKey`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.resumeCodeWorkflowRunByKey({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### retryCodeWorkflowRunStep
+
+`POST` `/{version}/code/workflows/runs/{RunId}/retry`
+
+**Request DTO**: `CodeMashHub2.RetryCodeWorkflowRunStep`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.retryCodeWorkflowRunStep({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### cancelCodeWorkflowRun
+
+`POST` `/{version}/code/workflows/runs/{RunId}/cancel`
+
+**Request DTO**: `CodeMashHub2.CancelCodeWorkflowRun`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.cancelCodeWorkflowRun({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
 ```
 
 [↑ Top](#endpoints)

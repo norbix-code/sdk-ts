@@ -13,6 +13,8 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 | [`disablePayments`](#disablepayments)                                                 | `PUT`    | `/{version}/payments/disable`                             | `project` |
 | [`enablePayments`](#enablepayments)                                                   | `PUT`    | `/{version}/payments/enable`                              | `project` |
 | [`getPaymentsWebhookLog`](#getpaymentswebhooklog)                                     | `GET`    | `/{version}/payments/webhooks/log`                        | `project` |
+| [`getPaymentsWebhookRuns`](#getpaymentswebhookruns)                                   | `GET`    | `/{version}/payments/webhooks/runs`                       | `project` |
+| [`getPaymentsWebhookRun`](#getpaymentswebhookrun)                                     | `GET`    | `/{version}/payments/webhooks/runs/{Id}`                  | `project` |
 | [`deletePaymentsTrigger`](#deletepaymentstrigger)                                     | `DELETE` | `/{version}/payments/triggers/{triggerId}`                | `project` |
 | [`disablePaymentsTrigger`](#disablepaymentstrigger)                                   | `PATCH`  | `/{version}/payments/triggers/{triggerId}/disable`        | `project` |
 | [`enablePaymentsTrigger`](#enablepaymentstrigger)                                     | `PATCH`  | `/{version}/payments/triggers/{triggerId}/enable`         | `project` |
@@ -92,6 +94,51 @@ const result = await norbix.hub.payments.getPaymentsWebhookLog({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetPaymentsWebhookLogResponse
+```
+
+[↑ Top](#endpoints)
+
+### getPaymentsWebhookRuns
+
+`GET` `/{version}/payments/webhooks/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPaymentsWebhookRuns`
+**Response**: `CodeMashHub2.GetPaymentsWebhookRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.getPaymentsWebhookRuns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPaymentsWebhookRunsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getPaymentsWebhookRun
+
+`GET` `/{version}/payments/webhooks/runs/{Id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetPaymentsWebhookRun`
+**Response**: `CodeMashHub2.GetPaymentsWebhookRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.getPaymentsWebhookRun({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetPaymentsWebhookRunResponse
 ```
 
 [↑ Top](#endpoints)

@@ -493,8 +493,8 @@ export class MembershipModule {
   changePassword = (
     request: Partial<CodeMashApi2.ChangePasswordRequest> = {} as Partial<CodeMashApi2.ChangePasswordRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
-    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+  ): Promise<CodeMashApi2.CredentialChangedResponse> => {
+    return this.transport.send<CodeMashApi2.CredentialChangedResponse>({
       target: 'api',
       path: '/{version}/membership/userauth/password/change',
       method: 'POST',
@@ -531,8 +531,8 @@ export class MembershipModule {
   confirmPasswordReset = (
     request: Partial<CodeMashApi2.ConfirmPasswordResetRequest> = {} as Partial<CodeMashApi2.ConfirmPasswordResetRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
-    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+  ): Promise<CodeMashApi2.CredentialChangedResponse> => {
+    return this.transport.send<CodeMashApi2.CredentialChangedResponse>({
       target: 'api',
       path: '/{version}/membership/userauth/password/reset/confirm',
       method: 'POST',
