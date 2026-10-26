@@ -159,6 +159,7 @@ const slotSource: Record<Slot, string> = {
   task: 'scheduler',
   payload: 'manual / scheduler',
   marketplace: 'marketplace',
+  workflow: 'workflow step',
 };
 
 /** `null` on the wire (older gateways) → `undefined`, so `old?.x` reads the same either way. */

@@ -456,3 +456,37 @@ const result = await norbix.hub.payments.testPaymentsIntegration({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## Received payment webhooks
+
+Every call a payment gateway makes to the project's webhook URL is kept as a
+record for 30 days: the payment fact, Norbix's answer, what happened to the
+stored order, and every trigger the event reached with its action outcome
+(`Sent`, `Skipped`, `Failed`, `NotRun`). Use it to find out why a payment
+trigger did or did not fire.
+
+```ts
+const { list } = await norbix.hub.payments.getPaymentsWebhookRuns({
+  integrationId: 'int_…', // optional filters
+  outcome: 'refused', // applied | ignored | refused | failed | all (default)
+  fromUtc: '2026-10-25T00:00:00Z',
+  pageSize: 20, // cursor paging: startingAfter / endingBefore
+});
+for (const run of list?.items ?? []) {
+  console.log(run.receivedOn, run.eventName, run.statusCode, run.outcome, run.reason);
+}
+if (list?.hasMore) {
+  // next page: startingAfter = list.startingAfter
+}
+
+// One run (pwr_…) with the raw call, the payer's values masked; `raw` is null after 7 days.
+const { item } = await norbix.hub.payments.getPaymentsWebhookRun({ id: 'pwr_…' });
+console.log(item?.run.actions, item?.raw?.body);
+```
+
+A gateway call that carries several events (Neopay: one token, many
+transactions) is several runs with one `callId`; `part` / `parts` say which.
+
+<!-- @hand-written:end -->
