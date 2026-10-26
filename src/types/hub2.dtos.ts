@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-23 15:27:12
+Date: 2026-10-26 10:33:24
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -54,6 +54,7 @@ export module CodeMashHub2 {
     MailGun = 'MailGun',
     AwsSes = 'AwsSes',
     Fake = 'Fake',
+    AzureCommunication = 'AzureCommunication',
   }
 
   export class EmailIntegrationRequest {
@@ -104,6 +105,8 @@ export module CodeMashHub2 {
     public externalId?: string;
     public accessKey?: string;
     public secretKey?: string;
+    public deliveryEventsEnabled?: boolean;
+    public snsTopicArn?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationRequest>) {
       super(init);
@@ -114,6 +117,8 @@ export module CodeMashHub2 {
   export class SendGridEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
     public apiKey: string;
+    public deliveryEventsEnabled?: boolean;
+    public eventWebhookPublicKey?: string;
 
     public constructor(init?: Partial<SendGridEmailIntegrationRequest>) {
       super(init);
@@ -134,6 +139,19 @@ export module CodeMashHub2 {
     public region: MailGunRegion;
 
     public constructor(init?: Partial<MailGunEmailIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AzureCommunicationEmailIntegrationRequest extends EmailIntegrationRequest {
+    public provider: EmailProvider;
+    public endpoint: string;
+    public accessKey: string;
+    public deliveryEventsEnabled?: boolean;
+    public eventGridKey?: string;
+
+    public constructor(init?: Partial<AzureCommunicationEmailIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3660,6 +3678,11 @@ export module CodeMashHub2 {
   export class TwilioSmsIntegrationDto extends SmsIntegrationDto {
     public accountSid: string;
     public fromPhoneNumber: string;
+    // @DataMember
+    public deliveryEventsEnabled?: boolean;
+
+    // @DataMember
+    public statusCallbackUrl?: string;
 
     public constructor(init?: Partial<TwilioSmsIntegrationDto>) {
       super(init);
@@ -3787,6 +3810,8 @@ export module CodeMashHub2 {
     public region: string;
     public identityArn: string;
     public configurationSetName?: string;
+    public deliveryEventsEnabled?: boolean;
+    public snsTopicArn?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationDto>) {
       super(init);
@@ -3822,6 +3847,9 @@ export module CodeMashHub2 {
   }
 
   export class SendGridEmailIntegrationDto extends EmailIntegrationDto {
+    public deliveryEventsEnabled?: boolean;
+    public eventWebhookPublicKey?: string;
+
     public constructor(init?: Partial<SendGridEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -8079,6 +8107,7 @@ export module CodeMashHub2 {
     public status: AuthStatus;
     public createdOn: string;
     public modifiedOn: string;
+    public credentialVersion?: string;
 
     public constructor(init?: Partial<AuthDto>) {
       (Object as any).assign(this, init);
@@ -10154,6 +10183,122 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum NotificationDeliveryState {
+    Pending = 'Pending',
+    Sending = 'Sending',
+    Retrying = 'Retrying',
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+    Blocked = 'Blocked',
+    Cancelled = 'Cancelled',
+  }
+
+  export enum NotificationAttemptOutcome {
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+  }
+
+  export enum SendErrorCategory {
+    Unknown = 'Unknown',
+    Transient = 'Transient',
+    Permanent = 'Permanent',
+    Ambiguous = 'Ambiguous',
+  }
+
+  export enum NotificationAttemptTrigger {
+    Initial = 'Initial',
+    AutoRetry = 'AutoRetry',
+    ManualRetry = 'ManualRetry',
+  }
+
+  // @DataContract
+  export class NotificationAttemptDto {
+    // @DataMember
+    public attemptId: string;
+
+    // @DataMember
+    public number: number;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public outcome: NotificationAttemptOutcome;
+
+    // @DataMember
+    public category?: SendErrorCategory;
+
+    // @DataMember
+    public statusCode?: number;
+
+    // @DataMember
+    public errorCode?: string;
+
+    // @DataMember
+    public message?: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public retryAfterSeconds?: number;
+
+    // @DataMember
+    public exhausted?: boolean;
+
+    // @DataMember
+    public nextRetryAt?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public trigger: NotificationAttemptTrigger;
+
+    // @DataMember
+    public retryRequestId?: string;
+
+    public constructor(init?: Partial<NotificationAttemptDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum DeliveryEventOutcome {
+    Delivered = 'Delivered',
+    Bounced = 'Bounced',
+    Complained = 'Complained',
+    Rejected = 'Rejected',
+    Deferred = 'Deferred',
+  }
+
+  // @DataContract
+  export class NotificationDeliveryEventDto {
+    // @DataMember
+    public eventId?: string;
+
+    // @DataMember
+    public outcome: DeliveryEventOutcome;
+
+    // @DataMember
+    public at: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    public constructor(init?: Partial<NotificationDeliveryEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class CampaignBatchNotificationDto implements IHasDatabaseId {
     // @DataMember
@@ -10176,6 +10321,24 @@ export module CodeMashHub2 {
 
     // @DataMember
     public statusHistory: NotificationStatusChangeEntryDto[] = [];
+
+    // @DataMember
+    public state?: NotificationDeliveryState;
+
+    // @DataMember
+    public stateChangedAt?: string;
+
+    // @DataMember
+    public attempts?: NotificationAttemptDto[];
+
+    // @DataMember
+    public deliveryEvents?: NotificationDeliveryEventDto[];
+
+    // @DataMember
+    public deliveryOutcome?: DeliveryEventOutcome;
+
+    // @DataMember
+    public deliveryOutcomeRank?: number;
 
     // @DataMember
     public id: string;
@@ -10215,6 +10378,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public failed: number;
+
+    // @DataMember
+    public failedRetryable: number;
+
+    // @DataMember
+    public cancelled: number;
 
     // @DataMember
     public successRate: number;
@@ -13921,6 +14090,29 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class RetryFailedEmailNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetEmailCampaignMessagesResponse extends ResponseBase {
     public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
 
@@ -14065,6 +14257,29 @@ export module CodeMashHub2 {
     public body?: string;
 
     public constructor(init?: Partial<PreviewSmsNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RetryFailedSmsNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -14519,6 +14734,29 @@ export module CodeMashHub2 {
     public subtitle?: string;
 
     public constructor(init?: Partial<PreviewPushNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RetryFailedPushNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16114,6 +16352,7 @@ export module CodeMashHub2 {
     public typegen_1_AwsSesEmailIntegrationRequest?: AwsSesEmailIntegrationRequest;
     public typegen_2_SendGridEmailIntegrationRequest?: SendGridEmailIntegrationRequest;
     public typegen_3_MailGunEmailIntegrationRequest?: MailGunEmailIntegrationRequest;
+    public typegen_3a_AzureCommunicationEmailIntegrationRequest?: AzureCommunicationEmailIntegrationRequest;
     public typegen_4_EmailToAllUsersDeliverySettingsRequest?: EmailToAllUsersDeliverySettingsRequest;
     public typegen_5_EmailToAccountUsersDeliverySettingsRequest?: EmailToAccountUsersDeliverySettingsRequest;
     public typegen_6_EmailToCollectionRecordsDeliverySettingsRequest?: EmailToCollectionRecordsDeliverySettingsRequest;
@@ -24718,6 +24957,59 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Retries the failed recipients of an email campaign */
+  // @Route("/{version}/notifications/email/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an email campaign")
+  // @DataContract
+  export class RetryFailedEmailNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedEmailNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_email_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedEmailNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedEmailNotificationsResponse();
+    }
+  }
+
   /** @description Stops a running email campaign */
   // @Route("/{version}/notifications/email/campaigns/{Id}/stop", "POST")
   // @Api(Description="Stops a running email campaign")
@@ -25620,6 +25912,59 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new PreviewSmsNotificationResponse();
+    }
+  }
+
+  /** @description Retries the failed recipients of an SMS campaign */
+  // @Route("/{version}/notifications/sms/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an SMS campaign")
+  // @DataContract
+  export class RetryFailedSmsNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedSmsNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedSmsNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedSmsNotificationsResponse();
     }
   }
 
@@ -27249,6 +27594,59 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new PreviewPushNotificationResponse();
+    }
+  }
+
+  /** @description Retries the failed recipients of a push campaign */
+  // @Route("/{version}/notifications/push/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of a push campaign")
+  // @DataContract
+  export class RetryFailedPushNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedPushNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_push_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_push_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedPushNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedPushNotificationsResponse();
     }
   }
 
