@@ -610,7 +610,7 @@ const result = await norbix.api.membership.updateUserPreferences({
 `POST` `/{version}/membership/userauth/password/change`
 
 **Request DTO**: `CodeMashApi2.ChangePasswordRequest`
-**Response**: `CodeMashApi2.PasskeyOkResponse`
+**Response**: `CodeMashApi2.CredentialChangedResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -620,7 +620,7 @@ const norbix = new Norbix();
 const result = await norbix.api.membership.changePassword({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashApi2.PasskeyOkResponse
+// → typed as CodeMashApi2.CredentialChangedResponse
 ```
 
 [↑ Top](#endpoints)
@@ -650,7 +650,7 @@ const result = await norbix.api.membership.requestPasswordReset({
 `POST` `/{version}/membership/userauth/password/reset/confirm`
 
 **Request DTO**: `CodeMashApi2.ConfirmPasswordResetRequest`
-**Response**: `CodeMashApi2.PasskeyOkResponse`
+**Response**: `CodeMashApi2.CredentialChangedResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -660,7 +660,7 @@ const norbix = new Norbix();
 const result = await norbix.api.membership.confirmPasswordReset({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashApi2.PasskeyOkResponse
+// → typed as CodeMashApi2.CredentialChangedResponse
 ```
 
 [↑ Top](#endpoints)

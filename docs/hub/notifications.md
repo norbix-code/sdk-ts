@@ -57,6 +57,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications)     | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`                  | `project` |
 | [`getEmailCampaignStatistics`](#getemailcampaignstatistics)                     | `GET`    | `/{version}/notifications/email/campaigns/{id}/stats`                              | `project` |
 | [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                           | `project` |
+| [`retryFailedEmailNotifications`](#retryfailedemailnotifications)               | `POST`   | `/{version}/notifications/email/campaigns/{Id}/retry-failed`                       | `project` |
 | [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                               | `project` |
 | [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                  | `project` |
 | [`disableSms`](#disablesms)                                                     | `PUT`    | `/{version}/notifications/sms/disable`                                             | `project` |
@@ -90,6 +91,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications)         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`                    | `project` |
 | [`getSmsCampaignStatistics`](#getsmscampaignstatistics)                         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/stats`                                | `project` |
 | [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                             | `project` |
+| [`retryFailedSmsNotifications`](#retryfailedsmsnotifications)                   | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/retry-failed`                         | `project` |
 | [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                 | `project` |
 | [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                     | `project` |
 | [`disablePush`](#disablepush)                                                   | `PUT`    | `/{version}/notifications/push/disable`                                            | `project` |
@@ -129,6 +131,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getPushCampaignBatchNotifications`](#getpushcampaignbatchnotifications)       | `GET`    | `/{version}/notifications/push/campaigns/{id}/batches/{batchId}`                   | `project` |
 | [`getPushCampaignStatistics`](#getpushcampaignstatistics)                       | `GET`    | `/{version}/notifications/push/campaigns/{id}/stats`                               | `project` |
 | [`previewPushNotification`](#previewpushnotification)                           | `GET`    | `/{version}/notifications/push/preview`                                            | `project` |
+| [`retryFailedPushNotifications`](#retryfailedpushnotifications)                 | `POST`   | `/{version}/notifications/push/campaigns/{Id}/retry-failed`                        | `project` |
 | [`stopPushCampaign`](#stoppushcampaign)                                         | `POST`   | `/{version}/notifications/push/campaigns/{Id}/stop`                                | `project` |
 | [`getPushCampaignMessages`](#getpushcampaignmessages)                           | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages`                    | `project` |
 | [`getNotificationInbox`](#getnotificationinbox)                                 | `GET`    | `/{version}/notifications/inbox`                                                   | `project` |
@@ -1193,6 +1196,27 @@ const result = await norbix.hub.notifications.previewEmailNotification({
 
 [↑ Top](#endpoints)
 
+### retryFailedEmailNotifications
+
+`POST` `/{version}/notifications/email/campaigns/{Id}/retry-failed`
+
+**Request DTO**: `CodeMashHub2.RetryFailedEmailNotificationsRequest`
+**Response**: `CodeMashHub2.RetryFailedEmailNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.retryFailedEmailNotifications({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RetryFailedEmailNotificationsResponse
+```
+
+[↑ Top](#endpoints)
+
 ### stopEmailCampaign
 
 `POST` `/{version}/notifications/email/campaigns/{Id}/stop`
@@ -1927,6 +1951,27 @@ const result = await norbix.hub.notifications.previewSmsNotification({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.PreviewSmsNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### retryFailedSmsNotifications
+
+`POST` `/{version}/notifications/sms/campaigns/{Id}/retry-failed`
+
+**Request DTO**: `CodeMashHub2.RetryFailedSmsNotificationsRequest`
+**Response**: `CodeMashHub2.RetryFailedSmsNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.retryFailedSmsNotifications({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RetryFailedSmsNotificationsResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2799,6 +2844,27 @@ const result = await norbix.hub.notifications.previewPushNotification({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.PreviewPushNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### retryFailedPushNotifications
+
+`POST` `/{version}/notifications/push/campaigns/{Id}/retry-failed`
+
+**Request DTO**: `CodeMashHub2.RetryFailedPushNotificationsRequest`
+**Response**: `CodeMashHub2.RetryFailedPushNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.retryFailedPushNotifications({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RetryFailedPushNotificationsResponse
 ```
 
 [↑ Top](#endpoints)

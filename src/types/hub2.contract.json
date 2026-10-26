@@ -1775,6 +1775,18 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RetryFailedEmailNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedPushNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedSmsNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RevealManagedFlexConnectionString": {
     "requiresAuth": true,
     "returnsBytes": false

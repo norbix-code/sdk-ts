@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-23 09:36:01
+Date: 2026-10-26 11:03:26
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -948,6 +948,7 @@ export module CodeMashApi2 {
     public status: AuthStatus;
     public createdOn: string;
     public modifiedOn: string;
+    public credentialVersion?: string;
 
     public constructor(init?: Partial<AuthDto>) {
       (Object as any).assign(this, init);
@@ -1917,6 +1918,20 @@ export module CodeMashApi2 {
     public preferences?: UserMarketingPreferencesDto;
 
     public constructor(init?: Partial<GetUserPreferencesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CredentialChangedResponse extends ResponseBase {
+    // @DataMember
+    public authId?: string;
+
+    // @DataMember
+    public credentialVersion?: string;
+
+    public constructor(init?: Partial<CredentialChangedResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3816,7 +3831,7 @@ export module CodeMashApi2 {
   // @DataContract
   export class ChangePasswordRequest
     extends CodeMashRequestBase
-    implements IReturn<PasskeyOkResponse>
+    implements IReturn<CredentialChangedResponse>
   {
     /** @description The member's current password. */
     // @DataMember
@@ -3844,7 +3859,7 @@ export module CodeMashApi2 {
       return 'POST';
     }
     public createResponse() {
-      return new PasskeyOkResponse();
+      return new CredentialChangedResponse();
     }
   }
 
@@ -3882,7 +3897,7 @@ export module CodeMashApi2 {
   // @DataContract
   export class ConfirmPasswordResetRequest
     extends CodeMashRequestBase
-    implements IReturn<PasskeyOkResponse>
+    implements IReturn<CredentialChangedResponse>
   {
     /** @description One-time reset token from the email link. */
     // @DataMember
@@ -3910,7 +3925,7 @@ export module CodeMashApi2 {
       return 'POST';
     }
     public createResponse() {
-      return new PasskeyOkResponse();
+      return new CredentialChangedResponse();
     }
   }
 
