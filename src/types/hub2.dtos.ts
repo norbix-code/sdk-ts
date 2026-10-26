@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-26 10:33:24
+Date: 2026-10-26 11:03:26
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -152,6 +152,15 @@ export module CodeMashHub2 {
     public eventGridKey?: string;
 
     public constructor(init?: Partial<AzureCommunicationEmailIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeEmailIntegrationRequest extends EmailIntegrationRequest {
+    public provider: EmailProvider;
+
+    public constructor(init?: Partial<FakeEmailIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -1386,6 +1395,133 @@ export module CodeMashHub2 {
     public isProduction: boolean;
 
     public constructor(init?: Partial<AppleApnsPushIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakePushIntegrationRequest extends PushIntegrationRequest {
+    public provider: PushProvider;
+
+    public constructor(init?: Partial<FakePushIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum SmsProvider {
+    Twilio = 'Twilio',
+    Vonage = 'Vonage',
+    Plivo = 'Plivo',
+    Telnyx = 'Telnyx',
+    Bird = 'Bird',
+    Telesign = 'Telesign',
+    Sinch = 'Sinch',
+    Fake = 'Fake',
+  }
+
+  export class SmsIntegrationRequest {
+    public integrationId?: string;
+    public provider: SmsProvider;
+    public integrationName: string;
+    public isEnabled: boolean;
+
+    public constructor(init?: Partial<SmsIntegrationRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BirdSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public originator: string;
+    public region: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<BirdSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PlivoSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public authId: string;
+    public fromPhoneNumber: string;
+    public authToken: string;
+
+    public constructor(init?: Partial<PlivoSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SinchSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public servicePlanId: string;
+    public fromPhoneNumber: string;
+    public apiKey: string;
+    public apiSecret: string;
+
+    public constructor(init?: Partial<SinchSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TelesignSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public customerId: string;
+    public fromSender: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<TelesignSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TelnyxSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public messagingProfileId: string;
+    public fromPhoneNumber: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<TelnyxSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TwilioSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public accountSid: string;
+    public fromPhoneNumber: string;
+    public authToken: string;
+    public deliveryEventsEnabled?: boolean;
+    public statusCallbackUrl?: string;
+
+    public constructor(init?: Partial<TwilioSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class VonageSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public apiKey: string;
+    public fromSender: string;
+    public apiSecret: string;
+
+    public constructor(init?: Partial<VonageSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+
+    public constructor(init?: Partial<FakeSmsIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3605,17 +3741,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum SmsProvider {
-    Twilio = 'Twilio',
-    Vonage = 'Vonage',
-    Plivo = 'Plivo',
-    Telnyx = 'Telnyx',
-    Bird = 'Bird',
-    Telesign = 'Telesign',
-    Sinch = 'Sinch',
-    Fake = 'Fake',
-  }
-
   export class SmsIntegrationDto extends IntegrationDto {
     public provider: SmsProvider;
 
@@ -3861,6 +3986,20 @@ export module CodeMashHub2 {
     public port: number;
 
     public constructor(init?: Partial<SmtpEmailIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AzureCommunicationEmailIntegrationDto extends EmailIntegrationDto {
+    // @DataMember
+    public endpoint: string;
+
+    // @DataMember
+    public deliveryEventsEnabled?: boolean;
+
+    public constructor(init?: Partial<AzureCommunicationEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -6254,17 +6393,6 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<SaveSmsTemplate>) {
       super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class SmsIntegrationRequest {
-    public integrationId?: string;
-    public provider: SmsProvider;
-    public integrationName: string;
-    public isEnabled: boolean;
-
-    public constructor(init?: Partial<SmsIntegrationRequest>) {
       (Object as any).assign(this, init);
     }
   }
@@ -16353,6 +16481,7 @@ export module CodeMashHub2 {
     public typegen_2_SendGridEmailIntegrationRequest?: SendGridEmailIntegrationRequest;
     public typegen_3_MailGunEmailIntegrationRequest?: MailGunEmailIntegrationRequest;
     public typegen_3a_AzureCommunicationEmailIntegrationRequest?: AzureCommunicationEmailIntegrationRequest;
+    public typegen_297_FakeEmailIntegrationRequest?: FakeEmailIntegrationRequest;
     public typegen_4_EmailToAllUsersDeliverySettingsRequest?: EmailToAllUsersDeliverySettingsRequest;
     public typegen_5_EmailToAccountUsersDeliverySettingsRequest?: EmailToAccountUsersDeliverySettingsRequest;
     public typegen_6_EmailToCollectionRecordsDeliverySettingsRequest?: EmailToCollectionRecordsDeliverySettingsRequest;
@@ -16417,6 +16546,15 @@ export module CodeMashHub2 {
     public typegen_60_FirefoxWebPushIntegrationRequest?: FirefoxWebPushIntegrationRequest;
     public typegen_61_AndroidFirebasePushIntegrationRequest?: AndroidFirebasePushIntegrationRequest;
     public typegen_62_AppleApnsPushIntegrationRequest?: AppleApnsPushIntegrationRequest;
+    public typegen_298_FakePushIntegrationRequest?: FakePushIntegrationRequest;
+    public typegen_299_BirdSmsIntegrationRequest?: BirdSmsIntegrationRequest;
+    public typegen_300_PlivoSmsIntegrationRequest?: PlivoSmsIntegrationRequest;
+    public typegen_301_SinchSmsIntegrationRequest?: SinchSmsIntegrationRequest;
+    public typegen_302_TelesignSmsIntegrationRequest?: TelesignSmsIntegrationRequest;
+    public typegen_303_TelnyxSmsIntegrationRequest?: TelnyxSmsIntegrationRequest;
+    public typegen_304_TwilioSmsIntegrationRequest?: TwilioSmsIntegrationRequest;
+    public typegen_305_VonageSmsIntegrationRequest?: VonageSmsIntegrationRequest;
+    public typegen_306_FakeSmsIntegrationRequest?: FakeSmsIntegrationRequest;
     public typegen_65_AwsLambdaCodeIntegrationRequest?: AwsLambdaCodeIntegrationRequest;
     public typegen_66_AzureFunctionsCodeIntegrationRequest?: AzureFunctionsCodeIntegrationRequest;
     public typegen_67_GoogleCloudFunctionsCodeIntegrationRequest?: GoogleCloudFunctionsCodeIntegrationRequest;
@@ -16550,6 +16688,7 @@ export module CodeMashHub2 {
     public typegen_181_MailGunEmailIntegrationDto?: MailGunEmailIntegrationDto;
     public typegen_182_SendGridEmailIntegrationDto?: SendGridEmailIntegrationDto;
     public typegen_183_SmtpEmailIntegrationDto?: SmtpEmailIntegrationDto;
+    public typegen_307_AzureCommunicationEmailIntegrationDto?: AzureCommunicationEmailIntegrationDto;
     public typegen_248_FakeEmailIntegrationDto?: FakeEmailIntegrationDto;
     public typegen_192_WebhookIntegrationDto?: WebhookIntegrationDto;
     public typegen_193_WebhookDestinationDto?: WebhookDestinationDto;
