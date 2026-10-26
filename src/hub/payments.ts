@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: payments
- * Endpoints: 17
+ * Endpoints: 19
  */
 export class PaymentsModule {
   constructor(private readonly transport: Transport) {}
@@ -63,6 +63,44 @@ export class PaymentsModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/payments/webhooks/runs
+   * Request DTO: GetPaymentsWebhookRuns
+   */
+  getPaymentsWebhookRuns = (
+    request: Partial<CodeMashHub2.GetPaymentsWebhookRuns> = {} as Partial<CodeMashHub2.GetPaymentsWebhookRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPaymentsWebhookRunsResponse> => {
+    return this.transport.send<CodeMashHub2.GetPaymentsWebhookRunsResponse>({
+      target: 'hub',
+      path: '/{version}/payments/webhooks/runs',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/payments/webhooks/runs/{Id}
+   * Request DTO: GetPaymentsWebhookRun
+   */
+  getPaymentsWebhookRun = (
+    request: Partial<CodeMashHub2.GetPaymentsWebhookRun> = {} as Partial<CodeMashHub2.GetPaymentsWebhookRun>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetPaymentsWebhookRunResponse> => {
+    return this.transport.send<CodeMashHub2.GetPaymentsWebhookRunResponse>({
+      target: 'hub',
+      path: '/{version}/payments/webhooks/runs/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

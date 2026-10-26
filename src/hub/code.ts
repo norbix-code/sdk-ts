@@ -8,7 +8,7 @@ import { LogsModule } from './logs.js'; // @hand-written
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 44
+ * Endpoints: 68
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -540,6 +540,462 @@ export class CodeModule {
       method: 'POST',
       request,
       pathParams: ['IntegrationViewId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows
+   * Request DTO: SaveCodeWorkflow
+   */
+  saveCodeWorkflow = (
+    request: Partial<CodeMashHub2.SaveCodeWorkflow> = {} as Partial<CodeMashHub2.SaveCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/{Id}/publish
+   * Request DTO: PublishCodeWorkflow
+   */
+  publishCodeWorkflow = (
+    request: Partial<CodeMashHub2.PublishCodeWorkflow> = {} as Partial<CodeMashHub2.PublishCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/publish',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/{Id}/draft
+   * Request DTO: GetCodeWorkflowDraft
+   */
+  getCodeWorkflowDraft = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowDraft> = {} as Partial<CodeMashHub2.GetCodeWorkflowDraft>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/draft',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/code/workflows/{Id}/draft
+   * Request DTO: DiscardCodeWorkflowDraft
+   */
+  discardCodeWorkflowDraft = (
+    request: Partial<CodeMashHub2.DiscardCodeWorkflowDraft> = {} as Partial<CodeMashHub2.DiscardCodeWorkflowDraft>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/draft',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/{Id}/versions
+   * Request DTO: GetCodeWorkflowVersions
+   */
+  getCodeWorkflowVersions = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowVersions> = {} as Partial<CodeMashHub2.GetCodeWorkflowVersions>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowVersionsResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowVersionsResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/versions',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/{Id}/versions/diff
+   * Request DTO: GetCodeWorkflowVersionDiff
+   */
+  getCodeWorkflowVersionDiff = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowVersionDiff> = {} as Partial<CodeMashHub2.GetCodeWorkflowVersionDiff>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowVersionDiffResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowVersionDiffResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/versions/diff',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/validate
+   * Request DTO: ValidateCodeWorkflow
+   */
+  validateCodeWorkflow = (
+    request: Partial<CodeMashHub2.ValidateCodeWorkflow> = {} as Partial<CodeMashHub2.ValidateCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ValidateCodeWorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.ValidateCodeWorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/validate',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows
+   * Request DTO: GetCodeWorkflows
+   */
+  getCodeWorkflows = (
+    request: Partial<CodeMashHub2.GetCodeWorkflows> = {} as Partial<CodeMashHub2.GetCodeWorkflows>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowsResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowsResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/{Id}
+   * Request DTO: GetCodeWorkflow
+   */
+  getCodeWorkflow = (
+    request: Partial<CodeMashHub2.GetCodeWorkflow> = {} as Partial<CodeMashHub2.GetCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/code/workflows/{Id}
+   * Request DTO: DeleteCodeWorkflow
+   */
+  deleteCodeWorkflow = (
+    request: Partial<CodeMashHub2.DeleteCodeWorkflow> = {} as Partial<CodeMashHub2.DeleteCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/{Id}/enable
+   * Request DTO: EnableCodeWorkflow
+   */
+  enableCodeWorkflow = (
+    request: Partial<CodeMashHub2.EnableCodeWorkflow> = {} as Partial<CodeMashHub2.EnableCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/enable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/{Id}/disable
+   * Request DTO: DisableCodeWorkflow
+   */
+  disableCodeWorkflow = (
+    request: Partial<CodeMashHub2.DisableCodeWorkflow> = {} as Partial<CodeMashHub2.DisableCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/disable',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/schema
+   * Request DTO: GetCodeWorkflowSchema
+   */
+  getCodeWorkflowSchema = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowSchema> = {} as Partial<CodeMashHub2.GetCodeWorkflowSchema>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowSchemaResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowSchemaResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/schema',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/enable
+   * Request DTO: EnableCodeWorkflows
+   */
+  enableCodeWorkflows = (
+    request: Partial<CodeMashHub2.EnableCodeWorkflows> = {} as Partial<CodeMashHub2.EnableCodeWorkflows>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/enable',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/disable
+   * Request DTO: DisableCodeWorkflows
+   */
+  disableCodeWorkflows = (
+    request: Partial<CodeMashHub2.DisableCodeWorkflows> = {} as Partial<CodeMashHub2.DisableCodeWorkflows>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/disable',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/{Id}/invoke
+   * Request DTO: InvokeCodeWorkflow
+   */
+  invokeCodeWorkflow = (
+    request: Partial<CodeMashHub2.InvokeCodeWorkflow> = {} as Partial<CodeMashHub2.InvokeCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.InvokeCodeWorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeCodeWorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/invoke',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/{Id}/runs
+   * Request DTO: GetCodeWorkflowRuns
+   */
+  getCodeWorkflowRuns = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowRuns> = {} as Partial<CodeMashHub2.GetCodeWorkflowRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunsResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunsResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/runs',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/runs
+   * Request DTO: GetCodeWorkflowWaitingRuns
+   */
+  getCodeWorkflowWaitingRuns = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowWaitingRuns> = {} as Partial<CodeMashHub2.GetCodeWorkflowWaitingRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunsResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunsResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/runs/{RunId}
+   * Request DTO: GetCodeWorkflowRun
+   */
+  getCodeWorkflowRun = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowRun> = {} as Partial<CodeMashHub2.GetCodeWorkflowRun>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs/{RunId}',
+      method: 'GET',
+      request,
+      pathParams: ['RunId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/code/workflows/runs/{RunId}/logs
+   * Request DTO: GetCodeWorkflowRunLogs
+   */
+  getCodeWorkflowRunLogs = (
+    request: Partial<CodeMashHub2.GetCodeWorkflowRunLogs> = {} as Partial<CodeMashHub2.GetCodeWorkflowRunLogs>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunLogsResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunLogsResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs/{RunId}/logs',
+      method: 'GET',
+      request,
+      pathParams: ['RunId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/runs/{RunId}/resume
+   * Request DTO: ResumeCodeWorkflowRun
+   */
+  resumeCodeWorkflowRun = (
+    request: Partial<CodeMashHub2.ResumeCodeWorkflowRun> = {} as Partial<CodeMashHub2.ResumeCodeWorkflowRun>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs/{RunId}/resume',
+      method: 'POST',
+      request,
+      pathParams: ['RunId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/{Id}/resume
+   * Request DTO: ResumeCodeWorkflowRunByKey
+   */
+  resumeCodeWorkflowRunByKey = (
+    request: Partial<CodeMashHub2.ResumeCodeWorkflowRunByKey> = {} as Partial<CodeMashHub2.ResumeCodeWorkflowRunByKey>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/resume',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/runs/{RunId}/retry
+   * Request DTO: RetryCodeWorkflowRunStep
+   */
+  retryCodeWorkflowRunStep = (
+    request: Partial<CodeMashHub2.RetryCodeWorkflowRunStep> = {} as Partial<CodeMashHub2.RetryCodeWorkflowRunStep>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs/{RunId}/retry',
+      method: 'POST',
+      request,
+      pathParams: ['RunId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/runs/{RunId}/cancel
+   * Request DTO: CancelCodeWorkflowRun
+   */
+  cancelCodeWorkflowRun = (
+    request: Partial<CodeMashHub2.CancelCodeWorkflowRun> = {} as Partial<CodeMashHub2.CancelCodeWorkflowRun>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowRunResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowRunResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/runs/{RunId}/cancel',
+      method: 'POST',
+      request,
+      pathParams: ['RunId'],
       scope: 'project',
       ...options,
     });

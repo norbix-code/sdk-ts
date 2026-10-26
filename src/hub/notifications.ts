@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 129
+ * Endpoints: 132
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -905,6 +905,25 @@ export class NotificationsModule {
   };
 
   /**
+   * POST /{version}/notifications/email/campaigns/{Id}/retry-failed
+   * Request DTO: RetryFailedEmailNotificationsRequest
+   */
+  retryFailedEmailNotifications = (
+    request: Partial<CodeMashHub2.RetryFailedEmailNotificationsRequest> = {} as Partial<CodeMashHub2.RetryFailedEmailNotificationsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RetryFailedEmailNotificationsResponse> => {
+    return this.transport.send<CodeMashHub2.RetryFailedEmailNotificationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/campaigns/{Id}/retry-failed',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/notifications/email/campaigns/{Id}/stop
    * Request DTO: StopEmailCampaignRequest
    */
@@ -1527,6 +1546,25 @@ export class NotificationsModule {
       request,
       pathParams: [],
       scope: 'optional',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/sms/campaigns/{Id}/retry-failed
+   * Request DTO: RetryFailedSmsNotificationsRequest
+   */
+  retryFailedSmsNotifications = (
+    request: Partial<CodeMashHub2.RetryFailedSmsNotificationsRequest> = {} as Partial<CodeMashHub2.RetryFailedSmsNotificationsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RetryFailedSmsNotificationsResponse> => {
+    return this.transport.send<CodeMashHub2.RetryFailedSmsNotificationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/sms/campaigns/{Id}/retry-failed',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
       ...options,
     });
   };
@@ -2268,6 +2306,25 @@ export class NotificationsModule {
       request,
       pathParams: [],
       scope: 'optional',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/push/campaigns/{Id}/retry-failed
+   * Request DTO: RetryFailedPushNotificationsRequest
+   */
+  retryFailedPushNotifications = (
+    request: Partial<CodeMashHub2.RetryFailedPushNotificationsRequest> = {} as Partial<CodeMashHub2.RetryFailedPushNotificationsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RetryFailedPushNotificationsResponse> => {
+    return this.transport.send<CodeMashHub2.RetryFailedPushNotificationsResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/push/campaigns/{Id}/retry-failed',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
       ...options,
     });
   };
