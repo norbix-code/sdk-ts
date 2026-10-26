@@ -103,6 +103,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "CancelCodeWorkflowRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "CancelTeamInvitation": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -292,6 +296,10 @@
     "returnsBytes": false
   },
   "DeleteCodeIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteCodeWorkflow": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -487,6 +495,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DisableCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisableCodeWorkflows": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DisableDatabase": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -599,6 +615,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DiscardCodeWorkflowDraft": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DiscardDatabaseSchemaDraftRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -620,6 +640,14 @@
     "returnsBytes": false
   },
   "EnableCodeIntegrationRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "EnableCodeWorkflows": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -872,6 +900,46 @@
     "returnsBytes": false
   },
   "GetCodeIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowDraft": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRunLogs": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowSchema": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowVersionDiff": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowVersions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowWaitingRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflows": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1259,6 +1327,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetPaymentsWebhookRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPaymentsWebhookRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetPolicies": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1539,6 +1615,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "InvokeCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "InvokeMarketplaceFunction": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1667,6 +1747,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "PublishCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "PublishDatabaseSchemaRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1775,6 +1859,30 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ResumeCodeWorkflowRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResumeCodeWorkflowRunByKey": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryCodeWorkflowRunStep": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedEmailNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedPushNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedSmsNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RevealManagedFlexConnectionString": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1820,6 +1928,10 @@
     "returnsBytes": false
   },
   "SaveCodeIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveCodeWorkflow": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2328,6 +2440,10 @@
     "returnsBytes": false
   },
   "UseFileRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ValidateCodeWorkflow": {
     "requiresAuth": true,
     "returnsBytes": false
   },

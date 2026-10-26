@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-23 15:27:12
+Date: 2026-10-26 18:29:53
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -54,6 +54,7 @@ export module CodeMashHub2 {
     MailGun = 'MailGun',
     AwsSes = 'AwsSes',
     Fake = 'Fake',
+    AzureCommunication = 'AzureCommunication',
   }
 
   export class EmailIntegrationRequest {
@@ -104,6 +105,8 @@ export module CodeMashHub2 {
     public externalId?: string;
     public accessKey?: string;
     public secretKey?: string;
+    public deliveryEventsEnabled?: boolean;
+    public snsTopicArn?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationRequest>) {
       super(init);
@@ -114,6 +117,8 @@ export module CodeMashHub2 {
   export class SendGridEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
     public apiKey: string;
+    public deliveryEventsEnabled?: boolean;
+    public eventWebhookPublicKey?: string;
 
     public constructor(init?: Partial<SendGridEmailIntegrationRequest>) {
       super(init);
@@ -134,6 +139,28 @@ export module CodeMashHub2 {
     public region: MailGunRegion;
 
     public constructor(init?: Partial<MailGunEmailIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AzureCommunicationEmailIntegrationRequest extends EmailIntegrationRequest {
+    public provider: EmailProvider;
+    public endpoint: string;
+    public accessKey: string;
+    public deliveryEventsEnabled?: boolean;
+    public eventGridKey?: string;
+
+    public constructor(init?: Partial<AzureCommunicationEmailIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeEmailIntegrationRequest extends EmailIntegrationRequest {
+    public provider: EmailProvider;
+
+    public constructor(init?: Partial<FakeEmailIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -166,6 +193,7 @@ export module CodeMashHub2 {
     RequestInput = 'RequestInput',
     IntegrationConfig = 'IntegrationConfig',
     IntegrationSecret = 'IntegrationSecret',
+    StepOutput = 'StepOutput',
   }
 
   export enum SecretValueFormat {
@@ -301,6 +329,7 @@ export module CodeMashHub2 {
     WebhookCall = 'WebhookCall',
     SseCall = 'SseCall',
     Marketplace = 'Marketplace',
+    Workflow = 'Workflow',
   }
 
   // @DataContract
@@ -1368,6 +1397,133 @@ export module CodeMashHub2 {
     public isProduction: boolean;
 
     public constructor(init?: Partial<AppleApnsPushIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakePushIntegrationRequest extends PushIntegrationRequest {
+    public provider: PushProvider;
+
+    public constructor(init?: Partial<FakePushIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum SmsProvider {
+    Twilio = 'Twilio',
+    Vonage = 'Vonage',
+    Plivo = 'Plivo',
+    Telnyx = 'Telnyx',
+    Bird = 'Bird',
+    Telesign = 'Telesign',
+    Sinch = 'Sinch',
+    Fake = 'Fake',
+  }
+
+  export class SmsIntegrationRequest {
+    public integrationId?: string;
+    public provider: SmsProvider;
+    public integrationName: string;
+    public isEnabled: boolean;
+
+    public constructor(init?: Partial<SmsIntegrationRequest>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class BirdSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public originator: string;
+    public region: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<BirdSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PlivoSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public authId: string;
+    public fromPhoneNumber: string;
+    public authToken: string;
+
+    public constructor(init?: Partial<PlivoSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SinchSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public servicePlanId: string;
+    public fromPhoneNumber: string;
+    public apiKey: string;
+    public apiSecret: string;
+
+    public constructor(init?: Partial<SinchSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TelesignSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public customerId: string;
+    public fromSender: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<TelesignSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TelnyxSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public messagingProfileId: string;
+    public fromPhoneNumber: string;
+    public apiKey: string;
+
+    public constructor(init?: Partial<TelnyxSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class TwilioSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public accountSid: string;
+    public fromPhoneNumber: string;
+    public authToken: string;
+    public deliveryEventsEnabled?: boolean;
+    public statusCallbackUrl?: string;
+
+    public constructor(init?: Partial<TwilioSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class VonageSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+    public apiKey: string;
+    public fromSender: string;
+    public apiSecret: string;
+
+    public constructor(init?: Partial<VonageSmsIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class FakeSmsIntegrationRequest extends SmsIntegrationRequest {
+    public provider: SmsProvider;
+
+    public constructor(init?: Partial<FakeSmsIntegrationRequest>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3587,17 +3743,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum SmsProvider {
-    Twilio = 'Twilio',
-    Vonage = 'Vonage',
-    Plivo = 'Plivo',
-    Telnyx = 'Telnyx',
-    Bird = 'Bird',
-    Telesign = 'Telesign',
-    Sinch = 'Sinch',
-    Fake = 'Fake',
-  }
-
   export class SmsIntegrationDto extends IntegrationDto {
     public provider: SmsProvider;
 
@@ -3660,6 +3805,11 @@ export module CodeMashHub2 {
   export class TwilioSmsIntegrationDto extends SmsIntegrationDto {
     public accountSid: string;
     public fromPhoneNumber: string;
+    // @DataMember
+    public deliveryEventsEnabled?: boolean;
+
+    // @DataMember
+    public statusCallbackUrl?: string;
 
     public constructor(init?: Partial<TwilioSmsIntegrationDto>) {
       super(init);
@@ -3787,6 +3937,8 @@ export module CodeMashHub2 {
     public region: string;
     public identityArn: string;
     public configurationSetName?: string;
+    public deliveryEventsEnabled?: boolean;
+    public snsTopicArn?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationDto>) {
       super(init);
@@ -3822,6 +3974,9 @@ export module CodeMashHub2 {
   }
 
   export class SendGridEmailIntegrationDto extends EmailIntegrationDto {
+    public deliveryEventsEnabled?: boolean;
+    public eventWebhookPublicKey?: string;
+
     public constructor(init?: Partial<SendGridEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -3833,6 +3988,20 @@ export module CodeMashHub2 {
     public port: number;
 
     public constructor(init?: Partial<SmtpEmailIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class AzureCommunicationEmailIntegrationDto extends EmailIntegrationDto {
+    // @DataMember
+    public endpoint: string;
+
+    // @DataMember
+    public deliveryEventsEnabled?: boolean;
+
+    public constructor(init?: Partial<AzureCommunicationEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3888,6 +4057,7 @@ export module CodeMashHub2 {
     CodeFunctionalCall = 'CodeFunctionalCall',
     WebhookCall = 'WebhookCall',
     MarketplaceFunctionCall = 'MarketplaceFunctionCall',
+    WorkflowCall = 'WorkflowCall',
   }
 
   // @DataContract
@@ -4843,6 +5013,7 @@ export module CodeMashHub2 {
     Ai = 'Ai',
     Scheduler = 'Scheduler',
     Manual = 'Manual',
+    Workflow = 'Workflow',
   }
 
   export enum CodeFunctionCallerKind {
@@ -4920,6 +5091,15 @@ export module CodeMashHub2 {
 
     // @DataMember
     public runAs?: CodeFunctionRunAsDto;
+
+    // @DataMember
+    public workflowId?: string;
+
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public stepId?: string;
 
     public constructor(init?: Partial<CodeFunctionContextDto>) {
       (Object as any).assign(this, init);
@@ -5136,6 +5316,28 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowStepInfoDto {
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public request?: { [index: string]: Object };
+
+    public constructor(init?: Partial<WorkflowStepInfoDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CodeFunctionDataDto {
     // @DataMember
     public database?: DatabaseRecordChangeDto;
@@ -5163,6 +5365,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public marketplace?: MarketplaceFunctionCallDto;
+
+    // @DataMember
+    public workflow?: WorkflowStepInfoDto;
 
     public constructor(init?: Partial<CodeFunctionDataDto>) {
       (Object as any).assign(this, init);
@@ -6230,13 +6435,195 @@ export module CodeMashHub2 {
     }
   }
 
-  export class SmsIntegrationRequest {
-    public integrationId?: string;
-    public provider: SmsProvider;
-    public integrationName: string;
+  // @DataContract
+  export class WorkflowStepRetryDto {
+    /** @description 0–10 automatic retries. */
+    // @DataMember
+    // @ApiMember(Description="0–10 automatic retries.")
+    public count: number;
+
+    /** @description 1–3600 seconds before the first retry, doubled per attempt. */
+    // @DataMember
+    // @ApiMember(Description="1–3600 seconds before the first retry, doubled per attempt.")
+    public backoffSeconds: number;
+
+    public constructor(init?: Partial<WorkflowStepRetryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowOnErrorDto {
+    /** @description fail | continue | goto */
+    // @DataMember
+    // @ApiMember(Description="fail | continue | goto", IsRequired=true)
+    public action: string;
+
+    /** @description goto: the step to jump to. */
+    // @DataMember
+    // @ApiMember(Description="goto: the step to jump to.")
+    public goto?: string;
+
+    public constructor(init?: Partial<WorkflowOnErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowStepDto {
+    /** @description ^[A-Za-z_][A-Za-z0-9_]{0,63}$, unique in the definition. */
+    // @DataMember
+    // @ApiMember(Description="^[A-Za-z_][A-Za-z0-9_]{0,63}$, unique in the definition.", IsRequired=true)
+    public id: string;
+
+    /** @description email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start */
+    // @DataMember
+    // @ApiMember(Description="email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start", IsRequired=true)
+    public kind: string;
+
+    // @DataMember
+    public name?: string;
+
+    /** @description The step after this one; absent = the branch ends. */
+    // @DataMember
+    // @ApiMember(Description="The step after this one; absent = the branch ends.")
+    public next?: string;
+
+    /** @description condition: the step when the expression is true. */
+    // @DataMember
+    // @ApiMember(Description="condition: the step when the expression is true.")
+    public then?: string;
+
+    /** @description condition: the step when the expression is false. */
+    // @DataMember
+    // @ApiMember(Description="condition: the step when the expression is false.")
+    public else?: string;
+
+    /** @description wait (approval): the step when rejected; absent = the branch ends. */
+    // @DataMember
+    // @ApiMember(Description="wait (approval): the step when rejected; absent = the branch ends.")
+    public rejected?: string;
+
+    /** @description wait: the step when the wait times out; absent = the run fails (-022). */
+    // @DataMember
+    // @ApiMember(Description="wait: the step when the wait times out; absent = the run fails (-022).")
+    public onTimeout?: string;
+
+    // @DataMember
+    public retry?: WorkflowStepRetryDto;
+
+    /** @description A step still running after it is failed with reason=timeout (default 300, cap 3600). */
+    // @DataMember
+    // @ApiMember(Description="A step still running after it is failed with reason=timeout (default 300, cap 3600).")
+    public timeoutSeconds?: number;
+
+    // @DataMember
+    public onError?: WorkflowOnErrorDto;
+
+    /** @description Action kinds: the trigger action body (type may be left out — the kind implies it). */
+    // @DataMember
+    // @ApiMember(Description="Action kinds: the trigger action body (type may be left out — the kind implies it).")
+    public action?: { [index: string]: Object };
+
+    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload. */
+    // @DataMember
+    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload.")
+    public config?: { [index: string]: Object };
+
+    public constructor(init?: Partial<WorkflowStepDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowLimitsDto {
+    /** @description Step executions per run; default 200, cap 5000. */
+    // @DataMember
+    // @ApiMember(Description="Step executions per run; default 200, cap 5000.")
+    public maxStepRuns?: number;
+
+    /** @description Wall-clock from start, including parked time; default 604800 (7 days), cap 2592000. */
+    // @DataMember
+    // @ApiMember(Description="Wall-clock from start, including parked time; default 604800 (7 days), cap 2592000.")
+    public maxDurationSeconds?: number;
+
+    /** @description The longest one delay / wait may park; default 604800, cap 2592000. */
+    // @DataMember
+    // @ApiMember(Description="The longest one delay / wait may park; default 604800, cap 2592000.")
+    public maxWaitSeconds?: number;
+
+    /** @description Branch heads per parallel; default 10, cap 20. */
+    // @DataMember
+    // @ApiMember(Description="Branch heads per parallel; default 10, cap 20.")
+    public maxParallelBranches?: number;
+
+    /** @description Nesting of workflow.start and trigger-started descendants; default 3, cap 5. */
+    // @DataMember
+    // @ApiMember(Description="Nesting of workflow.start and trigger-started descendants; default 3, cap 5.")
+    public maxDepth?: number;
+
+    public constructor(init?: Partial<WorkflowLimitsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowDefinitionDto {
+    /** @description The version of this shape: "1". */
+    // @DataMember
+    // @ApiMember(Description="The version of this shape: \"1\".")
+    public schemaVersion: string;
+
+    /** @description wf_… — absent on the first save, required on an update. */
+    // @DataMember
+    // @ApiMember(Description="wf_… — absent on the first save, required on an update.")
+    public workflowId?: string;
+
+    /** @description 1–120 characters. */
+    // @DataMember
+    // @ApiMember(Description="1–120 characters.", IsRequired=true)
+    public name: string;
+
+    /** @description Up to 2 000 characters. */
+    // @DataMember
+    // @ApiMember(Description="Up to 2 000 characters.")
+    public description?: string;
+
+    /** @description Read-only: the published version number (null on a draft). Ignored on save. */
+    // @DataMember
+    // @ApiMember(Description="Read-only: the published version number (null on a draft). Ignored on save.")
+    public version?: number;
+
+    /** @description Read-only on save (use the enable / disable routes). */
+    // @DataMember
+    // @ApiMember(Description="Read-only on save (use the enable / disable routes).")
     public isEnabled: boolean;
 
-    public constructor(init?: Partial<SmsIntegrationRequest>) {
+    /** @description usr_… — the service user every step runs as. */
+    // @DataMember
+    // @ApiMember(Description="usr_… — the service user every step runs as.", IsRequired=true)
+    public executionIdentityId: string;
+
+    /** @description Optional JSON Schema (draft 2020-12, type object) of the manual-invoke payload. */
+    // @DataMember
+    // @ApiMember(Description="Optional JSON Schema (draft 2020-12, type object) of the manual-invoke payload.")
+    public inputs?: { [index: string]: Object };
+
+    // @DataMember
+    public start?: string;
+
+    /** @description 1–200 steps. */
+    // @DataMember
+    // @ApiMember(Description="1–200 steps.", IsRequired=true)
+    public steps: WorkflowStepDto[] = [];
+
+    // @DataMember
+    public onError?: WorkflowOnErrorDto;
+
+    // @DataMember
+    public limits?: WorkflowLimitsDto;
+
+    public constructor(init?: Partial<WorkflowDefinitionDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7484,6 +7871,9 @@ export module CodeMashHub2 {
     // @DataMember
     public isEnabled: boolean;
 
+    // @DataMember
+    public workflowsEnabled: boolean;
+
     public constructor(init?: Partial<CodeDto>) {
       (Object as any).assign(this, init);
     }
@@ -8079,6 +8469,7 @@ export module CodeMashHub2 {
     public status: AuthStatus;
     public createdOn: string;
     public modifiedOn: string;
+    public credentialVersion?: string;
 
     public constructor(init?: Partial<AuthDto>) {
       (Object as any).assign(this, init);
@@ -10154,6 +10545,122 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum NotificationDeliveryState {
+    Pending = 'Pending',
+    Sending = 'Sending',
+    Retrying = 'Retrying',
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+    Blocked = 'Blocked',
+    Cancelled = 'Cancelled',
+  }
+
+  export enum NotificationAttemptOutcome {
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+  }
+
+  export enum SendErrorCategory {
+    Unknown = 'Unknown',
+    Transient = 'Transient',
+    Permanent = 'Permanent',
+    Ambiguous = 'Ambiguous',
+  }
+
+  export enum NotificationAttemptTrigger {
+    Initial = 'Initial',
+    AutoRetry = 'AutoRetry',
+    ManualRetry = 'ManualRetry',
+  }
+
+  // @DataContract
+  export class NotificationAttemptDto {
+    // @DataMember
+    public attemptId: string;
+
+    // @DataMember
+    public number: number;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public outcome: NotificationAttemptOutcome;
+
+    // @DataMember
+    public category?: SendErrorCategory;
+
+    // @DataMember
+    public statusCode?: number;
+
+    // @DataMember
+    public errorCode?: string;
+
+    // @DataMember
+    public message?: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public retryAfterSeconds?: number;
+
+    // @DataMember
+    public exhausted?: boolean;
+
+    // @DataMember
+    public nextRetryAt?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public trigger: NotificationAttemptTrigger;
+
+    // @DataMember
+    public retryRequestId?: string;
+
+    public constructor(init?: Partial<NotificationAttemptDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum DeliveryEventOutcome {
+    Delivered = 'Delivered',
+    Bounced = 'Bounced',
+    Complained = 'Complained',
+    Rejected = 'Rejected',
+    Deferred = 'Deferred',
+  }
+
+  // @DataContract
+  export class NotificationDeliveryEventDto {
+    // @DataMember
+    public eventId?: string;
+
+    // @DataMember
+    public outcome: DeliveryEventOutcome;
+
+    // @DataMember
+    public at: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    public constructor(init?: Partial<NotificationDeliveryEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class CampaignBatchNotificationDto implements IHasDatabaseId {
     // @DataMember
@@ -10176,6 +10683,24 @@ export module CodeMashHub2 {
 
     // @DataMember
     public statusHistory: NotificationStatusChangeEntryDto[] = [];
+
+    // @DataMember
+    public state?: NotificationDeliveryState;
+
+    // @DataMember
+    public stateChangedAt?: string;
+
+    // @DataMember
+    public attempts?: NotificationAttemptDto[];
+
+    // @DataMember
+    public deliveryEvents?: NotificationDeliveryEventDto[];
+
+    // @DataMember
+    public deliveryOutcome?: DeliveryEventOutcome;
+
+    // @DataMember
+    public deliveryOutcomeRank?: number;
 
     // @DataMember
     public id: string;
@@ -10215,6 +10740,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public failed: number;
+
+    // @DataMember
+    public failedRetryable: number;
+
+    // @DataMember
+    public cancelled: number;
 
     // @DataMember
     public successRate: number;
@@ -10327,6 +10858,536 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<SmsCampaignBatchNotificationDto>) {
       super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowVersionSummaryDto {
+    // @DataMember
+    public version: number;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public stepCount: number;
+
+    // @DataMember
+    public publishedAt: string;
+
+    // @DataMember
+    public publishedByAuthId?: string;
+
+    public constructor(init?: Partial<WorkflowVersionSummaryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowValidationIssueDto {
+    // @DataMember
+    public code: string;
+
+    // @DataMember
+    public message: string;
+
+    // @DataMember
+    public path?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public line?: number;
+
+    // @DataMember
+    public column?: number;
+
+    public constructor(init?: Partial<WorkflowValidationIssueDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowDto {
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public definition: WorkflowDefinitionDto;
+
+    // @DataMember
+    public version: number;
+
+    // @DataMember
+    public isPublished: boolean;
+
+    // @DataMember
+    public hasDraft: boolean;
+
+    // @DataMember
+    public isEnabled: boolean;
+
+    // @DataMember
+    public disabledReason?: string;
+
+    // @DataMember
+    public draftUpdatedAt?: string;
+
+    // @DataMember
+    public publishedAt?: string;
+
+    // @DataMember
+    public createdAt: string;
+
+    // @DataMember
+    public updatedAt: string;
+
+    // @DataMember
+    public savedByAuthId?: string;
+
+    // @DataMember
+    public versions: WorkflowVersionSummaryDto[] = [];
+
+    // @DataMember
+    public warnings: WorkflowValidationIssueDto[] = [];
+
+    public constructor(init?: Partial<WorkflowDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowStepDiffDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public paths: string[] = [];
+
+    public constructor(init?: Partial<WorkflowStepDiffDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowVersionDiffDto {
+    // @DataMember
+    public fromVersion: number;
+
+    // @DataMember
+    public toVersion: number;
+
+    // @DataMember
+    public addedSteps: string[] = [];
+
+    // @DataMember
+    public removedSteps: string[] = [];
+
+    // @DataMember
+    public changedSteps: WorkflowStepDiffDto[] = [];
+
+    // @DataMember
+    public changedFields: string[] = [];
+
+    public constructor(init?: Partial<WorkflowVersionDiffDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowLastRunDto {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    public constructor(init?: Partial<WorkflowLastRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowListProjection implements IHasViewId {
+    // @DataMember
+    public viewId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public version: number;
+
+    // @DataMember
+    public isPublished: boolean;
+
+    // @DataMember
+    public hasDraft: boolean;
+
+    // @DataMember
+    public isEnabled: boolean;
+
+    // @DataMember
+    public disabledReason?: string;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public updatedAt: string;
+
+    // @DataMember
+    public lastRun?: WorkflowLastRunDto;
+
+    // @DataMember
+    public waitingRuns: number;
+
+    public constructor(init?: Partial<WorkflowListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowStepKindSchemaDto {
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public description: string;
+
+    // @DataMember
+    public configSchema?: { [index: string]: Object };
+
+    // @DataMember
+    public outputSchema?: { [index: string]: Object };
+
+    // @DataMember
+    public requires: string[] = [];
+
+    public constructor(init?: Partial<WorkflowStepKindSchemaDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowBindingFamilyDto {
+    // @DataMember
+    public family: string;
+
+    // @DataMember
+    public description: string;
+
+    public constructor(init?: Partial<WorkflowBindingFamilyDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowSchemaDto {
+    // @DataMember
+    public schemaVersion: string;
+
+    // @DataMember
+    public definition: { [index: string]: Object } = {};
+
+    // @DataMember
+    public stepKinds: WorkflowStepKindSchemaDto[] = [];
+
+    // @DataMember
+    public bindings: WorkflowBindingFamilyDto[] = [];
+
+    public constructor(init?: Partial<WorkflowSchemaDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunErrorDto {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<WorkflowRunErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunActorDto {
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public kind: string;
+
+    public constructor(init?: Partial<WorkflowRunActorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowWaitingOnDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public until?: string;
+
+    // @DataMember
+    public key?: string;
+
+    // @DataMember
+    public assignees?: string[];
+
+    public constructor(init?: Partial<WorkflowWaitingOnDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunStepDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public name?: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public attempt: number;
+
+    // @DataMember
+    public pass: number;
+
+    // @DataMember
+    public startedAt?: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public input?: Object;
+
+    // @DataMember
+    public inputTruncated: boolean;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public outputTruncated: boolean;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public resumedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public decision?: string;
+
+    public constructor(init?: Partial<WorkflowRunStepDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunDto {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public taskId?: string;
+
+    // @DataMember
+    public parentRunId?: string;
+
+    // @DataMember
+    public depth: number;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public stepRuns: number;
+
+    // @DataMember
+    public steps: WorkflowRunStepDto[] = [];
+
+    // @DataMember
+    public request?: { [index: string]: Object };
+
+    // @DataMember
+    public trigger?: { [index: string]: Object };
+
+    public constructor(init?: Partial<WorkflowRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunListProjection {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public currentStepIds: string[] = [];
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    public constructor(init?: Partial<WorkflowRunListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TenantLogEntryDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public timestamp: string;
+
+    // @DataMember
+    public module: string;
+
+    // @DataMember
+    public level: string;
+
+    // @DataMember
+    public eventCode: string;
+
+    // @DataMember
+    public title: string;
+
+    // @DataMember
+    public message: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public traceId?: string;
+
+    // @DataMember
+    public spanId?: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public origin: string;
+
+    // @DataMember
+    public meta?: IReadOnlyDictionary<string, string>;
+
+    public constructor(init?: Partial<TenantLogEntryDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -11009,6 +12070,7 @@ export module CodeMashHub2 {
   }
 
   export class PaymentsWebhookLogEntry {
+    public runId?: string;
     public integrationId: string;
     public source: string;
     public env?: string;
@@ -11019,6 +12081,86 @@ export module CodeMashHub2 {
     public receivedOn: string;
 
     public constructor(init?: Partial<PaymentsWebhookLogEntry>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentsWebhookRunOrderDto {
+    public orderId?: string;
+    public kind: string;
+    public from?: string;
+    public to?: string;
+    public reason: string;
+
+    public constructor(init?: Partial<PaymentsWebhookRunOrderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentsWebhookRunActionDto {
+    public triggerId: string;
+    public triggerName?: string;
+    public action?: string;
+    public status: string;
+    public reason?: string;
+    public queue?: string;
+    public messageId?: string;
+    public deliveries?: number;
+    public norbixEvent: string;
+    public at: string;
+
+    public constructor(init?: Partial<PaymentsWebhookRunActionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentsWebhookRunDto {
+    public id: string;
+    public callId: string;
+    public env: string;
+    public integrationId: string;
+    public source: string;
+    public receivedOn: string;
+    public statusCode: number;
+    public outcome: string;
+    public reason: string;
+    public description: string;
+    public eventName?: string;
+    public providerEventId?: string;
+    public correlationId?: string;
+    public fact?: PaymentEventDto;
+    public order?: PaymentsWebhookRunOrderDto;
+    public actions: PaymentsWebhookRunActionDto[] = [];
+    public part: number;
+    public parts: number;
+
+    public constructor(init?: Partial<PaymentsWebhookRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentsWebhookRawCallDto {
+    public callId: string;
+    public receivedOn: string;
+    public contentType?: string;
+    public body: string;
+    public truncated: boolean;
+    public maskedFields: number;
+    public headers: { [index: string]: string } = {};
+    public answerStatus: number;
+    public answerBody?: string;
+    public parts: number;
+
+    public constructor(init?: Partial<PaymentsWebhookRawCallDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PaymentsWebhookRunDetailsDto {
+    public run: PaymentsWebhookRunDto;
+    public raw?: PaymentsWebhookRawCallDto;
+
+    public constructor(init?: Partial<PaymentsWebhookRunDetailsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -11056,52 +12198,6 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<LoggingIntegrationListProjection>) {
       super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class TenantLogEntryDto {
-    // @DataMember
-    public id: string;
-
-    // @DataMember
-    public timestamp: string;
-
-    // @DataMember
-    public module: string;
-
-    // @DataMember
-    public level: string;
-
-    // @DataMember
-    public eventCode: string;
-
-    // @DataMember
-    public title: string;
-
-    // @DataMember
-    public message: string;
-
-    // @DataMember
-    public correlationId?: string;
-
-    // @DataMember
-    public traceId?: string;
-
-    // @DataMember
-    public spanId?: string;
-
-    // @DataMember
-    public env: string;
-
-    // @DataMember
-    public origin: string;
-
-    // @DataMember
-    public meta?: IReadOnlyDictionary<string, string>;
-
-    public constructor(init?: Partial<TenantLogEntryDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -13921,6 +15017,29 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class RetryFailedEmailNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetEmailCampaignMessagesResponse extends ResponseBase {
     public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
 
@@ -14070,10 +15189,164 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class RetryFailedSmsNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetSmsCampaignMessagesResponse extends ResponseBase {
     public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
 
     public constructor(init?: Partial<GetSmsCampaignMessagesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowResponse extends ResponseBase {
+    // @DataMember
+    public workflow?: WorkflowDto;
+
+    public constructor(init?: Partial<WorkflowResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowVersionsResponse extends ResponseBase {
+    // @DataMember
+    public items?: WorkflowVersionSummaryDto[];
+
+    public constructor(init?: Partial<WorkflowVersionsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowVersionDiffResponse extends ResponseBase {
+    // @DataMember
+    public diff?: WorkflowVersionDiffDto;
+
+    public constructor(init?: Partial<WorkflowVersionDiffResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ValidateCodeWorkflowResponse extends ResponseBase {
+    // @DataMember
+    public isValid: boolean;
+
+    // @DataMember
+    public errors: WorkflowValidationIssueDto[] = [];
+
+    // @DataMember
+    public warnings: WorkflowValidationIssueDto[] = [];
+
+    public constructor(init?: Partial<ValidateCodeWorkflowResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<WorkflowListProjection>;
+
+    public constructor(init?: Partial<WorkflowsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowSchemaResponse extends ResponseBase {
+    // @DataMember
+    public schema?: WorkflowSchemaDto;
+
+    public constructor(init?: Partial<WorkflowSchemaResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class InvokeCodeWorkflowResponse extends ResponseBase {
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public status?: string;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<InvokeCodeWorkflowResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<WorkflowRunListProjection>;
+
+    public constructor(init?: Partial<WorkflowRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunResponse extends ResponseBase {
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<WorkflowRunResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunLogsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<TenantLogEntryDto>;
+
+    public constructor(init?: Partial<WorkflowRunLogsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -14524,6 +15797,29 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class RetryFailedPushNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetPushCampaignMessagesResponse extends ResponseBase {
     public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
 
@@ -14569,6 +15865,24 @@ export module CodeMashHub2 {
     public list?: IReadOnlyList<PaymentsWebhookLogEntry>;
 
     public constructor(init?: Partial<GetPaymentsWebhookLogResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPaymentsWebhookRunsResponse extends ResponseBase {
+    public list?: PaginatedResponse<PaymentsWebhookRunDto>;
+
+    public constructor(init?: Partial<GetPaymentsWebhookRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPaymentsWebhookRunResponse extends ResponseBase {
+    public item?: PaymentsWebhookRunDetailsDto;
+
+    public constructor(init?: Partial<GetPaymentsWebhookRunResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16114,6 +17428,8 @@ export module CodeMashHub2 {
     public typegen_1_AwsSesEmailIntegrationRequest?: AwsSesEmailIntegrationRequest;
     public typegen_2_SendGridEmailIntegrationRequest?: SendGridEmailIntegrationRequest;
     public typegen_3_MailGunEmailIntegrationRequest?: MailGunEmailIntegrationRequest;
+    public typegen_3a_AzureCommunicationEmailIntegrationRequest?: AzureCommunicationEmailIntegrationRequest;
+    public typegen_297_FakeEmailIntegrationRequest?: FakeEmailIntegrationRequest;
     public typegen_4_EmailToAllUsersDeliverySettingsRequest?: EmailToAllUsersDeliverySettingsRequest;
     public typegen_5_EmailToAccountUsersDeliverySettingsRequest?: EmailToAccountUsersDeliverySettingsRequest;
     public typegen_6_EmailToCollectionRecordsDeliverySettingsRequest?: EmailToCollectionRecordsDeliverySettingsRequest;
@@ -16178,6 +17494,15 @@ export module CodeMashHub2 {
     public typegen_60_FirefoxWebPushIntegrationRequest?: FirefoxWebPushIntegrationRequest;
     public typegen_61_AndroidFirebasePushIntegrationRequest?: AndroidFirebasePushIntegrationRequest;
     public typegen_62_AppleApnsPushIntegrationRequest?: AppleApnsPushIntegrationRequest;
+    public typegen_298_FakePushIntegrationRequest?: FakePushIntegrationRequest;
+    public typegen_299_BirdSmsIntegrationRequest?: BirdSmsIntegrationRequest;
+    public typegen_300_PlivoSmsIntegrationRequest?: PlivoSmsIntegrationRequest;
+    public typegen_301_SinchSmsIntegrationRequest?: SinchSmsIntegrationRequest;
+    public typegen_302_TelesignSmsIntegrationRequest?: TelesignSmsIntegrationRequest;
+    public typegen_303_TelnyxSmsIntegrationRequest?: TelnyxSmsIntegrationRequest;
+    public typegen_304_TwilioSmsIntegrationRequest?: TwilioSmsIntegrationRequest;
+    public typegen_305_VonageSmsIntegrationRequest?: VonageSmsIntegrationRequest;
+    public typegen_306_FakeSmsIntegrationRequest?: FakeSmsIntegrationRequest;
     public typegen_65_AwsLambdaCodeIntegrationRequest?: AwsLambdaCodeIntegrationRequest;
     public typegen_66_AzureFunctionsCodeIntegrationRequest?: AzureFunctionsCodeIntegrationRequest;
     public typegen_67_GoogleCloudFunctionsCodeIntegrationRequest?: GoogleCloudFunctionsCodeIntegrationRequest;
@@ -16311,6 +17636,7 @@ export module CodeMashHub2 {
     public typegen_181_MailGunEmailIntegrationDto?: MailGunEmailIntegrationDto;
     public typegen_182_SendGridEmailIntegrationDto?: SendGridEmailIntegrationDto;
     public typegen_183_SmtpEmailIntegrationDto?: SmtpEmailIntegrationDto;
+    public typegen_307_AzureCommunicationEmailIntegrationDto?: AzureCommunicationEmailIntegrationDto;
     public typegen_248_FakeEmailIntegrationDto?: FakeEmailIntegrationDto;
     public typegen_192_WebhookIntegrationDto?: WebhookIntegrationDto;
     public typegen_193_WebhookDestinationDto?: WebhookDestinationDto;
@@ -24718,6 +26044,59 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Retries the failed recipients of an email campaign */
+  // @Route("/{version}/notifications/email/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an email campaign")
+  // @DataContract
+  export class RetryFailedEmailNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedEmailNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_email_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedEmailNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedEmailNotificationsResponse();
+    }
+  }
+
   /** @description Stops a running email campaign */
   // @Route("/{version}/notifications/email/campaigns/{Id}/stop", "POST")
   // @Api(Description="Stops a running email campaign")
@@ -25623,6 +27002,59 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Retries the failed recipients of an SMS campaign */
+  // @Route("/{version}/notifications/sms/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an SMS campaign")
+  // @DataContract
+  export class RetryFailedSmsNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedSmsNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedSmsNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedSmsNotificationsResponse();
+    }
+  }
+
   /** @description Stops a running SMS campaign */
   // @Route("/{version}/notifications/sms/campaigns/{Id}/stop", "POST")
   // @Api(Description="Stops a running SMS campaign")
@@ -25684,6 +27116,704 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetSmsCampaignMessagesResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows", "PUT")
+  // @DataContract
+  export class SaveCodeWorkflow extends CodeMashRequestBase implements IReturn<WorkflowResponse> {
+    /** @description The definition (JSON Schema v1 from GET /code/workflows/schema). */
+    // @DataMember
+    // @ApiMember(Description="The definition (JSON Schema v1 from GET /code/workflows/schema).", IsRequired=true)
+    public definition: WorkflowDefinitionDto;
+
+    public constructor(init?: Partial<SaveCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SaveCodeWorkflow';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/publish", "POST")
+  // @DataContract
+  export class PublishCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<PublishCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PublishCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/draft", "GET")
+  // @DataContract
+  export class GetCodeWorkflowDraft
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowDraft>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowDraft';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/draft", "DELETE")
+  // @DataContract
+  export class DiscardCodeWorkflowDraft
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<DiscardCodeWorkflowDraft>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DiscardCodeWorkflowDraft';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/versions", "GET")
+  // @DataContract
+  export class GetCodeWorkflowVersions
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowVersionsResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowVersions>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowVersions';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowVersionsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/versions/diff", "GET")
+  // @DataContract
+  export class GetCodeWorkflowVersionDiff
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowVersionDiffResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The earlier version. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="The earlier version.", IsRequired=true)
+    public fromVersion: number;
+
+    /** @description The later version. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="The later version.", IsRequired=true)
+    public toVersion: number;
+
+    public constructor(init?: Partial<GetCodeWorkflowVersionDiff>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowVersionDiff';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowVersionDiffResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/validate", "POST")
+  // @DataContract
+  export class ValidateCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<ValidateCodeWorkflowResponse>
+  {
+    // @DataMember
+    // @ApiMember(IsRequired=true)
+    public definition: WorkflowDefinitionDto;
+
+    public constructor(init?: Partial<ValidateCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ValidateCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new ValidateCodeWorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows", "GET")
+  // @DataContract
+  export class GetCodeWorkflows
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowsResponse>
+  {
+    /** @description Only enabled (true) or only disabled (false) workflows. */
+    // @DataMember
+    // @ApiMember(Description="Only enabled (true) or only disabled (false) workflows.")
+    public isEnabled?: boolean;
+
+    public constructor(init?: Partial<GetCodeWorkflows>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflows';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}", "GET")
+  // @DataContract
+  export class GetCodeWorkflow extends CodeMashRequestBase implements IReturn<WorkflowResponse> {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description A pinned published version; absent = the latest. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="A pinned published version; absent = the latest.")
+    public pinnedVersion?: number;
+
+    public constructor(init?: Partial<GetCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflow';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}", "DELETE")
+  // @DataContract
+  export class DeleteCodeWorkflow extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<DeleteCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteCodeWorkflow';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/enable", "PUT")
+  // @DataContract
+  export class EnableCodeWorkflow extends CodeMashRequestBase implements IReturn<WorkflowResponse> {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<EnableCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'EnableCodeWorkflow';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/disable", "PUT")
+  // @DataContract
+  export class DisableCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<DisableCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DisableCodeWorkflow';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/schema", "GET")
+  // @DataContract
+  export class GetCodeWorkflowSchema
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowSchemaResponse>
+  {
+    public constructor(init?: Partial<GetCodeWorkflowSchema>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowSchema';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowSchemaResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/enable", "PUT")
+  // @DataContract
+  export class EnableCodeWorkflows extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    public constructor(init?: Partial<EnableCodeWorkflows>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'EnableCodeWorkflows';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/disable", "PUT")
+  // @DataContract
+  export class DisableCodeWorkflows extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    public constructor(init?: Partial<DisableCodeWorkflows>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DisableCodeWorkflows';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/invoke", "POST")
+  // @DataContract
+  export class InvokeCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeWorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The @Model.Request object; checked against the definition's inputs when it has one. */
+    // @DataMember
+    // @ApiMember(Description="The @Model.Request object; checked against the definition's inputs when it has one.")
+    public payload?: { [index: string]: Object };
+
+    /** @description 0–30 seconds to wait for the run; default 10; 0 answers 202 at once. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="0–30 seconds to wait for the run; default 10; 0 answers 202 at once.")
+    public waitSeconds?: number;
+
+    /** @description "draft" to test the draft, a version number to pin one; absent = the latest published. */
+    // @DataMember
+    // @ApiMember(Description="\"draft\" to test the draft, a version number to pin one; absent = the latest published.")
+    public runVersion?: string;
+
+    public constructor(init?: Partial<InvokeCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeWorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/runs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunsResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description running | waiting | succeeded | failed | cancelled */
+    // @DataMember
+    // @ApiMember(Description="running | waiting | succeeded | failed | cancelled")
+    public status?: string;
+
+    // @DataMember
+    public from?: string;
+
+    // @DataMember
+    public to?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowWaitingRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunsResponse>
+  {
+    /** @description running | waiting (default) | succeeded | failed | cancelled */
+    // @DataMember
+    // @ApiMember(Description="running | waiting (default) | succeeded | failed | cancelled")
+    public status?: string;
+
+    /** @description approval | event | delay */
+    // @DataMember
+    // @ApiMember(Description="approval | event | delay")
+    public waitingKind?: string;
+
+    /** @description "me" or a usr_… id: only approvals assigned to that user. */
+    // @DataMember
+    // @ApiMember(Description="\"me\" or a usr_… id: only approvals assigned to that user.")
+    public assignee?: string;
+
+    /** @description Only runs of this workflow (wf_…). */
+    // @DataMember
+    // @ApiMember(Description="Only runs of this workflow (wf_…).")
+    public workflowId?: string;
+
+    /** @description The wait's rendered key, exact match. */
+    // @DataMember
+    // @ApiMember(Description="The wait's rendered key, exact match.")
+    public key?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowWaitingRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowWaitingRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/logs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRunLogs
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunLogsResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description Only this step's lines. */
+    // @DataMember
+    // @ApiMember(Description="Only this step's lines.")
+    public stepId?: string;
+
+    /** @description Information | Warning | Error */
+    // @DataMember
+    // @ApiMember(Description="Information | Warning | Error")
+    public level?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRunLogs>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRunLogs';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunLogsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/resume", "POST")
+  // @DataContract
+  export class ResumeCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description Required when several steps wait. */
+    // @DataMember
+    // @ApiMember(Description="Required when several steps wait.")
+    public stepId?: string;
+
+    /** @description approved | rejected — required for an approval wait. */
+    // @DataMember
+    // @ApiMember(Description="approved | rejected — required for an approval wait.")
+    public decision?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<ResumeCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResumeCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/resume", "POST")
+  // @DataContract
+  export class ResumeCodeWorkflowRunByKey
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The wait's rendered key. */
+    // @DataMember
+    // @ApiMember(Description="The wait's rendered key.", IsRequired=true)
+    public key: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    /** @description approved | rejected — required for an approval wait. */
+    // @DataMember
+    // @ApiMember(Description="approved | rejected — required for an approval wait.")
+    public decision?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<ResumeCodeWorkflowRunByKey>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResumeCodeWorkflowRunByKey';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/retry", "POST")
+  // @DataContract
+  export class RetryCodeWorkflowRunStep
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description The failed step; default = the step named in the run's error. */
+    // @DataMember
+    // @ApiMember(Description="The failed step; default = the step named in the run's error.")
+    public stepId?: string;
+
+    public constructor(init?: Partial<RetryCodeWorkflowRunStep>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryCodeWorkflowRunStep';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/cancel", "POST")
+  // @DataContract
+  export class CancelCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    // @DataMember
+    public reason?: string;
+
+    public constructor(init?: Partial<CancelCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CancelCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
     }
   }
 
@@ -27252,6 +29382,59 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Retries the failed recipients of a push campaign */
+  // @Route("/{version}/notifications/push/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of a push campaign")
+  // @DataContract
+  export class RetryFailedPushNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedPushNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_push_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_push_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedPushNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedPushNotificationsResponse();
+    }
+  }
+
   /** @description Stops a running push campaign */
   // @Route("/{version}/notifications/push/campaigns/{Id}/stop", "POST")
   // @Api(Description="Stops a running push campaign")
@@ -27469,6 +29652,78 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetPaymentsWebhookLogResponse();
+    }
+  }
+
+  /** @description Lists the received payment webhooks of the request's environment, newest first */
+  // @Route("/{version}/payments/webhooks/runs", "GET")
+  // @Api(Description="Lists the received payment webhooks of the request's environment, newest first")
+  export class GetPaymentsWebhookRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPaymentsWebhookRunsResponse>
+  {
+    /** @description Only events posted to this payments integration (int_…). */
+    // @ApiMember(Description="Only events posted to this payments integration (int_…).")
+    public integrationId?: string;
+
+    /** @description Only this provider event name (e.g. payment_intent.succeeded, payment.success). */
+    // @ApiMember(Description="Only this provider event name (e.g. payment_intent.succeeded, payment.success).")
+    public eventName?: string;
+
+    /** @description Only events that reached this trigger (trg_…). */
+    // @ApiMember(Description="Only events that reached this trigger (trg_…).")
+    public triggerId?: string;
+
+    /** @description applied (processed) · ignored (200, e.g. duplicate) · refused (4xx) · failed (5xx) · all (default). */
+    // @ApiMember(Description="applied (processed) · ignored (200, e.g. duplicate) · refused (4xx) · failed (5xx) · all (default).")
+    public outcome?: string;
+
+    /** @description Received at or after this UTC time. */
+    // @ApiMember(DataType="string", Description="Received at or after this UTC time.", Format="date-time")
+    public fromUtc?: string;
+
+    /** @description Received at or before this UTC time. */
+    // @ApiMember(DataType="string", Description="Received at or before this UTC time.", Format="date-time")
+    public toUtc?: string;
+
+    public constructor(init?: Partial<GetPaymentsWebhookRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPaymentsWebhookRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPaymentsWebhookRunsResponse();
+    }
+  }
+
+  /** @description Reads one received payment webhook with its masked raw call */
+  // @Route("/{version}/payments/webhooks/runs/{Id}", "GET")
+  // @Api(Description="Reads one received payment webhook with its masked raw call")
+  export class GetPaymentsWebhookRun
+    extends CodeMashRequestBase
+    implements IReturn<GetPaymentsWebhookRunResponse>
+  {
+    /** @description The run id (pwr_…). */
+    // @ApiMember(Description="The run id (pwr_…).", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetPaymentsWebhookRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPaymentsWebhookRun';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPaymentsWebhookRunResponse();
     }
   }
 
