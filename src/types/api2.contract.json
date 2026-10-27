@@ -143,6 +143,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetCodeWorkflowWaitingRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetDatabaseSchemaRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -303,6 +307,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "OpenCodeWorkflowResumeLink": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "PasskeyAuthenticationOptionsRequest": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -356,6 +364,10 @@
     "returnsBytes": false
   },
   "RequestUploadUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResumeCodeWorkflowRun": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -457,6 +469,10 @@
   },
   "UploadEndUserChatAttachmentRequest": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UseCodeWorkflowResumeLink": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "UseFileRequest": {

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-26 18:29:53
+Date: 2026-10-27 15:21:44
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1179,6 +1179,8 @@ export module CodeMashHub2 {
     public provider: PaymentGatewayPlatform;
     public storeUrl: string;
     public webhookSecret: string;
+    public consumerKey?: string;
+    public consumerSecret?: string;
 
     public constructor(init?: Partial<WooCommercePaymentIntegrationRequest>) {
       super(init);
@@ -2428,6 +2430,20 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class TriggerActionWorkflowDto extends TriggerActionDto {
+    // @DataMember
+    public workflowRef?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: string };
+
+    public constructor(init?: Partial<TriggerActionWorkflowDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract(Namespace="http://codemash.io/types/")
   export class RequestBase implements IVersionBasedRequest, IHasCorrelationIdRequest {
     /** @description TimeZone */
@@ -3009,8 +3025,24 @@ export module CodeMashHub2 {
     }
   }
 
+  export class PaymentsIntegrationConnectionDto {
+    public provider: string;
+    public accountId?: string;
+    public accountName?: string;
+    public connectedBy: string;
+    public connectedAtUtc: string;
+    public isConnected: boolean;
+    public disconnectedAtUtc?: string;
+    public disconnectReason?: string;
+
+    public constructor(init?: Partial<PaymentsIntegrationConnectionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class PaymentsIntegrationDto extends IntegrationDto {
     public gatewayPlatform: PaymentGatewayPlatform;
+    public connection?: PaymentsIntegrationConnectionDto;
 
     public constructor(init?: Partial<PaymentsIntegrationDto>) {
       super(init);
@@ -5448,6 +5480,17 @@ export module CodeMashHub2 {
     }
   }
 
+  export class WorkflowSchedulerTaskRequest extends SchedulerTaskRequest {
+    public type: SchedulerTaskType;
+    public workflowRef?: string;
+    public payload?: { [index: string]: string };
+
+    public constructor(init?: Partial<WorkflowSchedulerTaskRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class AwsCloudWatchLoggingIntegrationRequest extends LoggingIntegrationRequest {
     public provider: LoggingProvider;
     public region: string;
@@ -5469,6 +5512,53 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<AwsCloudWatchLoggingIntegrationDto>) {
       super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class QuickConnectProviderDto {
+    // @DataMember
+    public module: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public available: boolean;
+
+    // @DataMember
+    public callbackKind: string;
+
+    // @DataMember
+    public requiredInputs: string[] = [];
+
+    // @DataMember
+    public modes: string[] = [];
+
+    // @DataMember
+    public redirectUrl: string;
+
+    // @DataMember
+    public platformWebhookUrls: string[] = [];
+
+    public constructor(init?: Partial<QuickConnectProviderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class QuickConnectTargetDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public detail?: string;
+
+    public constructor(init?: Partial<QuickConnectTargetDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -6836,6 +6926,14 @@ export module CodeMashHub2 {
     public isAws: boolean;
 
     public constructor(init?: Partial<EchoHostingPlatformDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoConnectDto {
+    public providers: QuickConnectProviderDto[] = [];
+
+    public constructor(init?: Partial<EchoConnectDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -13674,6 +13772,7 @@ export module CodeMashHub2 {
     public regions?: EchoRegionDto[];
     public agent?: EchoAgentDto;
     public hostingPlatform?: EchoHostingPlatformDto;
+    public connect?: EchoConnectDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -15635,6 +15734,44 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class CodeWorkflowResumeLinkResponse extends ResponseBase {
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public workflowId?: string;
+
+    // @DataMember
+    public workflowName?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public stepName?: string;
+
+    // @DataMember
+    public mode?: string;
+
+    // @DataMember
+    public decision?: string;
+
+    // @DataMember
+    public key?: string;
+
+    // @DataMember
+    public assigneeUserId?: string;
+
+    // @DataMember
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<CodeWorkflowResumeLinkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetPushTemplateResponse extends ResponseBase {
     public item?: PushTemplateDto;
 
@@ -15930,6 +16067,51 @@ export module CodeMashHub2 {
     public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
     public constructor(init?: Partial<TestPaymentsIntegrationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetQuickConnectProvidersResponse extends ResponseBase {
+    public providers: QuickConnectProviderDto[] = [];
+
+    public constructor(init?: Partial<GetQuickConnectProvidersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class StartIntegrationConnectResponse extends ResponseBase {
+    public authorizeUrl?: string;
+    public connectId?: string;
+    public redirectUrl?: string;
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<StartIntegrationConnectResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetIntegrationConnectTargetsResponse extends ResponseBase {
+    public connectId?: string;
+    public module?: string;
+    public provider?: string;
+    public integrationName?: string;
+    public accountName?: string;
+    public targets: QuickConnectTargetDto[] = [];
+
+    public constructor(init?: Partial<GetIntegrationConnectTargetsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class DisconnectPaymentsIntegrationConnectResponse extends ResponseBase {
+    public wasConnected: boolean;
+    public providerAnswered: boolean;
+
+    public constructor(init?: Partial<DisconnectPaymentsIntegrationConnectResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -17422,6 +17604,143 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/integrations/connect/providers", "GET")
+  export class GetQuickConnectProviders
+    extends RequestBase
+    implements IReturn<GetQuickConnectProvidersResponse>
+  {
+    public module?: string;
+
+    public constructor(init?: Partial<GetQuickConnectProviders>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetQuickConnectProviders';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetQuickConnectProvidersResponse();
+    }
+  }
+
+  // @Route("/{version}/payments/integrations/connect/start", "POST")
+  export class StartPaymentsIntegrationConnect
+    extends CodeMashRequestBase
+    implements IReturn<StartIntegrationConnectResponse>
+  {
+    /** @description Provider key from get_quick_connect_providers, e.g. woocommerce. */
+    // @ApiMember(Description="Provider key from get_quick_connect_providers, e.g. woocommerce.", IsRequired=true)
+    public provider: string;
+
+    /** @description The name the new integration gets. */
+    // @ApiMember(Description="The name the new integration gets.", IsRequired=true)
+    public integrationName: string;
+
+    /** @description The provider's mode (test or live) when the provider has modes. */
+    // @ApiMember(Description="The provider's mode (test or live) when the provider has modes.")
+    public mode?: string;
+
+    /** @description The inputs the provider needs before its page opens, e.g. { "storeUrl": "https://shop.example.com" }. */
+    // @ApiMember(Description="The inputs the provider needs before its page opens, e.g. { \"storeUrl\": \"https://shop.example.com\" }.")
+    public input?: { [index: string]: string };
+
+    /** @description Reconnect: the integration view id the new connection replaces. */
+    // @ApiMember(Description="Reconnect: the integration view id the new connection replaces.")
+    public integrationId?: string;
+
+    public constructor(init?: Partial<StartPaymentsIntegrationConnect>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartPaymentsIntegrationConnect';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartIntegrationConnectResponse();
+    }
+  }
+
+  // @Route("/{version}/integrations/connect/{ConnectId}/targets", "GET")
+  export class GetIntegrationConnectTargets
+    extends CodeMashRequestBase
+    implements IReturn<GetIntegrationConnectTargetsResponse>
+  {
+    public connectId: string;
+
+    public constructor(init?: Partial<GetIntegrationConnectTargets>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetIntegrationConnectTargets';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetIntegrationConnectTargetsResponse();
+    }
+  }
+
+  // @Route("/{version}/payments/integrations/connect/{ConnectId}/complete", "POST")
+  export class CompletePaymentsIntegrationConnect
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    public connectId: string;
+    /** @description The id of the account (profile, shop) from the targets list. */
+    // @ApiMember(Description="The id of the account (profile, shop) from the targets list.", IsRequired=true)
+    public targetId: string;
+
+    /** @description Enable the integration right away. */
+    // @ApiMember(Description="Enable the integration right away.")
+    public isEnabled: boolean;
+
+    public constructor(init?: Partial<CompletePaymentsIntegrationConnect>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CompletePaymentsIntegrationConnect';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/payments/integrations/{Id}/connect/disconnect", "POST")
+  export class DisconnectPaymentsIntegrationConnect
+    extends CodeMashRequestBase
+    implements IReturn<DisconnectPaymentsIntegrationConnectResponse>
+  {
+    /** @description Integration view id. */
+    // @ApiMember(Description="Integration view id.", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<DisconnectPaymentsIntegrationConnect>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DisconnectPaymentsIntegrationConnect';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new DisconnectPaymentsIntegrationConnectResponse();
+    }
+  }
+
   // @Route("/internal/_typegen", "GET")
   export class InternalsTypeGen {
     public typegen_0_SmtpEmailIntegrationRequest?: SmtpEmailIntegrationRequest;
@@ -17531,6 +17850,7 @@ export module CodeMashHub2 {
     public typegen_236_TriggerActionSmsDto?: TriggerActionSmsDto;
     public typegen_237_TriggerActionSseDto?: TriggerActionSseDto;
     public typegen_238_TriggerActionMarketplaceDto?: TriggerActionMarketplaceDto;
+    public typegen_308_TriggerActionWorkflowDto?: TriggerActionWorkflowDto;
     public typegen_239_SseDeliverySettingsDto?: SseDeliverySettingsDto;
     public typegen_240_GetTriggers?: GetTriggers;
     public typegen_241_GetTriggersResponse?: GetTriggersResponse;
@@ -17708,8 +18028,17 @@ export module CodeMashHub2 {
     public typegen_282_FakeCodeIntegrationRequest?: FakeCodeIntegrationRequest;
     public typegen_283_CodeFunctionSchedulerTaskRequest?: CodeFunctionSchedulerTaskRequest;
     public typegen_284_MarketplaceFunctionSchedulerTaskRequest?: MarketplaceFunctionSchedulerTaskRequest;
+    public typegen_309_WorkflowSchedulerTaskRequest?: WorkflowSchedulerTaskRequest;
     public typegen_285_AwsCloudWatchLoggingIntegrationRequest?: AwsCloudWatchLoggingIntegrationRequest;
     public typegen_286_AwsCloudWatchLoggingIntegrationDto?: AwsCloudWatchLoggingIntegrationDto;
+    public typegen_310_GetQuickConnectProviders?: GetQuickConnectProviders;
+    public typegen_311_StartPaymentsIntegrationConnect?: StartPaymentsIntegrationConnect;
+    public typegen_312_GetIntegrationConnectTargets?: GetIntegrationConnectTargets;
+    public typegen_313_CompletePaymentsIntegrationConnect?: CompletePaymentsIntegrationConnect;
+    public typegen_314_QuickConnectProviderDto?: QuickConnectProviderDto;
+    public typegen_315_QuickConnectTargetDto?: QuickConnectTargetDto;
+    public typegen_316_DisconnectPaymentsIntegrationConnect?: DisconnectPaymentsIntegrationConnect;
+    public typegen_317_PaymentsIntegrationConnectionDto?: PaymentsIntegrationConnectionDto;
 
     public constructor(init?: Partial<InternalsTypeGen>) {
       (Object as any).assign(this, init);
@@ -27568,52 +27897,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/code/workflows/runs", "GET")
-  // @DataContract
-  export class GetCodeWorkflowWaitingRuns
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<WorkflowRunsResponse>
-  {
-    /** @description running | waiting (default) | succeeded | failed | cancelled */
-    // @DataMember
-    // @ApiMember(Description="running | waiting (default) | succeeded | failed | cancelled")
-    public status?: string;
-
-    /** @description approval | event | delay */
-    // @DataMember
-    // @ApiMember(Description="approval | event | delay")
-    public waitingKind?: string;
-
-    /** @description "me" or a usr_… id: only approvals assigned to that user. */
-    // @DataMember
-    // @ApiMember(Description="\"me\" or a usr_… id: only approvals assigned to that user.")
-    public assignee?: string;
-
-    /** @description Only runs of this workflow (wf_…). */
-    // @DataMember
-    // @ApiMember(Description="Only runs of this workflow (wf_…).")
-    public workflowId?: string;
-
-    /** @description The wait's rendered key, exact match. */
-    // @DataMember
-    // @ApiMember(Description="The wait's rendered key, exact match.")
-    public key?: string;
-
-    public constructor(init?: Partial<GetCodeWorkflowWaitingRuns>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCodeWorkflowWaitingRuns';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new WorkflowRunsResponse();
-    }
-  }
-
   // @Route("/{version}/code/workflows/runs/{RunId}", "GET")
   // @DataContract
   export class GetCodeWorkflowRun
@@ -27673,45 +27956,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new WorkflowRunLogsResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/runs/{RunId}/resume", "POST")
-  // @DataContract
-  export class ResumeCodeWorkflowRun
-    extends CodeMashRequestBase
-    implements IReturn<WorkflowRunResponse>
-  {
-    /** @description wfr_… */
-    // @DataMember
-    // @ApiMember(Description="wfr_…", IsRequired=true)
-    public runId: string;
-
-    /** @description Required when several steps wait. */
-    // @DataMember
-    // @ApiMember(Description="Required when several steps wait.")
-    public stepId?: string;
-
-    /** @description approved | rejected — required for an approval wait. */
-    // @DataMember
-    // @ApiMember(Description="approved | rejected — required for an approval wait.")
-    public decision?: string;
-
-    // @DataMember
-    public payload?: { [index: string]: Object };
-
-    public constructor(init?: Partial<ResumeCodeWorkflowRun>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ResumeCodeWorkflowRun';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new WorkflowRunResponse();
     }
   }
 
@@ -28323,6 +28567,147 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new InvokeCodeFunctionResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowWaitingRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunsResponse>
+  {
+    /** @description running | waiting (default) | succeeded | failed | cancelled */
+    // @DataMember
+    // @ApiMember(Description="running | waiting (default) | succeeded | failed | cancelled")
+    public status?: string;
+
+    /** @description approval | event | delay */
+    // @DataMember
+    // @ApiMember(Description="approval | event | delay")
+    public waitingKind?: string;
+
+    /** @description "me" or a usr_… id: only approvals assigned to that user. Without code:read only "me" (the default then). */
+    // @DataMember
+    // @ApiMember(Description="\"me\" or a usr_… id: only approvals assigned to that user. Without code:read only \"me\" (the default then).")
+    public assignee?: string;
+
+    /** @description Only runs of this workflow (wf_…). */
+    // @DataMember
+    // @ApiMember(Description="Only runs of this workflow (wf_…).")
+    public workflowId?: string;
+
+    /** @description The wait's rendered key, exact match. */
+    // @DataMember
+    // @ApiMember(Description="The wait's rendered key, exact match.")
+    public key?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowWaitingRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowWaitingRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/resume", "POST")
+  // @DataContract
+  export class ResumeCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description Required when several steps wait. */
+    // @DataMember
+    // @ApiMember(Description="Required when several steps wait.")
+    public stepId?: string;
+
+    /** @description approved | rejected — required for an approval wait. */
+    // @DataMember
+    // @ApiMember(Description="approved | rejected — required for an approval wait.")
+    public decision?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<ResumeCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResumeCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  /** @description Beta: what a workflow's one-click link will do — no sign-in, nothing changes. POST the same URL to answer. */
+  // @Route("/{version}/code/workflows/resume/{Token}", "GET")
+  // @Api(Description="Beta: what a workflow's one-click link will do — no sign-in, nothing changes. POST the same URL to answer.")
+  // @DataContract
+  export class OpenCodeWorkflowResumeLink
+    extends RequestBase
+    implements IReturn<CodeWorkflowResumeLinkResponse>
+  {
+    /** @description The signed link token from the wait's notification (@Model.Wait.ApproveUrl / RejectUrl / ResumeUrl). */
+    // @DataMember
+    // @ApiMember(Description="The signed link token from the wait's notification (@Model.Wait.ApproveUrl / RejectUrl / ResumeUrl).", IsRequired=true)
+    public token: string;
+
+    public constructor(init?: Partial<OpenCodeWorkflowResumeLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OpenCodeWorkflowResumeLink';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new CodeWorkflowResumeLinkResponse();
+    }
+  }
+
+  /** @description Beta: answers a workflow's waiting step with a one-click link — no sign-in; the run goes on as the workflow's execution identity. */
+  // @Route("/{version}/code/workflows/resume/{Token}", "POST")
+  // @Api(Description="Beta: answers a workflow's waiting step with a one-click link — no sign-in; the run goes on as the workflow's execution identity.")
+  // @DataContract
+  export class UseCodeWorkflowResumeLink
+    extends RequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description The signed link token. */
+    // @DataMember
+    // @ApiMember(Description="The signed link token.", IsRequired=true)
+    public token: string;
+
+    public constructor(init?: Partial<UseCodeWorkflowResumeLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UseCodeWorkflowResumeLink';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
     }
   }
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-26 18:29:52
+Date: 2026-10-27 15:21:44
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -688,6 +688,45 @@ export module CodeMashApi2 {
     public isAws: boolean;
 
     public constructor(init?: Partial<EchoHostingPlatformDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class QuickConnectProviderDto {
+    // @DataMember
+    public module: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public available: boolean;
+
+    // @DataMember
+    public callbackKind: string;
+
+    // @DataMember
+    public requiredInputs: string[] = [];
+
+    // @DataMember
+    public modes: string[] = [];
+
+    // @DataMember
+    public redirectUrl: string;
+
+    // @DataMember
+    public platformWebhookUrls: string[] = [];
+
+    public constructor(init?: Partial<QuickConnectProviderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoConnectDto {
+    public providers: QuickConnectProviderDto[] = [];
+
+    public constructor(init?: Partial<EchoConnectDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -1648,6 +1687,237 @@ export module CodeMashApi2 {
     }
   }
 
+  // @DataContract
+  export class WorkflowWaitingOnDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public until?: string;
+
+    // @DataMember
+    public key?: string;
+
+    // @DataMember
+    public assignees?: string[];
+
+    public constructor(init?: Partial<WorkflowWaitingOnDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunErrorDto {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<WorkflowRunErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunListProjection {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public currentStepIds: string[] = [];
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    public constructor(init?: Partial<WorkflowRunListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunActorDto {
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public kind: string;
+
+    public constructor(init?: Partial<WorkflowRunActorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunStepDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public name?: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public attempt: number;
+
+    // @DataMember
+    public pass: number;
+
+    // @DataMember
+    public startedAt?: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public input?: Object;
+
+    // @DataMember
+    public inputTruncated: boolean;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public outputTruncated: boolean;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public resumedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public decision?: string;
+
+    public constructor(init?: Partial<WorkflowRunStepDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunDto {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public taskId?: string;
+
+    // @DataMember
+    public parentRunId?: string;
+
+    // @DataMember
+    public depth: number;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public stepRuns: number;
+
+    // @DataMember
+    public steps: WorkflowRunStepDto[] = [];
+
+    // @DataMember
+    public request?: { [index: string]: Object };
+
+    // @DataMember
+    public trigger?: { [index: string]: Object };
+
+    public constructor(init?: Partial<WorkflowRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class InAppNotificationDto {
     public id: string;
     public projectId: string;
@@ -1739,6 +2009,7 @@ export module CodeMashApi2 {
     public regions?: EchoRegionDto[];
     public agent?: EchoAgentDto;
     public hostingPlatform?: EchoHostingPlatformDto;
+    public connect?: EchoConnectDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -2299,6 +2570,66 @@ export module CodeMashApi2 {
     public order?: PaymentOrderDto;
 
     public constructor(init?: Partial<StartPaymentCheckoutResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<WorkflowRunListProjection>;
+
+    public constructor(init?: Partial<WorkflowRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunResponse extends ResponseBase {
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<WorkflowRunResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CodeWorkflowResumeLinkResponse extends ResponseBase {
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public workflowId?: string;
+
+    // @DataMember
+    public workflowName?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public stepName?: string;
+
+    // @DataMember
+    public mode?: string;
+
+    // @DataMember
+    public decision?: string;
+
+    // @DataMember
+    public key?: string;
+
+    // @DataMember
+    public assigneeUserId?: string;
+
+    // @DataMember
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<CodeWorkflowResumeLinkResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -5995,6 +6326,147 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new StartPaymentCheckoutResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowWaitingRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunsResponse>
+  {
+    /** @description running | waiting (default) | succeeded | failed | cancelled */
+    // @DataMember
+    // @ApiMember(Description="running | waiting (default) | succeeded | failed | cancelled")
+    public status?: string;
+
+    /** @description approval | event | delay */
+    // @DataMember
+    // @ApiMember(Description="approval | event | delay")
+    public waitingKind?: string;
+
+    /** @description "me" or a usr_… id: only approvals assigned to that user. Without code:read only "me" (the default then). */
+    // @DataMember
+    // @ApiMember(Description="\"me\" or a usr_… id: only approvals assigned to that user. Without code:read only \"me\" (the default then).")
+    public assignee?: string;
+
+    /** @description Only runs of this workflow (wf_…). */
+    // @DataMember
+    // @ApiMember(Description="Only runs of this workflow (wf_…).")
+    public workflowId?: string;
+
+    /** @description The wait's rendered key, exact match. */
+    // @DataMember
+    // @ApiMember(Description="The wait's rendered key, exact match.")
+    public key?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowWaitingRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowWaitingRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/resume", "POST")
+  // @DataContract
+  export class ResumeCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description Required when several steps wait. */
+    // @DataMember
+    // @ApiMember(Description="Required when several steps wait.")
+    public stepId?: string;
+
+    /** @description approved | rejected — required for an approval wait. */
+    // @DataMember
+    // @ApiMember(Description="approved | rejected — required for an approval wait.")
+    public decision?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<ResumeCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResumeCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  /** @description Beta: what a workflow's one-click link will do — no sign-in, nothing changes. POST the same URL to answer. */
+  // @Route("/{version}/code/workflows/resume/{Token}", "GET")
+  // @Api(Description="Beta: what a workflow's one-click link will do — no sign-in, nothing changes. POST the same URL to answer.")
+  // @DataContract
+  export class OpenCodeWorkflowResumeLink
+    extends RequestBase
+    implements IReturn<CodeWorkflowResumeLinkResponse>
+  {
+    /** @description The signed link token from the wait's notification (@Model.Wait.ApproveUrl / RejectUrl / ResumeUrl). */
+    // @DataMember
+    // @ApiMember(Description="The signed link token from the wait's notification (@Model.Wait.ApproveUrl / RejectUrl / ResumeUrl).", IsRequired=true)
+    public token: string;
+
+    public constructor(init?: Partial<OpenCodeWorkflowResumeLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OpenCodeWorkflowResumeLink';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new CodeWorkflowResumeLinkResponse();
+    }
+  }
+
+  /** @description Beta: answers a workflow's waiting step with a one-click link — no sign-in; the run goes on as the workflow's execution identity. */
+  // @Route("/{version}/code/workflows/resume/{Token}", "POST")
+  // @Api(Description="Beta: answers a workflow's waiting step with a one-click link — no sign-in; the run goes on as the workflow's execution identity.")
+  // @DataContract
+  export class UseCodeWorkflowResumeLink
+    extends RequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description The signed link token. */
+    // @DataMember
+    // @ApiMember(Description="The signed link token.", IsRequired=true)
+    public token: string;
+
+    public constructor(init?: Partial<UseCodeWorkflowResumeLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UseCodeWorkflowResumeLink';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
     }
   }
 
