@@ -53,10 +53,8 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`disableCodeWorkflows`](#disablecodeworkflows)                                     | `PUT`    | `/{version}/code/workflows/disable`                                                               | `project` |
 | [`invokeCodeWorkflow`](#invokecodeworkflow)                                         | `POST`   | `/{version}/code/workflows/{Id}/invoke`                                                           | `project` |
 | [`getCodeWorkflowRuns`](#getcodeworkflowruns)                                       | `GET`    | `/{version}/code/workflows/{Id}/runs`                                                             | `project` |
-| [`getCodeWorkflowWaitingRuns`](#getcodeworkflowwaitingruns)                         | `GET`    | `/{version}/code/workflows/runs`                                                                  | `project` |
 | [`getCodeWorkflowRun`](#getcodeworkflowrun)                                         | `GET`    | `/{version}/code/workflows/runs/{RunId}`                                                          | `project` |
 | [`getCodeWorkflowRunLogs`](#getcodeworkflowrunlogs)                                 | `GET`    | `/{version}/code/workflows/runs/{RunId}/logs`                                                     | `project` |
-| [`resumeCodeWorkflowRun`](#resumecodeworkflowrun)                                   | `POST`   | `/{version}/code/workflows/runs/{RunId}/resume`                                                   | `project` |
 | [`resumeCodeWorkflowRunByKey`](#resumecodeworkflowrunbykey)                         | `POST`   | `/{version}/code/workflows/{Id}/resume`                                                           | `project` |
 | [`retryCodeWorkflowRunStep`](#retrycodeworkflowrunstep)                             | `POST`   | `/{version}/code/workflows/runs/{RunId}/retry`                                                    | `project` |
 | [`cancelCodeWorkflowRun`](#cancelcodeworkflowrun)                                   | `POST`   | `/{version}/code/workflows/runs/{RunId}/cancel`                                                   | `project` |
@@ -76,6 +74,10 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`getCodeFunctionQualifiers`](#getcodefunctionqualifiers)                           | `GET`    | `/{version}/code/functions/qualifiers`                                                            | `project` |
 | [`getCodeFunctionRuns`](#getcodefunctionruns)                                       | `GET`    | `/{version}/code/functions/runs`                                                                  | `project` |
 | [`invokeCodeFunction`](#invokecodefunction)                                         | `POST`   | `/{version}/code/functions/invoke`                                                                | `project` |
+| [`getCodeWorkflowWaitingRuns`](#getcodeworkflowwaitingruns)                         | `GET`    | `/{version}/code/workflows/runs`                                                                  | `project` |
+| [`resumeCodeWorkflowRun`](#resumecodeworkflowrun)                                   | `POST`   | `/{version}/code/workflows/runs/{RunId}/resume`                                                   | `project` |
+| [`openCodeWorkflowResumeLink`](#opencodeworkflowresumelink)                         | `GET`    | `/{version}/code/workflows/resume/{Token}`                                                        | `project` |
+| [`useCodeWorkflowResumeLink`](#usecodeworkflowresumelink)                           | `POST`   | `/{version}/code/workflows/resume/{Token}`                                                        | `project` |
 
 ## Reference
 
@@ -1093,28 +1095,6 @@ const result = await norbix.hub.code.getCodeWorkflowRuns({
 
 [↑ Top](#endpoints)
 
-### getCodeWorkflowWaitingRuns
-
-`GET` `/{version}/code/workflows/runs`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetCodeWorkflowWaitingRuns`
-**Response**: `CodeMashHub2.WorkflowRunsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.code.getCodeWorkflowWaitingRuns({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.WorkflowRunsResponse
-```
-
-[↑ Top](#endpoints)
-
 ### getCodeWorkflowRun
 
 `GET` `/{version}/code/workflows/runs/{RunId}`
@@ -1157,27 +1137,6 @@ const result = await norbix.hub.code.getCodeWorkflowRunLogs({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.WorkflowRunLogsResponse
-```
-
-[↑ Top](#endpoints)
-
-### resumeCodeWorkflowRun
-
-`POST` `/{version}/code/workflows/runs/{RunId}/resume`
-
-**Request DTO**: `CodeMashHub2.ResumeCodeWorkflowRun`
-**Response**: `CodeMashHub2.WorkflowRunResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.code.resumeCodeWorkflowRun({
-  RunId: 'RunId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.WorkflowRunResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1593,6 +1552,91 @@ const result = await norbix.hub.code.invokeCodeFunction({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.InvokeCodeFunctionResponse
+```
+
+[↑ Top](#endpoints)
+
+### getCodeWorkflowWaitingRuns
+
+`GET` `/{version}/code/workflows/runs`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetCodeWorkflowWaitingRuns`
+**Response**: `CodeMashHub2.WorkflowRunsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.getCodeWorkflowWaitingRuns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunsResponse
+```
+
+[↑ Top](#endpoints)
+
+### resumeCodeWorkflowRun
+
+`POST` `/{version}/code/workflows/runs/{RunId}/resume`
+
+**Request DTO**: `CodeMashHub2.ResumeCodeWorkflowRun`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.resumeCodeWorkflowRun({
+  RunId: 'RunId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### openCodeWorkflowResumeLink
+
+`GET` `/{version}/code/workflows/resume/{Token}`
+
+**Request DTO**: `CodeMashHub2.OpenCodeWorkflowResumeLink`
+**Response**: `CodeMashHub2.CodeWorkflowResumeLinkResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.openCodeWorkflowResumeLink({
+  Token: 'Token-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.CodeWorkflowResumeLinkResponse
+```
+
+[↑ Top](#endpoints)
+
+### useCodeWorkflowResumeLink
+
+`POST` `/{version}/code/workflows/resume/{Token}`
+
+**Request DTO**: `CodeMashHub2.UseCodeWorkflowResumeLink`
+**Response**: `CodeMashHub2.WorkflowRunResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.code.useCodeWorkflowResumeLink({
+  Token: 'Token-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.WorkflowRunResponse
 ```
 
 [↑ Top](#endpoints)

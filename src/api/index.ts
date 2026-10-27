@@ -4,6 +4,7 @@ import { AccessTokenModule } from './access_token.js';
 import { AiModule } from './ai.js';
 import { ApikeysModule } from './apikeys.js';
 import { AuthModule } from './auth.js';
+import { CodeModule } from './code.js';
 import { DatabaseModule } from './database.js';
 import { EchoModule } from './echo.js';
 import { FilesModule } from './files.js';
@@ -22,6 +23,7 @@ export class ApiNamespace {
   public readonly ai: AiModule;
   public readonly apikeys: ApikeysModule;
   public readonly auth: AuthModule;
+  public readonly code: CodeModule;
   public readonly database: DatabaseModule;
   public readonly echo: EchoModule;
   public readonly files: FilesModule;
@@ -36,6 +38,7 @@ export class ApiNamespace {
     this.ai = new AiModule(transport);
     this.apikeys = new ApikeysModule(transport);
     this.auth = new AuthModule(transport);
+    this.code = new CodeModule(transport);
     this.database = new DatabaseModule(transport);
     this.echo = new EchoModule(transport);
     this.files = new FilesModule(transport);
