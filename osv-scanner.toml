@@ -74,3 +74,13 @@ reason = "postcss-selector-parser 7.1.4 is bundled inside the npm package (node_
 id = "GHSA-rxp7-6hxx-x8q5"
 ignoreUntil = 2027-01-04T00:00:00Z
 reason = "ip-address 10.5.0 is bundled inside the npm package (node_modules/npm, inBundle) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 12.2.0, the latest, still bundles this version. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-4qv8-2p9j-2685"
+ignoreUntil = 2027-01-27T00:00:00Z
+reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inBundle, via node-gyp) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 11.21.1 / 12.2.1 still bundle undici 6.29.0 (fix: 6.29.1). The two other undici copies are overridden to fixed versions. Dev-only, never shipped in @norbix.ai/ts."
+
+[[IgnoredVulns]]
+id = "GHSA-xjj6-f33q-929c"
+ignoreUntil = 2027-01-27T00:00:00Z
+reason = "undici 6.28.0 is bundled inside the npm package (node_modules/npm, inBundle, via node-gyp) that the release tooling (semantic-release) installs; npm overrides cannot reach bundled files and npm 11.21.1 / 12.2.1 still bundle undici 6.29.0 (fix: 6.29.1). The two other undici copies are overridden to fixed versions. Dev-only, never shipped in @norbix.ai/ts."
