@@ -37,3 +37,10 @@ export type {
   NorbixFunctionEventErrorCode,
   UserChange,
 } from './functions/index.js';
+export {
+  CodeWorkflows,
+  stepOutput,
+  toWorkflowRun,
+  WORKFLOW_RUN_SETTLED_STATUSES,
+} from './workflows/index.js';
+export type { WaitForWorkflowRunOptions, WorkflowRun } from './workflows/index.js';

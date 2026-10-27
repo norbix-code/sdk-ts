@@ -1680,4 +1680,25 @@ for (const run of runs) {
 }
 ```
 
+### Workflows (beta): wait for a run, read a step's output
+
+Workflows are in beta; bugs may occur. `invokeCodeWorkflow` waits at most `waitSeconds` (0–30) and answers `202` with the `runId` when the run is still `running` or `waiting`. `workflows.waitForRun` (hand-written) then reads `GET /{version}/code/workflows/runs/{runId}` every `pollMs` (default 1 000) until the run is `succeeded`, `failed`, `cancelled` or `waiting`, and throws `NorbixTimeoutError` (`raw` = the last run) after `timeoutMs` (default 60 000). The run it returns has `stepOutput<T>(stepId)`: the output of the latest succeeded execution of that step (highest pass, then highest attempt), `undefined` when none.
+
+```ts
+const started = await norbix.hub.code.invokeCodeWorkflow({
+  id: 'wf_…',
+  payload: { orderId: 'o-1' },
+  waitSeconds: 0,
+});
+const run = await norbix.hub.code.workflows.waitForRun(started.runId!, {
+  timeoutMs: 120_000,
+  pollMs: 2_000,
+});
+if (run.status === 'succeeded') {
+  const total = run.stepOutput<{ sum: number }>('total');
+}
+```
+
+`stepOutput(run, stepId)` is also exported for a run read with `getCodeWorkflowRun`.
+
 <!-- @hand-written:end -->
