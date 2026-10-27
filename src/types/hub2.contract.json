@@ -159,6 +159,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "CompletePaymentsIntegrationConnect": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ConfirmCodeIntegrationHumanDeliveryRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -620,6 +624,10 @@
     "returnsBytes": false
   },
   "DiscardDatabaseSchemaDraftRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DisconnectPaymentsIntegrationConnect": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1167,6 +1175,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetIntegrationConnectTargets": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetLegalHolds": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1459,6 +1471,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetQuickConnectProviders": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "GetRole": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1708,6 +1724,10 @@
     "returnsBytes": false
   },
   "OneClickUnsubscribeRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "OpenCodeWorkflowResumeLink": {
     "requiresAuth": false,
     "returnsBytes": false
   },
@@ -2167,6 +2187,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "StartPaymentsIntegrationConnect": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "StopChatRunStepRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2437,6 +2461,10 @@
   },
   "UploadChatAttachmentRequest": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UseCodeWorkflowResumeLink": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "UseFileRequest": {
