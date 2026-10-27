@@ -1,5 +1,6 @@
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type { CodeMashHub2 } from '../types/hub2.dtos.js';
+import { CodeWorkflows } from '../workflows/index.js'; // @hand-written
 
 import { LogsModule } from './logs.js'; // @hand-written
 
@@ -1344,6 +1345,15 @@ export class CodeModule {
   };
 
   // @hand-written:begin
+  /**
+   * Hand-written workflow helpers (Workflows Beta, Code.Workflows.md §15):
+   * `waitForRun(runId, { timeoutMs, pollMs })` reads the run until it is
+   * finished or waiting; the run it returns has `stepOutput<T>(stepId)`.
+   */
+  readonly workflows = new CodeWorkflows((request, options) =>
+    this.getCodeWorkflowRun(request, options),
+  );
+
   /**
    * Hand-written helper (not from `generate-endpoints`; the generator keeps
    * the `@hand-written` block and import when it regenerates this module).
