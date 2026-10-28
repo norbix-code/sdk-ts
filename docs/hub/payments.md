@@ -8,29 +8,94 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 
 ## Endpoints
 
-| Method                                                                                | Verb     | Path                                                      | Scope     |
-| ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------- | --------- |
-| [`disablePayments`](#disablepayments)                                                 | `PUT`    | `/{version}/payments/disable`                             | `project` |
-| [`enablePayments`](#enablepayments)                                                   | `PUT`    | `/{version}/payments/enable`                              | `project` |
-| [`getPaymentsWebhookLog`](#getpaymentswebhooklog)                                     | `GET`    | `/{version}/payments/webhooks/log`                        | `project` |
-| [`getPaymentsWebhookRuns`](#getpaymentswebhookruns)                                   | `GET`    | `/{version}/payments/webhooks/runs`                       | `project` |
-| [`getPaymentsWebhookRun`](#getpaymentswebhookrun)                                     | `GET`    | `/{version}/payments/webhooks/runs/{Id}`                  | `project` |
-| [`deletePaymentsTrigger`](#deletepaymentstrigger)                                     | `DELETE` | `/{version}/payments/triggers/{triggerId}`                | `project` |
-| [`disablePaymentsTrigger`](#disablepaymentstrigger)                                   | `PATCH`  | `/{version}/payments/triggers/{triggerId}/disable`        | `project` |
-| [`enablePaymentsTrigger`](#enablepaymentstrigger)                                     | `PATCH`  | `/{version}/payments/triggers/{triggerId}/enable`         | `project` |
-| [`getPaymentsTrigger`](#getpaymentstrigger)                                           | `GET`    | `/{version}/payments/triggers/{id}`                       | `project` |
-| [`getPaymentsTriggers`](#getpaymentstriggers)                                         | `GET`    | `/{version}/payments/triggers`                            | `project` |
-| [`savePaymentsTrigger`](#savepaymentstrigger)                                         | `POST`   | `/{version}/payments/triggers`                            | `project` |
-| [`confirmPaymentsIntegrationHumanDelivery`](#confirmpaymentsintegrationhumandelivery) | `POST`   | `/{version}/payments/integrations/confirm-human-delivery` | `project` |
-| [`deletePaymentsIntegration`](#deletepaymentsintegration)                             | `DELETE` | `/{version}/payments/integrations/{Id}`                   | `project` |
-| [`disablePaymentsIntegration`](#disablepaymentsintegration)                           | `PUT`    | `/{version}/payments/integrations/{Id}/disable`           | `project` |
-| [`enablePaymentsIntegration`](#enablepaymentsintegration)                             | `PUT`    | `/{version}/payments/integrations/{Id}/enable`            | `project` |
-| [`getPaymentsIntegration`](#getpaymentsintegration)                                   | `GET`    | `/{version}/payments/integrations/{id}`                   | `project` |
-| [`getPaymentsIntegrations`](#getpaymentsintegrations)                                 | `GET`    | `/{version}/payments/integrations`                        | `project` |
-| [`savePaymentsIntegration`](#savepaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations`                        | `project` |
-| [`testPaymentsIntegration`](#testpaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations/test`                   | `project` |
+| Method                                                                                | Verb     | Path                                                            | Scope     |
+| ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------- | --------- |
+| [`startPaymentsIntegrationConnect`](#startpaymentsintegrationconnect)                 | `POST`   | `/{version}/payments/integrations/connect/start`                | `project` |
+| [`completePaymentsIntegrationConnect`](#completepaymentsintegrationconnect)           | `POST`   | `/{version}/payments/integrations/connect/{ConnectId}/complete` | `project` |
+| [`disconnectPaymentsIntegrationConnect`](#disconnectpaymentsintegrationconnect)       | `POST`   | `/{version}/payments/integrations/{Id}/connect/disconnect`      | `project` |
+| [`disablePayments`](#disablepayments)                                                 | `PUT`    | `/{version}/payments/disable`                                   | `project` |
+| [`enablePayments`](#enablepayments)                                                   | `PUT`    | `/{version}/payments/enable`                                    | `project` |
+| [`getPaymentsWebhookLog`](#getpaymentswebhooklog)                                     | `GET`    | `/{version}/payments/webhooks/log`                              | `project` |
+| [`getPaymentsWebhookRuns`](#getpaymentswebhookruns)                                   | `GET`    | `/{version}/payments/webhooks/runs`                             | `project` |
+| [`getPaymentsWebhookRun`](#getpaymentswebhookrun)                                     | `GET`    | `/{version}/payments/webhooks/runs/{Id}`                        | `project` |
+| [`deletePaymentsTrigger`](#deletepaymentstrigger)                                     | `DELETE` | `/{version}/payments/triggers/{triggerId}`                      | `project` |
+| [`disablePaymentsTrigger`](#disablepaymentstrigger)                                   | `PATCH`  | `/{version}/payments/triggers/{triggerId}/disable`              | `project` |
+| [`enablePaymentsTrigger`](#enablepaymentstrigger)                                     | `PATCH`  | `/{version}/payments/triggers/{triggerId}/enable`               | `project` |
+| [`getPaymentsTrigger`](#getpaymentstrigger)                                           | `GET`    | `/{version}/payments/triggers/{id}`                             | `project` |
+| [`getPaymentsTriggers`](#getpaymentstriggers)                                         | `GET`    | `/{version}/payments/triggers`                                  | `project` |
+| [`savePaymentsTrigger`](#savepaymentstrigger)                                         | `POST`   | `/{version}/payments/triggers`                                  | `project` |
+| [`confirmPaymentsIntegrationHumanDelivery`](#confirmpaymentsintegrationhumandelivery) | `POST`   | `/{version}/payments/integrations/confirm-human-delivery`       | `project` |
+| [`deletePaymentsIntegration`](#deletepaymentsintegration)                             | `DELETE` | `/{version}/payments/integrations/{Id}`                         | `project` |
+| [`disablePaymentsIntegration`](#disablepaymentsintegration)                           | `PUT`    | `/{version}/payments/integrations/{Id}/disable`                 | `project` |
+| [`enablePaymentsIntegration`](#enablepaymentsintegration)                             | `PUT`    | `/{version}/payments/integrations/{Id}/enable`                  | `project` |
+| [`getPaymentsIntegration`](#getpaymentsintegration)                                   | `GET`    | `/{version}/payments/integrations/{id}`                         | `project` |
+| [`getPaymentsIntegrations`](#getpaymentsintegrations)                                 | `GET`    | `/{version}/payments/integrations`                              | `project` |
+| [`savePaymentsIntegration`](#savepaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations`                              | `project` |
+| [`testPaymentsIntegration`](#testpaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations/test`                         | `project` |
 
 ## Reference
+
+### startPaymentsIntegrationConnect
+
+`POST` `/{version}/payments/integrations/connect/start`
+
+**Request DTO**: `CodeMashHub2.StartPaymentsIntegrationConnect`
+**Response**: `CodeMashHub2.StartIntegrationConnectResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.startPaymentsIntegrationConnect({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.StartIntegrationConnectResponse
+```
+
+[↑ Top](#endpoints)
+
+### completePaymentsIntegrationConnect
+
+`POST` `/{version}/payments/integrations/connect/{ConnectId}/complete`
+
+**Request DTO**: `CodeMashHub2.CompletePaymentsIntegrationConnect`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.completePaymentsIntegrationConnect({
+  ConnectId: 'ConnectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### disconnectPaymentsIntegrationConnect
+
+`POST` `/{version}/payments/integrations/{Id}/connect/disconnect`
+
+**Request DTO**: `CodeMashHub2.DisconnectPaymentsIntegrationConnect`
+**Response**: `CodeMashHub2.DisconnectPaymentsIntegrationConnectResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.disconnectPaymentsIntegrationConnect({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.DisconnectPaymentsIntegrationConnectResponse
+```
+
+[↑ Top](#endpoints)
 
 ### disablePayments
 

@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.payments (19 endpoints).
+ * Tests for hub.payments (22 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.payments', () => {
-  it('module exposes 19 method(s)', () => {
+  it('module exposes 22 method(s)', () => {
     const mock = createMockFetch();
     const mod = new PaymentsModule({} as never);
     void mod; // silence unused — we only need the type
@@ -29,6 +29,9 @@ describe('hub.payments', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['startPaymentsIntegrationConnect']).toBe('function');
+    expect(typeof ns['completePaymentsIntegrationConnect']).toBe('function');
+    expect(typeof ns['disconnectPaymentsIntegrationConnect']).toBe('function');
     expect(typeof ns['disablePayments']).toBe('function');
     expect(typeof ns['enablePayments']).toBe('function');
     expect(typeof ns['getPaymentsWebhookLog']).toBe('function');
@@ -48,6 +51,77 @@ describe('hub.payments', () => {
     expect(typeof ns['getPaymentsIntegrations']).toBe('function');
     expect(typeof ns['savePaymentsIntegration']).toBe('function');
     expect(typeof ns['testPaymentsIntegration']).toBe('function');
+  });
+
+  it('startPaymentsIntegrationConnect: POST /{version}/payments/integrations/connect/start', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/payments/integrations/connect/start',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['payments']!['startPaymentsIntegrationConnect']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('completePaymentsIntegrationConnect: POST /{version}/payments/integrations/connect/{ConnectId}/complete', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/payments/integrations/connect/{ConnectId}/complete',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/payments/integrations/connect/{ConnectId}/complete',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['payments']!['completePaymentsIntegrationConnect']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('disconnectPaymentsIntegrationConnect: POST /{version}/payments/integrations/{Id}/connect/disconnect', async () => {
+    const stub = stubRequestForPath('/{version}/payments/integrations/{Id}/connect/disconnect');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/payments/integrations/{Id}/connect/disconnect',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['payments']!['disconnectPaymentsIntegrationConnect']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('disablePayments: PUT /{version}/payments/disable', async () => {
