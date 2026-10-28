@@ -80,3 +80,11 @@ const result = await norbix.hub.integrations.getKeylessIntegrationSetup({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## Keyless setup templates
+
+`getKeylessIntegrationSetup` also returns `templates` (`{ kind, fileName, content }[]`, `kind` = `cloudformation` | `bicep` | `terraform`) — templates: ready CloudFormation / Bicep / Terraform files for this integration.
+
+<!-- @hand-written:end -->
