@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-28 18:47:51
+Date: 2026-10-28 18:58:10
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -626,7 +626,7 @@ export module CodeMashHub2 {
 
     /** @description AccessKey: the service-account JSON key. */
     // @ApiMember(Description="AccessKey: the service-account JSON key.")
-    public serviceAccountJsonKey: string;
+    public serviceAccountJsonKey?: string;
 
     /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
     // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
