@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-28 18:58:10
+Date: 2026-10-28 21:06:31
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -10317,6 +10317,16 @@ export module CodeMashHub2 {
     }
   }
 
+  export class KeylessIntegrationSetupTemplate {
+    public kind: string;
+    public fileName: string;
+    public content: string;
+
+    public constructor(init?: Partial<KeylessIntegrationSetupTemplate>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class PublicFolderDto {
     // @DataMember(Order=1)
@@ -15011,6 +15021,7 @@ export module CodeMashHub2 {
     public subject?: string;
     public audience?: string;
     public script?: string;
+    public templates?: KeylessIntegrationSetupTemplate[];
 
     public constructor(init?: Partial<GetKeylessIntegrationSetupResponse>) {
       super(init);
