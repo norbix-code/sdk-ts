@@ -5,7 +5,8 @@
  *
  * What the tests prove:
  *   - the request fields go out as the query string of a GET (no body);
- *   - the response comes back typed, with the script and the trust values;
+ *   - the response comes back typed, with the script, the trust values and
+ *     the setup templates (CloudFormation / Bicep / Terraform files);
  *   - the save requests carry the new keyless fields (`authMode`,
  *     `roleArn`, `acceptKeyRisk`) and no longer the cross-account role ones.
  */
@@ -41,6 +42,13 @@ describe('hub.integrations.getKeylessIntegrationSetup', () => {
       subject: 'p/test-project/e/TEST/files/i/int_1',
       audience: 'sts.amazonaws.com',
       script: 'aws iam create-role ...',
+      templates: [
+        {
+          kind: 'terraform',
+          fileName: 'norbix-files-aws.tf',
+          content: 'resource "aws_iam_role" ...',
+        },
+      ],
     };
     const { norbix, mock } = client(answer);
 
@@ -60,6 +68,8 @@ describe('hub.integrations.getKeylessIntegrationSetup', () => {
     expect(mock.lastCall?.body).toBeUndefined();
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
     expect(result).toEqual(answer);
+    expect(result.templates?.[0]?.kind).toBe('terraform');
+    expect(result.templates?.[0]?.fileName).toBe('norbix-files-aws.tf');
   });
 
   it('passes the reason through when keyless is not available', async () => {
