@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-27 15:21:44
+Date: 2026-10-28 14:17:43
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -90,21 +90,36 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum AwsIntegrationType {
-    Iam = 'Iam',
-    CrossAccountRole = 'CrossAccountRole',
+  export enum CloudAuthMode {
+    AccessKey = 'AccessKey',
+    Keyless = 'Keyless',
   }
 
   export class AwsSesEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
-    public integrationType: AwsIntegrationType;
+    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode: CloudAuthMode;
+
     public awsRegion: string;
     public emailIdentityArn: string;
     public configurationSet?: string;
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token.")
     public roleArn?: string;
-    public externalId?: string;
+
+    /** @description AccessKey: the IAM access key id. */
+    // @ApiMember(Description="AccessKey: the IAM access key id.")
     public accessKey?: string;
+
+    /** @description AccessKey: the IAM secret access key. */
+    // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
+    public acceptKeyRisk: boolean;
+
     public deliveryEventsEnabled?: boolean;
     public snsTopicArn?: string;
 
@@ -146,7 +161,11 @@ export module CodeMashHub2 {
 
   export class AzureCommunicationEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
+    public authMode: CloudAuthMode;
     public endpoint: string;
+    public tenantId?: string;
+    public clientId?: string;
+    public acceptKeyRisk: boolean;
     public accessKey: string;
     public deliveryEventsEnabled?: boolean;
     public eventGridKey?: string;
@@ -549,20 +568,29 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum AwsS3IntegrationType {
-    Iam = 'Iam',
-    CrossAccountRole = 'CrossAccountRole',
-  }
-
   export class AwsS3FilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
-    public integrationType: AwsS3IntegrationType;
+    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode: CloudAuthMode;
+
     public bucketName: string;
     public region: string;
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>). */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>).")
     public roleArn?: string;
-    public externalId?: string;
+
+    /** @description AccessKey: the IAM access key id. */
+    // @ApiMember(Description="AccessKey: the IAM access key id.")
     public accessKey?: string;
+
+    /** @description AccessKey: the IAM secret access key. */
+    // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
+    public acceptKeyRisk: boolean;
 
     public constructor(init?: Partial<AwsS3FilesIntegrationRequest>) {
       super(init);
@@ -583,8 +611,33 @@ export module CodeMashHub2 {
 
   export class AzureBlobFilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
+    /** @description Keyless (default, no stored secret) or AccessKey (a stored connection string, less secure). */
+    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored connection string, less secure).")
+    public authMode: CloudAuthMode;
+
+    /** @description The container. */
+    // @ApiMember(Description="The container.")
     public blobName: string;
+
+    /** @description Keyless: the storage account name (3–24 lowercase letters and digits). */
+    // @ApiMember(Description="Keyless: the storage account name (3–24 lowercase letters and digits).")
+    public storageAccount?: string;
+
+    /** @description Keyless: the Entra tenant id of the managed identity. */
+    // @ApiMember(Description="Keyless: the Entra tenant id of the managed identity.")
+    public tenantId?: string;
+
+    /** @description Keyless: the managed identity's client id. */
+    // @ApiMember(Description="Keyless: the managed identity's client id.")
+    public clientId?: string;
+
+    /** @description AccessKey: the storage account connection string. */
+    // @ApiMember(Description="AccessKey: the storage account connection string.")
     public connectionString: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
+    public acceptKeyRisk: boolean;
 
     public constructor(init?: Partial<AzureBlobFilesIntegrationRequest>) {
       super(init);
@@ -1556,19 +1609,28 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum AwsLambdaIntegrationType {
-    Iam = 'Iam',
-    CrossAccountRole = 'CrossAccountRole',
-  }
-
   export class AwsLambdaCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
-    public integrationType: AwsLambdaIntegrationType;
+    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode: CloudAuthMode;
+
     public region: string;
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token.")
     public roleArn?: string;
-    public externalId?: string;
+
+    /** @description AccessKey: the IAM access key id. */
+    // @ApiMember(Description="AccessKey: the IAM access key id.")
     public accessKey?: string;
+
+    /** @description AccessKey: the IAM secret access key. */
+    // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
+    public acceptKeyRisk: boolean;
 
     public constructor(init?: Partial<AwsLambdaCodeIntegrationRequest>) {
       super(init);
@@ -1578,9 +1640,14 @@ export module CodeMashHub2 {
 
   export class AzureFunctionsCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
+    public authMode: CloudAuthMode;
     public functionAppName: string;
     public resourceGroup?: string;
+    public subscriptionId?: string;
+    public tenantId?: string;
+    public clientId?: string;
     public connectionStringOrKey: string;
+    public acceptKeyRisk: boolean;
 
     public constructor(init?: Partial<AzureFunctionsCodeIntegrationRequest>) {
       super(init);
@@ -2985,12 +3052,12 @@ export module CodeMashHub2 {
     }
   }
 
-  export class AwsLambdaCrossAccountRoleCodeIntegrationDto extends CodeIntegrationDto {
+  export class AwsLambdaKeylessCodeIntegrationDto extends CodeIntegrationDto {
     public region: string;
     public roleArn: string;
-    public externalId: string;
+    public authMode: CloudAuthMode;
 
-    public constructor(init?: Partial<AwsLambdaCrossAccountRoleCodeIntegrationDto>) {
+    public constructor(init?: Partial<AwsLambdaKeylessCodeIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -2998,6 +3065,7 @@ export module CodeMashHub2 {
 
   export class AwsLambdaIamCodeIntegrationDto extends CodeIntegrationDto {
     public region: string;
+    public authMode: CloudAuthMode;
 
     public constructor(init?: Partial<AwsLambdaIamCodeIntegrationDto>) {
       super(init);
@@ -3008,6 +3076,10 @@ export module CodeMashHub2 {
   export class AzureFunctionsCodeIntegrationDto extends CodeIntegrationDto {
     public functionAppName: string;
     public resourceGroup?: string;
+    public authMode: CloudAuthMode;
+    public subscriptionId?: string;
+    public tenantId?: string;
+    public clientId?: string;
 
     public constructor(init?: Partial<AzureFunctionsCodeIntegrationDto>) {
       super(init);
@@ -3652,13 +3724,13 @@ export module CodeMashHub2 {
     }
   }
 
-  export class AwsS3CrossAccountRoleFilesIntegrationDto extends FilesIntegrationDto {
+  export class AwsS3KeylessFilesIntegrationDto extends FilesIntegrationDto {
     public bucketName: string;
     public region: string;
     public roleArn: string;
-    public externalId: string;
+    public authMode: CloudAuthMode;
 
-    public constructor(init?: Partial<AwsS3CrossAccountRoleFilesIntegrationDto>) {
+    public constructor(init?: Partial<AwsS3KeylessFilesIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3667,6 +3739,7 @@ export module CodeMashHub2 {
   export class AwsS3IamFilesIntegrationDto extends FilesIntegrationDto {
     public bucketName: string;
     public region: string;
+    public authMode: CloudAuthMode;
 
     public constructor(init?: Partial<AwsS3IamFilesIntegrationDto>) {
       super(init);
@@ -3676,6 +3749,10 @@ export module CodeMashHub2 {
 
   export class AzureBlobFilesIntegrationDto extends FilesIntegrationDto {
     public blobName: string;
+    public authMode: CloudAuthMode;
+    public storageAccount?: string;
+    public tenantId?: string;
+    public clientId?: string;
 
     public constructor(init?: Partial<AzureBlobFilesIntegrationDto>) {
       super(init);
@@ -3978,17 +4055,19 @@ export module CodeMashHub2 {
     }
   }
 
-  export class AwsCrossAccountRoleEmailIntegrationDto extends AwsSesEmailIntegrationDto {
+  export class AwsKeylessEmailIntegrationDto extends AwsSesEmailIntegrationDto {
     public roleArn: string;
-    public externalId: string;
+    public authMode: CloudAuthMode;
 
-    public constructor(init?: Partial<AwsCrossAccountRoleEmailIntegrationDto>) {
+    public constructor(init?: Partial<AwsKeylessEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
   }
 
   export class AwsIamEmailIntegrationDto extends AwsSesEmailIntegrationDto {
+    public authMode: CloudAuthMode;
+
     public constructor(init?: Partial<AwsIamEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
@@ -4032,6 +4111,15 @@ export module CodeMashHub2 {
 
     // @DataMember
     public deliveryEventsEnabled?: boolean;
+
+    // @DataMember
+    public authMode: CloudAuthMode;
+
+    // @DataMember
+    public tenantId?: string;
+
+    // @DataMember
+    public clientId?: string;
 
     public constructor(init?: Partial<AzureCommunicationEmailIntegrationDto>) {
       super(init);
@@ -6689,10 +6777,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Read-only on save (use the enable / disable routes).")
     public isEnabled: boolean;
 
-    /** @description usr_… — the service user every step runs as. */
+    /** @description usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity; until that exists the save is refused CM-ERRORS-WORKFLOWS-009. */
     // @DataMember
-    // @ApiMember(Description="usr_… — the service user every step runs as.", IsRequired=true)
-    public executionIdentityId: string;
+    // @ApiMember(Description="usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity; until that exists the save is refused CM-ERRORS-WORKFLOWS-009.")
+    public executionIdentityId?: string;
 
     /** @description Optional JSON Schema (draft 2020-12, type object) of the manual-invoke payload. */
     // @DataMember
@@ -6934,6 +7022,16 @@ export module CodeMashHub2 {
     public providers: QuickConnectProviderDto[] = [];
 
     public constructor(init?: Partial<EchoConnectDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoKeylessDto {
+    public issuer: string;
+    public available: boolean;
+    public unavailableReason?: string;
+
+    public constructor(init?: Partial<EchoKeylessDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -13773,6 +13871,7 @@ export module CodeMashHub2 {
     public agent?: EchoAgentDto;
     public hostingPlatform?: EchoHostingPlatformDto;
     public connect?: EchoConnectDto;
+    public keyless?: EchoKeylessDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);
@@ -14828,6 +14927,24 @@ export module CodeMashHub2 {
     public availableProviders: FileProvider[] = [];
 
     public constructor(init?: Partial<GetFilesIntegrationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetKeylessIntegrationSetupResponse extends ResponseBase {
+    public integrationId?: string;
+    public env?: string;
+    public module?: string;
+    public cloud?: string;
+    public issuer?: string;
+    public available: boolean;
+    public unavailableReason?: string;
+    public subject?: string;
+    public audience?: string;
+    public script?: string;
+
+    public constructor(init?: Partial<GetKeylessIntegrationSetupResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -17880,7 +17997,7 @@ export module CodeMashHub2 {
     public typegen_111_DockerMcpIntegrationDto?: DockerMcpIntegrationDto;
     public typegen_112_GoogleCalendarMcpIntegrationDto?: GoogleCalendarMcpIntegrationDto;
     public typegen_113_ObsidianMcpIntegrationDto?: ObsidianMcpIntegrationDto;
-    public typegen_114_AwsLambdaCrossAccountRoleCodeIntegrationDto?: AwsLambdaCrossAccountRoleCodeIntegrationDto;
+    public typegen_114_AwsLambdaKeylessCodeIntegrationDto?: AwsLambdaKeylessCodeIntegrationDto;
     public typegen_115_AwsLambdaIamCodeIntegrationDto?: AwsLambdaIamCodeIntegrationDto;
     public typegen_116_AzureFunctionsCodeIntegrationDto?: AzureFunctionsCodeIntegrationDto;
     public typegen_118_GoogleCloudFunctionsCodeIntegrationDto?: GoogleCloudFunctionsCodeIntegrationDto;
@@ -17925,7 +18042,7 @@ export module CodeMashHub2 {
     public typegen_149_PrometheusLoggingIntegrationDto?: PrometheusLoggingIntegrationDto;
     public typegen_150_SplunkLoggingIntegrationDto?: SplunkLoggingIntegrationDto;
     public typegen_153_AppleICloudFilesIntegrationDto?: AppleICloudFilesIntegrationDto;
-    public typegen_154_AwsS3CrossAccountRoleFilesIntegrationDto?: AwsS3CrossAccountRoleFilesIntegrationDto;
+    public typegen_154_AwsS3KeylessFilesIntegrationDto?: AwsS3KeylessFilesIntegrationDto;
     public typegen_155_AwsS3IamFilesIntegrationDto?: AwsS3IamFilesIntegrationDto;
     public typegen_156_AzureBlobFilesIntegrationDto?: AzureBlobFilesIntegrationDto;
     public typegen_157_DropBoxFilesIntegrationDto?: DropBoxFilesIntegrationDto;
@@ -17951,7 +18068,7 @@ export module CodeMashHub2 {
     public typegen_177_FirefoxWebPushIntegrationDto?: FirefoxWebPushIntegrationDto;
     public typegen_178_SafariPushIntegrationDto?: SafariPushIntegrationDto;
     public typegen_247_FakePushIntegrationDto?: FakePushIntegrationDto;
-    public typegen_179_AwsCrossAccountRoleEmailIntegrationDto?: AwsCrossAccountRoleEmailIntegrationDto;
+    public typegen_179_AwsKeylessEmailIntegrationDto?: AwsKeylessEmailIntegrationDto;
     public typegen_180_AwsIamEmailIntegrationDto?: AwsIamEmailIntegrationDto;
     public typegen_181_MailGunEmailIntegrationDto?: MailGunEmailIntegrationDto;
     public typegen_182_SendGridEmailIntegrationDto?: SendGridEmailIntegrationDto;
@@ -24874,6 +24991,38 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetFilesIntegrationsResponse();
+    }
+  }
+
+  // @Route("/{version}/integrations/keyless/setup", "GET")
+  export class GetKeylessIntegrationSetup
+    extends CodeMashRequestBase
+    implements IReturn<GetKeylessIntegrationSetupResponse>
+  {
+    /** @description files, email or code. */
+    // @ApiMember(Description="files, email or code.", IsRequired=true)
+    public module: string;
+
+    /** @description azure, aws or google. */
+    // @ApiMember(Description="azure, aws or google.", IsRequired=true)
+    public cloud: string;
+
+    /** @description The integration view id; empty = a new one is made for the save. */
+    // @ApiMember(Description="The integration view id; empty = a new one is made for the save.")
+    public integrationId?: string;
+
+    public constructor(init?: Partial<GetKeylessIntegrationSetup>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetKeylessIntegrationSetup';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetKeylessIntegrationSetupResponse();
     }
   }
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-27 15:21:44
+Date: 2026-10-28 14:17:42
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -727,6 +727,16 @@ export module CodeMashApi2 {
     public providers: QuickConnectProviderDto[] = [];
 
     public constructor(init?: Partial<EchoConnectDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EchoKeylessDto {
+    public issuer: string;
+    public available: boolean;
+    public unavailableReason?: string;
+
+    public constructor(init?: Partial<EchoKeylessDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -2010,6 +2020,7 @@ export module CodeMashApi2 {
     public agent?: EchoAgentDto;
     public hostingPlatform?: EchoHostingPlatformDto;
     public connect?: EchoConnectDto;
+    public keyless?: EchoKeylessDto;
 
     public constructor(init?: Partial<EchoResponse>) {
       (Object as any).assign(this, init);

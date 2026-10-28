@@ -1179,6 +1179,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetKeylessIntegrationSetup": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetLegalHolds": {
     "requiresAuth": true,
     "returnsBytes": false
