@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**621 endpoints across 26 modules.** Click a module
+**629 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -14,19 +14,20 @@ name for the full method reference and TypeScript examples.
 | [`ai`](./ai.md)                       |        26 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         5 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
-| [`code`](./code.md)                   |        68 |                                                                                                                                          |
+| [`code`](./code.md)                   |        70 |                                                                                                                                          |
 | [`compliance`](./compliance.md)       |        18 |                                                                                                                                          |
 | [`database`](./database.md)           |        75 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`email`](./email.md)                 |         2 |                                                                                                                                          |
 | [`files`](./files.md)                 |        24 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
+| [`integrations`](./integrations.md)   |         3 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        15 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        48 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
 | [`notifications`](./notifications.md) |       132 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
 | [`oauth`](./oauth.md)                 |         6 |                                                                                                                                          |
-| [`payments`](./payments.md)           |        19 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
+| [`payments`](./payments.md)           |        22 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |
 | [`public`](./public.md)               |         3 |                                                                                                                                          |
 | [`resources`](./resources.md)         |         1 |                                                                                                                                          |

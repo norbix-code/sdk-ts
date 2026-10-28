@@ -13,6 +13,7 @@ import { EchoModule } from './echo.js';
 import { EmailModule } from './email.js';
 import { EnvironmentsModule } from './environments.js';
 import { FilesModule } from './files.js';
+import { IntegrationsModule } from './integrations.js';
 import { LicensingModule } from './licensing.js';
 import { LogsModule } from './logs.js';
 import { MembershipModule } from './membership.js';
@@ -64,6 +65,7 @@ export class HubNamespace {
   public readonly email: EmailModule;
   public readonly environments: EnvironmentsModule;
   public readonly files: FilesModule;
+  public readonly integrations: IntegrationsModule;
   public readonly licensing: LicensingModule;
   public readonly logs: LogsModule;
   public readonly membership: MembershipModule;
@@ -94,6 +96,7 @@ export class HubNamespace {
     this.email = new EmailModule(transport);
     this.environments = new EnvironmentsModule(transport);
     this.files = new FilesModule(transport);
+    this.integrations = new IntegrationsModule(transport);
     this.licensing = new LicensingModule(transport);
     this.logs = new LogsModule(transport);
     this.membership = new MembershipModule(transport);
