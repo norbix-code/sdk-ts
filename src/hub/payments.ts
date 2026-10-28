@@ -6,10 +6,67 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: payments
- * Endpoints: 19
+ * Endpoints: 22
  */
 export class PaymentsModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * POST /{version}/payments/integrations/connect/start
+   * Request DTO: StartPaymentsIntegrationConnect
+   */
+  startPaymentsIntegrationConnect = (
+    request: Partial<CodeMashHub2.StartPaymentsIntegrationConnect> = {} as Partial<CodeMashHub2.StartPaymentsIntegrationConnect>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.StartIntegrationConnectResponse> => {
+    return this.transport.send<CodeMashHub2.StartIntegrationConnectResponse>({
+      target: 'hub',
+      path: '/{version}/payments/integrations/connect/start',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/payments/integrations/connect/{ConnectId}/complete
+   * Request DTO: CompletePaymentsIntegrationConnect
+   */
+  completePaymentsIntegrationConnect = (
+    request: Partial<CodeMashHub2.CompletePaymentsIntegrationConnect> = {} as Partial<CodeMashHub2.CompletePaymentsIntegrationConnect>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/payments/integrations/connect/{ConnectId}/complete',
+      method: 'POST',
+      request,
+      pathParams: ['ConnectId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/payments/integrations/{Id}/connect/disconnect
+   * Request DTO: DisconnectPaymentsIntegrationConnect
+   */
+  disconnectPaymentsIntegrationConnect = (
+    request: Partial<CodeMashHub2.DisconnectPaymentsIntegrationConnect> = {} as Partial<CodeMashHub2.DisconnectPaymentsIntegrationConnect>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.DisconnectPaymentsIntegrationConnectResponse> => {
+    return this.transport.send<CodeMashHub2.DisconnectPaymentsIntegrationConnectResponse>({
+      target: 'hub',
+      path: '/{version}/payments/integrations/{Id}/connect/disconnect',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * PUT /{version}/payments/disable
