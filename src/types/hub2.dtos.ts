@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-28 14:54:53
+Date: 2026-10-28 18:47:51
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -600,8 +600,37 @@ export module CodeMashHub2 {
 
   export class GoogleCloudFilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure).")
+    public authMode?: CloudAuthMode;
+
+    /** @description The Cloud Storage bucket. */
+    // @ApiMember(Description="The Cloud Storage bucket.")
     public bucketName: string;
+
+    /** @description Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool. */
+    // @ApiMember(Description="Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool.")
+    public projectNumber?: string;
+
+    /** @description Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens).")
+    public poolId?: string;
+
+    /** @description Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens).")
+    public providerId?: string;
+
+    /** @description Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com). */
+    // @ApiMember(Description="Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com).")
+    public serviceAccountEmail?: string;
+
+    /** @description AccessKey: the service-account JSON key. */
+    // @ApiMember(Description="AccessKey: the service-account JSON key.")
     public serviceAccountJsonKey: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<GoogleCloudFilesIntegrationRequest>) {
       super(init);
@@ -1657,9 +1686,38 @@ export module CodeMashHub2 {
 
   export class GoogleCloudFunctionsCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure).")
+    public authMode?: CloudAuthMode;
+
+    /** @description The Google Cloud project id the functions live in. */
+    // @ApiMember(Description="The Google Cloud project id the functions live in.")
     public projectId: string;
+
     public region?: string;
-    public serviceAccountJsonKey: string;
+    /** @description Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool. */
+    // @ApiMember(Description="Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool.")
+    public projectNumber?: string;
+
+    /** @description Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens).")
+    public poolId?: string;
+
+    /** @description Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens).")
+    public providerId?: string;
+
+    /** @description Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com). */
+    // @ApiMember(Description="Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com).")
+    public serviceAccountEmail?: string;
+
+    /** @description AccessKey: the service-account JSON key. */
+    // @ApiMember(Description="AccessKey: the service-account JSON key.")
+    public serviceAccountJsonKey?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<GoogleCloudFunctionsCodeIntegrationRequest>) {
       super(init);
@@ -3090,6 +3148,11 @@ export module CodeMashHub2 {
   export class GoogleCloudFunctionsCodeIntegrationDto extends CodeIntegrationDto {
     public projectId: string;
     public region?: string;
+    public authMode: CloudAuthMode;
+    public projectNumber?: string;
+    public poolId?: string;
+    public providerId?: string;
+    public serviceAccountEmail?: string;
 
     public constructor(init?: Partial<GoogleCloudFunctionsCodeIntegrationDto>) {
       super(init);
@@ -3783,6 +3846,11 @@ export module CodeMashHub2 {
 
   export class GoogleCloudFilesIntegrationDto extends FilesIntegrationDto {
     public bucketName: string;
+    public authMode: CloudAuthMode;
+    public projectNumber?: string;
+    public poolId?: string;
+    public providerId?: string;
+    public serviceAccountEmail?: string;
 
     public constructor(init?: Partial<GoogleCloudFilesIntegrationDto>) {
       super(init);
