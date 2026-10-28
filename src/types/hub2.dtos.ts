@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-28 14:17:43
+Date: 2026-10-28 14:54:53
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -97,9 +97,9 @@ export module CodeMashHub2 {
 
   export class AwsSesEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
-    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
-    public authMode: CloudAuthMode;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode?: CloudAuthMode;
 
     public awsRegion: string;
     public emailIdentityArn: string;
@@ -116,9 +116,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
 
-    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
-    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
-    public acceptKeyRisk: boolean;
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public deliveryEventsEnabled?: boolean;
     public snsTopicArn?: string;
@@ -161,11 +161,11 @@ export module CodeMashHub2 {
 
   export class AzureCommunicationEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
-    public authMode: CloudAuthMode;
+    public authMode?: CloudAuthMode;
     public endpoint: string;
     public tenantId?: string;
     public clientId?: string;
-    public acceptKeyRisk: boolean;
+    public acceptKeyRisk?: boolean;
     public accessKey: string;
     public deliveryEventsEnabled?: boolean;
     public eventGridKey?: string;
@@ -570,9 +570,9 @@ export module CodeMashHub2 {
 
   export class AwsS3FilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
-    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
-    public authMode: CloudAuthMode;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode?: CloudAuthMode;
 
     public bucketName: string;
     public region: string;
@@ -588,9 +588,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
 
-    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
-    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
-    public acceptKeyRisk: boolean;
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AwsS3FilesIntegrationRequest>) {
       super(init);
@@ -611,9 +611,9 @@ export module CodeMashHub2 {
 
   export class AzureBlobFilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
-    /** @description Keyless (default, no stored secret) or AccessKey (a stored connection string, less secure). */
-    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored connection string, less secure).")
-    public authMode: CloudAuthMode;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored connection string, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored connection string, less secure).")
+    public authMode?: CloudAuthMode;
 
     /** @description The container. */
     // @ApiMember(Description="The container.")
@@ -635,9 +635,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="AccessKey: the storage account connection string.")
     public connectionString: string;
 
-    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
-    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
-    public acceptKeyRisk: boolean;
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AzureBlobFilesIntegrationRequest>) {
       super(init);
@@ -1611,9 +1611,9 @@ export module CodeMashHub2 {
 
   export class AwsLambdaCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
-    /** @description Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (default, no stored secret) or AccessKey (a stored IAM access key, less secure).")
-    public authMode: CloudAuthMode;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode?: CloudAuthMode;
 
     public region: string;
     /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. */
@@ -1628,9 +1628,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="AccessKey: the IAM secret access key.")
     public secretKey?: string;
 
-    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey). */
-    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey).")
-    public acceptKeyRisk: boolean;
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AwsLambdaCodeIntegrationRequest>) {
       super(init);
@@ -1640,14 +1640,14 @@ export module CodeMashHub2 {
 
   export class AzureFunctionsCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
-    public authMode: CloudAuthMode;
+    public authMode?: CloudAuthMode;
     public functionAppName: string;
     public resourceGroup?: string;
     public subscriptionId?: string;
     public tenantId?: string;
     public clientId?: string;
     public connectionStringOrKey: string;
-    public acceptKeyRisk: boolean;
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AzureFunctionsCodeIntegrationRequest>) {
       super(init);
