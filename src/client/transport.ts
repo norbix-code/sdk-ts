@@ -4,6 +4,7 @@ import {
   isFailedBody,
   NorbixError,
   NorbixNetworkError,
+  NorbixSessionExpiredError,
   NorbixTimeoutError,
 } from './errors.js';
 import type { ResolvedNorbixConfig } from './types.js';
@@ -67,6 +68,14 @@ export interface RequestOptions<TBody = unknown> {
    * (10b-files slice SDK-2, finding F2).
    */
   responseType?: 'json' | 'binary';
+  /**
+   * The call never carries a cookie — a sign-in that arrives with a session
+   * cookie deletes that session. `browserSession` is the exception: the browser
+   * must keep the answer's `Set-Cookie`, and rotating its one session is right.
+   */
+  omitCookies?: boolean;
+  /** The call only means something with a cookie session; any other client gets an error. */
+  requiresSession?: boolean;
 }
 
 export interface RequestOverrideOptions {
@@ -103,6 +112,7 @@ export type TransportMiddleware = (ctx: {
 /**
  * Tiny fetch-based transport. Handles:
  *  - bearer auth (JWT preferred, falls back to API key)
+ *  - cookie sessions (`cfg.auth`), which never send a bearer token
  *  - project + account headers
  *  - path token interpolation
  *  - query-string vs body based on verb
@@ -126,6 +136,23 @@ export class Transport {
       });
     }
 
+    const authMode = this.cfg.auth?.type;
+    if (opts.requiresSession && authMode !== 'session' && authMode !== 'browserSession') {
+      throw new NorbixError({
+        message:
+          'This call needs a cookie session. Use `auth: { type: "session", sessionId }` or `auth: { type: "browserSession" }`; `norbix.logout()` clears a local JWT.',
+        status: 0,
+        code: 'NORBIX_AUTH_CONFIG',
+      });
+    }
+    if (authMode && opts.bearerToken) {
+      throw new NorbixError({
+        message: `A per-call \`bearerToken\` cannot be used with \`auth: { type: "${authMode}" }\`.`,
+        status: 0,
+        code: 'NORBIX_AUTH_CONFIG',
+      });
+    }
+
     const baseUrl = opts.target === 'api' ? this.cfg.baseUrl.api : this.cfg.baseUrl.hub;
     const version = opts.target === 'api' ? this.cfg.apiVersion : this.cfg.hubVersion;
 
@@ -143,7 +170,14 @@ export class Transport {
       ...this.cfg.defaultHeaders,
     });
 
-    if (opts.scope === 'optional') {
+    if (authMode) {
+      // Nothing from `defaultHeaders` may stand in for the session below.
+      headers.delete('Authorization');
+      headers.delete('Cookie');
+      if (this.cfg.auth?.type === 'session' && opts.scope !== 'unauthenticated') {
+        headers.set('Cookie', `ss-id=${this.cfg.auth.sessionId}`);
+      }
+    } else if (opts.scope === 'optional') {
       // Signed-link endpoints: the link itself is the key. Send a token when
       // there is one (a signed-in member), never demand one.
       const token = opts.bearerToken ?? this.cfg.bearerToken ?? this.cfg.apiKey;
@@ -185,7 +219,12 @@ export class Transport {
     const language = opts.language ?? this.cfg.language;
     if (language) headers.set('Accept-Language', language);
 
+    if (opts.omitCookies) headers.delete('Cookie');
+
     if (body !== undefined) headers.set('Content-Type', 'application/json');
+
+    const credentials: RequestCredentials | undefined =
+      authMode === 'browserSession' ? 'include' : authMode || opts.omitCookies ? 'omit' : undefined;
 
     const timeoutMs = opts.timeoutMs ?? this.cfg.timeoutMs;
 
@@ -203,6 +242,9 @@ export class Transport {
       this.cfg.onRequest?.({ url, method: opts.method, headers });
 
       let res: Response | undefined;
+      let durationMs = 0;
+      let payload: string | ArrayBuffer | undefined;
+      let failure: NorbixError | undefined;
       let fetchErr: unknown = undefined;
       try {
         const init: RequestInit = {
@@ -210,6 +252,8 @@ export class Transport {
           headers,
           body,
           signal: controller.signal,
+          ...(credentials ? { credentials } : {}),
+          ...(authMode ? { redirect: 'manual' as const } : {}),
         };
         let next: () => Promise<Response> = async () => this.cfg.fetch(url, init);
         for (const mw of this.cfg.middleware ?? []) {
@@ -217,6 +261,16 @@ export class Transport {
           next = () => mw({ url, init, attempt, next: prev });
         }
         res = await next();
+        durationMs = Date.now() - startedAt;
+        // The body is read before the timer is cleared: a server can send the
+        // headers and stall, and only the abort ends that read.
+        if (res.ok) {
+          if (res.status !== 204) {
+            payload = opts.responseType === 'binary' ? await res.arrayBuffer() : await res.text();
+          }
+        } else if (!authMode || !isRedirect(res)) {
+          failure = await fromResponse(res, url);
+        }
       } catch (err) {
         fetchErr = err;
       } finally {
@@ -227,9 +281,20 @@ export class Transport {
         this.cfg.onResponse?.({
           url,
           status: res.status,
-          durationMs: Date.now() - startedAt,
+          durationMs,
           contentLanguage: res.headers?.get?.('content-language') ?? undefined,
         });
+      }
+
+      if (res && fetchErr === undefined) {
+        if (authMode && isRedirect(res)) {
+          throw new NorbixError({
+            message: `Norbix answered a redirect (HTTP ${res.status}); a session client does not follow redirects.`,
+            status: res.status,
+            code: 'NORBIX_UNEXPECTED_REDIRECT',
+            url,
+          });
+        }
 
         // Optional 401 refresh flow: refresh once, then retry the original request.
         // An `'optional'` call sent without a token got its 401 from the link
@@ -237,6 +302,7 @@ export class Transport {
         if (
           res.status === 401 &&
           !didRefresh &&
+          !authMode &&
           opts.scope !== 'unauthenticated' &&
           (opts.scope !== 'optional' || headers.has('Authorization')) &&
           typeof this.cfg.refreshBearerToken === 'function'
@@ -251,13 +317,12 @@ export class Transport {
         }
 
         if (res.ok) {
-          if (res.status === 204) return undefined as TResponse;
+          if (payload === undefined) return undefined as TResponse;
           if (opts.responseType === 'binary') {
-            return new Uint8Array(await res.arrayBuffer()) as TResponse;
+            return new Uint8Array(payload as ArrayBuffer) as TResponse;
           }
-          const text = await res.text();
-          if (!text) return undefined as TResponse;
-          const parsed: unknown = JSON.parse(text);
+          if (!payload) return undefined as TResponse;
+          const parsed: unknown = JSON.parse(payload as string);
           // A 2xx does not mean the call worked. The gateway answers a
           // business refusal with HTTP 200 and
           // `responseStatus.isSuccess = false`; that is a failure and the
@@ -279,11 +344,17 @@ export class Transport {
           continue;
         }
 
-        throw await fromResponse(res, url);
+        const holdsSession = authMode === 'session' || authMode === 'browserSession';
+        if (res.status === 401 && holdsSession && opts.scope !== 'unauthenticated') {
+          throw new NorbixSessionExpiredError(failure!);
+        }
+        throw failure!;
       }
 
       // Network/timeout errors: retry only for idempotent requests.
-      const isAbort = fetchErr instanceof DOMException && fetchErr.name === 'AbortError';
+      const isAbort =
+        controller.signal.aborted ||
+        (fetchErr instanceof DOMException && fetchErr.name === 'AbortError');
       const reason = isAbort
         ? `Request timed out after ${timeoutMs}ms`
         : fetchErr instanceof Error
@@ -307,6 +378,11 @@ export class Transport {
         : new NorbixNetworkError({ message: reason, url, raw: fetchErr });
     }
   }
+}
+
+/** A browser hides a `redirect: 'manual'` answer behind `opaqueredirect`, status 0. */
+function isRedirect(res: Response): boolean {
+  return res.type === 'opaqueredirect' || (res.status >= 300 && res.status < 400);
 }
 
 function isRetryableStatus(status: number): boolean {
