@@ -263,22 +263,34 @@ export interface LoginResponse {
   [key: string]: unknown;
 }
 
-/** Credentials for `norbix.api.auth.signIn(...)`. */
+/** Credentials for `norbix.api.auth.signIn(...)` and `browserSignIn(...)`. */
 export interface SignInCredentials {
   userName: string;
   password: string;
 }
 
 /**
- * What `norbix.api.auth.signIn(...)` answers. The JWT of the sign-in answer is
- * dropped on purpose: a cookie session has no use for it, and it stays valid
- * after sign-out.
+ * What `norbix.api.auth.signIn(...)` answers. No JWT is issued: a cookie session
+ * has no use for one, and a JWT stays valid after sign-out.
  */
 export interface SignInResult {
   /** The session credential. Send it as `auth: { type: 'session', sessionId }`. */
   sessionId: string;
   /** The user's id, `usr_…`. */
   userId?: string;
+  /** Version of the credentials that were just verified. Changes with the password. */
+  credentialVersion?: string;
+}
+
+/**
+ * What `norbix.api.auth.browserSignIn(...)` answers: public user data only. The
+ * browser holds the session cookie, and a backend in front of Norbix may answer
+ * less than this.
+ */
+export interface BrowserSignInResult {
+  /** The user's id, `usr_…`. */
+  userId?: string;
+  displayName?: string;
   /** Version of the credentials that were just verified. Changes with the password. */
   credentialVersion?: string;
 }

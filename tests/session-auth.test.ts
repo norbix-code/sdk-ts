@@ -299,6 +299,7 @@ describe('api.auth.signIn', () => {
       userName: 'anna',
       password: 'pw',
       rememberMe: false,
+      meta: { ignore: 'jwt' },
     });
   });
 
@@ -343,6 +344,59 @@ describe('api.auth.signIn', () => {
     const { norbix } = client({ auth: { type: 'none' } }, { body: { userId: 'usr_1' } });
     const error = await rejected(norbix.api.auth.signIn({ userName: 'a', password: 'b' }));
     expect(error.code).toBe('NORBIX_NO_SESSION');
+  });
+});
+
+describe('api.auth.browserSignIn', () => {
+  const browser = { auth: { type: 'browserSession' } } as const;
+
+  it('needs no session id: a backend can answer public user data only', async () => {
+    const { norbix, mock } = client(browser, { body: { userId: 'usr_1', displayName: 'Anna' } });
+    const result = await norbix.api.auth.browserSignIn({ userName: 'anna', password: 'pw' });
+
+    expect(result).toEqual({ userId: 'usr_1', displayName: 'Anna', credentialVersion: undefined });
+    expect(initOf(mock).credentials).toBe('include');
+    expect(JSON.parse(mock.lastCall!.body!).meta).toEqual({ ignore: 'jwt' });
+  });
+
+  it('a session id or JWT in the answer does not reach the app', async () => {
+    const { norbix } = client(browser, {
+      body: {
+        userId: 'usr_1',
+        sessionId: SESSION,
+        bearerToken: 'a.b.c',
+        meta: { credentialVersion: 'v7' },
+      },
+    });
+    const result = await norbix.api.auth.browserSignIn({ userName: 'anna', password: 'pw' });
+
+    expect(JSON.stringify(result)).not.toContain(SESSION);
+    expect(JSON.stringify(result)).not.toContain('a.b.c');
+    expect(result.credentialVersion).toBe('v7');
+  });
+
+  it('an empty answer is still a sign-in: the cookie is what counts', async () => {
+    const { norbix } = client(browser, { body: {} });
+    await expect(norbix.api.auth.browserSignIn({ userName: 'a', password: 'b' })).resolves.toEqual({
+      userId: undefined,
+      displayName: undefined,
+      credentialVersion: undefined,
+    });
+  });
+
+  it('is refused on any client but browserSession, before a request', async () => {
+    for (const auth of [{ type: 'none' }, { type: 'session', sessionId: SESSION }] as const) {
+      const { norbix, mock } = client({ auth });
+      const error = await rejected(norbix.api.auth.browserSignIn({ userName: 'a', password: 'b' }));
+      expect(error.code).toBe('NORBIX_AUTH_CONFIG');
+      expect(mock.lastCall).toBeUndefined();
+    }
+  });
+
+  it('wrong credentials are an auth error', async () => {
+    const { norbix } = client(browser, { status: 401, body: refusal('CM-BAD-LOGIN') });
+    const error = await rejected(norbix.api.auth.browserSignIn({ userName: 'a', password: 'b' }));
+    expect(error).toBeInstanceOf(NorbixAuthError);
   });
 });
 

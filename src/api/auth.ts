@@ -1,6 +1,6 @@
 import { NorbixError, NorbixSessionExpiredError } from '../client/errors.js'; // @hand-written
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
-import type { SignInCredentials, SignInResult } from '../client/types.js'; // @hand-written
+import type { BrowserSignInResult, SignInCredentials, SignInResult } from '../client/types.js'; // @hand-written
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
@@ -37,11 +37,20 @@ export class AuthModule {
   };
 
   // @hand-written:begin
+  /** `ignore: jwt` asks the gateway for no JWT at all: nothing is left to outlive a logout. */
+  private sessionSignInBody = (credentials: SignInCredentials) => ({
+    provider: 'credentials',
+    userName: credentials.userName,
+    password: credentials.password,
+    rememberMe: false,
+    meta: { ignore: 'jwt' },
+  });
+
   /**
-   * POST /v3/auth, for a cookie session. Answers the session id; the JWT of the
-   * answer is dropped, not stored on the client. The call carries no cookie and
-   * no token: a sign-in that arrives with a session cookie deletes that session.
-   * In the browser (`browserSession`) the browser keeps the cookie itself.
+   * POST /v3/auth, for a cookie session. Answers the session id, and no JWT is
+   * issued. The call carries no cookie and no token: a sign-in that arrives with
+   * a session cookie deletes that session. In the browser use `browserSignIn`,
+   * which keeps the session id out of JavaScript.
    */
   signIn = async (
     credentials: SignInCredentials,
@@ -51,12 +60,7 @@ export class AuthModule {
       target: 'api',
       path: '/v3/auth',
       method: 'POST',
-      request: {
-        provider: 'credentials',
-        userName: credentials.userName,
-        password: credentials.password,
-        rememberMe: false,
-      },
+      request: this.sessionSignInBody(credentials),
       scope: 'unauthenticated',
       omitCookies: true,
       ...options,
@@ -72,6 +76,32 @@ export class AuthModule {
       sessionId: answer.sessionId,
       userId: answer.userId,
       credentialVersion: answer.meta?.['credentialVersion'],
+    };
+  };
+
+  /**
+   * POST /v3/auth, for a `browserSession` client. The browser keeps the cookie;
+   * the answer needs no session id, so a backend in front of Norbix can hold it
+   * in an `HttpOnly` cookie and return only public user data. A session id in
+   * the answer is not passed on to the app.
+   */
+  browserSignIn = async (
+    credentials: SignInCredentials,
+    options: RequestOverrideOptions = {},
+  ): Promise<BrowserSignInResult> => {
+    const answer = await this.transport.send<CodeMashApi2.AuthenticateResponse | undefined>({
+      target: 'api',
+      path: '/v3/auth',
+      method: 'POST',
+      request: this.sessionSignInBody(credentials),
+      scope: 'unauthenticated',
+      requiresBrowserSession: true,
+      ...options,
+    });
+    return {
+      userId: answer?.userId,
+      displayName: answer?.displayName,
+      credentialVersion: answer?.meta?.['credentialVersion'],
     };
   };
 

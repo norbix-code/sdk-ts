@@ -191,7 +191,8 @@ await user.api.auth.signOut(); // ends the session on the server
 
 // Browser, same-site hosts only: the browser keeps the cookie
 const browser = new Norbix({ projectId, auth: { type: 'browserSession' } });
-await browser.api.auth.signIn({ userName, password });
+const { userId } = await browser.api.auth.browserSignIn({ userName, password });
+await browser.api.auth.signOut();
 ```
 
 | `auth.type`      | Where   | What is sent                                        |
@@ -202,7 +203,8 @@ await browser.api.auth.signIn({ userName, password });
 
 In all three no `Authorization` header leaves the client, redirects are not followed (`NORBIX_UNEXPECTED_REDIRECT`), `retry.maxRetries` defaults to 0 and `refreshBearerToken` is not called.
 
-- **`signIn` keeps no JWT.** It answers `{ sessionId, userId, credentialVersion }` and sends no cookie from a Node client: a sign-in that arrives with a session cookie deletes that session. `norbix.login()` is refused on these clients.
+- **`browserSignIn` keeps the session out of JavaScript.** It answers `{ userId, displayName, credentialVersion }` and needs no session id in the answer, so your backend can hold the id in an `HttpOnly` cookie and return only public user data. Point `baseUrl.api` at that backend.
+- **No JWT is issued.** `signIn` and `browserSignIn` ask the gateway for none. `signIn` answers `{ sessionId, userId, credentialVersion }` and sends no cookie from a Node client: a sign-in that arrives with a session cookie deletes that session. `norbix.login()` is refused on these clients.
 - **`signOut` is remote, `logout()` is local.** `api.auth.signOut()` ends the session on the server, and a session that has already ended counts as success. `norbix.logout()` only clears a local JWT and sends nothing. A JWT from the same sign-in is **not** revoked by `signOut`; it lives until it expires or the password changes.
 - **A 401 is `NorbixSessionExpiredError`** (a `NorbixAuthError`). `reason` is `'credentialsChanged'` after a password change or reset (`CM-ERRORS-MEMBERSHIP-USERS-050`), otherwise `'expired'`. Another device may need up to 60 seconds to see a password change.
 - **Streams are not covered.** `sse()`, `inbox()` and `aiChat()` authenticate with a token, which these clients do not have.
