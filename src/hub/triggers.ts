@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: triggers
- * Endpoints: 4
+ * Endpoints: 6
  */
 export class TriggersModule {
   constructor(private readonly transport: Transport) {}
@@ -63,6 +63,44 @@ export class TriggersModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/triggers/runs
+   * Request DTO: GetTriggerRuns
+   */
+  getTriggerRuns = (
+    request: Partial<CodeMashHub2.GetTriggerRuns> = {} as Partial<CodeMashHub2.GetTriggerRuns>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetTriggerRunsResponse> => {
+    return this.transport.send<CodeMashHub2.GetTriggerRunsResponse>({
+      target: 'hub',
+      path: '/{version}/triggers/runs',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/triggers/runs/{Id}
+   * Request DTO: GetTriggerRun
+   */
+  getTriggerRun = (
+    request: Partial<CodeMashHub2.GetTriggerRun> = {} as Partial<CodeMashHub2.GetTriggerRun>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetTriggerRunResponse> => {
+    return this.transport.send<CodeMashHub2.GetTriggerRunResponse>({
+      target: 'hub',
+      path: '/{version}/triggers/runs/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

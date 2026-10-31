@@ -102,7 +102,7 @@ describe('keyless save-request shapes', () => {
       roleArn: 'arn:aws:iam::123456789012:role/norbix-files',
       acceptKeyRisk: false,
     };
-    // @ts-expect-error — the cross-account role field was removed from the contract.
+    // CrossAccountRole mode came back (gateway 2aade8e5e): the field is on the request again.
     request.externalId = 'x';
     expect(request.authMode).toBe('Keyless');
   });

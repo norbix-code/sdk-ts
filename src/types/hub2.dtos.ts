@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-31 09:06:07
+Date: 2026-10-31 09:57:36
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -93,20 +93,25 @@ export module CodeMashHub2 {
   export enum CloudAuthMode {
     AccessKey = 'AccessKey',
     Keyless = 'Keyless',
+    CrossAccountRole = 'CrossAccountRole',
   }
 
   export class AwsSesEmailIntegrationRequest extends EmailIntegrationRequest {
     public provider: EmailProvider;
-    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    /** @description Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure).")
     public authMode?: CloudAuthMode;
 
     public awsRegion: string;
     public emailIdentityArn: string;
     public configurationSet?: string;
-    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. */
-    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token.")
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. CrossAccountRole: the ARN of the role that trusts this install's AWS account. */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token. CrossAccountRole: the ARN of the role that trusts this install's AWS account.")
     public roleArn?: string;
+
+    /** @description CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused. */
+    // @ApiMember(Description="CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused.")
+    public externalId?: string;
 
     /** @description AccessKey: the IAM access key id. */
     // @ApiMember(Description="AccessKey: the IAM access key id.")
@@ -572,15 +577,19 @@ export module CodeMashHub2 {
 
   export class AwsS3FilesIntegrationRequest extends FilesIntegrationRequest {
     public provider: FileProvider;
-    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    /** @description Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure).")
     public authMode?: CloudAuthMode;
 
     public bucketName: string;
     public region: string;
-    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>). */
-    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>).")
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>). CrossAccountRole: the ARN of the role that trusts this install's AWS account. */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>). CrossAccountRole: the ARN of the role that trusts this install's AWS account.")
     public roleArn?: string;
+
+    /** @description CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused. */
+    // @ApiMember(Description="CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused.")
+    public externalId?: string;
 
     /** @description AccessKey: the IAM access key id. */
     // @ApiMember(Description="AccessKey: the IAM access key id.")
@@ -1642,14 +1651,18 @@ export module CodeMashHub2 {
 
   export class AwsLambdaCodeIntegrationRequest extends CodeIntegrationRequest {
     public provider: CodeProvider;
-    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
-    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    /** @description Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret), CrossAccountRole (no stored secret; the install must run on AWS) or AccessKey (a stored IAM access key, less secure).")
     public authMode?: CloudAuthMode;
 
     public region: string;
-    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. */
-    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token.")
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token. CrossAccountRole: the ARN of the role that trusts this install's AWS account. */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token. CrossAccountRole: the ARN of the role that trusts this install's AWS account.")
     public roleArn?: string;
+
+    /** @description CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused. */
+    // @ApiMember(Description="CrossAccountRole: this Norbix account's id (the role's trust names it as sts:ExternalId). Any other value is refused.")
+    public externalId?: string;
 
     /** @description AccessKey: the IAM access key id. */
     // @ApiMember(Description="AccessKey: the IAM access key id.")
@@ -2396,9 +2409,6 @@ export module CodeMashHub2 {
     public functionRef?: FunctionRefDto;
 
     // @DataMember
-    public runAsUserId?: string;
-
-    // @DataMember
     public invocationType: CodeInvocationType;
 
     // @DataMember
@@ -2549,9 +2559,6 @@ export module CodeMashHub2 {
 
     // @DataMember
     public payload?: { [index: string]: string };
-
-    // @DataMember
-    public runAsUserId?: string;
 
     public constructor(init?: Partial<TriggerActionMarketplaceDto>) {
       super(init);
@@ -3168,6 +3175,18 @@ export module CodeMashHub2 {
     public authMode: CloudAuthMode;
 
     public constructor(init?: Partial<AwsLambdaKeylessCodeIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AwsLambdaCrossAccountRoleCodeIntegrationDto extends CodeIntegrationDto {
+    public region: string;
+    public roleArn: string;
+    public externalId: string;
+    public authMode: CloudAuthMode;
+
+    public constructor(init?: Partial<AwsLambdaCrossAccountRoleCodeIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -3851,6 +3870,19 @@ export module CodeMashHub2 {
     }
   }
 
+  export class AwsS3CrossAccountRoleFilesIntegrationDto extends FilesIntegrationDto {
+    public bucketName: string;
+    public region: string;
+    public roleArn: string;
+    public externalId: string;
+    public authMode: CloudAuthMode;
+
+    public constructor(init?: Partial<AwsS3CrossAccountRoleFilesIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class AwsS3IamFilesIntegrationDto extends FilesIntegrationDto {
     public bucketName: string;
     public region: string;
@@ -4180,6 +4212,17 @@ export module CodeMashHub2 {
     public authMode: CloudAuthMode;
 
     public constructor(init?: Partial<AwsKeylessEmailIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AwsCrossAccountRoleEmailIntegrationDto extends AwsSesEmailIntegrationDto {
+    public roleArn: string;
+    public externalId: string;
+    public authMode: CloudAuthMode;
+
+    public constructor(init?: Partial<AwsCrossAccountRoleEmailIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -7269,6 +7312,150 @@ export module CodeMashHub2 {
     }
   }
 
+  export class PaginatedResponse<TViewModelProjection> {
+    public items: IList<TViewModelProjection>;
+    public hasMore: boolean;
+    public hasPrevious: boolean;
+    public startingAfter?: string;
+    public endingBefore?: string;
+
+    public constructor(init?: Partial<PaginatedResponse<TViewModelProjection>>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunActorDto {
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public kind: string;
+
+    public constructor(init?: Partial<WorkflowRunActorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunErrorDto {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<WorkflowRunErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TriggerRunProducedDto {
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public id?: string;
+
+    public constructor(init?: Partial<TriggerRunProducedDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TriggerRunListProjection {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public triggerId: string;
+
+    // @DataMember
+    public triggerType: TriggerType;
+
+    // @DataMember
+    public triggerName?: string;
+
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public action?: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public produced?: TriggerRunProducedDto;
+
+    public constructor(init?: Partial<TriggerRunListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TriggerRunDto extends TriggerRunListProjection {
+    // @DataMember
+    public schemaId?: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public queue?: string;
+
+    // @DataMember
+    public messageId?: string;
+
+    // @DataMember
+    public missingPermissions?: string;
+
+    // @DataMember
+    public deliveries?: number;
+
+    // @DataMember
+    public recordCount?: number;
+
+    public constructor(init?: Partial<TriggerRunDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class TriggerActivationTestProblem {
     public code: string;
     public message: string;
@@ -8768,18 +8955,6 @@ export module CodeMashHub2 {
     public missingLanguages: string[] = [];
 
     public constructor(init?: Partial<TemplateLanguageGapDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PaginatedResponse<TViewModelProjection> {
-    public items: IList<TViewModelProjection>;
-    public hasMore: boolean;
-    public hasPrevious: boolean;
-    public startingAfter?: string;
-    public endingBefore?: string;
-
-    public constructor(init?: Partial<PaginatedResponse<TViewModelProjection>>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10894,38 +11069,6 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class WorkflowRunErrorDto {
-    // @DataMember
-    public code?: string;
-
-    // @DataMember
-    public stepId?: string;
-
-    // @DataMember
-    public reason?: string;
-
-    // @DataMember
-    public message?: string;
-
-    public constructor(init?: Partial<WorkflowRunErrorDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunActorDto {
-    // @DataMember
-    public userId?: string;
-
-    // @DataMember
-    public kind: string;
-
-    public constructor(init?: Partial<WorkflowRunActorDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
   export class WorkflowWaitingOnDto {
     // @DataMember
     public stepId: string;
@@ -11045,6 +11188,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
 
     // @DataMember
     public startedAt: string;
@@ -11510,6 +11659,18 @@ export module CodeMashHub2 {
     // @DataMember
     public input?: string;
 
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
+    // @DataMember
+    public triggerRunId?: string;
+
     public constructor(init?: Partial<CodeFunctionRunDto>) {
       (Object as any).assign(this, init);
     }
@@ -11543,6 +11704,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public durationMs?: number;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
 
     // @DataMember
     public currentStepIds: string[] = [];
@@ -12575,6 +12748,15 @@ export module CodeMashHub2 {
     // @DataMember
     public correlationId?: string;
 
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
     public constructor(init?: Partial<SchedulerTaskRunDto>) {
       (Object as any).assign(this, init);
     }
@@ -13304,6 +13486,7 @@ export module CodeMashHub2 {
   export enum RecipientRemovalReason {
     OptedOut = 1,
     Compliance = 2,
+    Undeliverable = 3,
   }
 
   // @DataContract
@@ -14263,6 +14446,24 @@ export module CodeMashHub2 {
     public items: TriggerAttentionDto[] = [];
 
     public constructor(init?: Partial<GetTriggersNeedingAttentionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetTriggerRunsResponse extends ResponseBase {
+    public list?: PaginatedResponse<TriggerRunListProjection>;
+
+    public constructor(init?: Partial<GetTriggerRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetTriggerRunResponse extends ResponseBase {
+    public item?: TriggerRunDto;
+
+    public constructor(init?: Partial<GetTriggerRunResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -18356,6 +18557,7 @@ export module CodeMashHub2 {
     public typegen_112_GoogleCalendarMcpIntegrationDto?: GoogleCalendarMcpIntegrationDto;
     public typegen_113_ObsidianMcpIntegrationDto?: ObsidianMcpIntegrationDto;
     public typegen_114_AwsLambdaKeylessCodeIntegrationDto?: AwsLambdaKeylessCodeIntegrationDto;
+    public typegen_321_AwsLambdaCrossAccountRoleCodeIntegrationDto?: AwsLambdaCrossAccountRoleCodeIntegrationDto;
     public typegen_115_AwsLambdaIamCodeIntegrationDto?: AwsLambdaIamCodeIntegrationDto;
     public typegen_116_AzureFunctionsCodeIntegrationDto?: AzureFunctionsCodeIntegrationDto;
     public typegen_118_GoogleCloudFunctionsCodeIntegrationDto?: GoogleCloudFunctionsCodeIntegrationDto;
@@ -18401,6 +18603,7 @@ export module CodeMashHub2 {
     public typegen_150_SplunkLoggingIntegrationDto?: SplunkLoggingIntegrationDto;
     public typegen_153_AppleICloudFilesIntegrationDto?: AppleICloudFilesIntegrationDto;
     public typegen_154_AwsS3KeylessFilesIntegrationDto?: AwsS3KeylessFilesIntegrationDto;
+    public typegen_322_AwsS3CrossAccountRoleFilesIntegrationDto?: AwsS3CrossAccountRoleFilesIntegrationDto;
     public typegen_155_AwsS3IamFilesIntegrationDto?: AwsS3IamFilesIntegrationDto;
     public typegen_156_AzureBlobFilesIntegrationDto?: AzureBlobFilesIntegrationDto;
     public typegen_157_DropBoxFilesIntegrationDto?: DropBoxFilesIntegrationDto;
@@ -18427,6 +18630,7 @@ export module CodeMashHub2 {
     public typegen_178_SafariPushIntegrationDto?: SafariPushIntegrationDto;
     public typegen_247_FakePushIntegrationDto?: FakePushIntegrationDto;
     public typegen_179_AwsKeylessEmailIntegrationDto?: AwsKeylessEmailIntegrationDto;
+    public typegen_323_AwsCrossAccountRoleEmailIntegrationDto?: AwsCrossAccountRoleEmailIntegrationDto;
     public typegen_180_AwsIamEmailIntegrationDto?: AwsIamEmailIntegrationDto;
     public typegen_181_MailGunEmailIntegrationDto?: MailGunEmailIntegrationDto;
     public typegen_182_SendGridEmailIntegrationDto?: SendGridEmailIntegrationDto;
@@ -18742,6 +18946,67 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetTriggersNeedingAttentionResponse();
+    }
+  }
+
+  /** @description Lists one trigger's runs, newest first */
+  // @Route("/{version}/triggers/runs", "GET")
+  // @Api(Description="Lists one trigger's runs, newest first")
+  export class GetTriggerRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetTriggerRunsResponse>
+  {
+    /** @description Which kind of trigger: Membership, Schema, Files, Payments or Ai. */
+    // @ApiMember(Description="Which kind of trigger: Membership, Schema, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    /** @description The trigger (trg_…). */
+    // @ApiMember(Description="The trigger (trg_…).", IsRequired=true)
+    public triggerId: string;
+
+    /** @description Only runs in this state: queued, running, succeeded, failed or skipped. */
+    // @ApiMember(Description="Only runs in this state: queued, running, succeeded, failed or skipped.")
+    public status?: string;
+
+    public constructor(init?: Partial<GetTriggerRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTriggerRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetTriggerRunsResponse();
+    }
+  }
+
+  /** @description Reads one trigger run */
+  // @Route("/{version}/triggers/runs/{Id}", "GET")
+  // @Api(Description="Reads one trigger run")
+  export class GetTriggerRun extends CodeMashRequestBase implements IReturn<GetTriggerRunResponse> {
+    /** @description The run id (trr_…). */
+    // @ApiMember(Description="The run id (trr_…).", IsRequired=true)
+    public id: string;
+
+    /** @description Which kind of trigger: Membership, Schema, Files, Payments or Ai. */
+    // @ApiMember(Description="Which kind of trigger: Membership, Schema, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    public constructor(init?: Partial<GetTriggerRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTriggerRun';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetTriggerRunResponse();
     }
   }
 
@@ -28445,10 +28710,7 @@ export module CodeMashHub2 {
   /** @description Edit push template */
   // @Route("/{version}/notifications/push/templates", "PUT")
   // @Api(Description="Edit push template")
-  export class UpdatePushTemplateRequest
-    extends SavePushTemplate
-    implements IReturn<EmptyResponse>
-  {
+  export class UpdatePushTemplateRequest extends SavePushTemplate implements IReturn<IdResponse> {
     /** @description The push template id to update. Get it from get_push_templates. */
     // @ApiMember(Description="The push template id to update. Get it from get_push_templates.", IsRequired=true)
     public viewId: string;
@@ -28464,7 +28726,7 @@ export module CodeMashHub2 {
       return 'PUT';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 

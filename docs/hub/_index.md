@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**632 endpoints across 27 modules.** Click a module
+**634 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -33,6 +33,6 @@ name for the full method reference and TypeScript examples.
 | [`resources`](./resources.md)         |         1 |                                                                                                                                          |
 | [`scheduler`](./scheduler.md)         |         9 |                                                                                                                                          |
 | [`support`](./support.md)             |         7 |                                                                                                                                          |
-| [`triggers`](./triggers.md)           |         4 |                                                                                                                                          |
+| [`triggers`](./triggers.md)           |         6 |                                                                                                                                          |
 | [`webhooks`](./webhooks.md)           |         9 |                                                                                                                                          |
 | [`wellKnown`](./well_known.md)        |         2 |                                                                                                                                          |
