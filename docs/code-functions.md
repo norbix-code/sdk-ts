@@ -97,7 +97,7 @@ const norbix = event.createClient({ timeoutMs: 5_000 });
 ```
 
 Both throw `NorbixFunctionEventError` (`FUNCTION_EVENT_NO_RUN_AS_TOKEN`) when the
-action has no run-as user — set one on the trigger action (`runAsUserId`) or the
+action has no run-as user — set one on the trigger (`executionIdentityId`) or the
 scheduled task (**Run as user**).
 
 ## Errors

@@ -1771,7 +1771,7 @@ const result = await norbix.hub.notifications.unArchivePushTemplate({
 Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdatePushTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -1781,7 +1781,7 @@ const norbix = new Norbix();
 const result = await norbix.hub.notifications.updatePushTemplate({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
@@ -3093,3 +3093,11 @@ const result = await norbix.hub.notifications.unsubscribeContact({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## What a retry left out
+
+`retryFailedEmailNotifications`, `retryFailedSmsNotifications` and `retryFailedPushNotifications` answer `skipped`, a map of reason to count: `AlreadyAccepted`, `InFlight`, `Ambiguous`, `NotFound`, `Blocked`, `Category`. It can also carry `optedOut`, `compliance`, `undeliverable`: the people the send gates stopped during the retry. Those keys are added to the stored answer later and are part of `selected`. A row stopped this way has an attempt with the outcome `Blocked`.
+
+<!-- @hand-written:end -->

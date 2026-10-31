@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.triggers (4 endpoints).
+ * Tests for hub.triggers (6 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.triggers', () => {
-  it('module exposes 4 method(s)', () => {
+  it('module exposes 6 method(s)', () => {
     const mock = createMockFetch();
     const mod = new TriggersModule({} as never);
     void mod; // silence unused — we only need the type
@@ -32,6 +32,8 @@ describe('hub.triggers', () => {
     expect(typeof ns['checkTriggerExecutionIdentity']).toBe('function');
     expect(typeof ns['getTriggerDefinition']).toBe('function');
     expect(typeof ns['getTriggersNeedingAttention']).toBe('function');
+    expect(typeof ns['getTriggerRuns']).toBe('function');
+    expect(typeof ns['getTriggerRun']).toBe('function');
     expect(typeof ns['testTriggerPreExecuteCode']).toBe('function');
   });
 
@@ -96,6 +98,52 @@ describe('hub.triggers', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['triggers']!['getTriggersNeedingAttention']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getTriggerRuns: GET /{version}/triggers/runs', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/triggers/runs',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['triggers']!['getTriggerRuns']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getTriggerRun: GET /{version}/triggers/runs/{Id}', async () => {
+    const stub = stubRequestForPath('/{version}/triggers/runs/{Id}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/triggers/runs/{Id}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['triggers']!['getTriggerRun']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');

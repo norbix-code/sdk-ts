@@ -1599,6 +1599,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetTriggerRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetTriggerRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetTriggersNeedingAttention": {
     "requiresAuth": true,
     "returnsBytes": false
