@@ -160,7 +160,7 @@ Both surfaces share the same configuration shape. The only difference is the **d
 
 ### Auth modes
 
-The SDK supports two auth modes. Both are sent as `Authorization: Bearer <token>`. If both are configured, the JWT wins. With neither configured, the SDK throws `NORBIX_NOT_AUTHENTICATED` on the first call.
+The SDK has two token modes, sent as `Authorization: Bearer <token>`, and [cookie sessions](#cookie-sessions), which send no token. If both tokens are configured, the JWT wins. With neither configured, the SDK throws `NORBIX_NOT_AUTHENTICATED` on the first call.
 
 | Mode           | When to use                                    | How                                                                           |
 | -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------- |
@@ -175,6 +175,38 @@ const norbix = new Norbix({ apiKey: '<api_key>', projectId: 'proj_123' });
 const norbix = new Norbix({ projectId: 'proj_123' });
 const { userId } = await norbix.login({ userName: 'alice@team.io', password: 'secret' }); // usr_…
 ```
+
+#### Cookie sessions
+
+For an app whose own backend or browser holds a Norbix session instead of a JWT. Set `auth`; it cannot be combined with `apiKey` or `bearerToken`, and `NORBIX_API_KEY` / `NORBIX_BEARER_TOKEN` are ignored.
+
+```ts
+// Node: one client per user or per request, never shared
+const anon = new Norbix({ projectId, env: 'TEST', auth: { type: 'none' } });
+const { sessionId, userId } = await anon.api.auth.signIn({ userName, password });
+
+const user = new Norbix({ projectId, env: 'TEST', auth: { type: 'session', sessionId } });
+await user.api.membership.getUser({ id: userId });
+await user.api.auth.signOut(); // ends the session on the server
+
+// Browser, same-site hosts only: the browser keeps the cookie
+const browser = new Norbix({ projectId, auth: { type: 'browserSession' } });
+await browser.api.auth.signIn({ userName, password });
+```
+
+| `auth.type`      | Where   | What is sent                                        |
+| ---------------- | ------- | --------------------------------------------------- |
+| `none`           | Node    | nothing: anonymous calls and `signIn`               |
+| `session`        | Node    | `Cookie: ss-id=<sessionId>`                         |
+| `browserSession` | Browser | the browser's own cookie (`credentials: 'include'`) |
+
+In all three no `Authorization` header leaves the client, redirects are not followed (`NORBIX_UNEXPECTED_REDIRECT`), `retry.maxRetries` defaults to 0 and `refreshBearerToken` is not called.
+
+- **`signIn` keeps no JWT.** It answers `{ sessionId, userId, credentialVersion }` and sends no cookie from a Node client: a sign-in that arrives with a session cookie deletes that session. `norbix.login()` is refused on these clients.
+- **`signOut` is remote, `logout()` is local.** `api.auth.signOut()` ends the session on the server, and a session that has already ended counts as success. `norbix.logout()` only clears a local JWT and sends nothing. A JWT from the same sign-in is **not** revoked by `signOut`; it lives until it expires or the password changes.
+- **A 401 is `NorbixSessionExpiredError`** (a `NorbixAuthError`). `reason` is `'credentialsChanged'` after a password change or reset (`CM-ERRORS-MEMBERSHIP-USERS-050`), otherwise `'expired'`. Another device may need up to 60 seconds to see a password change.
+- **Streams are not covered.** `sse()`, `inbox()` and `aiChat()` authenticate with a token, which these clients do not have.
+- `onRequest` sees the `Cookie` header in `session` mode, so do not log headers.
 
 **Service-user API keys.** A key issued to a service user (`ak-…`) is just another `apiKey` — the SDK sends it as `Authorization: Bearer ak-…`, which the gateway accepts like `X-Api-Key`. Issuing a key (`norbix.hub.membership.issueServiceUserApiKey`) answers with `id`, `environment` and the `key` itself — shown **once**, store it then.
 

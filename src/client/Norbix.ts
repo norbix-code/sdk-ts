@@ -7,10 +7,12 @@ import { NorbixInboxClient } from '../sse/inbox.js';
 import type { NorbixSseClientOptions } from '../sse/types.js';
 
 import { loadEnvConfig } from './env.js';
+import { NorbixError } from './errors.js';
 import { Transport } from './transport.js';
 import type {
   LoginCredentials,
   LoginResponse,
+  NorbixAuthMode,
   NorbixConfig,
   ResolvedNorbixConfig,
 } from './types.js';
@@ -32,6 +34,11 @@ const DEFAULT_RETRY = { maxRetries: 2, baseDelayMs: 250, maxDelayMs: 5_000 } as 
  * const norbix = new Norbix({ projectId: '...' });
  * await norbix.login({ userName: 'alice', password: '...' });
  * await norbix.api.database.find({ collectionName: 'orders' });
+ *
+ * // Cookie session, no token: one client per user
+ * const anon = new Norbix({ projectId: '...', auth: { type: 'none' } });
+ * const { sessionId } = await anon.api.auth.signIn({ userName: 'alice', password: '...' });
+ * const user = new Norbix({ projectId: '...', auth: { type: 'session', sessionId } });
  *
  * // Zero-config: read everything from NORBIX_* env vars
  * const norbix = new Norbix();
@@ -78,6 +85,8 @@ export class Norbix {
     opts?: { envSource?: Record<string, string | undefined> },
   ) {
     const env = loadEnvConfig(opts?.envSource);
+    const auth = config.auth;
+    if (auth) assertAuthMode(auth, config);
 
     const fetchImpl = config.fetch ?? globalThis.fetch;
     if (typeof fetchImpl !== 'function') {
@@ -115,7 +124,7 @@ export class Norbix {
     if (!hubVersion) throw new Error('Norbix: hubVersion must be a non-empty string');
 
     const retry = {
-      maxRetries: config.retry?.maxRetries ?? DEFAULT_RETRY.maxRetries,
+      maxRetries: config.retry?.maxRetries ?? (auth ? 0 : DEFAULT_RETRY.maxRetries),
       baseDelayMs: config.retry?.baseDelayMs ?? DEFAULT_RETRY.baseDelayMs,
       maxDelayMs: config.retry?.maxDelayMs ?? DEFAULT_RETRY.maxDelayMs,
     };
@@ -136,8 +145,9 @@ export class Norbix {
     }
 
     this.cfg = {
-      apiKey: config.apiKey ?? env.apiKey,
-      bearerToken: config.bearerToken ?? env.bearerToken,
+      auth,
+      apiKey: auth ? undefined : (config.apiKey ?? env.apiKey),
+      bearerToken: auth ? undefined : (config.bearerToken ?? env.bearerToken),
       projectId,
       accountId: config.accountId ?? env.accountId,
       env: config.env ?? env.env ?? 'PROD',
@@ -155,7 +165,7 @@ export class Norbix {
       onRequest: config.onRequest,
       onResponse: config.onResponse,
       retry,
-      refreshBearerToken: config.refreshBearerToken,
+      refreshBearerToken: auth ? undefined : config.refreshBearerToken,
       middleware: config.middleware ?? [],
     };
 
@@ -198,8 +208,12 @@ export class Norbix {
    *
    * The login call itself runs unauthenticated — no Authorization header is
    * sent for /auth even if a token is already configured.
+   *
+   * A client with `auth` set has no use for a JWT and refuses this call; use
+   * `norbix.api.auth.signIn(...)`.
    */
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
+    this.assertNoAuthMode('login()');
     const body: Record<string, unknown> = {
       provider: credentials.provider ?? 'credentials',
       ...credentials,
@@ -224,6 +238,9 @@ export class Norbix {
   /**
    * Clear the JWT bearer token. If an `apiKey` was configured, the client
    * falls back to it; otherwise subsequent calls throw NORBIX_NOT_AUTHENTICATED.
+   *
+   * Local only: nothing is sent to the server. To end a cookie session on the
+   * server, call `norbix.api.auth.signOut()`.
    */
   logout(): void {
     this.cfg.bearerToken = undefined;
@@ -231,11 +248,13 @@ export class Norbix {
 
   /** Replace the bearer token without rebuilding the client. */
   setBearerToken(token: string | undefined): void {
+    if (token) this.assertNoAuthMode('setBearerToken()');
     this.cfg.bearerToken = token;
   }
 
   /** Replace the API key without rebuilding the client. */
   setApiKey(apiKey: string | undefined): void {
+    if (apiKey) this.assertNoAuthMode('setApiKey()');
     this.cfg.apiKey = apiKey;
   }
 
@@ -293,9 +312,23 @@ export class Norbix {
     return this.cfg.language;
   }
 
-  /** True when the client has either a JWT bearer token or an API key. */
+  /**
+   * True when the client has a JWT bearer token, an API key or a cookie session.
+   * For `browserSession` the browser holds the cookie, so this says only that
+   * the client will send it, not that the session is still valid.
+   */
   isAuthenticated(): boolean {
+    if (this.cfg.auth) return this.cfg.auth.type !== 'none';
     return Boolean(this.cfg.bearerToken ?? this.cfg.apiKey);
+  }
+
+  private assertNoAuthMode(what: string): void {
+    if (!this.cfg.auth) return;
+    throw new NorbixError({
+      message: `${what} cannot be used with \`auth: { type: "${this.cfg.auth.type}" }\`. Use \`api.auth.signIn\` and a session client.`,
+      status: 0,
+      code: 'NORBIX_AUTH_CONFIG',
+    });
   }
 
   /**
@@ -314,7 +347,8 @@ export class Norbix {
 
   /**
    * Open a realtime / InApp SSE client using this client's hub URL, auth
-   * token, and project. Pass `channels` for broadcast/project scope, or omit
+   * token, and project. A cookie-session client has no token to give it: pass
+   * `token` in `options` if the stream needs one. Pass `channels` for broadcast/project scope, or omit
    * them and rely on the user token for user-scoped delivery.
    *
    * ```ts
@@ -392,6 +426,10 @@ export class Norbix {
     const { fetch: _fetch, ...rest } = this.cfg;
     return {
       ...rest,
+      auth:
+        rest.auth?.type === 'session'
+          ? { ...rest.auth, sessionId: redactSecret(rest.auth.sessionId) }
+          : rest.auth,
       apiKey: rest.apiKey ? redactSecret(rest.apiKey) : undefined,
       bearerToken: rest.bearerToken ? redactSecret(rest.bearerToken) : undefined,
     };
@@ -404,12 +442,14 @@ export class Norbix {
   with(
     overrides: Pick<
       NorbixConfig,
-      'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region' | 'language'
+      'auth' | 'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region' | 'language'
     >,
   ): Norbix {
+    const auth = overrides.auth ?? this.cfg.auth;
     const next: NorbixConfig = {
-      apiKey: overrides.apiKey ?? this.cfg.apiKey,
-      bearerToken: overrides.bearerToken ?? this.cfg.bearerToken,
+      auth,
+      apiKey: overrides.apiKey ?? (auth ? undefined : this.cfg.apiKey),
+      bearerToken: overrides.bearerToken ?? (auth ? undefined : this.cfg.bearerToken),
       projectId: overrides.projectId ?? this.cfg.projectId,
       accountId: overrides.accountId ?? this.cfg.accountId,
       env: overrides.env ?? this.cfg.env,
@@ -432,6 +472,27 @@ export class Norbix {
     };
     // We pass envSource={} to guarantee this new instance is derived only from explicit inputs.
     return new Norbix(next, { envSource: {} });
+  }
+}
+
+/** Cookie-octets of RFC 6265, narrowed to what a session id can hold. Rejects `;`, CR, LF, spaces. */
+const SESSION_ID = /^[A-Za-z0-9._~+/=-]{1,512}$/;
+
+function assertAuthMode(auth: NorbixAuthMode, config: NorbixConfig): void {
+  const fail = (message: string): never => {
+    throw new NorbixError({ message: `Norbix: ${message}`, status: 0, code: 'NORBIX_AUTH_CONFIG' });
+  };
+  if (auth.type !== 'none' && auth.type !== 'session' && auth.type !== 'browserSession') {
+    fail(`unknown auth type "${String((auth as { type?: unknown }).type)}"`);
+  }
+  if (config.apiKey || config.bearerToken) {
+    fail(
+      `\`auth: { type: "${auth.type}" }\` cannot be combined with \`apiKey\` or \`bearerToken\``,
+    );
+  }
+  // The value is never echoed: a mistyped session id is still a secret.
+  if (auth.type === 'session' && !SESSION_ID.test(auth.sessionId ?? '')) {
+    fail('`auth.sessionId` is empty or holds characters a cookie value cannot carry');
   }
 }
 

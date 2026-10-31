@@ -35,3 +35,29 @@ const result = await norbix.api.auth.authenticate({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+### signIn
+
+`POST` `/v3/auth`
+
+Sign in for a [cookie session](../../README.md#cookie-sessions). Answers `{ sessionId, userId, credentialVersion }`. The JWT of the answer is dropped, and no cookie is sent from a Node client.
+
+```ts
+const anon = new Norbix({ projectId, auth: { type: 'none' } });
+const { sessionId } = await anon.api.auth.signIn({ userName, password });
+const user = new Norbix({ projectId, auth: { type: 'session', sessionId } });
+```
+
+### signOut
+
+`POST` `/v3/auth/logout`
+
+Ends this client's session on the server. A session that has already ended counts as success. Needs a `session` or `browserSession` client. A JWT from the same sign-in is not revoked. `norbix.logout()` is different: it only clears a local token.
+
+```ts
+await user.api.auth.signOut();
+```
+
+<!-- @hand-written:end -->

@@ -1,16 +1,25 @@
 export { Norbix } from './client/Norbix.js';
 export {
+  CREDENTIALS_CHANGED_ERROR_CODE,
   errorFromBody,
   isFailedBody,
   NorbixAuthError,
   NorbixError,
   NorbixNetworkError,
+  NorbixSessionExpiredError,
   NorbixTimeoutError,
   NorbixValidationError,
   readErrorBody,
 } from './client/errors.js';
 export type { NorbixErrorItem, NorbixErrorPayload } from './client/errors.js';
-export type { LoginCredentials, LoginResponse, NorbixConfig } from './client/types.js';
+export type {
+  LoginCredentials,
+  LoginResponse,
+  NorbixAuthMode,
+  NorbixConfig,
+  SignInCredentials,
+  SignInResult,
+} from './client/types.js';
 export { loadEnvConfig } from './client/env.js';
 export type { EnvConfig } from './client/env.js';
 export { NORBIX_HUB_URL, NORBIX_API_URL } from './client/constants.js';

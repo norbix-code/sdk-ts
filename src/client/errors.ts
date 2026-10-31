@@ -154,6 +154,34 @@ export class NorbixAuthError extends NorbixError {
   }
 }
 
+/** The gateway's code for a session older than the login's current credentials. */
+export const CREDENTIALS_CHANGED_ERROR_CODE = 'CM-ERRORS-MEMBERSHIP-USERS-050';
+
+/**
+ * A cookie-session client got a 401. `reason` tells the two cases apart:
+ * `expired` (signed out, timed out, or never valid) and `credentialsChanged`
+ * (the password was changed or reset after this session signed in). In both
+ * cases the session is over and the user has to sign in again.
+ */
+export class NorbixSessionExpiredError extends NorbixAuthError {
+  public readonly reason: 'expired' | 'credentialsChanged';
+
+  constructor(from: NorbixError) {
+    super({
+      message: from.message,
+      status: from.status,
+      code: from.code,
+      fieldErrors: from.fieldErrors,
+      url: from.url,
+      raw: from.raw,
+      retryAfterSeconds: from.retryAfterSeconds,
+    });
+    this.name = 'NorbixSessionExpiredError';
+    const codes = [from.code, ...from.fieldErrors.map((e) => e.errorCode)];
+    this.reason = codes.includes(CREDENTIALS_CHANGED_ERROR_CODE) ? 'credentialsChanged' : 'expired';
+  }
+}
+
 export class NorbixValidationError extends NorbixError {
   constructor(opts: {
     message: string;

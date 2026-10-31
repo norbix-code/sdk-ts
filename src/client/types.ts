@@ -6,6 +6,9 @@
  *    `NORBIX_API_KEY` in the environment. Acts as a service identity.
  *  - **JWT bearer** — short-lived, on behalf of a user. Set `bearerToken`
  *    directly, or call `norbix.login(...)` to exchange credentials for one.
+ *  - **Cookie session** — a native Norbix session, no token at all. Set
+ *    `auth` (see {@link NorbixAuthMode}); it cannot be combined with the two
+ *    above and it ignores `NORBIX_API_KEY` / `NORBIX_BEARER_TOKEN`.
  *
  * If both are configured, the bearer token wins (most specific wins). If
  * neither is set at construction, you must call `login()` before making any
@@ -32,6 +35,16 @@
  *   NORBIX_TIMEOUT_MS
  */
 export interface NorbixConfig {
+  /**
+   * Run the client without a token. Leave unset for the API key / JWT modes.
+   *
+   * In every mode here no `Authorization` header ever leaves the client, no
+   * call is refused up front for lack of a token, `refreshBearerToken` is never
+   * called, redirects are not followed (a 3xx is a `NORBIX_UNEXPECTED_REDIRECT`
+   * error) and `retry.maxRetries` defaults to 0.
+   */
+  auth?: NorbixAuthMode;
+
   /**
    * Long-lived API key, typically used for service-to-service calls. The SDK
    * sends it as `Authorization: Bearer <apiKey>` until a JWT bearer token
@@ -179,10 +192,24 @@ export interface NorbixConfig {
 }
 
 /**
+ * The token-free client modes.
+ *
+ *  - `none` — anonymous: public routes and `api.auth.signIn`, in a Node process.
+ *  - `session` — Node only. `sessionId` comes from `api.auth.signIn` and is sent
+ *    as the `ss-id` cookie. One client per user: never share it between requests
+ *    of different users.
+ *  - `browserSession` — browser only, same-site hosts only. The browser holds the
+ *    cookie (`credentials: 'include'`); the SDK never sees it.
+ */
+export type NorbixAuthMode =
+  { type: 'none' } | { type: 'session'; sessionId: string } | { type: 'browserSession' };
+
+/**
  * Internal resolved config. The Norbix class fills required fields from
  * NorbixConfig + env vars + defaults before constructing the transport.
  */
 export interface ResolvedNorbixConfig {
+  auth?: NorbixAuthMode;
   apiKey?: string;
   bearerToken?: string;
   projectId: string;
@@ -234,4 +261,24 @@ export interface LoginResponse {
   sessionId?: string;
   // ServiceStack adds many more — pass-through.
   [key: string]: unknown;
+}
+
+/** Credentials for `norbix.api.auth.signIn(...)`. */
+export interface SignInCredentials {
+  userName: string;
+  password: string;
+}
+
+/**
+ * What `norbix.api.auth.signIn(...)` answers. The JWT of the sign-in answer is
+ * dropped on purpose: a cookie session has no use for it, and it stays valid
+ * after sign-out.
+ */
+export interface SignInResult {
+  /** The session credential. Send it as `auth: { type: 'session', sessionId }`. */
+  sessionId: string;
+  /** The user's id, `usr_…`. */
+  userId?: string;
+  /** Version of the credentials that were just verified. Changes with the password. */
+  credentialVersion?: string;
 }
