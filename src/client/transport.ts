@@ -76,6 +76,8 @@ export interface RequestOptions<TBody = unknown> {
   omitCookies?: boolean;
   /** The call only means something with a cookie session; any other client gets an error. */
   requiresSession?: boolean;
+  /** The call only means something with `browserSession`; any other client gets an error. */
+  requiresBrowserSession?: boolean;
 }
 
 export interface RequestOverrideOptions {
@@ -141,6 +143,14 @@ export class Transport {
       throw new NorbixError({
         message:
           'This call needs a cookie session. Use `auth: { type: "session", sessionId }` or `auth: { type: "browserSession" }`; `norbix.logout()` clears a local JWT.',
+        status: 0,
+        code: 'NORBIX_AUTH_CONFIG',
+      });
+    }
+    if (opts.requiresBrowserSession && authMode !== 'browserSession') {
+      throw new NorbixError({
+        message:
+          'This call is for the browser. Use `auth: { type: "browserSession" }`, or `api.auth.signIn` on a server.',
         status: 0,
         code: 'NORBIX_AUTH_CONFIG',
       });

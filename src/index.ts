@@ -13,6 +13,7 @@ export {
 } from './client/errors.js';
 export type { NorbixErrorItem, NorbixErrorPayload } from './client/errors.js';
 export type {
+  BrowserSignInResult,
   LoginCredentials,
   LoginResponse,
   NorbixAuthMode,
