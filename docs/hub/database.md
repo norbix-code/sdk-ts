@@ -74,17 +74,17 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`saveDatabaseIntegration`](#savedatabaseintegration)                     | `POST`   | `/{version}/database/integrations`                                                  | `project` |
 | [`setDatabaseIntegrationAsDefault`](#setdatabaseintegrationasdefault)     | `PUT`    | `/{version}/database/integrations/{Id}/default`                                     | `project` |
 | [`testDatabaseIntegration`](#testdatabaseintegration)                     | `POST`   | `/{version}/database/integrations/test`                                             | `project` |
+| [`deleteDatabaseAggregate`](#deletedatabaseaggregate)                     | `DELETE` | `/{version}/database/aggregates/{Id}`                                               | `project` |
+| [`getDatabaseAggregate`](#getdatabaseaggregate)                           | `GET`    | `/{version}/database/aggregates/{Id}`                                               | `project` |
+| [`getDatabaseAggregates`](#getdatabaseaggregates)                         | `GET`    | `/{version}/database/aggregates`                                                    | `project` |
+| [`saveDatabaseAggregate`](#savedatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates`                                                    | `project` |
+| [`testDatabaseAggregate`](#testdatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates/test`                                               | `project` |
 | [`createCollectionImport`](#createcollectionimport)                       | `POST`   | `/{version}/database/imports`                                                       | `project` |
 | [`deleteCollectionImport`](#deletecollectionimport)                       | `DELETE` | `/{version}/database/imports/{Id}`                                                  | `project` |
 | [`getCollectionImport`](#getcollectionimport)                             | `GET`    | `/{version}/database/imports/{Id}`                                                  | `project` |
 | [`getCollectionImports`](#getcollectionimports)                           | `GET`    | `/{version}/database/imports`                                                       | `project` |
 | [`requestImportUploadUrl`](#requestimportuploadurl)                       | `POST`   | `/{version}/database/imports/upload-url`                                            | `project` |
 | [`analyzeImportFile`](#analyzeimportfile)                                 | `POST`   | `/{version}/database/imports/analyze`                                               | `project` |
-| [`deleteDatabaseAggregate`](#deletedatabaseaggregate)                     | `DELETE` | `/{version}/database/aggregates/{Id}`                                               | `project` |
-| [`getDatabaseAggregate`](#getdatabaseaggregate)                           | `GET`    | `/{version}/database/aggregates/{Id}`                                               | `project` |
-| [`getDatabaseAggregates`](#getdatabaseaggregates)                         | `GET`    | `/{version}/database/aggregates`                                                    | `project` |
-| [`saveDatabaseAggregate`](#savedatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates`                                                    | `project` |
-| [`testDatabaseAggregate`](#testdatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates/test`                                               | `project` |
 
 ## Reference
 
@@ -1535,6 +1535,118 @@ const result = await norbix.hub.database.testDatabaseIntegration({
 
 [↑ Top](#endpoints)
 
+### deleteDatabaseAggregate
+
+`DELETE` `/{version}/database/aggregates/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteDatabaseAggregateRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.deleteDatabaseAggregate({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getDatabaseAggregate
+
+`GET` `/{version}/database/aggregates/{Id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetDatabaseAggregate`
+**Response**: `CodeMashHub2.GetDatabaseAggregateResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getDatabaseAggregate({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetDatabaseAggregateResponse
+```
+
+[↑ Top](#endpoints)
+
+### getDatabaseAggregates
+
+`GET` `/{version}/database/aggregates`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetDatabaseAggregates`
+**Response**: `CodeMashHub2.GetDatabaseAggregatesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getDatabaseAggregates({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetDatabaseAggregatesResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveDatabaseAggregate
+
+`POST` `/{version}/database/aggregates`
+
+Upsert an item (create or update).
+
+**Request DTO**: `CodeMashHub2.SaveDatabaseAggregateRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.saveDatabaseAggregate({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### testDatabaseAggregate
+
+`POST` `/{version}/database/aggregates/test`
+
+Run a connection / delivery test against the integration.
+
+**Request DTO**: `CodeMashHub2.TestDatabaseAggregateRequest`
+**Response**: `CodeMashHub2.TestDatabaseAggregateResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.testDatabaseAggregate({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.TestDatabaseAggregateResponse
+```
+
+[↑ Top](#endpoints)
+
 ### createCollectionImport
 
 `POST` `/{version}/database/imports`
@@ -1661,118 +1773,6 @@ const result = await norbix.hub.database.analyzeImportFile({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.AnalyzeImportFileResponse
-```
-
-[↑ Top](#endpoints)
-
-### deleteDatabaseAggregate
-
-`DELETE` `/{version}/database/aggregates/{Id}`
-
-Delete an item.
-
-**Request DTO**: `CodeMashHub2.DeleteDatabaseAggregateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.deleteDatabaseAggregate({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getDatabaseAggregate
-
-`GET` `/{version}/database/aggregates/{Id}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetDatabaseAggregate`
-**Response**: `CodeMashHub2.GetDatabaseAggregateResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.getDatabaseAggregate({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetDatabaseAggregateResponse
-```
-
-[↑ Top](#endpoints)
-
-### getDatabaseAggregates
-
-`GET` `/{version}/database/aggregates`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetDatabaseAggregates`
-**Response**: `CodeMashHub2.GetDatabaseAggregatesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.getDatabaseAggregates({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetDatabaseAggregatesResponse
-```
-
-[↑ Top](#endpoints)
-
-### saveDatabaseAggregate
-
-`POST` `/{version}/database/aggregates`
-
-Upsert an item (create or update).
-
-**Request DTO**: `CodeMashHub2.SaveDatabaseAggregateRequest`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.saveDatabaseAggregate({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### testDatabaseAggregate
-
-`POST` `/{version}/database/aggregates/test`
-
-Run a connection / delivery test against the integration.
-
-**Request DTO**: `CodeMashHub2.TestDatabaseAggregateRequest`
-**Response**: `CodeMashHub2.TestDatabaseAggregateResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.testDatabaseAggregate({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.TestDatabaseAggregateResponse
 ```
 
 [↑ Top](#endpoints)

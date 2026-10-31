@@ -54,6 +54,17 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`verifyPasskeyRegistration`](#verifypasskeyregistration)               | `POST`   | `/{version}/membership/userauth/passkey/verify-registration`                                 | `project` |
 | [`refreshPasskeyToken`](#refreshpasskeytoken)                           | `POST`   | `/{version}/membership/userauth/token/refresh`                                               | `project` |
 | [`passkeyLogout`](#passkeylogout)                                       | `POST`   | `/{version}/membership/userauth/logout`                                                      | `project` |
+| [`setUserAiPlan`](#setuseraiplan)                                       | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                                               | `project` |
+| [`createContact`](#createcontact)                                       | `POST`   | `/{version}/membership/users`                                                                | `project` |
+| [`deleteContact`](#deletecontact)                                       | `DELETE` | `/{version}/membership/users/{contactId}`                                                    | `project` |
+| [`getContact`](#getcontact)                                             | `GET`    | `/{version}/membership/users/{contactId}`                                                    | `project` |
+| [`getAllContacts`](#getallcontacts)                                     | `GET`    | `/{version}/membership/users`                                                                | `project` |
+| [`mergeContacts`](#mergecontacts)                                       | `POST`   | `/{version}/membership/users/merge`                                                          | `project` |
+| [`repairContactRoles`](#repaircontactroles)                             | `POST`   | `/{version}/membership/users/repair-roles`                                                   | `project` |
+| [`updateContact`](#updatecontact)                                       | `PATCH`  | `/{version}/membership/users/{contactId}`                                                    | `project` |
+| [`addContactIdentity`](#addcontactidentity)                             | `POST`   | `/{version}/membership/users/{contactId}/identities`                                         | `project` |
+| [`promoteContactIdentity`](#promotecontactidentity)                     | `POST`   | `/{version}/membership/users/{contactId}/identities/{authId}/promote`                        | `project` |
+| [`removeContactIdentity`](#removecontactidentity)                       | `DELETE` | `/{version}/membership/users/{contactId}/identities/{authId}`                                | `project` |
 
 ## Reference
 
@@ -989,6 +1000,245 @@ const result = await norbix.api.membership.passkeyLogout({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.PasskeyOkResponse
+```
+
+[↑ Top](#endpoints)
+
+### setUserAiPlan
+
+`PUT` `/{version}/membership/users/{userId}/ai-plan`
+
+**Request DTO**: `CodeMashApi2.SetUserAiPlan`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.setUserAiPlan({
+  userId: 'userId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### createContact
+
+`POST` `/{version}/membership/users`
+
+Create a new item.
+
+**Request DTO**: `CodeMashApi2.CreateContactRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.createContact({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteContact
+
+`DELETE` `/{version}/membership/users/{contactId}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashApi2.DeleteContact`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.deleteContact({
+  contactId: 'contactId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getContact
+
+`GET` `/{version}/membership/users/{contactId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashApi2.GetContact`
+**Response**: `CodeMashApi2.GetContactResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.getContact({
+  contactId: 'contactId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.GetContactResponse
+```
+
+[↑ Top](#endpoints)
+
+### getAllContacts
+
+`GET` `/{version}/membership/users`
+
+List all items.
+
+**Request DTO**: `CodeMashApi2.GetAllContacts`
+**Response**: `CodeMashApi2.GetAllContactsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.getAllContacts({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.GetAllContactsResponse
+```
+
+[↑ Top](#endpoints)
+
+### mergeContacts
+
+`POST` `/{version}/membership/users/merge`
+
+**Request DTO**: `CodeMashApi2.MergeContactsRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.mergeContacts({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### repairContactRoles
+
+`POST` `/{version}/membership/users/repair-roles`
+
+**Request DTO**: `CodeMashApi2.RepairContactRolesRequest`
+**Response**: `CodeMashApi2.RepairContactRolesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.repairContactRoles({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.RepairContactRolesResponse
+```
+
+[↑ Top](#endpoints)
+
+### updateContact
+
+`PATCH` `/{version}/membership/users/{contactId}`
+
+Update an existing item.
+
+**Request DTO**: `CodeMashApi2.UpdateContactRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.updateContact({
+  contactId: 'contactId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### addContactIdentity
+
+`POST` `/{version}/membership/users/{contactId}/identities`
+
+**Request DTO**: `CodeMashApi2.AddContactIdentityRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.addContactIdentity({
+  contactId: 'contactId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### promoteContactIdentity
+
+`POST` `/{version}/membership/users/{contactId}/identities/{authId}/promote`
+
+**Request DTO**: `CodeMashApi2.PromoteContactIdentityRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.promoteContactIdentity({
+  contactId: 'contactId-here',
+  authId: 'authId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### removeContactIdentity
+
+`DELETE` `/{version}/membership/users/{contactId}/identities/{authId}`
+
+**Request DTO**: `CodeMashApi2.RemoveContactIdentityRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.removeContactIdentity({
+  contactId: 'contactId-here',
+  authId: 'authId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)

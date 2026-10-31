@@ -6,13 +6,36 @@ Accessed as `norbix.hub.triggers` on the [`Norbix`](../../README.md#authenticati
 
 ## Endpoints
 
-| Method                                                        | Verb   | Path                                        | Scope     |
-| ------------------------------------------------------------- | ------ | ------------------------------------------- | --------- |
-| [`getTriggerDefinition`](#gettriggerdefinition)               | `GET`  | `/{version}/triggers/{id}/definition`       | `project` |
-| [`getTriggersNeedingAttention`](#gettriggersneedingattention) | `GET`  | `/{version}/triggers/attention`             | `project` |
-| [`testTriggerPreExecuteCode`](#testtriggerpreexecutecode)     | `POST` | `/{version}/triggers/pre-execute-code/test` | `project` |
+| Method                                                            | Verb   | Path                                           | Scope     |
+| ----------------------------------------------------------------- | ------ | ---------------------------------------------- | --------- |
+| [`checkTriggerExecutionIdentity`](#checktriggerexecutionidentity) | `POST` | `/{version}/triggers/execution-identity/check` | `project` |
+| [`getTriggerDefinition`](#gettriggerdefinition)                   | `GET`  | `/{version}/triggers/{id}/definition`          | `project` |
+| [`getTriggersNeedingAttention`](#gettriggersneedingattention)     | `GET`  | `/{version}/triggers/attention`                | `project` |
+| [`testTriggerPreExecuteCode`](#testtriggerpreexecutecode)         | `POST` | `/{version}/triggers/pre-execute-code/test`    | `project` |
 
 ## Reference
+
+### checkTriggerExecutionIdentity
+
+`POST` `/{version}/triggers/execution-identity/check`
+
+Run a runtime check.
+
+**Request DTO**: `CodeMashHub2.CheckTriggerExecutionIdentityRequest`
+**Response**: `CodeMashHub2.CheckTriggerExecutionIdentityResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.triggers.checkTriggerExecutionIdentity({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.CheckTriggerExecutionIdentityResponse
+```
+
+[↑ Top](#endpoints)
 
 ### getTriggerDefinition
 

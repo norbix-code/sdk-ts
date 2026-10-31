@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-28 21:06:31
+Date: 2026-10-31 09:06:07
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -191,6 +191,7 @@ export module CodeMashHub2 {
     AccountUsers = 'AccountUsers',
     Email = 'Email',
     Collection = 'Collection',
+    TriggerSubject = 'TriggerSubject',
   }
 
   export enum TokenMappingResolverType {
@@ -374,6 +375,7 @@ export module CodeMashHub2 {
     public order?: number;
     public breakOnError: boolean;
     public action: TriggerActionDto;
+    public executionIdentityId?: string;
 
     public constructor(init?: Partial<SaveTriggerRequest>) {
       (Object as any).assign(this, init);
@@ -2309,6 +2311,7 @@ export module CodeMashHub2 {
     Collection = 'Collection',
     Devices = 'Devices',
     AccountUsers = 'AccountUsers',
+    TriggerSubject = 'TriggerSubject',
   }
 
   // @DataContract
@@ -2458,6 +2461,7 @@ export module CodeMashHub2 {
     AccountUsers = 'AccountUsers',
     PhoneNumbers = 'PhoneNumbers',
     Collection = 'Collection',
+    TriggerSubject = 'TriggerSubject',
   }
 
   // @DataContract
@@ -2943,6 +2947,54 @@ export module CodeMashHub2 {
     public phoneNumbers: string[] = [];
 
     public constructor(init?: Partial<SmsToPhoneNumbersDeliverySettingsDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailToTriggerSubjectDeliverySettingsDto extends EmailCampaignDeliverySettingsDto {
+    // @DataMember
+    public subjectAuthId?: string;
+
+    // @DataMember
+    public subjectEmail?: string;
+
+    // @DataMember
+    public subjectLanguage?: string;
+
+    public constructor(init?: Partial<EmailToTriggerSubjectDeliverySettingsDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushToTriggerSubjectDeliverySettingsDto extends PushCampaignDeliverySettingsDto {
+    // @DataMember
+    public subjectAuthId?: string;
+
+    // @DataMember
+    public subjectLanguage?: string;
+
+    public constructor(init?: Partial<PushToTriggerSubjectDeliverySettingsDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsToTriggerSubjectDeliverySettingsDto extends SmsCampaignDeliverySettingsDto {
+    // @DataMember
+    public subjectAuthId?: string;
+
+    // @DataMember
+    public subjectPhone?: string;
+
+    // @DataMember
+    public subjectLanguage?: string;
+
+    public constructor(init?: Partial<SmsToTriggerSubjectDeliverySettingsDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -4249,6 +4301,25 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class ExecutionIdentitySummaryDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public isDefault: boolean;
+
+    // @DataMember
+    public status: string;
+
+    public constructor(init?: Partial<ExecutionIdentitySummaryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class SchedulerTaskDto {
     // @DataMember
     public projectId: string;
@@ -4291,6 +4362,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public endsAtUnix?: number;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentity?: ExecutionIdentitySummaryDto;
 
     // @DataMember
     public hasEnded: boolean;
@@ -6572,24 +6649,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class ImportColumnMappingDto {
-    // @DataMember
-    public csvColumnIndex: number;
-
-    // @DataMember
-    public csvHeader?: string;
-
-    // @DataMember
-    public propertyName?: string;
-
-    // @DataMember
-    public dontImportOnError: boolean;
-
-    public constructor(init?: Partial<ImportColumnMappingDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export enum EmailValidationProvider {
     ZeroBounce = 1,
@@ -6989,6 +7048,24 @@ export module CodeMashHub2 {
     }
   }
 
+  export class ImportColumnMappingDto {
+    // @DataMember
+    public csvColumnIndex: number;
+
+    // @DataMember
+    public csvHeader?: string;
+
+    // @DataMember
+    public propertyName?: string;
+
+    // @DataMember
+    public dontImportOnError: boolean;
+
+    public constructor(init?: Partial<ImportColumnMappingDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export enum CaseResolutionFixKind {
     CodeFix = 'CodeFix',
     ConfigChange = 'ConfigChange',
@@ -7156,6 +7233,19 @@ export module CodeMashHub2 {
     public assistants: PublicAiAssistantDto[] = [];
 
     public constructor(init?: Partial<PublicAiChatDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ExecutionIdentityRefusalDto {
+    // @DataMember
+    public errorCode: string;
+
+    // @DataMember
+    public message: string;
+
+    public constructor(init?: Partial<ExecutionIdentityRefusalDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -7762,6 +7852,19 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class ProjectEnvironmentExecutionIdentityDto {
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public userId: string;
+
+    public constructor(init?: Partial<ProjectEnvironmentExecutionIdentityDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AuthenticationFlowPasswordPolicyDto {
     // @DataMember
     public minLength: number;
@@ -7910,6 +8013,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public savedByAuthId?: string;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentity?: ExecutionIdentitySummaryDto;
 
     public constructor(init?: Partial<TriggerDto>) {
       (Object as any).assign(this, init);
@@ -8283,6 +8392,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public environmentAdminUrls?: ProjectEnvironmentAdminUrlDto[];
+
+    // @DataMember
+    public defaultExecutionIdentities?: ProjectEnvironmentExecutionIdentityDto[];
 
     // @DataMember
     public exposeBrandToAdminPortal: boolean;
@@ -9256,6 +9368,9 @@ export module CodeMashHub2 {
     // @DataMember
     public breakOnError: boolean;
 
+    // @DataMember
+    public executionIdentityId?: string;
+
     public constructor(init?: Partial<TriggerProjectionList>) {
       (Object as any).assign(this, init);
     }
@@ -9324,6 +9439,50 @@ export module CodeMashHub2 {
 
     public constructor(init?: Partial<MembershipIntegrationListProjection>) {
       super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ExecutionIdentityUsageDto {
+    // @DataMember
+    public triggers: number;
+
+    // @DataMember
+    public tasks: number;
+
+    // @DataMember
+    public workflows: number;
+
+    public constructor(init?: Partial<ExecutionIdentityUsageDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ExecutionIdentityDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public name: string;
+
+    // @DataMember
+    public isDefault: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public roleIds: string[] = [];
+
+    // @DataMember
+    public canAssign: boolean;
+
+    // @DataMember
+    public usedBy: ExecutionIdentityUsageDto;
+
+    public constructor(init?: Partial<ExecutionIdentityDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10163,121 +10322,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @DataContract
-  export class SchemaRefDto {
-    // @DataMember(Order=1)
-    public schemaId: string;
-
-    // @DataMember(Order=2)
-    public schemaName: string;
-
-    // @DataMember(Order=3)
-    public databaseIntegrationId: string;
-
-    public constructor(init?: Partial<SchemaRefDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class CollectionImportDto {
-    // @DataMember
-    public id: string;
-
-    // @DataMember
-    public schema: SchemaRefDto;
-
-    // @DataMember
-    public file: FileResourceRefDto;
-
-    // @DataMember
-    public errorFile?: FileResourceRefDto;
-
-    // @DataMember
-    public delimiter: string;
-
-    // @DataMember
-    public hasHeader: boolean;
-
-    // @DataMember
-    public status: string;
-
-    // @DataMember
-    public totalRows: number;
-
-    // @DataMember
-    public totalImported: number;
-
-    // @DataMember
-    public totalErrors: number;
-
-    // @DataMember
-    public failureReason?: string;
-
-    // @DataMember
-    public mapping?: ImportColumnMappingDto[];
-
-    // @DataMember
-    public createdOn: string;
-
-    // @DataMember
-    public startedOn?: string;
-
-    // @DataMember
-    public completedOn?: string;
-
-    public constructor(init?: Partial<CollectionImportDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ImportUploadTargetDto {
-    // @DataMember
-    public url: string;
-
-    // @DataMember
-    public contentType: string;
-
-    // @DataMember
-    public file: FileResourceRefDto;
-
-    public constructor(init?: Partial<ImportUploadTargetDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ImportFileColumnDto {
-    // @DataMember
-    public index: number;
-
-    // @DataMember
-    public header: string;
-
-    // @DataMember
-    public samples: string[] = [];
-
-    // @DataMember
-    public detectedType: string;
-
-    public constructor(init?: Partial<ImportFileColumnDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class ImportFileAnalysisDto {
-    // @DataMember
-    public file: FileResourceRefDto;
-
-    // @DataMember
-    public columns: ImportFileColumnDto[] = [];
-
-    // @DataMember
-    public sampleRowCount: number;
-
-    public constructor(init?: Partial<ImportFileAnalysisDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class MongoDbAggregateListProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -10323,25 +10367,6 @@ export module CodeMashHub2 {
     public content: string;
 
     public constructor(init?: Partial<KeylessIntegrationSetupTemplate>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PublicFolderDto {
-    // @DataMember(Order=1)
-    public path: string;
-
-    // @DataMember(Order=2)
-    public publicId: string;
-
-    // @DataMember(Order=3)
-    public publicUrl?: string;
-
-    // @DataMember(Order=4)
-    public inherited: boolean;
-
-    public constructor(init?: Partial<PublicFolderDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10588,447 +10613,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export enum CampaignStatus {
-    Pending = 'Pending',
-    Registered = 'Registered',
-    Scheduled = 'Scheduled',
-    Started = 'Started',
-    Stopped = 'Stopped',
-    Processing = 'Processing',
-    Completed = 'Completed',
-    Failed = 'Failed',
-  }
-
-  export class CampaignStatusChangeEntryDto {
-    public time: string;
-    public status: CampaignStatus;
-    public errors?: ErrorDto[];
-
-    public constructor(init?: Partial<CampaignStatusChangeEntryDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class CampaignDto implements IHasResponsibleUserId, IHasDatabaseId {
-    // @DataMember
-    public viewId: string;
-
-    // @DataMember
-    public createdOn: string;
-
-    // @DataMember
-    public language: string;
-
-    // @DataMember
-    public forceCampaignLanguage: boolean;
-
-    // @DataMember
-    public campaignProcessingIntegrationId?: string;
-
-    // @DataMember
-    public statusHistory: CampaignStatusChangeEntryDto[] = [];
-
-    // @DataMember
-    public status?: CampaignStatusChangeEntryDto;
-
-    // @DataMember
-    public tokenMappingValues?: TokenMappingDto[];
-
-    // @DataMember
-    public notes?: string;
-
-    // @DataMember
-    public createdById?: string;
-
-    // @DataMember
-    public timeZoneId?: string;
-
-    // @DataMember
-    public userId: string;
-
-    // @DataMember
-    public id?: string;
-
-    public constructor(init?: Partial<CampaignDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailCampaignDto extends CampaignDto {
-    // @DataMember
-    public deliverySettings: EmailCampaignDeliverySettingsDto;
-
-    // @DataMember
-    public template: EmailTemplateDto;
-
-    // @DataMember
-    public validationIntegrationId?: string;
-
-    // @DataMember
-    public templateIsSystem: boolean;
-
-    public constructor(init?: Partial<EmailCampaignDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailCampaignListProjection {
-    // @DataMember
-    public viewId: string;
-
-    // @DataMember
-    public templateName: string;
-
-    // @DataMember
-    public templateId: string;
-
-    // @DataMember
-    public integrationId?: string;
-
-    // @DataMember
-    public language: string;
-
-    // @DataMember
-    public strategy: string;
-
-    // @DataMember
-    public latestStatus?: CampaignStatus;
-
-    // @DataMember
-    public createdOn: string;
-
-    public constructor(init?: Partial<EmailCampaignListProjection>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export enum CampaignBatchStatus {
-    Registered = 'Registered',
-    Processing = 'Processing',
-    Completed = 'Completed',
-    Failed = 'Failed',
-  }
-
-  export class BatchStatusChangeEntryDto {
-    public time: string;
-    public status: CampaignBatchStatus;
-    public errors?: ErrorDto[];
-
-    public constructor(init?: Partial<BatchStatusChangeEntryDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class CampaignBatchDto implements IHasDatabaseId {
-    // @DataMember
-    public campaignId: string;
-
-    // @DataMember
-    public batchId: string;
-
-    // @DataMember
-    public startAfter?: string;
-
-    // @DataMember
-    public statusHistory: BatchStatusChangeEntryDto[] = [];
-
-    // @DataMember
-    public id: string;
-
-    public constructor(init?: Partial<CampaignBatchDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailRecipientDto {
-    // @DataMember
-    public emailAddress: string;
-
-    // @DataMember
-    public language?: string;
-
-    // @DataMember
-    public timeZoneId?: string;
-
-    // @DataMember
-    public userTokenMappings?: TokenMappingDto[];
-
-    public constructor(init?: Partial<EmailRecipientDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailRecipientsDto {
-    // @DataMember
-    public to?: EmailRecipientDto[];
-
-    // @DataMember
-    public cc?: EmailRecipientDto[];
-
-    // @DataMember
-    public bcc?: EmailRecipientDto[];
-
-    // @DataMember
-    public startingAfter?: string;
-
-    // @DataMember
-    public hasMore: boolean;
-
-    public constructor(init?: Partial<EmailRecipientsDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailCampaignBatchDto extends CampaignBatchDto {
-    // @DataMember
-    public recipients?: EmailRecipientsDto;
-
-    public constructor(init?: Partial<EmailCampaignBatchDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export enum CampaignNotificationStatus {
-    Completed = 'Completed',
-    BlockedByUserPreferenceBlockAll = 'BlockedByUserPreferenceBlockAll',
-    BlockedByUserPreferenceBlockByTag = 'BlockedByUserPreferenceBlockByTag',
-    Failed = 'Failed',
-    Viewed = 'Viewed',
-    Clicked = 'Clicked',
-    BlockedByValidation = 'BlockedByValidation',
-  }
-
-  export class NotificationStatusChangeEntryDto {
-    public time: string;
-    public status: CampaignNotificationStatus;
-    public sourceId?: string;
-    public errors?: ErrorDto[];
-    public tags?: string[];
-
-    public constructor(init?: Partial<NotificationStatusChangeEntryDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export enum NotificationDeliveryState {
-    Pending = 'Pending',
-    Sending = 'Sending',
-    Retrying = 'Retrying',
-    Accepted = 'Accepted',
-    Failed = 'Failed',
-    Blocked = 'Blocked',
-    Cancelled = 'Cancelled',
-  }
-
-  export enum NotificationAttemptOutcome {
-    Accepted = 'Accepted',
-    Failed = 'Failed',
-  }
-
-  export enum SendErrorCategory {
-    Unknown = 'Unknown',
-    Transient = 'Transient',
-    Permanent = 'Permanent',
-    Ambiguous = 'Ambiguous',
-  }
-
-  export enum NotificationAttemptTrigger {
-    Initial = 'Initial',
-    AutoRetry = 'AutoRetry',
-    ManualRetry = 'ManualRetry',
-  }
-
-  // @DataContract
-  export class NotificationAttemptDto {
-    // @DataMember
-    public attemptId: string;
-
-    // @DataMember
-    public number: number;
-
-    // @DataMember
-    public startedAt: string;
-
-    // @DataMember
-    public finishedAt?: string;
-
-    // @DataMember
-    public outcome: NotificationAttemptOutcome;
-
-    // @DataMember
-    public category?: SendErrorCategory;
-
-    // @DataMember
-    public statusCode?: number;
-
-    // @DataMember
-    public errorCode?: string;
-
-    // @DataMember
-    public message?: string;
-
-    // @DataMember
-    public providerRef?: string;
-
-    // @DataMember
-    public retryAfterSeconds?: number;
-
-    // @DataMember
-    public exhausted?: boolean;
-
-    // @DataMember
-    public nextRetryAt?: string;
-
-    // @DataMember
-    public correlationId?: string;
-
-    // @DataMember
-    public trigger: NotificationAttemptTrigger;
-
-    // @DataMember
-    public retryRequestId?: string;
-
-    public constructor(init?: Partial<NotificationAttemptDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export enum DeliveryEventOutcome {
-    Delivered = 'Delivered',
-    Bounced = 'Bounced',
-    Complained = 'Complained',
-    Rejected = 'Rejected',
-    Deferred = 'Deferred',
-  }
-
-  // @DataContract
-  export class NotificationDeliveryEventDto {
-    // @DataMember
-    public eventId?: string;
-
-    // @DataMember
-    public outcome: DeliveryEventOutcome;
-
-    // @DataMember
-    public at: string;
-
-    // @DataMember
-    public provider: string;
-
-    // @DataMember
-    public providerRef?: string;
-
-    // @DataMember
-    public reason?: string;
-
-    public constructor(init?: Partial<NotificationDeliveryEventDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class CampaignBatchNotificationDto implements IHasDatabaseId {
-    // @DataMember
-    public campaignId: string;
-
-    // @DataMember
-    public batchId: string;
-
-    // @DataMember
-    public notificationId: string;
-
-    // @DataMember
-    public refNotificationId?: string;
-
-    // @DataMember
-    public body?: string;
-
-    // @DataMember
-    public model?: { [index: string]: string };
-
-    // @DataMember
-    public statusHistory: NotificationStatusChangeEntryDto[] = [];
-
-    // @DataMember
-    public state?: NotificationDeliveryState;
-
-    // @DataMember
-    public stateChangedAt?: string;
-
-    // @DataMember
-    public attempts?: NotificationAttemptDto[];
-
-    // @DataMember
-    public deliveryEvents?: NotificationDeliveryEventDto[];
-
-    // @DataMember
-    public deliveryOutcome?: DeliveryEventOutcome;
-
-    // @DataMember
-    public deliveryOutcomeRank?: number;
-
-    // @DataMember
-    public id: string;
-
-    public constructor(init?: Partial<CampaignBatchNotificationDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class EmailCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
-    // @DataMember
-    public subject?: string;
-
-    // @DataMember
-    public recipients: EmailRecipientsDto;
-
-    // @DataMember
-    public content?: EmailMessageContentDto;
-
-    // @DataMember
-    public transactionalKind?: string;
-
-    public constructor(init?: Partial<EmailCampaignBatchNotificationDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class CampaignStatsDto {
-    // @DataMember
-    public batches: number;
-
-    // @DataMember
-    public sent: number;
-
-    // @DataMember
-    public failed: number;
-
-    // @DataMember
-    public failedRetryable: number;
-
-    // @DataMember
-    public cancelled: number;
-
-    // @DataMember
-    public successRate: number;
-
-    public constructor(init?: Partial<CampaignStatsDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   // @DataContract
   export class SmsTemplateListProjection extends TemplateListProjection {
     // @DataMember
@@ -11051,86 +10635,6 @@ export module CodeMashHub2 {
     public provider: SmsProvider;
 
     public constructor(init?: Partial<SmsIntegrationListProjection>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class SmsCampaignDto extends CampaignDto {
-    // @DataMember
-    public recipients: SmsCampaignDeliverySettingsDto;
-
-    // @DataMember
-    public template: SmsTemplateDto;
-
-    public constructor(init?: Partial<SmsCampaignDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class SmsRecipientDto {
-    // @DataMember
-    public phoneNumber: string;
-
-    // @DataMember
-    public userId: string;
-
-    // @DataMember
-    public language?: string;
-
-    // @DataMember
-    public userTokenMappings?: TokenMappingDto[];
-
-    // @DataMember
-    public timeZoneId?: string;
-
-    // @DataMember
-    public record?: string;
-
-    public constructor(init?: Partial<SmsRecipientDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class SmsRecipientsDto {
-    // @DataMember
-    public to?: SmsRecipientDto[];
-
-    // @DataMember
-    public startingAfter?: string;
-
-    // @DataMember
-    public hasMore: boolean;
-
-    public constructor(init?: Partial<SmsRecipientsDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class SmsCampaignBatchDto extends CampaignBatchDto {
-    // @DataMember
-    public recipients: SmsRecipientsDto;
-
-    public constructor(init?: Partial<SmsCampaignBatchDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class SmsCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
-    // @DataMember
-    public recipients: SmsRecipientsDto;
-
-    // @DataMember
-    public content?: SmsMessageContentDto;
-
-    public constructor(init?: Partial<SmsCampaignBatchNotificationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -11578,95 +11082,6 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class WorkflowRunListProjection {
-    // @DataMember
-    public runId: string;
-
-    // @DataMember
-    public workflowId: string;
-
-    // @DataMember
-    public version?: number;
-
-    // @DataMember
-    public isDraft: boolean;
-
-    // @DataMember
-    public status: string;
-
-    // @DataMember
-    public source: string;
-
-    // @DataMember
-    public startedAt: string;
-
-    // @DataMember
-    public finishedAt?: string;
-
-    // @DataMember
-    public durationMs?: number;
-
-    // @DataMember
-    public currentStepIds: string[] = [];
-
-    // @DataMember
-    public waitingOn: WorkflowWaitingOnDto[] = [];
-
-    // @DataMember
-    public error?: WorkflowRunErrorDto;
-
-    public constructor(init?: Partial<WorkflowRunListProjection>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class TenantLogEntryDto {
-    // @DataMember
-    public id: string;
-
-    // @DataMember
-    public timestamp: string;
-
-    // @DataMember
-    public module: string;
-
-    // @DataMember
-    public level: string;
-
-    // @DataMember
-    public eventCode: string;
-
-    // @DataMember
-    public title: string;
-
-    // @DataMember
-    public message: string;
-
-    // @DataMember
-    public correlationId?: string;
-
-    // @DataMember
-    public traceId?: string;
-
-    // @DataMember
-    public spanId?: string;
-
-    // @DataMember
-    public env: string;
-
-    // @DataMember
-    public origin: string;
-
-    // @DataMember
-    public meta?: IReadOnlyDictionary<string, string>;
-
-    public constructor(init?: Partial<TenantLogEntryDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
   export class MarketplaceListingProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -12101,6 +11516,95 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowRunListProjection {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public currentStepIds: string[] = [];
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    public constructor(init?: Partial<WorkflowRunListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TenantLogEntryDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public timestamp: string;
+
+    // @DataMember
+    public module: string;
+
+    // @DataMember
+    public level: string;
+
+    // @DataMember
+    public eventCode: string;
+
+    // @DataMember
+    public title: string;
+
+    // @DataMember
+    public message: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public traceId?: string;
+
+    // @DataMember
+    public spanId?: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public origin: string;
+
+    // @DataMember
+    public meta?: IReadOnlyDictionary<string, string>;
+
+    public constructor(init?: Partial<TenantLogEntryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class PushTemplateListProjection extends TemplateListProjection {
     // @DataMember
     public languages: string[] = [];
@@ -12203,124 +11707,6 @@ export module CodeMashHub2 {
     public ownerEmail?: string;
 
     public constructor(init?: Partial<TeamPushDeviceListProjection>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushAudienceCountDto {
-    // @DataMember
-    public devices: number;
-
-    // @DataMember
-    public recipients: number;
-
-    // @DataMember
-    public skippedUserIds: number;
-
-    // @DataMember
-    public isCapped: boolean;
-
-    public constructor(init?: Partial<PushAudienceCountDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushCampaignDto extends CampaignDto {
-    // @DataMember
-    public recipients: PushCampaignDeliverySettingsDto;
-
-    // @DataMember
-    public template: PushTemplateDto;
-
-    public constructor(init?: Partial<PushCampaignDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushRecipientDto {
-    // @DataMember
-    public deviceTokens: PushDeviceDeliveryTokenDto[] = [];
-
-    // @DataMember
-    public userId: string;
-
-    // @DataMember
-    public language?: string;
-
-    // @DataMember
-    public userTokenMappings?: TokenMappingDto[];
-
-    // @DataMember
-    public timeZoneId?: string;
-
-    // @DataMember
-    public record?: string;
-
-    public constructor(init?: Partial<PushRecipientDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushRecipientsDto {
-    // @DataMember
-    public to?: PushRecipientDto[];
-
-    // @DataMember
-    public startingAfter?: string;
-
-    // @DataMember
-    public hasMore: boolean;
-
-    public constructor(init?: Partial<PushRecipientsDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushCampaignBatchDto extends CampaignBatchDto {
-    // @DataMember
-    public recipients: PushRecipientsDto;
-
-    public constructor(init?: Partial<PushCampaignBatchDto>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class NotificationReadMarkDto {
-    // @DataMember
-    public userId: string;
-
-    // @DataMember
-    public readAtUtc: string;
-
-    public constructor(init?: Partial<NotificationReadMarkDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class PushCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
-    // @DataMember
-    public subject?: string;
-
-    // @DataMember
-    public recipients: PushRecipientsDto;
-
-    // @DataMember
-    public content?: PushMessageContentDto;
-
-    // @DataMember
-    public readBy?: NotificationReadMarkDto[];
-
-    public constructor(init?: Partial<PushCampaignBatchNotificationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -13150,6 +12536,9 @@ export module CodeMashHub2 {
     public hasEnded: boolean;
 
     // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
     public viewId: string;
 
     public constructor(init?: Partial<SchedulerTaskListProjection>) {
@@ -13335,6 +12724,858 @@ export module CodeMashHub2 {
     public legacyRoleNamesIgnored: number;
 
     public constructor(init?: Partial<ContactRolesRepairDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PublicFolderDto {
+    // @DataMember(Order=1)
+    public path: string;
+
+    // @DataMember(Order=2)
+    public publicId: string;
+
+    // @DataMember(Order=3)
+    public publicUrl?: string;
+
+    // @DataMember(Order=4)
+    public inherited: boolean;
+
+    public constructor(init?: Partial<PublicFolderDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SchemaRefDto {
+    // @DataMember(Order=1)
+    public schemaId: string;
+
+    // @DataMember(Order=2)
+    public schemaName: string;
+
+    // @DataMember(Order=3)
+    public databaseIntegrationId: string;
+
+    public constructor(init?: Partial<SchemaRefDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class CollectionImportDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public schema: SchemaRefDto;
+
+    // @DataMember
+    public file: FileResourceRefDto;
+
+    // @DataMember
+    public errorFile?: FileResourceRefDto;
+
+    // @DataMember
+    public delimiter: string;
+
+    // @DataMember
+    public hasHeader: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public totalRows: number;
+
+    // @DataMember
+    public totalImported: number;
+
+    // @DataMember
+    public totalErrors: number;
+
+    // @DataMember
+    public failureReason?: string;
+
+    // @DataMember
+    public mapping?: ImportColumnMappingDto[];
+
+    // @DataMember
+    public createdOn: string;
+
+    // @DataMember
+    public startedOn?: string;
+
+    // @DataMember
+    public completedOn?: string;
+
+    public constructor(init?: Partial<CollectionImportDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ImportUploadTargetDto {
+    // @DataMember
+    public url: string;
+
+    // @DataMember
+    public contentType: string;
+
+    // @DataMember
+    public file: FileResourceRefDto;
+
+    public constructor(init?: Partial<ImportUploadTargetDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ImportFileColumnDto {
+    // @DataMember
+    public index: number;
+
+    // @DataMember
+    public header: string;
+
+    // @DataMember
+    public samples: string[] = [];
+
+    // @DataMember
+    public detectedType: string;
+
+    public constructor(init?: Partial<ImportFileColumnDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class ImportFileAnalysisDto {
+    // @DataMember
+    public file: FileResourceRefDto;
+
+    // @DataMember
+    public columns: ImportFileColumnDto[] = [];
+
+    // @DataMember
+    public sampleRowCount: number;
+
+    public constructor(init?: Partial<ImportFileAnalysisDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CampaignStatus {
+    Pending = 'Pending',
+    Registered = 'Registered',
+    Scheduled = 'Scheduled',
+    Started = 'Started',
+    Stopped = 'Stopped',
+    Processing = 'Processing',
+    Completed = 'Completed',
+    Failed = 'Failed',
+  }
+
+  export class CampaignStatusChangeEntryDto {
+    public time: string;
+    public status: CampaignStatus;
+    public errors?: ErrorDto[];
+
+    public constructor(init?: Partial<CampaignStatusChangeEntryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CampaignOutcomeDto {
+    // @DataMember
+    public sent: number;
+
+    // @DataMember
+    public failed: number;
+
+    // @DataMember
+    public blocked: number;
+
+    // @DataMember
+    public cancelled: number;
+
+    // @DataMember
+    public removedRecipients: number;
+
+    // @DataMember
+    public blockedReason?: string;
+
+    public constructor(init?: Partial<CampaignOutcomeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CampaignDto implements IHasResponsibleUserId, IHasDatabaseId {
+    // @DataMember
+    public viewId: string;
+
+    // @DataMember
+    public createdOn: string;
+
+    // @DataMember
+    public language: string;
+
+    // @DataMember
+    public forceCampaignLanguage: boolean;
+
+    // @DataMember
+    public campaignProcessingIntegrationId?: string;
+
+    // @DataMember
+    public statusHistory: CampaignStatusChangeEntryDto[] = [];
+
+    // @DataMember
+    public status?: CampaignStatusChangeEntryDto;
+
+    // @DataMember
+    public tokenMappingValues?: TokenMappingDto[];
+
+    // @DataMember
+    public notes?: string;
+
+    // @DataMember
+    public createdById?: string;
+
+    // @DataMember
+    public timeZoneId?: string;
+
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public triggerType?: TriggerType;
+
+    // @DataMember
+    public outcome?: CampaignOutcomeDto;
+
+    // @DataMember
+    public id?: string;
+
+    public constructor(init?: Partial<CampaignDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailCampaignDto extends CampaignDto {
+    // @DataMember
+    public deliverySettings: EmailCampaignDeliverySettingsDto;
+
+    // @DataMember
+    public template: EmailTemplateDto;
+
+    // @DataMember
+    public validationIntegrationId?: string;
+
+    // @DataMember
+    public templateIsSystem: boolean;
+
+    public constructor(init?: Partial<EmailCampaignDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailCampaignListProjection {
+    // @DataMember
+    public viewId: string;
+
+    // @DataMember
+    public templateName: string;
+
+    // @DataMember
+    public templateId: string;
+
+    // @DataMember
+    public integrationId?: string;
+
+    // @DataMember
+    public language: string;
+
+    // @DataMember
+    public strategy: string;
+
+    // @DataMember
+    public latestStatus?: CampaignStatus;
+
+    // @DataMember
+    public createdOn: string;
+
+    // @DataMember
+    public outcome?: CampaignOutcomeDto;
+
+    public constructor(init?: Partial<EmailCampaignListProjection>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CampaignBatchStatus {
+    Registered = 'Registered',
+    Processing = 'Processing',
+    Completed = 'Completed',
+    Failed = 'Failed',
+  }
+
+  export class BatchStatusChangeEntryDto {
+    public time: string;
+    public status: CampaignBatchStatus;
+    public errors?: ErrorDto[];
+
+    public constructor(init?: Partial<BatchStatusChangeEntryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CampaignBatchDto implements IHasDatabaseId {
+    // @DataMember
+    public campaignId: string;
+
+    // @DataMember
+    public batchId: string;
+
+    // @DataMember
+    public startAfter?: string;
+
+    // @DataMember
+    public statusHistory: BatchStatusChangeEntryDto[] = [];
+
+    // @DataMember
+    public id: string;
+
+    public constructor(init?: Partial<CampaignBatchDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailRecipientDto {
+    // @DataMember
+    public emailAddress: string;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public timeZoneId?: string;
+
+    // @DataMember
+    public userTokenMappings?: TokenMappingDto[];
+
+    public constructor(init?: Partial<EmailRecipientDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailRecipientsDto {
+    // @DataMember
+    public to?: EmailRecipientDto[];
+
+    // @DataMember
+    public cc?: EmailRecipientDto[];
+
+    // @DataMember
+    public bcc?: EmailRecipientDto[];
+
+    // @DataMember
+    public startingAfter?: string;
+
+    // @DataMember
+    public hasMore: boolean;
+
+    public constructor(init?: Partial<EmailRecipientsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailCampaignBatchDto extends CampaignBatchDto {
+    // @DataMember
+    public recipients?: EmailRecipientsDto;
+
+    public constructor(init?: Partial<EmailCampaignBatchDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum CampaignNotificationStatus {
+    Completed = 'Completed',
+    BlockedByUserPreferenceBlockAll = 'BlockedByUserPreferenceBlockAll',
+    BlockedByUserPreferenceBlockByTag = 'BlockedByUserPreferenceBlockByTag',
+    Failed = 'Failed',
+    Viewed = 'Viewed',
+    Clicked = 'Clicked',
+    BlockedByValidation = 'BlockedByValidation',
+  }
+
+  export class NotificationStatusChangeEntryDto {
+    public time: string;
+    public status: CampaignNotificationStatus;
+    public sourceId?: string;
+    public errors?: ErrorDto[];
+    public tags?: string[];
+
+    public constructor(init?: Partial<NotificationStatusChangeEntryDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum NotificationDeliveryState {
+    Pending = 'Pending',
+    Sending = 'Sending',
+    Retrying = 'Retrying',
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+    Blocked = 'Blocked',
+    Cancelled = 'Cancelled',
+  }
+
+  export enum NotificationAttemptOutcome {
+    Accepted = 'Accepted',
+    Failed = 'Failed',
+  }
+
+  export enum SendErrorCategory {
+    Unknown = 'Unknown',
+    Transient = 'Transient',
+    Permanent = 'Permanent',
+    Ambiguous = 'Ambiguous',
+  }
+
+  export enum NotificationAttemptTrigger {
+    Initial = 'Initial',
+    AutoRetry = 'AutoRetry',
+    ManualRetry = 'ManualRetry',
+  }
+
+  // @DataContract
+  export class NotificationAttemptDto {
+    // @DataMember
+    public attemptId: string;
+
+    // @DataMember
+    public number: number;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public outcome: NotificationAttemptOutcome;
+
+    // @DataMember
+    public category?: SendErrorCategory;
+
+    // @DataMember
+    public statusCode?: number;
+
+    // @DataMember
+    public errorCode?: string;
+
+    // @DataMember
+    public message?: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public retryAfterSeconds?: number;
+
+    // @DataMember
+    public exhausted?: boolean;
+
+    // @DataMember
+    public nextRetryAt?: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public trigger: NotificationAttemptTrigger;
+
+    // @DataMember
+    public retryRequestId?: string;
+
+    public constructor(init?: Partial<NotificationAttemptDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum DeliveryEventOutcome {
+    Delivered = 'Delivered',
+    Bounced = 'Bounced',
+    Complained = 'Complained',
+    Rejected = 'Rejected',
+    Deferred = 'Deferred',
+  }
+
+  // @DataContract
+  export class NotificationDeliveryEventDto {
+    // @DataMember
+    public eventId?: string;
+
+    // @DataMember
+    public outcome: DeliveryEventOutcome;
+
+    // @DataMember
+    public at: string;
+
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public providerRef?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    public constructor(init?: Partial<NotificationDeliveryEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CampaignBatchNotificationDto implements IHasDatabaseId {
+    // @DataMember
+    public campaignId: string;
+
+    // @DataMember
+    public batchId: string;
+
+    // @DataMember
+    public notificationId: string;
+
+    // @DataMember
+    public refNotificationId?: string;
+
+    // @DataMember
+    public body?: string;
+
+    // @DataMember
+    public model?: { [index: string]: string };
+
+    // @DataMember
+    public statusHistory: NotificationStatusChangeEntryDto[] = [];
+
+    // @DataMember
+    public state?: NotificationDeliveryState;
+
+    // @DataMember
+    public stateChangedAt?: string;
+
+    // @DataMember
+    public attempts?: NotificationAttemptDto[];
+
+    // @DataMember
+    public deliveryEvents?: NotificationDeliveryEventDto[];
+
+    // @DataMember
+    public deliveryOutcome?: DeliveryEventOutcome;
+
+    // @DataMember
+    public deliveryOutcomeRank?: number;
+
+    // @DataMember
+    public id: string;
+
+    public constructor(init?: Partial<CampaignBatchNotificationDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export enum EmailRecipientField {
+    To = 1,
+    Cc = 2,
+    Bcc = 3,
+  }
+
+  export enum RecipientRemovalReason {
+    OptedOut = 1,
+    Compliance = 2,
+  }
+
+  // @DataContract
+  export class RemovedRecipientDto {
+    // @DataMember
+    public address: string;
+
+    // @DataMember
+    public field: EmailRecipientField;
+
+    // @DataMember
+    public reason: RecipientRemovalReason;
+
+    // @DataMember
+    public tag?: string;
+
+    public constructor(init?: Partial<RemovedRecipientDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
+    // @DataMember
+    public subject?: string;
+
+    // @DataMember
+    public recipients: EmailRecipientsDto;
+
+    // @DataMember
+    public removedRecipients?: RemovedRecipientDto[];
+
+    // @DataMember
+    public content?: EmailMessageContentDto;
+
+    // @DataMember
+    public transactionalKind?: string;
+
+    public constructor(init?: Partial<EmailCampaignBatchNotificationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CampaignStatsDto {
+    // @DataMember
+    public batches: number;
+
+    // @DataMember
+    public sent: number;
+
+    // @DataMember
+    public failed: number;
+
+    // @DataMember
+    public failedRetryable: number;
+
+    // @DataMember
+    public cancelled: number;
+
+    // @DataMember
+    public blocked: number;
+
+    // @DataMember
+    public inProgress: number;
+
+    // @DataMember
+    public removedRecipients: number;
+
+    // @DataMember
+    public successRate: number;
+
+    public constructor(init?: Partial<CampaignStatsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsCampaignDto extends CampaignDto {
+    // @DataMember
+    public recipients: SmsCampaignDeliverySettingsDto;
+
+    // @DataMember
+    public template: SmsTemplateDto;
+
+    public constructor(init?: Partial<SmsCampaignDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsRecipientDto {
+    // @DataMember
+    public phoneNumber: string;
+
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public userTokenMappings?: TokenMappingDto[];
+
+    // @DataMember
+    public timeZoneId?: string;
+
+    // @DataMember
+    public record?: string;
+
+    public constructor(init?: Partial<SmsRecipientDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsRecipientsDto {
+    // @DataMember
+    public to?: SmsRecipientDto[];
+
+    // @DataMember
+    public startingAfter?: string;
+
+    // @DataMember
+    public hasMore: boolean;
+
+    public constructor(init?: Partial<SmsRecipientsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsCampaignBatchDto extends CampaignBatchDto {
+    // @DataMember
+    public recipients: SmsRecipientsDto;
+
+    public constructor(init?: Partial<SmsCampaignBatchDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SmsCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
+    // @DataMember
+    public recipients: SmsRecipientsDto;
+
+    // @DataMember
+    public content?: SmsMessageContentDto;
+
+    public constructor(init?: Partial<SmsCampaignBatchNotificationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushAudienceCountDto {
+    // @DataMember
+    public devices: number;
+
+    // @DataMember
+    public recipients: number;
+
+    // @DataMember
+    public skippedUserIds: number;
+
+    // @DataMember
+    public isCapped: boolean;
+
+    public constructor(init?: Partial<PushAudienceCountDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushCampaignDto extends CampaignDto {
+    // @DataMember
+    public recipients: PushCampaignDeliverySettingsDto;
+
+    // @DataMember
+    public template: PushTemplateDto;
+
+    public constructor(init?: Partial<PushCampaignDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushRecipientDto {
+    // @DataMember
+    public deviceTokens: PushDeviceDeliveryTokenDto[] = [];
+
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public language?: string;
+
+    // @DataMember
+    public userTokenMappings?: TokenMappingDto[];
+
+    // @DataMember
+    public timeZoneId?: string;
+
+    // @DataMember
+    public record?: string;
+
+    public constructor(init?: Partial<PushRecipientDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushRecipientsDto {
+    // @DataMember
+    public to?: PushRecipientDto[];
+
+    // @DataMember
+    public startingAfter?: string;
+
+    // @DataMember
+    public hasMore: boolean;
+
+    public constructor(init?: Partial<PushRecipientsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushCampaignBatchDto extends CampaignBatchDto {
+    // @DataMember
+    public recipients: PushRecipientsDto;
+
+    public constructor(init?: Partial<PushCampaignBatchDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class NotificationReadMarkDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public readAtUtc: string;
+
+    public constructor(init?: Partial<NotificationReadMarkDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class PushCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
+    // @DataMember
+    public subject?: string;
+
+    // @DataMember
+    public recipients: PushRecipientsDto;
+
+    // @DataMember
+    public content?: PushMessageContentDto;
+
+    // @DataMember
+    public readBy?: NotificationReadMarkDto[];
+
+    public constructor(init?: Partial<PushCampaignBatchNotificationDto>) {
+      super(init);
       (Object as any).assign(this, init);
     }
   }
@@ -13980,6 +14221,32 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class CheckTriggerExecutionIdentityResponse extends ResponseBase {
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public isDefault: boolean;
+
+    // @DataMember
+    public canAssign: boolean;
+
+    // @DataMember
+    public missingPermissions: string[] = [];
+
+    // @DataMember
+    public callerMissingPermissions: string[] = [];
+
+    // @DataMember
+    public refusals: ExecutionIdentityRefusalDto[] = [];
+
+    public constructor(init?: Partial<CheckTriggerExecutionIdentityResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class GetTriggerDefinitionResponse extends ResponseBase {
     // @DataMember
     public trigger?: SaveTriggerRequest;
@@ -14593,6 +14860,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetExecutionIdentitiesResponse extends ResponseBase {
+    public identities: ExecutionIdentityDto[] = [];
+
+    public constructor(init?: Partial<GetExecutionIdentitiesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetAuthorizationSettingsResponse extends ResponseBase {
     public result?: MembershipAuthorizationViewDto;
 
@@ -14909,42 +15185,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class GetCollectionImportResponse extends ResponseBase {
-    public result?: CollectionImportDto;
-
-    public constructor(init?: Partial<GetCollectionImportResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetCollectionImportsResponse extends ResponseBase {
-    public result?: PaginatedResponse<CollectionImportDto>;
-
-    public constructor(init?: Partial<GetCollectionImportsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class RequestImportUploadUrlResponse extends ResponseBase {
-    public result?: ImportUploadTargetDto;
-
-    public constructor(init?: Partial<RequestImportUploadUrlResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class AnalyzeImportFileResponse extends ResponseBase {
-    public result?: ImportFileAnalysisDto;
-
-    public constructor(init?: Partial<AnalyzeImportFileResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetDatabaseAggregateResponse extends ResponseBase {
     public item?: MongoDbAggregateDto;
 
@@ -15040,34 +15280,12 @@ export module CodeMashHub2 {
     }
   }
 
-  export class GetFileResponse extends ResponseBase {
-    public file?: FileResourceRefDto;
-    public isPublic?: boolean;
-    public publicUrl?: string;
-
-    public constructor(init?: Partial<GetFileResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetFileByIdResponse extends ResponseBase {
     public file?: FileResourceRefDto;
     public isPublic?: boolean;
     public publicUrl?: string;
 
     public constructor(init?: Partial<GetFileByIdResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetFolderFilesResponse extends ResponseBase {
-    public list?: PaginatedResponse<FileResourceRefDto>;
-    public folders?: string[];
-    public publicFolders?: IList<PublicFolderDto>;
-
-    public constructor(init?: Partial<GetFolderFilesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -15247,103 +15465,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class GetEmailCampaignResponse extends ResponseBase {
-    public item?: EmailCampaignDto;
-
-    public constructor(init?: Partial<GetEmailCampaignResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignsResponse extends ResponseBase {
-    public list?: PaginatedResponse<EmailCampaignListProjection>;
-
-    public constructor(init?: Partial<GetEmailCampaignsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignBatchesResponse extends ResponseBase {
-    public list?: PaginatedResponse<EmailCampaignBatchDto>;
-
-    public constructor(init?: Partial<GetEmailCampaignBatchesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignBatchNotificationResponse extends ResponseBase {
-    public campaignNotification?: EmailCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetEmailCampaignBatchNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignBatchNotificationsResponse extends ResponseBase {
-    public batchStatusHistory?: BatchStatusChangeEntryDto[];
-    public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetEmailCampaignBatchNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignStatisticsResponse extends ResponseBase {
-    public stats?: CampaignStatsDto;
-
-    public constructor(init?: Partial<GetEmailCampaignStatisticsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PreviewEmailNotificationResponse extends ResponseBase {
-    public subject?: string;
-    public body?: string;
-
-    public constructor(init?: Partial<PreviewEmailNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class RetryFailedEmailNotificationsResponse extends ResponseBase {
-    // @DataMember
-    public retryRequestId?: string;
-
-    // @DataMember
-    public selected: number;
-
-    // @DataMember
-    public skipped?: { [index: string]: number };
-
-    // @DataMember
-    public replayed: boolean;
-
-    // @DataMember
-    public warning?: string;
-
-    public constructor(init?: Partial<RetryFailedEmailNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetEmailCampaignMessagesResponse extends ResponseBase {
-    public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetEmailCampaignMessagesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetSmsTemplateResponse extends ResponseBase {
     public item?: SmsTemplateDto;
 
@@ -15415,102 +15536,6 @@ export module CodeMashHub2 {
     public items?: IReadOnlyList<IntegrationTestResultItemDto>;
 
     public constructor(init?: Partial<TestSmsIntegrationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignResponse extends ResponseBase {
-    public smsCampaign?: SmsCampaignDto;
-
-    public constructor(init?: Partial<GetSmsCampaignResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignsResponse extends ResponseBase {
-    public list?: PaginatedResponse<SmsCampaignDto>;
-
-    public constructor(init?: Partial<GetSmsCampaignsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignBatchesResponse extends ResponseBase {
-    public list?: PaginatedResponse<SmsCampaignBatchDto>;
-
-    public constructor(init?: Partial<GetSmsCampaignBatchesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignBatchNotificationResponse extends ResponseBase {
-    public campaignNotification?: SmsCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetSmsCampaignBatchNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignBatchNotificationsResponse extends ResponseBase {
-    public batchStatusHistory?: BatchStatusChangeEntryDto[];
-    public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetSmsCampaignBatchNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignStatisticsResponse extends ResponseBase {
-    public stats?: CampaignStatsDto;
-
-    public constructor(init?: Partial<GetSmsCampaignStatisticsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PreviewSmsNotificationResponse extends ResponseBase {
-    public body?: string;
-
-    public constructor(init?: Partial<PreviewSmsNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class RetryFailedSmsNotificationsResponse extends ResponseBase {
-    // @DataMember
-    public retryRequestId?: string;
-
-    // @DataMember
-    public selected: number;
-
-    // @DataMember
-    public skipped?: { [index: string]: number };
-
-    // @DataMember
-    public replayed: boolean;
-
-    // @DataMember
-    public warning?: string;
-
-    public constructor(init?: Partial<RetryFailedSmsNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetSmsCampaignMessagesResponse extends ResponseBase {
-    public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetSmsCampaignMessagesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -15609,39 +15634,6 @@ export module CodeMashHub2 {
     public run?: WorkflowRunDto;
 
     public constructor(init?: Partial<InvokeCodeWorkflowResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunsResponse extends ResponseBase {
-    // @DataMember
-    public list?: PaginatedResponse<WorkflowRunListProjection>;
-
-    public constructor(init?: Partial<WorkflowRunsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunResponse extends ResponseBase {
-    // @DataMember
-    public run?: WorkflowRunDto;
-
-    public constructor(init?: Partial<WorkflowRunResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunLogsResponse extends ResponseBase {
-    // @DataMember
-    public list?: PaginatedResponse<TenantLogEntryDto>;
-
-    public constructor(init?: Partial<WorkflowRunLogsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -15931,6 +15923,28 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowRunsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<WorkflowRunListProjection>;
+
+    public constructor(init?: Partial<WorkflowRunsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunResponse extends ResponseBase {
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<WorkflowRunResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CodeWorkflowResumeLinkResponse extends ResponseBase {
     // @DataMember
     public runId?: string;
@@ -15963,6 +15977,17 @@ export module CodeMashHub2 {
     public expiresAt?: string;
 
     public constructor(init?: Partial<CodeWorkflowResumeLinkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunLogsResponse extends ResponseBase {
+    // @DataMember
+    public list?: PaginatedResponse<TenantLogEntryDto>;
+
+    public constructor(init?: Partial<WorkflowRunLogsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16050,113 +16075,6 @@ export module CodeMashHub2 {
     public teamDevices: TeamPushDeviceListProjection[] = [];
 
     public constructor(init?: Partial<GetPushDevicesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignAudienceCountResponse extends ResponseBase {
-    public result?: PushAudienceCountDto;
-
-    public constructor(init?: Partial<GetPushCampaignAudienceCountResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignResponse extends ResponseBase {
-    public item?: PushCampaignDto;
-
-    public constructor(init?: Partial<GetPushCampaignResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignsResponse extends ResponseBase {
-    public list?: PaginatedResponse<PushCampaignDto>;
-
-    public constructor(init?: Partial<GetPushCampaignsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignBatchesResponse extends ResponseBase {
-    public list?: PaginatedResponse<PushCampaignBatchDto>;
-
-    public constructor(init?: Partial<GetPushCampaignBatchesResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignBatchNotificationResponse extends ResponseBase {
-    public campaignNotification?: PushCampaignBatchNotificationDto;
-
-    public constructor(init?: Partial<GetPushCampaignBatchNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignBatchNotificationsResponse extends ResponseBase {
-    public batchStatusHistory?: BatchStatusChangeEntryDto[];
-    public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetPushCampaignBatchNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignStatisticsResponse extends ResponseBase {
-    public stats?: CampaignStatsDto;
-
-    public constructor(init?: Partial<GetPushCampaignStatisticsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PreviewPushNotificationResponse extends ResponseBase {
-    public title?: string;
-    public body?: string;
-    public subtitle?: string;
-
-    public constructor(init?: Partial<PreviewPushNotificationResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class RetryFailedPushNotificationsResponse extends ResponseBase {
-    // @DataMember
-    public retryRequestId?: string;
-
-    // @DataMember
-    public selected: number;
-
-    // @DataMember
-    public skipped?: { [index: string]: number };
-
-    // @DataMember
-    public replayed: boolean;
-
-    // @DataMember
-    public warning?: string;
-
-    public constructor(init?: Partial<RetryFailedPushNotificationsResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class GetPushCampaignMessagesResponse extends ResponseBase {
-    public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
-
-    public constructor(init?: Partial<GetPushCampaignMessagesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -16901,6 +16819,364 @@ export module CodeMashHub2 {
     public result?: ContactRolesRepairDto;
 
     public constructor(init?: Partial<RepairContactRolesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetFileResponse extends ResponseBase {
+    public file?: FileResourceRefDto;
+    public isPublic?: boolean;
+    public publicUrl?: string;
+
+    public constructor(init?: Partial<GetFileResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetFolderFilesResponse extends ResponseBase {
+    public list?: PaginatedResponse<FileResourceRefDto>;
+    public folders?: string[];
+    public publicFolders?: IList<PublicFolderDto>;
+
+    public constructor(init?: Partial<GetFolderFilesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCollectionImportResponse extends ResponseBase {
+    public result?: CollectionImportDto;
+
+    public constructor(init?: Partial<GetCollectionImportResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetCollectionImportsResponse extends ResponseBase {
+    public result?: PaginatedResponse<CollectionImportDto>;
+
+    public constructor(init?: Partial<GetCollectionImportsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class RequestImportUploadUrlResponse extends ResponseBase {
+    public result?: ImportUploadTargetDto;
+
+    public constructor(init?: Partial<RequestImportUploadUrlResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AnalyzeImportFileResponse extends ResponseBase {
+    public result?: ImportFileAnalysisDto;
+
+    public constructor(init?: Partial<AnalyzeImportFileResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignResponse extends ResponseBase {
+    public item?: EmailCampaignDto;
+
+    public constructor(init?: Partial<GetEmailCampaignResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignsResponse extends ResponseBase {
+    public list?: PaginatedResponse<EmailCampaignListProjection>;
+
+    public constructor(init?: Partial<GetEmailCampaignsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignBatchesResponse extends ResponseBase {
+    public list?: PaginatedResponse<EmailCampaignBatchDto>;
+
+    public constructor(init?: Partial<GetEmailCampaignBatchesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignBatchNotificationResponse extends ResponseBase {
+    public campaignNotification?: EmailCampaignBatchNotificationDto;
+
+    public constructor(init?: Partial<GetEmailCampaignBatchNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignBatchNotificationsResponse extends ResponseBase {
+    public batchStatusHistory?: BatchStatusChangeEntryDto[];
+    public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetEmailCampaignBatchNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignStatisticsResponse extends ResponseBase {
+    public stats?: CampaignStatsDto;
+
+    public constructor(init?: Partial<GetEmailCampaignStatisticsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PreviewEmailNotificationResponse extends ResponseBase {
+    public subject?: string;
+    public body?: string;
+
+    public constructor(init?: Partial<PreviewEmailNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RetryFailedEmailNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEmailCampaignMessagesResponse extends ResponseBase {
+    public list?: PaginatedResponse<EmailCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetEmailCampaignMessagesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignResponse extends ResponseBase {
+    public smsCampaign?: SmsCampaignDto;
+
+    public constructor(init?: Partial<GetSmsCampaignResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignsResponse extends ResponseBase {
+    public list?: PaginatedResponse<SmsCampaignDto>;
+
+    public constructor(init?: Partial<GetSmsCampaignsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignBatchesResponse extends ResponseBase {
+    public list?: PaginatedResponse<SmsCampaignBatchDto>;
+
+    public constructor(init?: Partial<GetSmsCampaignBatchesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignBatchNotificationResponse extends ResponseBase {
+    public campaignNotification?: SmsCampaignBatchNotificationDto;
+
+    public constructor(init?: Partial<GetSmsCampaignBatchNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignBatchNotificationsResponse extends ResponseBase {
+    public batchStatusHistory?: BatchStatusChangeEntryDto[];
+    public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetSmsCampaignBatchNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignStatisticsResponse extends ResponseBase {
+    public stats?: CampaignStatsDto;
+
+    public constructor(init?: Partial<GetSmsCampaignStatisticsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PreviewSmsNotificationResponse extends ResponseBase {
+    public body?: string;
+
+    public constructor(init?: Partial<PreviewSmsNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RetryFailedSmsNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSmsCampaignMessagesResponse extends ResponseBase {
+    public list?: PaginatedResponse<SmsCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetSmsCampaignMessagesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignAudienceCountResponse extends ResponseBase {
+    public result?: PushAudienceCountDto;
+
+    public constructor(init?: Partial<GetPushCampaignAudienceCountResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignResponse extends ResponseBase {
+    public item?: PushCampaignDto;
+
+    public constructor(init?: Partial<GetPushCampaignResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignsResponse extends ResponseBase {
+    public list?: PaginatedResponse<PushCampaignDto>;
+
+    public constructor(init?: Partial<GetPushCampaignsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignBatchesResponse extends ResponseBase {
+    public list?: PaginatedResponse<PushCampaignBatchDto>;
+
+    public constructor(init?: Partial<GetPushCampaignBatchesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignBatchNotificationResponse extends ResponseBase {
+    public campaignNotification?: PushCampaignBatchNotificationDto;
+
+    public constructor(init?: Partial<GetPushCampaignBatchNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignBatchNotificationsResponse extends ResponseBase {
+    public batchStatusHistory?: BatchStatusChangeEntryDto[];
+    public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetPushCampaignBatchNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignStatisticsResponse extends ResponseBase {
+    public stats?: CampaignStatsDto;
+
+    public constructor(init?: Partial<GetPushCampaignStatisticsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PreviewPushNotificationResponse extends ResponseBase {
+    public title?: string;
+    public body?: string;
+    public subtitle?: string;
+
+    public constructor(init?: Partial<PreviewPushNotificationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RetryFailedPushNotificationsResponse extends ResponseBase {
+    // @DataMember
+    public retryRequestId?: string;
+
+    // @DataMember
+    public selected: number;
+
+    // @DataMember
+    public skipped?: { [index: string]: number };
+
+    // @DataMember
+    public replayed: boolean;
+
+    // @DataMember
+    public warning?: string;
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetPushCampaignMessagesResponse extends ResponseBase {
+    public list?: PaginatedResponse<PushCampaignBatchNotificationDto>;
+
+    public constructor(init?: Partial<GetPushCampaignMessagesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -18065,6 +18341,9 @@ export module CodeMashHub2 {
     public typegen_249_SmsToAccountUsersDeliverySettingsDto?: SmsToAccountUsersDeliverySettingsDto;
     public typegen_101_SmsToCollectionRecordsDeliverySettingsDto?: SmsToCollectionRecordsDeliverySettingsDto;
     public typegen_102_SmsToPhoneNumbersDeliverySettingsDto?: SmsToPhoneNumbersDeliverySettingsDto;
+    public typegen_318_EmailToTriggerSubjectDeliverySettingsDto?: EmailToTriggerSubjectDeliverySettingsDto;
+    public typegen_319_PushToTriggerSubjectDeliverySettingsDto?: PushToTriggerSubjectDeliverySettingsDto;
+    public typegen_320_SmsToTriggerSubjectDeliverySettingsDto?: SmsToTriggerSubjectDeliverySettingsDto;
     public typegen_103_OpenAiLlmIntegrationDto?: OpenAiLlmIntegrationDto;
     public typegen_104_AnthropicLlmIntegrationDto?: AnthropicLlmIntegrationDto;
     public typegen_105_OllamaLlmIntegrationDto?: OllamaLlmIntegrationDto;
@@ -18359,6 +18638,44 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new PublicLegalDocumentDto();
+    }
+  }
+
+  /** @description Check a trigger action's execution identity */
+  // @Route("/{version}/triggers/execution-identity/check", "POST")
+  // @Api(Description="Check a trigger action's execution identity")
+  // @DataContract
+  export class CheckTriggerExecutionIdentityRequest
+    extends CodeMashRequestBase
+    implements IReturn<CheckTriggerExecutionIdentityResponse>
+  {
+    /** @description Which kind of trigger: Schema, Membership, Files, Payments or Ai. */
+    // @DataMember
+    // @ApiMember(Description="Which kind of trigger: Schema, Membership, Files, Payments or Ai.", IsRequired=true)
+    public triggerType: TriggerType;
+
+    /** @description The service user id (usr_…) to run as. Empty or 'default' = the env's default identity. */
+    // @DataMember
+    // @ApiMember(Description="The service user id (usr_…) to run as. Empty or 'default' = the env's default identity.")
+    public executionIdentityId?: string;
+
+    /** @description The trigger action, as on the trigger save. */
+    // @DataMember
+    // @ApiMember(Description="The trigger action, as on the trigger save.", IsRequired=true)
+    public action: TriggerActionDto;
+
+    public constructor(init?: Partial<CheckTriggerExecutionIdentityRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CheckTriggerExecutionIdentityRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CheckTriggerExecutionIdentityResponse();
     }
   }
 
@@ -22143,6 +22460,58 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Lists the execution identities (project service users) of an environment. */
+  // @Route("/{version}/membership/execution-identities", "GET")
+  // @Api(Description="Lists the execution identities (project service users) of an environment.")
+  export class GetExecutionIdentitiesRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetExecutionIdentitiesResponse>
+  {
+    public constructor(init?: Partial<GetExecutionIdentitiesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetExecutionIdentitiesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetExecutionIdentitiesResponse();
+    }
+  }
+
+  /** @description Creates an execution identity: a project service user with roles, in one call. */
+  // @Route("/{version}/membership/execution-identities", "POST")
+  // @Api(Description="Creates an execution identity: a project service user with roles, in one call.")
+  export class CreateExecutionIdentityRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    /** @description Display name of the identity, e.g. 'Orders bot'. */
+    // @ApiMember(Description="Display name of the identity, e.g. 'Orders bot'.", IsRequired=true)
+    public name: string;
+
+    /** @description Roles to give: role ids (pr_…_nr_…) or role names from GET membership/roles. */
+    // @ApiMember(Description="Roles to give: role ids (pr_…_nr_…) or role names from GET membership/roles.")
+    public roleIds: string[] = [];
+
+    public constructor(init?: Partial<CreateExecutionIdentityRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateExecutionIdentityRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
   /** @description Gets the project's membership authorization (role-assignment) settings. */
   // @Route("/{version}/membership/authorization", "GET")
   // @Api(Description="Gets the project's membership authorization (role-assignment) settings.")
@@ -24339,188 +24708,6 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Database */
-  // @Route("/{version}/database/imports", "POST")
-  // @Api(Description="Database")
-  export class CreateCollectionImport extends CodeMashRequestBase implements IReturn<IdResponse> {
-    /** @description The uploaded CSV's file ref, from the upload call. */
-    // @ApiMember(Description="The uploaded CSV's file ref, from the upload call.", IsRequired=true)
-    public file: FileResourceRefDto;
-
-    /** @description The target schema id. */
-    // @ApiMember(Description="The target schema id.", IsRequired=true)
-    public schemaId: string;
-
-    /** @description The target collection (schema) name. */
-    // @ApiMember(Description="The target collection (schema) name.", IsRequired=true)
-    public collectionName: string;
-
-    public databaseIntegrationId?: string;
-    /** @description The CSV delimiter used at upload time. */
-    // @ApiMember(Description="The CSV delimiter used at upload time.", IsRequired=true)
-    public delimiter: string;
-
-    public hasHeader: boolean;
-    /** @description Column → property mapping, frozen for this import. */
-    // @ApiMember(Description="Column → property mapping, frozen for this import.", IsRequired=true)
-    public mapping: ImportColumnMappingDto[] = [];
-
-    public constructor(init?: Partial<CreateCollectionImport>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CreateCollectionImport';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Database */
-  // @Route("/{version}/database/imports/{Id}", "DELETE")
-  // @Api(Description="Database")
-  export class DeleteCollectionImportRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The import id (imp_…). */
-    // @ApiMember(Description="The import id (imp_…).", IsRequired=true)
-    public id: string;
-
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<DeleteCollectionImportRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeleteCollectionImportRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Database */
-  // @Route("/{version}/database/imports/{Id}", "GET")
-  // @Api(Description="Database")
-  export class GetCollectionImport
-    extends CodeMashRequestBase
-    implements IReturn<GetCollectionImportResponse>
-  {
-    /** @description The import id (imp_…). */
-    // @ApiMember(Description="The import id (imp_…).", IsRequired=true)
-    public id: string;
-
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetCollectionImport>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCollectionImport';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetCollectionImportResponse();
-    }
-  }
-
-  /** @description Database */
-  // @Route("/{version}/database/imports", "GET")
-  // @Api(Description="Database")
-  export class GetCollectionImports
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetCollectionImportsResponse>
-  {
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetCollectionImports>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCollectionImports';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetCollectionImportsResponse();
-    }
-  }
-
-  /** @description Database */
-  // @Route("/{version}/database/imports/upload-url", "POST")
-  // @Api(Description="Database")
-  export class RequestImportUploadUrlRequest
-    extends CodeMashRequestBase
-    implements IReturn<RequestImportUploadUrlResponse>
-  {
-    public fileAccountId?: string;
-    /** @description The original CSV file name, e.g. people.csv. */
-    // @ApiMember(Description="The original CSV file name, e.g. people.csv.", IsRequired=true)
-    public fileName: string;
-
-    public constructor(init?: Partial<RequestImportUploadUrlRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RequestImportUploadUrlRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new RequestImportUploadUrlResponse();
-    }
-  }
-
-  /** @description Database */
-  // @Route("/{version}/database/imports/analyze", "POST")
-  // @Api(Description="Database")
-  export class AnalyzeImportFileRequest
-    extends CodeMashRequestBase
-    implements IReturn<AnalyzeImportFileResponse>
-  {
-    /** @description The uploaded CSV's file ref, from the upload-url call. */
-    // @ApiMember(Description="The uploaded CSV's file ref, from the upload-url call.", IsRequired=true)
-    public file: FileResourceRefDto;
-
-    /** @description The CSV delimiter, e.g. "," or ";". */
-    // @ApiMember(Description="The CSV delimiter, e.g. \",\" or \";\".", IsRequired=true)
-    public delimiter: string;
-
-    /** @description Whether the first row is a header row. */
-    // @ApiMember(Description="Whether the first row is a header row.")
-    public hasHeader: boolean;
-
-    public constructor(init?: Partial<AnalyzeImportFileRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'AnalyzeImportFileRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new AnalyzeImportFileResponse();
-    }
-  }
-
   /** @description Delete saved Mongo aggregation */
   // @Route("/{version}/database/aggregates/{Id}", "DELETE")
   // @Api(Description="Delete saved Mongo aggregation")
@@ -24847,112 +25034,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/files/item/private", "POST")
-  export class MakeFilePrivateRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The files integration the file lives on. */
-    // @ApiMember(Description="The files integration the file lives on.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description Path of the file, relative to the integration. */
-    // @ApiMember(Description="Path of the file, relative to the integration.", IsRequired=true)
-    public path: string;
-
-    public constructor(init?: Partial<MakeFilePrivateRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'MakeFilePrivateRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  // @Route("/{version}/files/item/public", "POST")
-  export class MakeFilePublicRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
-    /** @description The files integration the file lives on. */
-    // @ApiMember(Description="The files integration the file lives on.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description Path of the file to publish, relative to the integration. */
-    // @ApiMember(Description="Path of the file to publish, relative to the integration.", IsRequired=true)
-    public path: string;
-
-    public constructor(init?: Partial<MakeFilePublicRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'MakeFilePublicRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  // @Route("/{version}/files/folder/private", "POST")
-  export class MakeFolderPrivateRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The files integration the folder lives on. */
-    // @ApiMember(Description="The files integration the folder lives on.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description Folder prefix, relative to the integration. */
-    // @ApiMember(Description="Folder prefix, relative to the integration.", IsRequired=true)
-    public path: string;
-
-    public constructor(init?: Partial<MakeFolderPrivateRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'MakeFolderPrivateRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  // @Route("/{version}/files/folder/public", "POST")
-  export class MakeFolderPublicRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
-    /** @description The files integration the folder lives on. */
-    // @ApiMember(Description="The files integration the folder lives on.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description Folder prefix to publish, relative to the integration. */
-    // @ApiMember(Description="Folder prefix to publish, relative to the integration.", IsRequired=true)
-    public path: string;
-
-    public constructor(init?: Partial<MakeFolderPublicRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'MakeFolderPublicRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
   // @Route("/{version}/files/integrations/{Id}", "DELETE")
   export class DeleteFilesIntegrationRequest
     extends CodeMashRequestBase
@@ -25174,31 +25255,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/files/item", "GET")
-  export class GetFile extends CodeMashRequestBase implements IReturn<GetFileResponse> {
-    /** @description The files integration id to read from, from get_files_integrations. */
-    // @ApiMember(Description="The files integration id to read from, from get_files_integrations.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description The path of the file to fetch metadata for. */
-    // @ApiMember(Description="The path of the file to fetch metadata for.", IsRequired=true)
-    public path: string;
-
-    public constructor(init?: Partial<GetFile>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetFile';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetFileResponse();
-    }
-  }
-
   // @Route("/{version}/files/item/by-id", "GET")
   export class GetFileById extends CodeMashRequestBase implements IReturn<GetFileByIdResponse> {
     /** @description The files integration id to read from, from get_files_integrations. */
@@ -25221,34 +25277,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetFileByIdResponse();
-    }
-  }
-
-  // @Route("/{version}/files/folder", "GET")
-  export class GetFolderFiles
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetFolderFilesResponse>
-  {
-    /** @description The files integration id to list from, from get_files_integrations. */
-    // @ApiMember(Description="The files integration id to list from, from get_files_integrations.", IsRequired=true)
-    public filesIntegrationId: string;
-
-    /** @description Path prefix to list. Empty / null lists the root. */
-    // @ApiMember(Description="Path prefix to list. Empty / null lists the root.")
-    public path?: string;
-
-    public constructor(init?: Partial<GetFolderFiles>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetFolderFiles';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetFolderFilesResponse();
     }
   }
 
@@ -25642,10 +25670,7 @@ export module CodeMashHub2 {
   /** @description Update an email template */
   // @Route("/{version}/notifications/email/templates", "PUT")
   // @Api(Description="Update an email template")
-  export class UpdateEmailTemplateRequest
-    extends SaveEmailTemplate
-    implements IReturn<EmptyResponse>
-  {
+  export class UpdateEmailTemplateRequest extends SaveEmailTemplate implements IReturn<IdResponse> {
     /** @description The email template id to update. Get it from get_email_templates. */
     // @ApiMember(Description="The email template id to update. Get it from get_email_templates.", IsRequired=true)
     public viewId: string;
@@ -25661,7 +25686,7 @@ export module CodeMashHub2 {
       return 'PUT';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 
@@ -26288,439 +26313,6 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Create email campaign */
-  // @Route("/{version}/notifications/email/campaigns", "POST")
-  // @Api(Description="Create email campaign")
-  // @DataContract
-  export class CreateEmailCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<IdResponse>
-  {
-    // @DataMember
-    public campaign: EmailCampaignRequest;
-
-    // @DataMember
-    public databaseIntegrationId?: string;
-
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
-    // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
-    public sendNow?: boolean;
-
-    public constructor(init?: Partial<CreateEmailCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CreateEmailCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Deletes emails campaign from queue */
-  // @Route("/{version}/notifications/email/campaigns/{Id}", "DELETE")
-  // @Api(Description="Deletes emails campaign from queue")
-  // @DataContract
-  export class DeleteEmailCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    // @DataMember
-    public id: string;
-
-    // @DataMember
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<DeleteEmailCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeleteEmailCampaignRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets email campaign by id */
-  // @Route("/{version}/notifications/email/campaigns/{id}", "GET")
-  // @Api(Description="Gets email campaign by id")
-  export class GetEmailCampaign
-    extends CodeMashRequestBase
-    implements IReturn<GetEmailCampaignResponse>
-  {
-    /** @description The campaign id. */
-    // @ApiMember(Description="The campaign id.")
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaign>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaign';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignResponse();
-    }
-  }
-
-  /** @description Gets email campaigns */
-  // @Route("/{version}/notifications/email/campaigns", "GET")
-  // @Api(Description="Gets email campaigns")
-  export class GetEmailCampaigns
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetEmailCampaignsResponse>
-  {
-    /** @description Optional. When omitted, the project's default database integration is used (resolved server-side from the project state). */
-    // @ApiMember(Description="Optional. When omitted, the project's default database integration is used (resolved server-side from the project state).")
-    public databaseIntegrationId?: string;
-
-    /** @description Optional: return only the campaign with this id. */
-    // @ApiMember(Description="Optional: return only the campaign with this id.")
-    public campaignId?: string;
-
-    /** @description Optional: only campaigns that targeted this email address. */
-    // @ApiMember(Description="Optional: only campaigns that targeted this email address.")
-    public emailAddress?: string;
-
-    /** @description Optional: only campaigns built on this email template id. */
-    // @ApiMember(Description="Optional: only campaigns built on this email template id.")
-    public templateId?: string;
-
-    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
-    public from?: number;
-
-    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
-    public to?: number;
-
-    public constructor(init?: Partial<GetEmailCampaigns>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaigns';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignsResponse();
-    }
-  }
-
-  /** @description Get email campaign batches */
-  // @Route("/{version}/notifications/email/campaigns/{id}/batches", "GET")
-  // @Api(Description="Get email campaign batches")
-  export class GetEmailCampaignBatches
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetEmailCampaignBatchesResponse>
-  {
-    /** @description The email campaign id to list batches for. Get it from get_email_campaigns. */
-    // @ApiMember(Description="The email campaign id to list batches for. Get it from get_email_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description Optional batch id to filter to a single batch. Get it from a prior call to this tool. */
-    // @ApiMember(Description="Optional batch id to filter to a single batch. Get it from a prior call to this tool.")
-    public batchId?: string;
-
-    /** @description Optional recipient email address to filter batches by. */
-    // @ApiMember(Description="Optional recipient email address to filter batches by.")
-    public emailAddress?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignBatches>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignBatches';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignBatchesResponse();
-    }
-  }
-
-  /** @description Get an email campaign batch notification */
-  // @Route("/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
-  // @Api(Description="Get an email campaign batch notification")
-  export class GetEmailCampaignBatchNotification
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetEmailCampaignBatchNotificationResponse>
-  {
-    /** @description The email campaign id. Get it from get_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description The campaign batch id. Get it from get_email_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_email_campaign_batches.", IsRequired=true)
-    public batchId: string;
-
-    /** @description The notification id within the batch. Get it from get_email_campaign_batch_notifications. */
-    // @ApiMember(Description="The notification id within the batch. Get it from get_email_campaign_batch_notifications.", IsRequired=true)
-    public notificationId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignBatchNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignBatchNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignBatchNotificationResponse();
-    }
-  }
-
-  /** @description Get email campaign batch notifications */
-  // @Route("/{version}/notifications/email/campaigns/{id}/batches/{batchId}", "GET")
-  // @Api(Description="Get email campaign batch notifications")
-  export class GetEmailCampaignBatchNotifications
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetEmailCampaignBatchNotificationsResponse>
-  {
-    /** @description The email campaign id. Get it from get_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description The campaign batch id to list notifications for. Get it from get_email_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id to list notifications for. Get it from get_email_campaign_batches.", IsRequired=true)
-    public batchId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignBatchNotifications>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignBatchNotifications';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignBatchNotificationsResponse();
-    }
-  }
-
-  /** @description Get email campaign statistics */
-  // @Route("/{version}/notifications/email/campaigns/{id}/stats", "GET")
-  // @Api(Description="Get email campaign statistics")
-  export class GetEmailCampaignStatistics
-    extends CodeMashRequestBase
-    implements IReturn<GetEmailCampaignStatisticsResponse>
-  {
-    /** @description The email campaign id to get statistics for. Get it from get_email_campaigns. */
-    // @ApiMember(Description="The email campaign id to get statistics for. Get it from get_email_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignStatistics>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignStatistics';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignStatisticsResponse();
-    }
-  }
-
-  /** @description Preview an email notification */
-  // @Route("/{version}/notifications/email/preview", "GET")
-  // @Api(Description="Preview an email notification")
-  export class PreviewEmailNotification
-    extends RequestBase
-    implements IReturn<PreviewEmailNotificationResponse>
-  {
-    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
-    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
-    public hash: string;
-
-    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
-    public projectId?: string;
-
-    /** @description Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash.")
-    public notificationId?: string;
-
-    public constructor(init?: Partial<PreviewEmailNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'PreviewEmailNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new PreviewEmailNotificationResponse();
-    }
-  }
-
-  /** @description Retries the failed recipients of an email campaign */
-  // @Route("/{version}/notifications/email/campaigns/{Id}/retry-failed", "POST")
-  // @Api(Description="Retries the failed recipients of an email campaign")
-  // @DataContract
-  export class RetryFailedEmailNotificationsRequest
-    extends CodeMashRequestBase
-    implements IReturn<RetryFailedEmailNotificationsResponse>
-  {
-    /** @description The campaign id. Get it from get_email_campaigns. */
-    // @DataMember
-    // @ApiMember(Description="The campaign id. Get it from get_email_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
-    // @DataMember
-    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
-    public idempotencyKey: string;
-
-    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
-    public notificationIds?: string[];
-
-    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
-    // @DataMember
-    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
-    public includeAmbiguous?: boolean;
-
-    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
-    public categories?: string[];
-
-    public constructor(init?: Partial<RetryFailedEmailNotificationsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RetryFailedEmailNotificationsRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new RetryFailedEmailNotificationsResponse();
-    }
-  }
-
-  /** @description Stops a running email campaign */
-  // @Route("/{version}/notifications/email/campaigns/{Id}/stop", "POST")
-  // @Api(Description="Stops a running email campaign")
-  // @DataContract
-  export class StopEmailCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The campaign id to stop. */
-    // @DataMember
-    // @ApiMember(Description="The campaign id to stop.")
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<StopEmailCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'StopEmailCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Get email campaign messages */
-  // @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages", "GET")
-  // @Api(Description="Get email campaign messages")
-  export class GetEmailCampaignMessagesRequest
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetEmailCampaignMessagesResponse>
-  {
-    /** @description The email campaign id. Get it from get_email_campaigns. */
-    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
-    public campaignId: string;
-
-    /** @description The campaign batch id to list messages for. Get it from get_email_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id to list messages for. Get it from get_email_campaign_batches.", IsRequired=true)
-    public campaignBatchId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetEmailCampaignMessagesRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetEmailCampaignMessagesRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetEmailCampaignMessagesResponse();
-    }
-  }
-
   /** @description Disable SMS service */
   // @Route("/{version}/notifications/sms/disable", "PUT")
   // @Api(Description="Disable SMS service")
@@ -27017,7 +26609,7 @@ export module CodeMashHub2 {
   /** @description Edit sms template */
   // @Route("/{version}/notifications/sms/templates", "PUT")
   // @Api(Description="Edit sms template")
-  export class UpdateSmsTemplateRequest extends SaveSmsTemplate implements IReturn<EmptyResponse> {
+  export class UpdateSmsTemplateRequest extends SaveSmsTemplate implements IReturn<IdResponse> {
     /** @description The SMS template id to update. Get it from get_sms_templates. */
     // @ApiMember(Description="The SMS template id to update. Get it from get_sms_templates.", IsRequired=true)
     public viewId: string;
@@ -27033,7 +26625,7 @@ export module CodeMashHub2 {
       return 'PUT';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new IdResponse();
     }
   }
 
@@ -27291,388 +26883,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new TestSmsIntegrationResponse();
-    }
-  }
-
-  /** @description Deletes sms campaign from queue */
-  // @Route("/{version}/notifications/sms/campaigns/{id}", "DELETE")
-  // @Api(Description="Deletes sms campaign from queue")
-  export class DeleteSmsCampaign extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    /** @description The campaign id to delete. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id to delete. Get it from get_sms_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<DeleteSmsCampaign>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeleteSmsCampaign';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Get sms campaign by id */
-  // @Route("/{version}/notifications/sms/campaigns/{id}", "GET")
-  // @Api(Description="Get sms campaign by id")
-  export class GetSmsCampaign
-    extends CodeMashRequestBase
-    implements IReturn<GetSmsCampaignResponse>
-  {
-    /** @description The campaign id. */
-    // @ApiMember(Description="The campaign id.")
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaign>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaign';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignResponse();
-    }
-  }
-
-  /** @description Gets sms campaigns */
-  // @Route("/{version}/notifications/sms/campaigns", "GET")
-  // @Api(Description="Gets sms campaigns")
-  export class GetSmsCampaigns
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetSmsCampaignsResponse>
-  {
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description Optional: return only the campaign with this id. */
-    // @ApiMember(Description="Optional: return only the campaign with this id.")
-    public campaignId?: string;
-
-    /** @description Optional: only campaigns built on this SMS template id. */
-    // @ApiMember(Description="Optional: only campaigns built on this SMS template id.")
-    public templateId?: string;
-
-    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
-    public from?: number;
-
-    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
-    public to?: number;
-
-    public constructor(init?: Partial<GetSmsCampaigns>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaigns';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignsResponse();
-    }
-  }
-
-  /** @description Gets sms campaign batches */
-  // @Route("/{version}/notifications/sms/campaigns/{id}/batches", "GET")
-  // @Api(Description="Gets sms campaign batches")
-  export class GetSmsCampaignBatches
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetSmsCampaignBatchesResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.")
-    public id?: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignBatches>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignBatches';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignBatchesResponse();
-    }
-  }
-
-  /** @description Gets sms campaign batch notification */
-  // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
-  // @Api(Description="Gets sms campaign batch notification")
-  export class GetSmsCampaignBatchNotification
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetSmsCampaignBatchNotificationResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
-    public batchId: string;
-
-    /** @description The notification id. Get it from get_sms_campaign_batch_notifications. */
-    // @ApiMember(Description="The notification id. Get it from get_sms_campaign_batch_notifications.", IsRequired=true)
-    public notificationId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignBatchNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignBatchNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignBatchNotificationResponse();
-    }
-  }
-
-  /** @description Gets sms campaign batch notifications */
-  // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}", "GET")
-  // @Api(Description="Gets sms campaign batch notifications")
-  export class GetSmsCampaignBatchNotifications
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetSmsCampaignBatchNotificationsResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
-    public batchId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignBatchNotifications>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignBatchNotifications';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignBatchNotificationsResponse();
-    }
-  }
-
-  /** @description Get sms campaign statistics */
-  // @Route("/{version}/notifications/sms/campaigns/{id}/stats", "GET")
-  // @Api(Description="Get sms campaign statistics")
-  export class GetSmsCampaignStatistics
-    extends CodeMashRequestBase
-    implements IReturn<GetSmsCampaignStatisticsResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignStatistics>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignStatistics';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignStatisticsResponse();
-    }
-  }
-
-  /** @description Returns SMS preview notification body */
-  // @Route("/{version}/notifications/sms/preview", "GET")
-  // @Api(Description="Returns SMS preview notification body")
-  export class PreviewSmsNotification
-    extends RequestBase
-    implements IReturn<PreviewSmsNotificationResponse>
-  {
-    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
-    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
-    public hash: string;
-
-    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
-    public projectId?: string;
-
-    /** @description Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash.")
-    public notificationId?: string;
-
-    public constructor(init?: Partial<PreviewSmsNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'PreviewSmsNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new PreviewSmsNotificationResponse();
-    }
-  }
-
-  /** @description Retries the failed recipients of an SMS campaign */
-  // @Route("/{version}/notifications/sms/campaigns/{Id}/retry-failed", "POST")
-  // @Api(Description="Retries the failed recipients of an SMS campaign")
-  // @DataContract
-  export class RetryFailedSmsNotificationsRequest
-    extends CodeMashRequestBase
-    implements IReturn<RetryFailedSmsNotificationsResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @DataMember
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
-    // @DataMember
-    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
-    public idempotencyKey: string;
-
-    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
-    public notificationIds?: string[];
-
-    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
-    // @DataMember
-    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
-    public includeAmbiguous?: boolean;
-
-    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
-    public categories?: string[];
-
-    public constructor(init?: Partial<RetryFailedSmsNotificationsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RetryFailedSmsNotificationsRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new RetryFailedSmsNotificationsResponse();
-    }
-  }
-
-  /** @description Stops a running SMS campaign */
-  // @Route("/{version}/notifications/sms/campaigns/{Id}/stop", "POST")
-  // @Api(Description="Stops a running SMS campaign")
-  export class StopSmsCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The campaign id to stop. */
-    // @ApiMember(Description="The campaign id to stop.")
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<StopSmsCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'StopSmsCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets the sms notifications */
-  // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages", "GET")
-  // @Api(Description="Gets the sms notifications")
-  export class GetSmsCampaignMessagesRequest
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetSmsCampaignMessagesResponse>
-  {
-    /** @description The campaign id. Get it from get_sms_campaigns. */
-    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
-    public campaignId: string;
-
-    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
-    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
-    public campaignBatchId: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetSmsCampaignMessagesRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetSmsCampaignMessagesRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetSmsCampaignMessagesResponse();
     }
   }
 
@@ -28085,207 +27295,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new InvokeCodeWorkflowResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/{Id}/runs", "GET")
-  // @DataContract
-  export class GetCodeWorkflowRuns
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<WorkflowRunsResponse>
-  {
-    /** @description wf_… */
-    // @DataMember
-    // @ApiMember(Description="wf_…", IsRequired=true)
-    public id: string;
-
-    /** @description running | waiting | succeeded | failed | cancelled */
-    // @DataMember
-    // @ApiMember(Description="running | waiting | succeeded | failed | cancelled")
-    public status?: string;
-
-    // @DataMember
-    public from?: string;
-
-    // @DataMember
-    public to?: string;
-
-    public constructor(init?: Partial<GetCodeWorkflowRuns>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCodeWorkflowRuns';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new WorkflowRunsResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/runs/{RunId}", "GET")
-  // @DataContract
-  export class GetCodeWorkflowRun
-    extends CodeMashRequestBase
-    implements IReturn<WorkflowRunResponse>
-  {
-    /** @description wfr_… */
-    // @DataMember
-    // @ApiMember(Description="wfr_…", IsRequired=true)
-    public runId: string;
-
-    public constructor(init?: Partial<GetCodeWorkflowRun>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCodeWorkflowRun';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new WorkflowRunResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/runs/{RunId}/logs", "GET")
-  // @DataContract
-  export class GetCodeWorkflowRunLogs
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<WorkflowRunLogsResponse>
-  {
-    /** @description wfr_… */
-    // @DataMember
-    // @ApiMember(Description="wfr_…", IsRequired=true)
-    public runId: string;
-
-    /** @description Only this step's lines. */
-    // @DataMember
-    // @ApiMember(Description="Only this step's lines.")
-    public stepId?: string;
-
-    /** @description Information | Warning | Error */
-    // @DataMember
-    // @ApiMember(Description="Information | Warning | Error")
-    public level?: string;
-
-    public constructor(init?: Partial<GetCodeWorkflowRunLogs>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetCodeWorkflowRunLogs';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new WorkflowRunLogsResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/{Id}/resume", "POST")
-  // @DataContract
-  export class ResumeCodeWorkflowRunByKey
-    extends CodeMashRequestBase
-    implements IReturn<WorkflowRunResponse>
-  {
-    /** @description wf_… */
-    // @DataMember
-    // @ApiMember(Description="wf_…", IsRequired=true)
-    public id: string;
-
-    /** @description The wait's rendered key. */
-    // @DataMember
-    // @ApiMember(Description="The wait's rendered key.", IsRequired=true)
-    public key: string;
-
-    // @DataMember
-    public stepId?: string;
-
-    /** @description approved | rejected — required for an approval wait. */
-    // @DataMember
-    // @ApiMember(Description="approved | rejected — required for an approval wait.")
-    public decision?: string;
-
-    // @DataMember
-    public payload?: { [index: string]: Object };
-
-    public constructor(init?: Partial<ResumeCodeWorkflowRunByKey>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'ResumeCodeWorkflowRunByKey';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new WorkflowRunResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/runs/{RunId}/retry", "POST")
-  // @DataContract
-  export class RetryCodeWorkflowRunStep
-    extends CodeMashRequestBase
-    implements IReturn<WorkflowRunResponse>
-  {
-    /** @description wfr_… */
-    // @DataMember
-    // @ApiMember(Description="wfr_…", IsRequired=true)
-    public runId: string;
-
-    /** @description The failed step; default = the step named in the run's error. */
-    // @DataMember
-    // @ApiMember(Description="The failed step; default = the step named in the run's error.")
-    public stepId?: string;
-
-    public constructor(init?: Partial<RetryCodeWorkflowRunStep>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RetryCodeWorkflowRunStep';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new WorkflowRunResponse();
-    }
-  }
-
-  // @Route("/{version}/code/workflows/runs/{RunId}/cancel", "POST")
-  // @DataContract
-  export class CancelCodeWorkflowRun
-    extends CodeMashRequestBase
-    implements IReturn<WorkflowRunResponse>
-  {
-    /** @description wfr_… */
-    // @DataMember
-    // @ApiMember(Description="wfr_…", IsRequired=true)
-    public runId: string;
-
-    // @DataMember
-    public reason?: string;
-
-    public constructor(init?: Partial<CancelCodeWorkflowRun>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CancelCodeWorkflowRun';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new WorkflowRunResponse();
     }
   }
 
@@ -28930,6 +27939,207 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'UseCodeWorkflowResumeLink';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/runs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRuns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunsResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description running | waiting | succeeded | failed | cancelled */
+    // @DataMember
+    // @ApiMember(Description="running | waiting | succeeded | failed | cancelled")
+    public status?: string;
+
+    // @DataMember
+    public from?: string;
+
+    // @DataMember
+    public to?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRuns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRuns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRun';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/logs", "GET")
+  // @DataContract
+  export class GetCodeWorkflowRunLogs
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<WorkflowRunLogsResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description Only this step's lines. */
+    // @DataMember
+    // @ApiMember(Description="Only this step's lines.")
+    public stepId?: string;
+
+    /** @description Information | Warning | Error */
+    // @DataMember
+    // @ApiMember(Description="Information | Warning | Error")
+    public level?: string;
+
+    public constructor(init?: Partial<GetCodeWorkflowRunLogs>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCodeWorkflowRunLogs';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new WorkflowRunLogsResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/resume", "POST")
+  // @DataContract
+  export class ResumeCodeWorkflowRunByKey
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The wait's rendered key. */
+    // @DataMember
+    // @ApiMember(Description="The wait's rendered key.", IsRequired=true)
+    public key: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    /** @description approved | rejected — required for an approval wait. */
+    // @DataMember
+    // @ApiMember(Description="approved | rejected — required for an approval wait.")
+    public decision?: string;
+
+    // @DataMember
+    public payload?: { [index: string]: Object };
+
+    public constructor(init?: Partial<ResumeCodeWorkflowRunByKey>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResumeCodeWorkflowRunByKey';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/retry", "POST")
+  // @DataContract
+  export class RetryCodeWorkflowRunStep
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    /** @description The failed step; default = the step named in the run's error. */
+    // @DataMember
+    // @ApiMember(Description="The failed step; default = the step named in the run's error.")
+    public stepId?: string;
+
+    public constructor(init?: Partial<RetryCodeWorkflowRunStep>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryCodeWorkflowRunStep';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/runs/{RunId}/cancel", "POST")
+  // @DataContract
+  export class CancelCodeWorkflowRun
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowRunResponse>
+  {
+    /** @description wfr_… */
+    // @DataMember
+    // @ApiMember(Description="wfr_…", IsRequired=true)
+    public runId: string;
+
+    // @DataMember
+    public reason?: string;
+
+    public constructor(init?: Partial<CancelCodeWorkflowRun>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CancelCodeWorkflowRun';
     }
     public getMethod() {
       return 'POST';
@@ -29654,464 +28864,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetPushDevicesResponse();
-    }
-  }
-
-  /** @description Count the devices a push campaign audience would reach */
-  // @Route("/{version}/notifications/push/campaigns/audience-count", "POST")
-  // @Api(Description="Count the devices a push campaign audience would reach")
-  // @DataContract
-  export class GetPushCampaignAudienceCountRequest
-    extends CodeMashRequestBase
-    implements IReturn<GetPushCampaignAudienceCountResponse>
-  {
-    /** @description The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored. */
-    // @DataMember
-    // @ApiMember(Description="The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored.")
-    public campaign: PushCampaignRequest;
-
-    /** @description Optional. When omitted, the default database integration for the request's environment is used. */
-    // @DataMember
-    // @ApiMember(Description="Optional. When omitted, the default database integration for the request's environment is used.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignAudienceCountRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignAudienceCountRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new GetPushCampaignAudienceCountResponse();
-    }
-  }
-
-  /** @description Create push campaign */
-  // @Route("/{version}/notifications/push/campaigns", "POST")
-  // @Api(Description="Create push campaign")
-  // @DataContract
-  export class CreatePushCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<IdResponse>
-  {
-    // @DataMember
-    public campaign: PushCampaignRequest;
-
-    // @DataMember
-    public databaseIntegrationId?: string;
-
-    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
-    // @DataMember
-    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
-    public sendNow?: boolean;
-
-    public constructor(init?: Partial<CreatePushCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'CreatePushCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new IdResponse();
-    }
-  }
-
-  /** @description Deletes push campaign from queue */
-  // @Route("/{version}/notifications/push/campaigns/{Id}", "DELETE")
-  // @Api(Description="Deletes push campaign from queue")
-  // @DataContract
-  export class DeletePushCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The push campaign id to delete. Get it from get_push_campaigns. */
-    // @DataMember
-    // @ApiMember(Description="The push campaign id to delete. Get it from get_push_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @DataMember
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<DeletePushCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DeletePushCampaignRequest';
-    }
-    public getMethod() {
-      return 'DELETE';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets push campaign by id */
-  // @Route("/{version}/notifications/push/campaigns/{id}", "GET")
-  // @Api(Description="Gets push campaign by id")
-  export class GetPushCampaign
-    extends CodeMashRequestBase
-    implements IReturn<GetPushCampaignResponse>
-  {
-    /** @description The campaign id. */
-    // @ApiMember(Description="The campaign id.")
-    public id: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaign>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaign';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignResponse();
-    }
-  }
-
-  /** @description Gets push campaigns */
-  // @Route("/{version}/notifications/push/campaigns", "GET")
-  // @Api(Description="Gets push campaigns")
-  export class GetPushCampaigns
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetPushCampaignsResponse>
-  {
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    /** @description Optional: only campaigns built on this push template id. */
-    // @ApiMember(Description="Optional: only campaigns built on this push template id.")
-    public templateId?: string;
-
-    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
-    public from?: number;
-
-    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
-    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
-    public to?: number;
-
-    public constructor(init?: Partial<GetPushCampaigns>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaigns';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignsResponse();
-    }
-  }
-
-  /** @description Gets push campaign batches */
-  // @Route("/{version}/notifications/push/campaigns/{id}/batches", "GET")
-  // @Api(Description="Gets push campaign batches")
-  export class GetPushCampaignBatches
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetPushCampaignBatchesResponse>
-  {
-    /** @description The push campaign id to list batches for. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id to list batches for. Get it from get_push_campaigns.")
-    public id: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    /** @description Optional: only return the batch with this id. */
-    // @ApiMember(Description="Optional: only return the batch with this id.")
-    public batchId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignBatches>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignBatches';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignBatchesResponse();
-    }
-  }
-
-  /** @description Gets a push campaign batch notification */
-  // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
-  // @Api(Description="Gets a push campaign batch notification")
-  export class GetPushCampaignBatchNotification
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetPushCampaignBatchNotificationResponse>
-  {
-    /** @description The push campaign id. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
-    public id: string;
-
-    /** @description The batch id. Get it from get_push_campaign_batches. */
-    // @ApiMember(Description="The batch id. Get it from get_push_campaign_batches.")
-    public batchId: string;
-
-    /** @description The notification id within the batch. */
-    // @ApiMember(Description="The notification id within the batch.")
-    public notificationId: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignBatchNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignBatchNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignBatchNotificationResponse();
-    }
-  }
-
-  /** @description Gets push campaign batch notifications */
-  // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}", "GET")
-  // @Api(Description="Gets push campaign batch notifications")
-  export class GetPushCampaignBatchNotifications
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetPushCampaignBatchNotificationsResponse>
-  {
-    /** @description The push campaign id. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
-    public id: string;
-
-    /** @description The batch id to list notifications for. Get it from get_push_campaign_batches. */
-    // @ApiMember(Description="The batch id to list notifications for. Get it from get_push_campaign_batches.")
-    public batchId: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignBatchNotifications>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignBatchNotifications';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignBatchNotificationsResponse();
-    }
-  }
-
-  /** @description Get push campaign statistics */
-  // @Route("/{version}/notifications/push/campaigns/{id}/stats", "GET")
-  // @Api(Description="Get push campaign statistics")
-  export class GetPushCampaignStatistics
-    extends CodeMashRequestBase
-    implements IReturn<GetPushCampaignStatisticsResponse>
-  {
-    /** @description The push campaign id to get statistics for. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id to get statistics for. Get it from get_push_campaigns.")
-    public id: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignStatistics>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignStatistics';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignStatisticsResponse();
-    }
-  }
-
-  /** @description Returns push preview notification */
-  // @Route("/{version}/notifications/push/preview", "GET")
-  // @Api(Description="Returns push preview notification")
-  export class PreviewPushNotification
-    extends RequestBase
-    implements IReturn<PreviewPushNotificationResponse>
-  {
-    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
-    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
-    public hash: string;
-
-    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
-    public projectId?: string;
-
-    /** @description Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash. */
-    // @ApiMember(Description="Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash.")
-    public notificationId?: string;
-
-    public constructor(init?: Partial<PreviewPushNotification>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'PreviewPushNotification';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new PreviewPushNotificationResponse();
-    }
-  }
-
-  /** @description Retries the failed recipients of a push campaign */
-  // @Route("/{version}/notifications/push/campaigns/{Id}/retry-failed", "POST")
-  // @Api(Description="Retries the failed recipients of a push campaign")
-  // @DataContract
-  export class RetryFailedPushNotificationsRequest
-    extends CodeMashRequestBase
-    implements IReturn<RetryFailedPushNotificationsResponse>
-  {
-    /** @description The campaign id. Get it from get_push_campaigns. */
-    // @DataMember
-    // @ApiMember(Description="The campaign id. Get it from get_push_campaigns.", IsRequired=true)
-    public id: string;
-
-    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
-    public databaseIntegrationId?: string;
-
-    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
-    // @DataMember
-    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
-    public idempotencyKey: string;
-
-    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
-    public notificationIds?: string[];
-
-    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
-    // @DataMember
-    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
-    public includeAmbiguous?: boolean;
-
-    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
-    // @DataMember
-    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
-    public categories?: string[];
-
-    public constructor(init?: Partial<RetryFailedPushNotificationsRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RetryFailedPushNotificationsRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new RetryFailedPushNotificationsResponse();
-    }
-  }
-
-  /** @description Stops a running push campaign */
-  // @Route("/{version}/notifications/push/campaigns/{Id}/stop", "POST")
-  // @Api(Description="Stops a running push campaign")
-  // @DataContract
-  export class StopPushCampaignRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description The campaign id to stop. */
-    // @DataMember
-    // @ApiMember(Description="The campaign id to stop.")
-    public id: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @DataMember
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<StopPushCampaignRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'StopPushCampaignRequest';
-    }
-    public getMethod() {
-      return 'POST';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Gets push campaign messages */
-  // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages", "GET")
-  // @Api(Description="Gets push campaign messages")
-  export class GetPushCampaignMessagesRequest
-    extends CodeMashListPaginationRequestBase
-    implements IReturn<GetPushCampaignMessagesResponse>
-  {
-    /** @description The push campaign id. Get it from get_push_campaigns. */
-    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
-    public campaignId: string;
-
-    /** @description Optional: restrict results to this batch id. Get it from get_push_campaign_batches. */
-    // @ApiMember(Description="Optional: restrict results to this batch id. Get it from get_push_campaign_batches.")
-    public campaignBatchId: string;
-
-    /** @description Optional database integration id; omit to use the project's default. */
-    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
-    public databaseIntegrationId?: string;
-
-    public constructor(init?: Partial<GetPushCampaignMessagesRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetPushCampaignMessagesRequest';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetPushCampaignMessagesResponse();
     }
   }
 
@@ -33125,6 +31877,9 @@ export module CodeMashHub2 {
     public initiatorUserId: string;
 
     // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
     public isEnabled: boolean;
 
     // @DataMember
@@ -33574,6 +32329,1620 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/files/item/private", "POST")
+  export class MakeFilePrivateRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The files integration the file lives on. */
+    // @ApiMember(Description="The files integration the file lives on.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Path of the file, relative to the integration. */
+    // @ApiMember(Description="Path of the file, relative to the integration.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<MakeFilePrivateRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MakeFilePrivateRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/files/item/public", "POST")
+  export class MakeFilePublicRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
+    /** @description The files integration the file lives on. */
+    // @ApiMember(Description="The files integration the file lives on.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Path of the file to publish, relative to the integration. */
+    // @ApiMember(Description="Path of the file to publish, relative to the integration.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<MakeFilePublicRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MakeFilePublicRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/files/folder/private", "POST")
+  export class MakeFolderPrivateRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The files integration the folder lives on. */
+    // @ApiMember(Description="The files integration the folder lives on.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Folder prefix, relative to the integration. */
+    // @ApiMember(Description="Folder prefix, relative to the integration.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<MakeFolderPrivateRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MakeFolderPrivateRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/files/folder/public", "POST")
+  export class MakeFolderPublicRequest extends CodeMashRequestBase implements IReturn<IdResponse> {
+    /** @description The files integration the folder lives on. */
+    // @ApiMember(Description="The files integration the folder lives on.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Folder prefix to publish, relative to the integration. */
+    // @ApiMember(Description="Folder prefix to publish, relative to the integration.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<MakeFolderPublicRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'MakeFolderPublicRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/files/item", "GET")
+  export class GetFile extends CodeMashRequestBase implements IReturn<GetFileResponse> {
+    /** @description The files integration id to read from, from get_files_integrations. */
+    // @ApiMember(Description="The files integration id to read from, from get_files_integrations.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description The path of the file to fetch metadata for. */
+    // @ApiMember(Description="The path of the file to fetch metadata for.", IsRequired=true)
+    public path: string;
+
+    public constructor(init?: Partial<GetFile>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetFile';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetFileResponse();
+    }
+  }
+
+  // @Route("/{version}/files/folder", "GET")
+  export class GetFolderFiles
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetFolderFilesResponse>
+  {
+    /** @description The files integration id to list from, from get_files_integrations. */
+    // @ApiMember(Description="The files integration id to list from, from get_files_integrations.", IsRequired=true)
+    public filesIntegrationId: string;
+
+    /** @description Path prefix to list. Empty / null lists the root. */
+    // @ApiMember(Description="Path prefix to list. Empty / null lists the root.")
+    public path?: string;
+
+    public constructor(init?: Partial<GetFolderFiles>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetFolderFiles';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetFolderFilesResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports", "POST")
+  // @Api(Description="Database")
+  export class CreateCollectionImport extends CodeMashRequestBase implements IReturn<IdResponse> {
+    /** @description The uploaded CSV's file ref, from the upload call. */
+    // @ApiMember(Description="The uploaded CSV's file ref, from the upload call.", IsRequired=true)
+    public file: FileResourceRefDto;
+
+    /** @description The target schema id. */
+    // @ApiMember(Description="The target schema id.", IsRequired=true)
+    public schemaId: string;
+
+    /** @description The target collection (schema) name. */
+    // @ApiMember(Description="The target collection (schema) name.", IsRequired=true)
+    public collectionName: string;
+
+    public databaseIntegrationId?: string;
+    /** @description The CSV delimiter used at upload time. */
+    // @ApiMember(Description="The CSV delimiter used at upload time.", IsRequired=true)
+    public delimiter: string;
+
+    public hasHeader: boolean;
+    /** @description Column → property mapping, frozen for this import. */
+    // @ApiMember(Description="Column → property mapping, frozen for this import.", IsRequired=true)
+    public mapping: ImportColumnMappingDto[] = [];
+
+    public constructor(init?: Partial<CreateCollectionImport>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateCollectionImport';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports/{Id}", "DELETE")
+  // @Api(Description="Database")
+  export class DeleteCollectionImportRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The import id (imp_…). */
+    // @ApiMember(Description="The import id (imp_…).", IsRequired=true)
+    public id: string;
+
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<DeleteCollectionImportRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteCollectionImportRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports/{Id}", "GET")
+  // @Api(Description="Database")
+  export class GetCollectionImport
+    extends CodeMashRequestBase
+    implements IReturn<GetCollectionImportResponse>
+  {
+    /** @description The import id (imp_…). */
+    // @ApiMember(Description="The import id (imp_…).", IsRequired=true)
+    public id: string;
+
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetCollectionImport>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCollectionImport';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCollectionImportResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports", "GET")
+  // @Api(Description="Database")
+  export class GetCollectionImports
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetCollectionImportsResponse>
+  {
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetCollectionImports>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetCollectionImports';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetCollectionImportsResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports/upload-url", "POST")
+  // @Api(Description="Database")
+  export class RequestImportUploadUrlRequest
+    extends CodeMashRequestBase
+    implements IReturn<RequestImportUploadUrlResponse>
+  {
+    public fileAccountId?: string;
+    /** @description The original CSV file name, e.g. people.csv. */
+    // @ApiMember(Description="The original CSV file name, e.g. people.csv.", IsRequired=true)
+    public fileName: string;
+
+    public constructor(init?: Partial<RequestImportUploadUrlRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RequestImportUploadUrlRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RequestImportUploadUrlResponse();
+    }
+  }
+
+  /** @description Database */
+  // @Route("/{version}/database/imports/analyze", "POST")
+  // @Api(Description="Database")
+  export class AnalyzeImportFileRequest
+    extends CodeMashRequestBase
+    implements IReturn<AnalyzeImportFileResponse>
+  {
+    /** @description The uploaded CSV's file ref, from the upload-url call. */
+    // @ApiMember(Description="The uploaded CSV's file ref, from the upload-url call.", IsRequired=true)
+    public file: FileResourceRefDto;
+
+    /** @description The CSV delimiter, e.g. "," or ";". */
+    // @ApiMember(Description="The CSV delimiter, e.g. \",\" or \";\".", IsRequired=true)
+    public delimiter: string;
+
+    /** @description Whether the first row is a header row. */
+    // @ApiMember(Description="Whether the first row is a header row.")
+    public hasHeader: boolean;
+
+    public constructor(init?: Partial<AnalyzeImportFileRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AnalyzeImportFileRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AnalyzeImportFileResponse();
+    }
+  }
+
+  /** @description Create email campaign */
+  // @Route("/{version}/notifications/email/campaigns", "POST")
+  // @Api(Description="Create email campaign")
+  // @DataContract
+  export class CreateEmailCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    // @DataMember
+    public campaign: EmailCampaignRequest;
+
+    // @DataMember
+    public databaseIntegrationId?: string;
+
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
+    public constructor(init?: Partial<CreateEmailCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateEmailCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Deletes emails campaign from queue */
+  // @Route("/{version}/notifications/email/campaigns/{Id}", "DELETE")
+  // @Api(Description="Deletes emails campaign from queue")
+  // @DataContract
+  export class DeleteEmailCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<DeleteEmailCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteEmailCampaignRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Gets email campaign by id */
+  // @Route("/{version}/notifications/email/campaigns/{id}", "GET")
+  // @Api(Description="Gets email campaign by id")
+  export class GetEmailCampaign
+    extends CodeMashRequestBase
+    implements IReturn<GetEmailCampaignResponse>
+  {
+    /** @description The campaign id. */
+    // @ApiMember(Description="The campaign id.")
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetEmailCampaign>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaign';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignResponse();
+    }
+  }
+
+  /** @description Gets email campaigns */
+  // @Route("/{version}/notifications/email/campaigns", "GET")
+  // @Api(Description="Gets email campaigns")
+  export class GetEmailCampaigns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmailCampaignsResponse>
+  {
+    /** @description Optional. When omitted, the project's default database integration is used (resolved server-side from the project state). */
+    // @ApiMember(Description="Optional. When omitted, the project's default database integration is used (resolved server-side from the project state).")
+    public databaseIntegrationId?: string;
+
+    /** @description Optional: return only the campaign with this id. */
+    // @ApiMember(Description="Optional: return only the campaign with this id.")
+    public campaignId?: string;
+
+    /** @description Optional: only campaigns that targeted this email address. */
+    // @ApiMember(Description="Optional: only campaigns that targeted this email address.")
+    public emailAddress?: string;
+
+    /** @description Optional: only campaigns built on this email template id. */
+    // @ApiMember(Description="Optional: only campaigns built on this email template id.")
+    public templateId?: string;
+
+    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
+    public from?: number;
+
+    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
+    public to?: number;
+
+    public constructor(init?: Partial<GetEmailCampaigns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaigns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignsResponse();
+    }
+  }
+
+  /** @description Get email campaign batches */
+  // @Route("/{version}/notifications/email/campaigns/{id}/batches", "GET")
+  // @Api(Description="Get email campaign batches")
+  export class GetEmailCampaignBatches
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmailCampaignBatchesResponse>
+  {
+    /** @description The email campaign id to list batches for. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id to list batches for. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Optional batch id to filter to a single batch. Get it from a prior call to this tool. */
+    // @ApiMember(Description="Optional batch id to filter to a single batch. Get it from a prior call to this tool.")
+    public batchId?: string;
+
+    /** @description Optional recipient email address to filter batches by. */
+    // @ApiMember(Description="Optional recipient email address to filter batches by.")
+    public emailAddress?: string;
+
+    public constructor(init?: Partial<GetEmailCampaignBatches>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaignBatches';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignBatchesResponse();
+    }
+  }
+
+  /** @description Get an email campaign batch notification */
+  // @Route("/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
+  // @Api(Description="Get an email campaign batch notification")
+  export class GetEmailCampaignBatchNotification
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmailCampaignBatchNotificationResponse>
+  {
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description The campaign batch id. Get it from get_email_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id. Get it from get_email_campaign_batches.", IsRequired=true)
+    public batchId: string;
+
+    /** @description The notification id within the batch. Get it from get_email_campaign_batch_notifications. */
+    // @ApiMember(Description="The notification id within the batch. Get it from get_email_campaign_batch_notifications.", IsRequired=true)
+    public notificationId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetEmailCampaignBatchNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaignBatchNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignBatchNotificationResponse();
+    }
+  }
+
+  /** @description Get email campaign batch notifications */
+  // @Route("/{version}/notifications/email/campaigns/{id}/batches/{batchId}", "GET")
+  // @Api(Description="Get email campaign batch notifications")
+  export class GetEmailCampaignBatchNotifications
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmailCampaignBatchNotificationsResponse>
+  {
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description The campaign batch id to list notifications for. Get it from get_email_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id to list notifications for. Get it from get_email_campaign_batches.", IsRequired=true)
+    public batchId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetEmailCampaignBatchNotifications>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaignBatchNotifications';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignBatchNotificationsResponse();
+    }
+  }
+
+  /** @description Get email campaign statistics */
+  // @Route("/{version}/notifications/email/campaigns/{id}/stats", "GET")
+  // @Api(Description="Get email campaign statistics")
+  export class GetEmailCampaignStatistics
+    extends CodeMashRequestBase
+    implements IReturn<GetEmailCampaignStatisticsResponse>
+  {
+    /** @description The email campaign id to get statistics for. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id to get statistics for. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetEmailCampaignStatistics>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaignStatistics';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignStatisticsResponse();
+    }
+  }
+
+  /** @description Preview an email notification */
+  // @Route("/{version}/notifications/email/preview", "GET")
+  // @Api(Description="Preview an email notification")
+  export class PreviewEmailNotification
+    extends RequestBase
+    implements IReturn<PreviewEmailNotificationResponse>
+  {
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
+    public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs email:read). With a hash it must match the hash.")
+    public notificationId?: string;
+
+    public constructor(init?: Partial<PreviewEmailNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PreviewEmailNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new PreviewEmailNotificationResponse();
+    }
+  }
+
+  /** @description Retries the failed recipients of an email campaign */
+  // @Route("/{version}/notifications/email/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an email campaign")
+  // @DataContract
+  export class RetryFailedEmailNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedEmailNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_email_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedEmailNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedEmailNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedEmailNotificationsResponse();
+    }
+  }
+
+  /** @description Stops a running email campaign */
+  // @Route("/{version}/notifications/email/campaigns/{Id}/stop", "POST")
+  // @Api(Description="Stops a running email campaign")
+  // @DataContract
+  export class StopEmailCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The campaign id to stop. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id to stop.")
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<StopEmailCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StopEmailCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Get email campaign messages */
+  // @Route("/{version}/notifications/emails/campaigns/{campaignId}/messages", "GET")
+  // @Api(Description="Get email campaign messages")
+  export class GetEmailCampaignMessagesRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetEmailCampaignMessagesResponse>
+  {
+    /** @description The email campaign id. Get it from get_email_campaigns. */
+    // @ApiMember(Description="The email campaign id. Get it from get_email_campaigns.", IsRequired=true)
+    public campaignId: string;
+
+    /** @description The campaign batch id to list messages for. Get it from get_email_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id to list messages for. Get it from get_email_campaign_batches.", IsRequired=true)
+    public campaignBatchId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetEmailCampaignMessagesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEmailCampaignMessagesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEmailCampaignMessagesResponse();
+    }
+  }
+
+  /** @description Deletes sms campaign from queue */
+  // @Route("/{version}/notifications/sms/campaigns/{id}", "DELETE")
+  // @Api(Description="Deletes sms campaign from queue")
+  export class DeleteSmsCampaign extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+    /** @description The campaign id to delete. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id to delete. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<DeleteSmsCampaign>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteSmsCampaign';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Get sms campaign by id */
+  // @Route("/{version}/notifications/sms/campaigns/{id}", "GET")
+  // @Api(Description="Get sms campaign by id")
+  export class GetSmsCampaign
+    extends CodeMashRequestBase
+    implements IReturn<GetSmsCampaignResponse>
+  {
+    /** @description The campaign id. */
+    // @ApiMember(Description="The campaign id.")
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaign>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaign';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignResponse();
+    }
+  }
+
+  /** @description Gets sms campaigns */
+  // @Route("/{version}/notifications/sms/campaigns", "GET")
+  // @Api(Description="Gets sms campaigns")
+  export class GetSmsCampaigns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetSmsCampaignsResponse>
+  {
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Optional: return only the campaign with this id. */
+    // @ApiMember(Description="Optional: return only the campaign with this id.")
+    public campaignId?: string;
+
+    /** @description Optional: only campaigns built on this SMS template id. */
+    // @ApiMember(Description="Optional: only campaigns built on this SMS template id.")
+    public templateId?: string;
+
+    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
+    public from?: number;
+
+    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
+    public to?: number;
+
+    public constructor(init?: Partial<GetSmsCampaigns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaigns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignsResponse();
+    }
+  }
+
+  /** @description Gets sms campaign batches */
+  // @Route("/{version}/notifications/sms/campaigns/{id}/batches", "GET")
+  // @Api(Description="Gets sms campaign batches")
+  export class GetSmsCampaignBatches
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetSmsCampaignBatchesResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.")
+    public id?: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaignBatches>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaignBatches';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignBatchesResponse();
+    }
+  }
+
+  /** @description Gets sms campaign batch notification */
+  // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
+  // @Api(Description="Gets sms campaign batch notification")
+  export class GetSmsCampaignBatchNotification
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetSmsCampaignBatchNotificationResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
+    public batchId: string;
+
+    /** @description The notification id. Get it from get_sms_campaign_batch_notifications. */
+    // @ApiMember(Description="The notification id. Get it from get_sms_campaign_batch_notifications.", IsRequired=true)
+    public notificationId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaignBatchNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaignBatchNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignBatchNotificationResponse();
+    }
+  }
+
+  /** @description Gets sms campaign batch notifications */
+  // @Route("/{version}/notifications/sms/campaigns/{id}/batches/{batchId}", "GET")
+  // @Api(Description="Gets sms campaign batch notifications")
+  export class GetSmsCampaignBatchNotifications
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetSmsCampaignBatchNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
+    public batchId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaignBatchNotifications>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaignBatchNotifications';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignBatchNotificationsResponse();
+    }
+  }
+
+  /** @description Get sms campaign statistics */
+  // @Route("/{version}/notifications/sms/campaigns/{id}/stats", "GET")
+  // @Api(Description="Get sms campaign statistics")
+  export class GetSmsCampaignStatistics
+    extends CodeMashRequestBase
+    implements IReturn<GetSmsCampaignStatisticsResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaignStatistics>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaignStatistics';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignStatisticsResponse();
+    }
+  }
+
+  /** @description Returns SMS preview notification body */
+  // @Route("/{version}/notifications/sms/preview", "GET")
+  // @Api(Description="Returns SMS preview notification body")
+  export class PreviewSmsNotification
+    extends RequestBase
+    implements IReturn<PreviewSmsNotificationResponse>
+  {
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
+    public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs sms:read). With a hash it must match the hash.")
+    public notificationId?: string;
+
+    public constructor(init?: Partial<PreviewSmsNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PreviewSmsNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new PreviewSmsNotificationResponse();
+    }
+  }
+
+  /** @description Retries the failed recipients of an SMS campaign */
+  // @Route("/{version}/notifications/sms/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of an SMS campaign")
+  // @DataContract
+  export class RetryFailedSmsNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedSmsNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedSmsNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedSmsNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedSmsNotificationsResponse();
+    }
+  }
+
+  /** @description Stops a running SMS campaign */
+  // @Route("/{version}/notifications/sms/campaigns/{Id}/stop", "POST")
+  // @Api(Description="Stops a running SMS campaign")
+  export class StopSmsCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The campaign id to stop. */
+    // @ApiMember(Description="The campaign id to stop.")
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<StopSmsCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StopSmsCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Gets the sms notifications */
+  // @Route("/{version}/notifications/sms/campaigns/{campaignId}/messages", "GET")
+  // @Api(Description="Gets the sms notifications")
+  export class GetSmsCampaignMessagesRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetSmsCampaignMessagesResponse>
+  {
+    /** @description The campaign id. Get it from get_sms_campaigns. */
+    // @ApiMember(Description="The campaign id. Get it from get_sms_campaigns.", IsRequired=true)
+    public campaignId: string;
+
+    /** @description The campaign batch id. Get it from get_sms_campaign_batches. */
+    // @ApiMember(Description="The campaign batch id. Get it from get_sms_campaign_batches.", IsRequired=true)
+    public campaignBatchId: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetSmsCampaignMessagesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSmsCampaignMessagesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSmsCampaignMessagesResponse();
+    }
+  }
+
+  /** @description Count the devices a push campaign audience would reach */
+  // @Route("/{version}/notifications/push/campaigns/audience-count", "POST")
+  // @Api(Description="Count the devices a push campaign audience would reach")
+  // @DataContract
+  export class GetPushCampaignAudienceCountRequest
+    extends CodeMashRequestBase
+    implements IReturn<GetPushCampaignAudienceCountResponse>
+  {
+    /** @description The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored. */
+    // @DataMember
+    // @ApiMember(Description="The audience, in the same shape as CreatePushCampaignRequest.campaign. Template and send options are ignored.")
+    public campaign: PushCampaignRequest;
+
+    /** @description Optional. When omitted, the default database integration for the request's environment is used. */
+    // @DataMember
+    // @ApiMember(Description="Optional. When omitted, the default database integration for the request's environment is used.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignAudienceCountRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignAudienceCountRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new GetPushCampaignAudienceCountResponse();
+    }
+  }
+
+  /** @description Create push campaign */
+  // @Route("/{version}/notifications/push/campaigns", "POST")
+  // @Api(Description="Create push campaign")
+  // @DataContract
+  export class CreatePushCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    // @DataMember
+    public campaign: PushCampaignRequest;
+
+    // @DataMember
+    public databaseIntegrationId?: string;
+
+    /** @description Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now. */
+    // @DataMember
+    // @ApiMember(Description="Optional. true sends the campaign now (or at a campaignTime sooner than the review window). Without it, a campaign created by an AI tool must be scheduled at least 24 hours ahead for role-based / all-users / collection audiences and at least 1 hour ahead for direct recipient lists, or it is rejected with CM-ERRORS-CAMPAIGNS-017. Set it only when the user explicitly asked to send now.")
+    public sendNow?: boolean;
+
+    public constructor(init?: Partial<CreatePushCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreatePushCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  /** @description Deletes push campaign from queue */
+  // @Route("/{version}/notifications/push/campaigns/{Id}", "DELETE")
+  // @Api(Description="Deletes push campaign from queue")
+  // @DataContract
+  export class DeletePushCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The push campaign id to delete. Get it from get_push_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The push campaign id to delete. Get it from get_push_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @DataMember
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<DeletePushCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeletePushCampaignRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Gets push campaign by id */
+  // @Route("/{version}/notifications/push/campaigns/{id}", "GET")
+  // @Api(Description="Gets push campaign by id")
+  export class GetPushCampaign
+    extends CodeMashRequestBase
+    implements IReturn<GetPushCampaignResponse>
+  {
+    /** @description The campaign id. */
+    // @ApiMember(Description="The campaign id.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaign>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaign';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignResponse();
+    }
+  }
+
+  /** @description Gets push campaigns */
+  // @Route("/{version}/notifications/push/campaigns", "GET")
+  // @Api(Description="Gets push campaigns")
+  export class GetPushCampaigns
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPushCampaignsResponse>
+  {
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    /** @description Optional: only campaigns built on this push template id. */
+    // @ApiMember(Description="Optional: only campaigns built on this push template id.")
+    public templateId?: string;
+
+    /** @description Optional lower bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional lower bound for the campaign time, unix timestamp in seconds (UTC).")
+    public from?: number;
+
+    /** @description Optional upper bound for the campaign time, unix timestamp in seconds (UTC). */
+    // @ApiMember(Description="Optional upper bound for the campaign time, unix timestamp in seconds (UTC).")
+    public to?: number;
+
+    public constructor(init?: Partial<GetPushCampaigns>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaigns';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignsResponse();
+    }
+  }
+
+  /** @description Gets push campaign batches */
+  // @Route("/{version}/notifications/push/campaigns/{id}/batches", "GET")
+  // @Api(Description="Gets push campaign batches")
+  export class GetPushCampaignBatches
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPushCampaignBatchesResponse>
+  {
+    /** @description The push campaign id to list batches for. Get it from get_push_campaigns. */
+    // @ApiMember(Description="The push campaign id to list batches for. Get it from get_push_campaigns.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    /** @description Optional: only return the batch with this id. */
+    // @ApiMember(Description="Optional: only return the batch with this id.")
+    public batchId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignBatches>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignBatches';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignBatchesResponse();
+    }
+  }
+
+  /** @description Gets a push campaign batch notification */
+  // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}/{notificationId}", "GET")
+  // @Api(Description="Gets a push campaign batch notification")
+  export class GetPushCampaignBatchNotification
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPushCampaignBatchNotificationResponse>
+  {
+    /** @description The push campaign id. Get it from get_push_campaigns. */
+    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
+    public id: string;
+
+    /** @description The batch id. Get it from get_push_campaign_batches. */
+    // @ApiMember(Description="The batch id. Get it from get_push_campaign_batches.")
+    public batchId: string;
+
+    /** @description The notification id within the batch. */
+    // @ApiMember(Description="The notification id within the batch.")
+    public notificationId: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignBatchNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignBatchNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignBatchNotificationResponse();
+    }
+  }
+
+  /** @description Gets push campaign batch notifications */
+  // @Route("/{version}/notifications/push/campaigns/{id}/batches/{batchId}", "GET")
+  // @Api(Description="Gets push campaign batch notifications")
+  export class GetPushCampaignBatchNotifications
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPushCampaignBatchNotificationsResponse>
+  {
+    /** @description The push campaign id. Get it from get_push_campaigns. */
+    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
+    public id: string;
+
+    /** @description The batch id to list notifications for. Get it from get_push_campaign_batches. */
+    // @ApiMember(Description="The batch id to list notifications for. Get it from get_push_campaign_batches.")
+    public batchId: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignBatchNotifications>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignBatchNotifications';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignBatchNotificationsResponse();
+    }
+  }
+
+  /** @description Get push campaign statistics */
+  // @Route("/{version}/notifications/push/campaigns/{id}/stats", "GET")
+  // @Api(Description="Get push campaign statistics")
+  export class GetPushCampaignStatistics
+    extends CodeMashRequestBase
+    implements IReturn<GetPushCampaignStatisticsResponse>
+  {
+    /** @description The push campaign id to get statistics for. Get it from get_push_campaigns. */
+    // @ApiMember(Description="The push campaign id to get statistics for. Get it from get_push_campaigns.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignStatistics>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignStatistics';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignStatisticsResponse();
+    }
+  }
+
+  /** @description Returns push preview notification */
+  // @Route("/{version}/notifications/push/preview", "GET")
+  // @Api(Description="Returns push preview notification")
+  export class PreviewPushNotification
+    extends RequestBase
+    implements IReturn<PreviewPushNotificationResponse>
+  {
+    /** @description The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending). */
+    // @ApiMember(Description="The signed preview link hash. With it the preview opens without sign-in: exactly one notification, until the link expires (30 days after sending).")
+    public hash: string;
+
+    /** @description Signed-in preview by id: the project id. With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the project id. With a hash it must match the hash.")
+    public projectId?: string;
+
+    /** @description Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash. */
+    // @ApiMember(Description="Signed-in preview by id: the notification id (needs push:read). With a hash it must match the hash.")
+    public notificationId?: string;
+
+    public constructor(init?: Partial<PreviewPushNotification>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'PreviewPushNotification';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new PreviewPushNotificationResponse();
+    }
+  }
+
+  /** @description Retries the failed recipients of a push campaign */
+  // @Route("/{version}/notifications/push/campaigns/{Id}/retry-failed", "POST")
+  // @Api(Description="Retries the failed recipients of a push campaign")
+  // @DataContract
+  export class RetryFailedPushNotificationsRequest
+    extends CodeMashRequestBase
+    implements IReturn<RetryFailedPushNotificationsResponse>
+  {
+    /** @description The campaign id. Get it from get_push_campaigns. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id. Get it from get_push_campaigns.", IsRequired=true)
+    public id: string;
+
+    /** @description Optional. Omit to use the project default database integration (resolved per environment). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Omit to use the project default database integration (resolved per environment).")
+    public databaseIntegrationId?: string;
+
+    /** @description Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409). */
+    // @DataMember
+    // @ApiMember(Description="Your key for this request, at most 64 characters. The same key again returns the first answer and sends nothing; the same key with another body is refused (409).", IsRequired=true)
+    public idempotencyKey: string;
+
+    /** @description Optional. Only these notification ids. Default: every failed recipient of the campaign. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these notification ids. Default: every failed recipient of the campaign.")
+    public notificationIds?: string[];
+
+    /** @description Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE. */
+    // @DataMember
+    // @ApiMember(Description="Optional, default false. Also retry recipients whose failure is Ambiguous (a timeout after the request was sent) — this MAY SEND A DUPLICATE.")
+    public includeAmbiguous?: boolean;
+
+    /** @description Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous). */
+    // @DataMember
+    // @ApiMember(Description="Optional. Only these failure classes: Transient, Permanent, Unknown. Default: all three (Ambiguous only through includeAmbiguous).")
+    public categories?: string[];
+
+    public constructor(init?: Partial<RetryFailedPushNotificationsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RetryFailedPushNotificationsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RetryFailedPushNotificationsResponse();
+    }
+  }
+
+  /** @description Stops a running push campaign */
+  // @Route("/{version}/notifications/push/campaigns/{Id}/stop", "POST")
+  // @Api(Description="Stops a running push campaign")
+  // @DataContract
+  export class StopPushCampaignRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The campaign id to stop. */
+    // @DataMember
+    // @ApiMember(Description="The campaign id to stop.")
+    public id: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @DataMember
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<StopPushCampaignRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StopPushCampaignRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Gets push campaign messages */
+  // @Route("/{version}/notifications/push/campaigns/{campaignId}/messages", "GET")
+  // @Api(Description="Gets push campaign messages")
+  export class GetPushCampaignMessagesRequest
+    extends CodeMashListPaginationRequestBase
+    implements IReturn<GetPushCampaignMessagesResponse>
+  {
+    /** @description The push campaign id. Get it from get_push_campaigns. */
+    // @ApiMember(Description="The push campaign id. Get it from get_push_campaigns.")
+    public campaignId: string;
+
+    /** @description Optional: restrict results to this batch id. Get it from get_push_campaign_batches. */
+    // @ApiMember(Description="Optional: restrict results to this batch id. Get it from get_push_campaign_batches.")
+    public campaignBatchId: string;
+
+    /** @description Optional database integration id; omit to use the project's default. */
+    // @ApiMember(Description="Optional database integration id; omit to use the project's default.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<GetPushCampaignMessagesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetPushCampaignMessagesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetPushCampaignMessagesResponse();
     }
   }
 

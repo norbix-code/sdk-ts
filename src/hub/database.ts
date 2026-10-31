@@ -1228,6 +1228,101 @@ export class DatabaseModule {
   };
 
   /**
+   * DELETE /{version}/database/aggregates/{Id}
+   * Request DTO: DeleteDatabaseAggregateRequest
+   */
+  deleteDatabaseAggregate = (
+    request: Partial<CodeMashHub2.DeleteDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.DeleteDatabaseAggregateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/database/aggregates/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/aggregates/{Id}
+   * Request DTO: GetDatabaseAggregate
+   */
+  getDatabaseAggregate = (
+    request: Partial<CodeMashHub2.GetDatabaseAggregate> = {} as Partial<CodeMashHub2.GetDatabaseAggregate>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseAggregateResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseAggregateResponse>({
+      target: 'hub',
+      path: '/{version}/database/aggregates/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/aggregates
+   * Request DTO: GetDatabaseAggregates
+   */
+  getDatabaseAggregates = (
+    request: Partial<CodeMashHub2.GetDatabaseAggregates> = {} as Partial<CodeMashHub2.GetDatabaseAggregates>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetDatabaseAggregatesResponse> => {
+    return this.transport.send<CodeMashHub2.GetDatabaseAggregatesResponse>({
+      target: 'hub',
+      path: '/{version}/database/aggregates',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/aggregates
+   * Request DTO: SaveDatabaseAggregateRequest
+   */
+  saveDatabaseAggregate = (
+    request: Partial<CodeMashHub2.SaveDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.SaveDatabaseAggregateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/database/aggregates',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/aggregates/test
+   * Request DTO: TestDatabaseAggregateRequest
+   */
+  testDatabaseAggregate = (
+    request: Partial<CodeMashHub2.TestDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.TestDatabaseAggregateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TestDatabaseAggregateResponse> => {
+    return this.transport.send<CodeMashHub2.TestDatabaseAggregateResponse>({
+      target: 'hub',
+      path: '/{version}/database/aggregates/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/database/imports
    * Request DTO: CreateCollectionImport
    */
@@ -1333,101 +1428,6 @@ export class DatabaseModule {
     return this.transport.send<CodeMashHub2.AnalyzeImportFileResponse>({
       target: 'hub',
       path: '/{version}/database/imports/analyze',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * DELETE /{version}/database/aggregates/{Id}
-   * Request DTO: DeleteDatabaseAggregateRequest
-   */
-  deleteDatabaseAggregate = (
-    request: Partial<CodeMashHub2.DeleteDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.DeleteDatabaseAggregateRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/database/aggregates/{Id}',
-      method: 'DELETE',
-      request,
-      pathParams: ['Id'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/database/aggregates/{Id}
-   * Request DTO: GetDatabaseAggregate
-   */
-  getDatabaseAggregate = (
-    request: Partial<CodeMashHub2.GetDatabaseAggregate> = {} as Partial<CodeMashHub2.GetDatabaseAggregate>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetDatabaseAggregateResponse> => {
-    return this.transport.send<CodeMashHub2.GetDatabaseAggregateResponse>({
-      target: 'hub',
-      path: '/{version}/database/aggregates/{Id}',
-      method: 'GET',
-      request,
-      pathParams: ['Id'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/database/aggregates
-   * Request DTO: GetDatabaseAggregates
-   */
-  getDatabaseAggregates = (
-    request: Partial<CodeMashHub2.GetDatabaseAggregates> = {} as Partial<CodeMashHub2.GetDatabaseAggregates>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetDatabaseAggregatesResponse> => {
-    return this.transport.send<CodeMashHub2.GetDatabaseAggregatesResponse>({
-      target: 'hub',
-      path: '/{version}/database/aggregates',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/database/aggregates
-   * Request DTO: SaveDatabaseAggregateRequest
-   */
-  saveDatabaseAggregate = (
-    request: Partial<CodeMashHub2.SaveDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.SaveDatabaseAggregateRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.IdResponse> => {
-    return this.transport.send<CodeMashHub2.IdResponse>({
-      target: 'hub',
-      path: '/{version}/database/aggregates',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/database/aggregates/test
-   * Request DTO: TestDatabaseAggregateRequest
-   */
-  testDatabaseAggregate = (
-    request: Partial<CodeMashHub2.TestDatabaseAggregateRequest> = {} as Partial<CodeMashHub2.TestDatabaseAggregateRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.TestDatabaseAggregateResponse> => {
-    return this.transport.send<CodeMashHub2.TestDatabaseAggregateResponse>({
-      target: 'hub',
-      path: '/{version}/database/aggregates/test',
       method: 'POST',
       request,
       pathParams: [],

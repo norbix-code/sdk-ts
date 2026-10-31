@@ -42,6 +42,8 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`getMembershipIntegrations`](#getmembershipintegrations)                 | `GET`    | `/{version}/membership/integrations`                                  | `project` |
 | [`saveMembershipIntegration`](#savemembershipintegration)                 | `POST`   | `/{version}/membership/integrations`                                  | `project` |
 | [`setMembershipIntegrationAsDefault`](#setmembershipintegrationasdefault) | `PUT`    | `/{version}/membership/integrations/{Id}/default`                     | `project` |
+| [`getExecutionIdentities`](#getexecutionidentities)                       | `GET`    | `/{version}/membership/execution-identities`                          | `project` |
+| [`createExecutionIdentity`](#createexecutionidentity)                     | `POST`   | `/{version}/membership/execution-identities`                          | `project` |
 | [`getAuthorizationSettings`](#getauthorizationsettings)                   | `GET`    | `/{version}/membership/authorization`                                 | `project` |
 | [`updateAuthorizationSettings`](#updateauthorizationsettings)             | `PUT`    | `/{version}/membership/authorization`                                 | `project` |
 | [`updatePasswordComplexity`](#updatepasswordcomplexity)                   | `PUT`    | `/{version}/membership/authorization/password-complexity`             | `project` |
@@ -766,6 +768,50 @@ const result = await norbix.hub.membership.setMembershipIntegrationAsDefault({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getExecutionIdentities
+
+`GET` `/{version}/membership/execution-identities`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetExecutionIdentitiesRequest`
+**Response**: `CodeMashHub2.GetExecutionIdentitiesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.getExecutionIdentities({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetExecutionIdentitiesResponse
+```
+
+[↑ Top](#endpoints)
+
+### createExecutionIdentity
+
+`POST` `/{version}/membership/execution-identities`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateExecutionIdentityRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.membership.createExecutionIdentity({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

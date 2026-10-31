@@ -135,6 +135,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "CheckTriggerExecutionIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "CleanLogs": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -220,6 +224,10 @@
     "returnsBytes": false
   },
   "CreateEmailTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateExecutionIdentityRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1140,6 +1148,10 @@
     "returnsBytes": false
   },
   "GetEnvironmentAdminUrl": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetExecutionIdentitiesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

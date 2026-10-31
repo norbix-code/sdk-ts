@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 44
+ * Endpoints: 55
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -842,6 +842,215 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/membership/users/{userId}/ai-plan
+   * Request DTO: SetUserAiPlan
+   */
+  setUserAiPlan = (
+    request: Partial<CodeMashApi2.SetUserAiPlan> = {} as Partial<CodeMashApi2.SetUserAiPlan>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{userId}/ai-plan',
+      method: 'PUT',
+      request,
+      pathParams: ['userId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users
+   * Request DTO: CreateContactRequest
+   */
+  createContact = (
+    request: Partial<CodeMashApi2.CreateContactRequest> = {} as Partial<CodeMashApi2.CreateContactRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/membership/users/{contactId}
+   * Request DTO: DeleteContact
+   */
+  deleteContact = (
+    request: Partial<CodeMashApi2.DeleteContact> = {} as Partial<CodeMashApi2.DeleteContact>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/users/{contactId}
+   * Request DTO: GetContact
+   */
+  getContact = (
+    request: Partial<CodeMashApi2.GetContact> = {} as Partial<CodeMashApi2.GetContact>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetContactResponse> => {
+    return this.transport.send<CodeMashApi2.GetContactResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'GET',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/users
+   * Request DTO: GetAllContacts
+   */
+  getAllContacts = (
+    request: Partial<CodeMashApi2.GetAllContacts> = {} as Partial<CodeMashApi2.GetAllContacts>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetAllContactsResponse> => {
+    return this.transport.send<CodeMashApi2.GetAllContactsResponse>({
+      target: 'api',
+      path: '/{version}/membership/users',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/merge
+   * Request DTO: MergeContactsRequest
+   */
+  mergeContacts = (
+    request: Partial<CodeMashApi2.MergeContactsRequest> = {} as Partial<CodeMashApi2.MergeContactsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/merge',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/repair-roles
+   * Request DTO: RepairContactRolesRequest
+   */
+  repairContactRoles = (
+    request: Partial<CodeMashApi2.RepairContactRolesRequest> = {} as Partial<CodeMashApi2.RepairContactRolesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.RepairContactRolesResponse> => {
+    return this.transport.send<CodeMashApi2.RepairContactRolesResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/repair-roles',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PATCH /{version}/membership/users/{contactId}
+   * Request DTO: UpdateContactRequest
+   */
+  updateContact = (
+    request: Partial<CodeMashApi2.UpdateContactRequest> = {} as Partial<CodeMashApi2.UpdateContactRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}',
+      method: 'PATCH',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/identities
+   * Request DTO: AddContactIdentityRequest
+   */
+  addContactIdentity = (
+    request: Partial<CodeMashApi2.AddContactIdentityRequest> = {} as Partial<CodeMashApi2.AddContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/identities',
+      method: 'POST',
+      request,
+      pathParams: ['contactId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/identities/{authId}/promote
+   * Request DTO: PromoteContactIdentityRequest
+   */
+  promoteContactIdentity = (
+    request: Partial<CodeMashApi2.PromoteContactIdentityRequest> = {} as Partial<CodeMashApi2.PromoteContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}/promote',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'authId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/membership/users/{contactId}/identities/{authId}
+   * Request DTO: RemoveContactIdentityRequest
+   */
+  removeContactIdentity = (
+    request: Partial<CodeMashApi2.RemoveContactIdentityRequest> = {} as Partial<CodeMashApi2.RemoveContactIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/identities/{authId}',
+      method: 'DELETE',
+      request,
+      pathParams: ['contactId', 'authId'],
       scope: 'project',
       ...options,
     });
