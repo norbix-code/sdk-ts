@@ -63,7 +63,7 @@ export class CodeModule {
       method: 'GET',
       request,
       pathParams: ['Token'],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -82,7 +82,7 @@ export class CodeModule {
       method: 'POST',
       request,
       pathParams: ['Token'],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

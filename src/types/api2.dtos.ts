@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-31 09:06:06
+Date: 2026-10-31 09:57:36
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1944,6 +1944,19 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class WorkflowRunActorDto {
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public kind: string;
+
+    public constructor(init?: Partial<WorkflowRunActorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowWaitingOnDto {
     // @DataMember
     public stepId: string;
@@ -2014,6 +2027,18 @@ export module CodeMashApi2 {
     public durationMs?: number;
 
     // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
+    // @DataMember
     public currentStepIds: string[] = [];
 
     // @DataMember
@@ -2023,19 +2048,6 @@ export module CodeMashApi2 {
     public error?: WorkflowRunErrorDto;
 
     public constructor(init?: Partial<WorkflowRunListProjection>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunActorDto {
-    // @DataMember
-    public userId?: string;
-
-    // @DataMember
-    public kind: string;
-
-    public constructor(init?: Partial<WorkflowRunActorDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -2138,6 +2150,12 @@ export module CodeMashApi2 {
 
     // @DataMember
     public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
 
     // @DataMember
     public startedAt: string;
@@ -3058,6 +3076,7 @@ export module CodeMashApi2 {
   export enum RecipientRemovalReason {
     OptedOut = 1,
     Compliance = 2,
+    Undeliverable = 3,
   }
 
   // @DataContract

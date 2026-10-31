@@ -1771,7 +1771,7 @@ const result = await norbix.hub.notifications.unArchivePushTemplate({
 Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdatePushTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -1781,7 +1781,7 @@ const norbix = new Norbix();
 const result = await norbix.hub.notifications.updatePushTemplate({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
