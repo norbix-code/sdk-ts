@@ -1405,8 +1405,8 @@ export class NotificationsModule {
   updatePushTemplate = (
     request: Partial<CodeMashHub2.UpdatePushTemplateRequest> = {} as Partial<CodeMashHub2.UpdatePushTemplateRequest>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/notifications/push/templates',
       method: 'PUT',
