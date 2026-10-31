@@ -6,10 +6,29 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: triggers
- * Endpoints: 3
+ * Endpoints: 4
  */
 export class TriggersModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * POST /{version}/triggers/execution-identity/check
+   * Request DTO: CheckTriggerExecutionIdentityRequest
+   */
+  checkTriggerExecutionIdentity = (
+    request: Partial<CodeMashHub2.CheckTriggerExecutionIdentityRequest> = {} as Partial<CodeMashHub2.CheckTriggerExecutionIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CheckTriggerExecutionIdentityResponse> => {
+    return this.transport.send<CodeMashHub2.CheckTriggerExecutionIdentityResponse>({
+      target: 'hub',
+      path: '/{version}/triggers/execution-identity/check',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/triggers/{id}/definition

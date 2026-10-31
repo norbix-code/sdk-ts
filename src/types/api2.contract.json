@@ -1,5 +1,13 @@
 {
+  "AddContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "AggregateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "AnalyzeImportFileRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -12,6 +20,10 @@
     "returnsBytes": false
   },
   "BlockUserRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CancelCodeWorkflowRun": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -43,11 +55,43 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "CreateCollectionImport": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateEmailCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "CreateEndUserChatSessionRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
   "CreatePaymentOrderRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreatePushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateSmsCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteCollectionImportRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteContact": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteEmailCampaignRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -80,6 +124,14 @@
     "returnsBytes": false
   },
   "DeleteOwnPushDeviceRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeletePushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "DeleteSmsCampaign": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -143,7 +195,35 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetAllContacts": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRunLogs": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCodeWorkflowRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetCodeWorkflowWaitingRuns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCollectionImport": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetCollectionImports": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetContact": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -152,6 +232,34 @@
     "returnsBytes": false
   },
   "GetDatabaseSchemasRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEmailCampaigns": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -171,6 +279,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetFile": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetFileByIdRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -180,6 +292,10 @@
     "returnsBytes": true
   },
   "GetFileInfoRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetFolderFiles": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -219,7 +335,67 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "GetPushCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignAudienceCountRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetPushCampaigns": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetSignedUrlRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaign": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatchNotification": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatchNotifications": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignBatches": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignMessagesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaignStatistics": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetSmsCampaigns": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -287,6 +463,22 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "MakeFilePrivateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFilePublicRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFolderPrivateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MakeFolderPublicRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "MapAuthToUserRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -304,6 +496,10 @@
     "returnsBytes": false
   },
   "MarkOwnPushMessageReadRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "MergeContactsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -327,6 +523,22 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "PreviewEmailNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PreviewPushNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PreviewSmsNotification": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "PromoteContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "PutFileContentRequest": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -343,6 +555,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RemoveContactIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RenameEndUserChatSessionRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -351,7 +567,15 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RepairContactRolesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ReplaceOneRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RequestImportUploadUrlRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -368,6 +592,26 @@
     "returnsBytes": false
   },
   "ResumeCodeWorkflowRun": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResumeCodeWorkflowRunByKey": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryCodeWorkflowRunStep": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedEmailNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedPushNotificationsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RetryFailedSmsNotificationsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -423,6 +667,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SetUserAiPlan": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SharedTypeGen": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -439,7 +687,15 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "TestFilesIntegrationRequest": {
+  "StopEmailCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopPushCampaignRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StopSmsCampaignRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -448,6 +704,10 @@
     "returnsBytes": false
   },
   "UnsubscribeContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateContactRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

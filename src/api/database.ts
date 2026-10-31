@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 22
+ * Endpoints: 28
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -424,6 +424,120 @@ export class DatabaseModule {
       method: 'PUT',
       request,
       pathParams: ['collectionName', 'id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports
+   * Request DTO: CreateCollectionImport
+   */
+  createCollectionImport = (
+    request: Partial<CodeMashApi2.CreateCollectionImport> = {} as Partial<CodeMashApi2.CreateCollectionImport>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/database/imports',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * DELETE /{version}/database/imports/{Id}
+   * Request DTO: DeleteCollectionImportRequest
+   */
+  deleteCollectionImport = (
+    request: Partial<CodeMashApi2.DeleteCollectionImportRequest> = {} as Partial<CodeMashApi2.DeleteCollectionImportRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/database/imports/{Id}',
+      method: 'DELETE',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/imports/{Id}
+   * Request DTO: GetCollectionImport
+   */
+  getCollectionImport = (
+    request: Partial<CodeMashApi2.GetCollectionImport> = {} as Partial<CodeMashApi2.GetCollectionImport>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetCollectionImportResponse> => {
+    return this.transport.send<CodeMashApi2.GetCollectionImportResponse>({
+      target: 'api',
+      path: '/{version}/database/imports/{Id}',
+      method: 'GET',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/database/imports
+   * Request DTO: GetCollectionImports
+   */
+  getCollectionImports = (
+    request: Partial<CodeMashApi2.GetCollectionImports> = {} as Partial<CodeMashApi2.GetCollectionImports>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetCollectionImportsResponse> => {
+    return this.transport.send<CodeMashApi2.GetCollectionImportsResponse>({
+      target: 'api',
+      path: '/{version}/database/imports',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports/upload-url
+   * Request DTO: RequestImportUploadUrlRequest
+   */
+  requestImportUploadUrl = (
+    request: Partial<CodeMashApi2.RequestImportUploadUrlRequest> = {} as Partial<CodeMashApi2.RequestImportUploadUrlRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.RequestImportUploadUrlResponse> => {
+    return this.transport.send<CodeMashApi2.RequestImportUploadUrlResponse>({
+      target: 'api',
+      path: '/{version}/database/imports/upload-url',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/database/imports/analyze
+   * Request DTO: AnalyzeImportFileRequest
+   */
+  analyzeImportFile = (
+    request: Partial<CodeMashApi2.AnalyzeImportFileRequest> = {} as Partial<CodeMashApi2.AnalyzeImportFileRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.AnalyzeImportFileResponse> => {
+    return this.transport.send<CodeMashApi2.AnalyzeImportFileResponse>({
+      target: 'api',
+      path: '/{version}/database/imports/analyze',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

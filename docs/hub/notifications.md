@@ -48,18 +48,6 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailFooter`](#getemailfooter)                                             | `GET`    | `/{version}/notifications/email/footers/{id}`                                      | `project` |
 | [`getEmailFooters`](#getemailfooters)                                           | `GET`    | `/{version}/notifications/email/footers`                                           | `project` |
 | [`saveEmailFooter`](#saveemailfooter)                                           | `POST`   | `/{version}/notifications/email/footers`                                           | `project` |
-| [`createEmailCampaign`](#createemailcampaign)                                   | `POST`   | `/{version}/notifications/email/campaigns`                                         | `project` |
-| [`deleteEmailCampaign`](#deleteemailcampaign)                                   | `DELETE` | `/{version}/notifications/email/campaigns/{Id}`                                    | `project` |
-| [`getEmailCampaign`](#getemailcampaign)                                         | `GET`    | `/{version}/notifications/email/campaigns/{id}`                                    | `project` |
-| [`getEmailCampaigns`](#getemailcampaigns)                                       | `GET`    | `/{version}/notifications/email/campaigns`                                         | `project` |
-| [`getEmailCampaignBatches`](#getemailcampaignbatches)                           | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches`                            | `project` |
-| [`getEmailCampaignBatchNotification`](#getemailcampaignbatchnotification)       | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}` | `project` |
-| [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications)     | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`                  | `project` |
-| [`getEmailCampaignStatistics`](#getemailcampaignstatistics)                     | `GET`    | `/{version}/notifications/email/campaigns/{id}/stats`                              | `project` |
-| [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                           | `project` |
-| [`retryFailedEmailNotifications`](#retryfailedemailnotifications)               | `POST`   | `/{version}/notifications/email/campaigns/{Id}/retry-failed`                       | `project` |
-| [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                               | `project` |
-| [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                  | `project` |
 | [`disableSms`](#disablesms)                                                     | `PUT`    | `/{version}/notifications/sms/disable`                                             | `project` |
 | [`getSmsDisableDependencies`](#getsmsdisabledependencies)                       | `GET`    | `/{version}/notifications/sms/disable-dependencies`                                | `project` |
 | [`enableSms`](#enablesms)                                                       | `PUT`    | `/{version}/notifications/sms/enable`                                              | `project` |
@@ -83,17 +71,6 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`saveSmsIntegration`](#savesmsintegration)                                     | `POST`   | `/{version}/notifications/sms/integrations`                                        | `project` |
 | [`setSmsIntegrationAsDefault`](#setsmsintegrationasdefault)                     | `PUT`    | `/{version}/notifications/sms/integrations/{Id}/default`                           | `project` |
 | [`testSmsIntegration`](#testsmsintegration)                                     | `POST`   | `/{version}/notifications/sms/integrations/test`                                   | `project` |
-| [`deleteSmsCampaign`](#deletesmscampaign)                                       | `DELETE` | `/{version}/notifications/sms/campaigns/{id}`                                      | `project` |
-| [`getSmsCampaign`](#getsmscampaign)                                             | `GET`    | `/{version}/notifications/sms/campaigns/{id}`                                      | `project` |
-| [`getSmsCampaigns`](#getsmscampaigns)                                           | `GET`    | `/{version}/notifications/sms/campaigns`                                           | `project` |
-| [`getSmsCampaignBatches`](#getsmscampaignbatches)                               | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches`                              | `project` |
-| [`getSmsCampaignBatchNotification`](#getsmscampaignbatchnotification)           | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}`   | `project` |
-| [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications)         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`                    | `project` |
-| [`getSmsCampaignStatistics`](#getsmscampaignstatistics)                         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/stats`                                | `project` |
-| [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                             | `project` |
-| [`retryFailedSmsNotifications`](#retryfailedsmsnotifications)                   | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/retry-failed`                         | `project` |
-| [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                 | `project` |
-| [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                     | `project` |
 | [`disablePush`](#disablepush)                                                   | `PUT`    | `/{version}/notifications/push/disable`                                            | `project` |
 | [`getPushDisableDependencies`](#getpushdisabledependencies)                     | `GET`    | `/{version}/notifications/push/disable-dependencies`                               | `project` |
 | [`enablePush`](#enablepush)                                                     | `PUT`    | `/{version}/notifications/push/enable`                                             | `project` |
@@ -121,6 +98,33 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`deletePushDevice`](#deletepushdevice)                                         | `DELETE` | `/{version}/notifications/push/devices/{Id}`                                       | `project` |
 | [`getPushDevice`](#getpushdevice)                                               | `GET`    | `/{version}/notifications/push/devices/{id}`                                       | `project` |
 | [`getPushDevices`](#getpushdevices)                                             | `GET`    | `/{version}/notifications/push/devices`                                            | `project` |
+| [`getNotificationInbox`](#getnotificationinbox)                                 | `GET`    | `/{version}/notifications/inbox`                                                   | `project` |
+| [`getUnreadCount`](#getunreadcount)                                             | `GET`    | `/{version}/notifications/inbox/unread-count`                                      | `project` |
+| [`markNotificationRead`](#marknotificationread)                                 | `POST`   | `/{version}/notifications/inbox/{notificationId}/read`                             | `project` |
+| [`markAllNotificationsRead`](#markallnotificationsread)                         | `POST`   | `/{version}/notifications/inbox/read-all`                                          | `project` |
+| [`createEmailCampaign`](#createemailcampaign)                                   | `POST`   | `/{version}/notifications/email/campaigns`                                         | `project` |
+| [`deleteEmailCampaign`](#deleteemailcampaign)                                   | `DELETE` | `/{version}/notifications/email/campaigns/{Id}`                                    | `project` |
+| [`getEmailCampaign`](#getemailcampaign)                                         | `GET`    | `/{version}/notifications/email/campaigns/{id}`                                    | `project` |
+| [`getEmailCampaigns`](#getemailcampaigns)                                       | `GET`    | `/{version}/notifications/email/campaigns`                                         | `project` |
+| [`getEmailCampaignBatches`](#getemailcampaignbatches)                           | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches`                            | `project` |
+| [`getEmailCampaignBatchNotification`](#getemailcampaignbatchnotification)       | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}` | `project` |
+| [`getEmailCampaignBatchNotifications`](#getemailcampaignbatchnotifications)     | `GET`    | `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`                  | `project` |
+| [`getEmailCampaignStatistics`](#getemailcampaignstatistics)                     | `GET`    | `/{version}/notifications/email/campaigns/{id}/stats`                              | `project` |
+| [`previewEmailNotification`](#previewemailnotification)                         | `GET`    | `/{version}/notifications/email/preview`                                           | `project` |
+| [`retryFailedEmailNotifications`](#retryfailedemailnotifications)               | `POST`   | `/{version}/notifications/email/campaigns/{Id}/retry-failed`                       | `project` |
+| [`stopEmailCampaign`](#stopemailcampaign)                                       | `POST`   | `/{version}/notifications/email/campaigns/{Id}/stop`                               | `project` |
+| [`getEmailCampaignMessages`](#getemailcampaignmessages)                         | `GET`    | `/{version}/notifications/emails/campaigns/{campaignId}/messages`                  | `project` |
+| [`deleteSmsCampaign`](#deletesmscampaign)                                       | `DELETE` | `/{version}/notifications/sms/campaigns/{id}`                                      | `project` |
+| [`getSmsCampaign`](#getsmscampaign)                                             | `GET`    | `/{version}/notifications/sms/campaigns/{id}`                                      | `project` |
+| [`getSmsCampaigns`](#getsmscampaigns)                                           | `GET`    | `/{version}/notifications/sms/campaigns`                                           | `project` |
+| [`getSmsCampaignBatches`](#getsmscampaignbatches)                               | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches`                              | `project` |
+| [`getSmsCampaignBatchNotification`](#getsmscampaignbatchnotification)           | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}`   | `project` |
+| [`getSmsCampaignBatchNotifications`](#getsmscampaignbatchnotifications)         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`                    | `project` |
+| [`getSmsCampaignStatistics`](#getsmscampaignstatistics)                         | `GET`    | `/{version}/notifications/sms/campaigns/{id}/stats`                                | `project` |
+| [`previewSmsNotification`](#previewsmsnotification)                             | `GET`    | `/{version}/notifications/sms/preview`                                             | `project` |
+| [`retryFailedSmsNotifications`](#retryfailedsmsnotifications)                   | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/retry-failed`                         | `project` |
+| [`stopSmsCampaign`](#stopsmscampaign)                                           | `POST`   | `/{version}/notifications/sms/campaigns/{Id}/stop`                                 | `project` |
+| [`getSmsCampaignMessages`](#getsmscampaignmessages)                             | `GET`    | `/{version}/notifications/sms/campaigns/{campaignId}/messages`                     | `project` |
 | [`getPushCampaignAudienceCount`](#getpushcampaignaudiencecount)                 | `POST`   | `/{version}/notifications/push/campaigns/audience-count`                           | `project` |
 | [`createPushCampaign`](#createpushcampaign)                                     | `POST`   | `/{version}/notifications/push/campaigns`                                          | `project` |
 | [`deletePushCampaign`](#deletepushcampaign)                                     | `DELETE` | `/{version}/notifications/push/campaigns/{Id}`                                     | `project` |
@@ -134,10 +138,6 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`retryFailedPushNotifications`](#retryfailedpushnotifications)                 | `POST`   | `/{version}/notifications/push/campaigns/{Id}/retry-failed`                        | `project` |
 | [`stopPushCampaign`](#stoppushcampaign)                                         | `POST`   | `/{version}/notifications/push/campaigns/{Id}/stop`                                | `project` |
 | [`getPushCampaignMessages`](#getpushcampaignmessages)                           | `GET`    | `/{version}/notifications/push/campaigns/{campaignId}/messages`                    | `project` |
-| [`getNotificationInbox`](#getnotificationinbox)                                 | `GET`    | `/{version}/notifications/inbox`                                                   | `project` |
-| [`getUnreadCount`](#getunreadcount)                                             | `GET`    | `/{version}/notifications/inbox/unread-count`                                      | `project` |
-| [`markNotificationRead`](#marknotificationread)                                 | `POST`   | `/{version}/notifications/inbox/{notificationId}/read`                             | `project` |
-| [`markAllNotificationsRead`](#markallnotificationsread)                         | `POST`   | `/{version}/notifications/inbox/read-all`                                          | `project` |
 | [`getUserNotificationPreferences`](#getusernotificationpreferences)             | `GET`    | `/{version}/notifications/user/preferences`                                        | `project` |
 | [`updateUserNotificationsPreferences`](#updateusernotificationspreferences)     | `PUT`    | `/{version}/notifications/user/preferences`                                        | `project` |
 | [`grantContactConsent`](#grantcontactconsent)                                   | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`        | `project` |
@@ -484,7 +484,7 @@ const result = await norbix.hub.notifications.getEmailTemplateAvailableTokens({
 Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdateEmailTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -494,7 +494,7 @@ const norbix = new Norbix();
 const result = await norbix.hub.notifications.updateEmailTemplate({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
@@ -989,278 +989,6 @@ const result = await norbix.hub.notifications.saveEmailFooter({
 
 [↑ Top](#endpoints)
 
-### createEmailCampaign
-
-`POST` `/{version}/notifications/email/campaigns`
-
-Create a new item.
-
-**Request DTO**: `CodeMashHub2.CreateEmailCampaignRequest`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.createEmailCampaign({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### deleteEmailCampaign
-
-`DELETE` `/{version}/notifications/email/campaigns/{Id}`
-
-Delete an item.
-
-**Request DTO**: `CodeMashHub2.DeleteEmailCampaignRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.deleteEmailCampaign({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaign
-
-`GET` `/{version}/notifications/email/campaigns/{id}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaign`
-**Response**: `CodeMashHub2.GetEmailCampaignResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaign({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaigns
-
-`GET` `/{version}/notifications/email/campaigns`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaigns`
-**Response**: `CodeMashHub2.GetEmailCampaignsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaigns({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignsResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaignBatches
-
-`GET` `/{version}/notifications/email/campaigns/{id}/batches`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaignBatches`
-**Response**: `CodeMashHub2.GetEmailCampaignBatchesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaignBatches({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignBatchesResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaignBatchNotification
-
-`GET` `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaignBatchNotification`
-**Response**: `CodeMashHub2.GetEmailCampaignBatchNotificationResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaignBatchNotification({
-  id: 'id-here',
-  batchId: 'batchId-here',
-  notificationId: 'notificationId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignBatchNotificationResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaignBatchNotifications
-
-`GET` `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaignBatchNotifications`
-**Response**: `CodeMashHub2.GetEmailCampaignBatchNotificationsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaignBatchNotifications({
-  id: 'id-here',
-  batchId: 'batchId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignBatchNotificationsResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaignStatistics
-
-`GET` `/{version}/notifications/email/campaigns/{id}/stats`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaignStatistics`
-**Response**: `CodeMashHub2.GetEmailCampaignStatisticsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaignStatistics({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignStatisticsResponse
-```
-
-[↑ Top](#endpoints)
-
-### previewEmailNotification
-
-`GET` `/{version}/notifications/email/preview`
-
-Render a preview without sending.
-
-**Request DTO**: `CodeMashHub2.PreviewEmailNotification`
-**Response**: `CodeMashHub2.PreviewEmailNotificationResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.previewEmailNotification({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.PreviewEmailNotificationResponse
-```
-
-[↑ Top](#endpoints)
-
-### retryFailedEmailNotifications
-
-`POST` `/{version}/notifications/email/campaigns/{Id}/retry-failed`
-
-**Request DTO**: `CodeMashHub2.RetryFailedEmailNotificationsRequest`
-**Response**: `CodeMashHub2.RetryFailedEmailNotificationsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.retryFailedEmailNotifications({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.RetryFailedEmailNotificationsResponse
-```
-
-[↑ Top](#endpoints)
-
-### stopEmailCampaign
-
-`POST` `/{version}/notifications/email/campaigns/{Id}/stop`
-
-**Request DTO**: `CodeMashHub2.StopEmailCampaignRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.stopEmailCampaign({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getEmailCampaignMessages
-
-`GET` `/{version}/notifications/emails/campaigns/{campaignId}/messages`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetEmailCampaignMessagesRequest`
-**Response**: `CodeMashHub2.GetEmailCampaignMessagesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getEmailCampaignMessages({
-  campaignId: 'campaignId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetEmailCampaignMessagesResponse
-```
-
-[↑ Top](#endpoints)
-
 ### disableSms
 
 `PUT` `/{version}/notifications/sms/disable`
@@ -1534,7 +1262,7 @@ const result = await norbix.hub.notifications.unArchiveSmsTemplate({
 Update an existing item.
 
 **Request DTO**: `CodeMashHub2.UpdateSmsTemplateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
+**Response**: `CodeMashHub2.IdResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
@@ -1544,7 +1272,7 @@ const norbix = new Norbix();
 const result = await norbix.hub.notifications.updateSmsTemplate({
   // See CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1766,256 +1494,6 @@ const result = await norbix.hub.notifications.testSmsIntegration({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestSmsIntegrationResponse
-```
-
-[↑ Top](#endpoints)
-
-### deleteSmsCampaign
-
-`DELETE` `/{version}/notifications/sms/campaigns/{id}`
-
-Delete an item.
-
-**Request DTO**: `CodeMashHub2.DeleteSmsCampaign`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.deleteSmsCampaign({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaign
-
-`GET` `/{version}/notifications/sms/campaigns/{id}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaign`
-**Response**: `CodeMashHub2.GetSmsCampaignResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaign({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaigns
-
-`GET` `/{version}/notifications/sms/campaigns`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaigns`
-**Response**: `CodeMashHub2.GetSmsCampaignsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaigns({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignsResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaignBatches
-
-`GET` `/{version}/notifications/sms/campaigns/{id}/batches`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaignBatches`
-**Response**: `CodeMashHub2.GetSmsCampaignBatchesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaignBatches({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignBatchesResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaignBatchNotification
-
-`GET` `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaignBatchNotification`
-**Response**: `CodeMashHub2.GetSmsCampaignBatchNotificationResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaignBatchNotification({
-  id: 'id-here',
-  batchId: 'batchId-here',
-  notificationId: 'notificationId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignBatchNotificationResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaignBatchNotifications
-
-`GET` `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaignBatchNotifications`
-**Response**: `CodeMashHub2.GetSmsCampaignBatchNotificationsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaignBatchNotifications({
-  id: 'id-here',
-  batchId: 'batchId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignBatchNotificationsResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaignStatistics
-
-`GET` `/{version}/notifications/sms/campaigns/{id}/stats`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaignStatistics`
-**Response**: `CodeMashHub2.GetSmsCampaignStatisticsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaignStatistics({
-  id: 'id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignStatisticsResponse
-```
-
-[↑ Top](#endpoints)
-
-### previewSmsNotification
-
-`GET` `/{version}/notifications/sms/preview`
-
-Render a preview without sending.
-
-**Request DTO**: `CodeMashHub2.PreviewSmsNotification`
-**Response**: `CodeMashHub2.PreviewSmsNotificationResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.previewSmsNotification({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.PreviewSmsNotificationResponse
-```
-
-[↑ Top](#endpoints)
-
-### retryFailedSmsNotifications
-
-`POST` `/{version}/notifications/sms/campaigns/{Id}/retry-failed`
-
-**Request DTO**: `CodeMashHub2.RetryFailedSmsNotificationsRequest`
-**Response**: `CodeMashHub2.RetryFailedSmsNotificationsResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.retryFailedSmsNotifications({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.RetryFailedSmsNotificationsResponse
-```
-
-[↑ Top](#endpoints)
-
-### stopSmsCampaign
-
-`POST` `/{version}/notifications/sms/campaigns/{Id}/stop`
-
-**Request DTO**: `CodeMashHub2.StopSmsCampaignRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.stopSmsCampaign({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getSmsCampaignMessages
-
-`GET` `/{version}/notifications/sms/campaigns/{campaignId}/messages`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetSmsCampaignMessagesRequest`
-**Response**: `CodeMashHub2.GetSmsCampaignMessagesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getSmsCampaignMessages({
-  campaignId: 'campaignId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetSmsCampaignMessagesResponse
 ```
 
 [↑ Top](#endpoints)
@@ -2619,6 +2097,613 @@ const result = await norbix.hub.notifications.getPushDevices({
 
 [↑ Top](#endpoints)
 
+### getNotificationInbox
+
+`GET` `/{version}/notifications/inbox`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetNotificationInboxRequest`
+**Response**: `CodeMashHub2.GetNotificationInboxResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getNotificationInbox({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetNotificationInboxResponse
+```
+
+[↑ Top](#endpoints)
+
+### getUnreadCount
+
+`GET` `/{version}/notifications/inbox/unread-count`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetUnreadCountRequest`
+**Response**: `CodeMashHub2.GetUnreadCountResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getUnreadCount({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetUnreadCountResponse
+```
+
+[↑ Top](#endpoints)
+
+### markNotificationRead
+
+`POST` `/{version}/notifications/inbox/{notificationId}/read`
+
+**Request DTO**: `CodeMashHub2.MarkNotificationReadRequest`
+**Response**: `CodeMashHub2.MarkNotificationReadResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.markNotificationRead({
+  notificationId: 'notificationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.MarkNotificationReadResponse
+```
+
+[↑ Top](#endpoints)
+
+### markAllNotificationsRead
+
+`POST` `/{version}/notifications/inbox/read-all`
+
+**Request DTO**: `CodeMashHub2.MarkAllNotificationsReadRequest`
+**Response**: `CodeMashHub2.MarkAllNotificationsReadResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.markAllNotificationsRead({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.MarkAllNotificationsReadResponse
+```
+
+[↑ Top](#endpoints)
+
+### createEmailCampaign
+
+`POST` `/{version}/notifications/email/campaigns`
+
+Create a new item.
+
+**Request DTO**: `CodeMashHub2.CreateEmailCampaignRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.createEmailCampaign({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteEmailCampaign
+
+`DELETE` `/{version}/notifications/email/campaigns/{Id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteEmailCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.deleteEmailCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaign
+
+`GET` `/{version}/notifications/email/campaigns/{id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaign`
+**Response**: `CodeMashHub2.GetEmailCampaignResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaign({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaigns
+
+`GET` `/{version}/notifications/email/campaigns`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaigns`
+**Response**: `CodeMashHub2.GetEmailCampaignsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaigns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaignBatches
+
+`GET` `/{version}/notifications/email/campaigns/{id}/batches`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaignBatches`
+**Response**: `CodeMashHub2.GetEmailCampaignBatchesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaignBatches({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignBatchesResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaignBatchNotification
+
+`GET` `/{version}/notifications/email/campaigns/{id}/batches/{batchId}/{notificationId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaignBatchNotification`
+**Response**: `CodeMashHub2.GetEmailCampaignBatchNotificationResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaignBatchNotification({
+  id: 'id-here',
+  batchId: 'batchId-here',
+  notificationId: 'notificationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignBatchNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaignBatchNotifications
+
+`GET` `/{version}/notifications/email/campaigns/{id}/batches/{batchId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaignBatchNotifications`
+**Response**: `CodeMashHub2.GetEmailCampaignBatchNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaignBatchNotifications({
+  id: 'id-here',
+  batchId: 'batchId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignBatchNotificationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaignStatistics
+
+`GET` `/{version}/notifications/email/campaigns/{id}/stats`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaignStatistics`
+**Response**: `CodeMashHub2.GetEmailCampaignStatisticsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaignStatistics({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignStatisticsResponse
+```
+
+[↑ Top](#endpoints)
+
+### previewEmailNotification
+
+`GET` `/{version}/notifications/email/preview`
+
+Render a preview without sending.
+
+**Request DTO**: `CodeMashHub2.PreviewEmailNotification`
+**Response**: `CodeMashHub2.PreviewEmailNotificationResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.previewEmailNotification({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.PreviewEmailNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### retryFailedEmailNotifications
+
+`POST` `/{version}/notifications/email/campaigns/{Id}/retry-failed`
+
+**Request DTO**: `CodeMashHub2.RetryFailedEmailNotificationsRequest`
+**Response**: `CodeMashHub2.RetryFailedEmailNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.retryFailedEmailNotifications({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RetryFailedEmailNotificationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### stopEmailCampaign
+
+`POST` `/{version}/notifications/email/campaigns/{Id}/stop`
+
+**Request DTO**: `CodeMashHub2.StopEmailCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.stopEmailCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getEmailCampaignMessages
+
+`GET` `/{version}/notifications/emails/campaigns/{campaignId}/messages`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetEmailCampaignMessagesRequest`
+**Response**: `CodeMashHub2.GetEmailCampaignMessagesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getEmailCampaignMessages({
+  campaignId: 'campaignId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetEmailCampaignMessagesResponse
+```
+
+[↑ Top](#endpoints)
+
+### deleteSmsCampaign
+
+`DELETE` `/{version}/notifications/sms/campaigns/{id}`
+
+Delete an item.
+
+**Request DTO**: `CodeMashHub2.DeleteSmsCampaign`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.deleteSmsCampaign({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaign
+
+`GET` `/{version}/notifications/sms/campaigns/{id}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaign`
+**Response**: `CodeMashHub2.GetSmsCampaignResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaign({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaigns
+
+`GET` `/{version}/notifications/sms/campaigns`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaigns`
+**Response**: `CodeMashHub2.GetSmsCampaignsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaigns({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaignBatches
+
+`GET` `/{version}/notifications/sms/campaigns/{id}/batches`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaignBatches`
+**Response**: `CodeMashHub2.GetSmsCampaignBatchesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaignBatches({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignBatchesResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaignBatchNotification
+
+`GET` `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}/{notificationId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaignBatchNotification`
+**Response**: `CodeMashHub2.GetSmsCampaignBatchNotificationResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaignBatchNotification({
+  id: 'id-here',
+  batchId: 'batchId-here',
+  notificationId: 'notificationId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignBatchNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaignBatchNotifications
+
+`GET` `/{version}/notifications/sms/campaigns/{id}/batches/{batchId}`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaignBatchNotifications`
+**Response**: `CodeMashHub2.GetSmsCampaignBatchNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaignBatchNotifications({
+  id: 'id-here',
+  batchId: 'batchId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignBatchNotificationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaignStatistics
+
+`GET` `/{version}/notifications/sms/campaigns/{id}/stats`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaignStatistics`
+**Response**: `CodeMashHub2.GetSmsCampaignStatisticsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaignStatistics({
+  id: 'id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignStatisticsResponse
+```
+
+[↑ Top](#endpoints)
+
+### previewSmsNotification
+
+`GET` `/{version}/notifications/sms/preview`
+
+Render a preview without sending.
+
+**Request DTO**: `CodeMashHub2.PreviewSmsNotification`
+**Response**: `CodeMashHub2.PreviewSmsNotificationResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.previewSmsNotification({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.PreviewSmsNotificationResponse
+```
+
+[↑ Top](#endpoints)
+
+### retryFailedSmsNotifications
+
+`POST` `/{version}/notifications/sms/campaigns/{Id}/retry-failed`
+
+**Request DTO**: `CodeMashHub2.RetryFailedSmsNotificationsRequest`
+**Response**: `CodeMashHub2.RetryFailedSmsNotificationsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.retryFailedSmsNotifications({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.RetryFailedSmsNotificationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### stopSmsCampaign
+
+`POST` `/{version}/notifications/sms/campaigns/{Id}/stop`
+
+**Request DTO**: `CodeMashHub2.StopSmsCampaignRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.stopSmsCampaign({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### getSmsCampaignMessages
+
+`GET` `/{version}/notifications/sms/campaigns/{campaignId}/messages`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetSmsCampaignMessagesRequest`
+**Response**: `CodeMashHub2.GetSmsCampaignMessagesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.getSmsCampaignMessages({
+  campaignId: 'campaignId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetSmsCampaignMessagesResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getPushCampaignAudienceCount
 
 `POST` `/{version}/notifications/push/campaigns/audience-count`
@@ -2909,91 +2994,6 @@ const result = await norbix.hub.notifications.getPushCampaignMessages({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetPushCampaignMessagesResponse
-```
-
-[↑ Top](#endpoints)
-
-### getNotificationInbox
-
-`GET` `/{version}/notifications/inbox`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetNotificationInboxRequest`
-**Response**: `CodeMashHub2.GetNotificationInboxResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getNotificationInbox({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetNotificationInboxResponse
-```
-
-[↑ Top](#endpoints)
-
-### getUnreadCount
-
-`GET` `/{version}/notifications/inbox/unread-count`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetUnreadCountRequest`
-**Response**: `CodeMashHub2.GetUnreadCountResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.getUnreadCount({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetUnreadCountResponse
-```
-
-[↑ Top](#endpoints)
-
-### markNotificationRead
-
-`POST` `/{version}/notifications/inbox/{notificationId}/read`
-
-**Request DTO**: `CodeMashHub2.MarkNotificationReadRequest`
-**Response**: `CodeMashHub2.MarkNotificationReadResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.markNotificationRead({
-  notificationId: 'notificationId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.MarkNotificationReadResponse
-```
-
-[↑ Top](#endpoints)
-
-### markAllNotificationsRead
-
-`POST` `/{version}/notifications/inbox/read-all`
-
-**Request DTO**: `CodeMashHub2.MarkAllNotificationsReadRequest`
-**Response**: `CodeMashHub2.MarkAllNotificationsReadResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.notifications.markAllNotificationsRead({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.MarkAllNotificationsReadResponse
 ```
 
 [↑ Top](#endpoints)

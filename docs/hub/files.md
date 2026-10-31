@@ -18,10 +18,6 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 | [`getFilesTrigger`](#getfilestrigger)                           | `GET`    | `/{version}/files/triggers/{id}`                | `project` |
 | [`getFilesTriggers`](#getfilestriggers)                         | `GET`    | `/{version}/files/triggers`                     | `project` |
 | [`saveFilesTrigger`](#savefilestrigger)                         | `POST`   | `/{version}/files/triggers`                     | `project` |
-| [`makeFilePrivate`](#makefileprivate)                           | `POST`   | `/{version}/files/item/private`                 | `project` |
-| [`makeFilePublic`](#makefilepublic)                             | `POST`   | `/{version}/files/item/public`                  | `project` |
-| [`makeFolderPrivate`](#makefolderprivate)                       | `POST`   | `/{version}/files/folder/private`               | `project` |
-| [`makeFolderPublic`](#makefolderpublic)                         | `POST`   | `/{version}/files/folder/public`                | `project` |
 | [`deleteFilesIntegration`](#deletefilesintegration)             | `DELETE` | `/{version}/files/integrations/{Id}`            | `project` |
 | [`disableFilesIntegration`](#disablefilesintegration)           | `PUT`    | `/{version}/files/integrations/{Id}/disable`    | `project` |
 | [`enableFilesIntegration`](#enablefilesintegration)             | `PUT`    | `/{version}/files/integrations/{Id}/enable`     | `project` |
@@ -30,10 +26,14 @@ Accessed as `norbix.hub.files` on the [`Norbix`](../../README.md#authentication)
 | [`saveFilesIntegration`](#savefilesintegration)                 | `POST`   | `/{version}/files/integrations`                 | `project` |
 | [`setFilesIntegrationAsDefault`](#setfilesintegrationasdefault) | `PUT`    | `/{version}/files/integrations/{Id}/default`    | `project` |
 | [`testFilesIntegration`](#testfilesintegration)                 | `POST`   | `/{version}/files/integrations/test`            | `project` |
-| [`getFile`](#getfile)                                           | `GET`    | `/{version}/files/item`                         | `project` |
 | [`getFileById`](#getfilebyid)                                   | `GET`    | `/{version}/files/item/by-id`                   | `project` |
-| [`getFolderFiles`](#getfolderfiles)                             | `GET`    | `/{version}/files/folder`                       | `project` |
 | [`useFile`](#usefile)                                           | `POST`   | `/{version}/files/item/use`                     | `project` |
+| [`makeFilePrivate`](#makefileprivate)                           | `POST`   | `/{version}/files/item/private`                 | `project` |
+| [`makeFilePublic`](#makefilepublic)                             | `POST`   | `/{version}/files/item/public`                  | `project` |
+| [`makeFolderPrivate`](#makefolderprivate)                       | `POST`   | `/{version}/files/folder/private`               | `project` |
+| [`makeFolderPublic`](#makefolderpublic)                         | `POST`   | `/{version}/files/folder/public`                | `project` |
+| [`getFile`](#getfile)                                           | `GET`    | `/{version}/files/item`                         | `project` |
+| [`getFolderFiles`](#getfolderfiles)                             | `GET`    | `/{version}/files/folder`                       | `project` |
 
 ## Reference
 
@@ -210,86 +210,6 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.files.saveFilesTrigger({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### makeFilePrivate
-
-`POST` `/{version}/files/item/private`
-
-**Request DTO**: `CodeMashHub2.MakeFilePrivateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.makeFilePrivate({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### makeFilePublic
-
-`POST` `/{version}/files/item/public`
-
-**Request DTO**: `CodeMashHub2.MakeFilePublicRequest`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.makeFilePublic({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
-```
-
-[↑ Top](#endpoints)
-
-### makeFolderPrivate
-
-`POST` `/{version}/files/folder/private`
-
-**Request DTO**: `CodeMashHub2.MakeFolderPrivateRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.makeFolderPrivate({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### makeFolderPublic
-
-`POST` `/{version}/files/folder/public`
-
-**Request DTO**: `CodeMashHub2.MakeFolderPublicRequest`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.makeFolderPublic({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
@@ -476,28 +396,6 @@ const result = await norbix.hub.files.testFilesIntegration({
 
 [↑ Top](#endpoints)
 
-### getFile
-
-`GET` `/{version}/files/item`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetFile`
-**Response**: `CodeMashHub2.GetFileResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.getFile({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetFileResponse
-```
-
-[↑ Top](#endpoints)
-
 ### getFileById
 
 `GET` `/{version}/files/item/by-id`
@@ -520,6 +418,128 @@ const result = await norbix.hub.files.getFileById({
 
 [↑ Top](#endpoints)
 
+### useFile
+
+`POST` `/{version}/files/item/use`
+
+**Request DTO**: `CodeMashHub2.UseFileRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.useFile({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### makeFilePrivate
+
+`POST` `/{version}/files/item/private`
+
+**Request DTO**: `CodeMashHub2.MakeFilePrivateRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.makeFilePrivate({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### makeFilePublic
+
+`POST` `/{version}/files/item/public`
+
+**Request DTO**: `CodeMashHub2.MakeFilePublicRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.makeFilePublic({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### makeFolderPrivate
+
+`POST` `/{version}/files/folder/private`
+
+**Request DTO**: `CodeMashHub2.MakeFolderPrivateRequest`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.makeFolderPrivate({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### makeFolderPublic
+
+`POST` `/{version}/files/folder/public`
+
+**Request DTO**: `CodeMashHub2.MakeFolderPublicRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.makeFolderPublic({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### getFile
+
+`GET` `/{version}/files/item`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetFile`
+**Response**: `CodeMashHub2.GetFileResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.files.getFile({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetFileResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getFolderFiles
 
 `GET` `/{version}/files/folder`
@@ -538,26 +558,6 @@ const result = await norbix.hub.files.getFolderFiles({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetFolderFilesResponse
-```
-
-[↑ Top](#endpoints)
-
-### useFile
-
-`POST` `/{version}/files/item/use`
-
-**Request DTO**: `CodeMashHub2.UseFileRequest`
-**Response**: `CodeMashHub2.IdResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.files.useFile({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.IdResponse
 ```
 
 [↑ Top](#endpoints)

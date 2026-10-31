@@ -164,82 +164,6 @@ export class FilesModule {
   };
 
   /**
-   * POST /{version}/files/item/private
-   * Request DTO: MakeFilePrivateRequest
-   */
-  makeFilePrivate = (
-    request: Partial<CodeMashHub2.MakeFilePrivateRequest> = {} as Partial<CodeMashHub2.MakeFilePrivateRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/files/item/private',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/files/item/public
-   * Request DTO: MakeFilePublicRequest
-   */
-  makeFilePublic = (
-    request: Partial<CodeMashHub2.MakeFilePublicRequest> = {} as Partial<CodeMashHub2.MakeFilePublicRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.IdResponse> => {
-    return this.transport.send<CodeMashHub2.IdResponse>({
-      target: 'hub',
-      path: '/{version}/files/item/public',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/files/folder/private
-   * Request DTO: MakeFolderPrivateRequest
-   */
-  makeFolderPrivate = (
-    request: Partial<CodeMashHub2.MakeFolderPrivateRequest> = {} as Partial<CodeMashHub2.MakeFolderPrivateRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/files/folder/private',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * POST /{version}/files/folder/public
-   * Request DTO: MakeFolderPublicRequest
-   */
-  makeFolderPublic = (
-    request: Partial<CodeMashHub2.MakeFolderPublicRequest> = {} as Partial<CodeMashHub2.MakeFolderPublicRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.IdResponse> => {
-    return this.transport.send<CodeMashHub2.IdResponse>({
-      target: 'hub',
-      path: '/{version}/files/folder/public',
-      method: 'POST',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * DELETE /{version}/files/integrations/{Id}
    * Request DTO: DeleteFilesIntegrationRequest
    */
@@ -392,25 +316,6 @@ export class FilesModule {
   };
 
   /**
-   * GET /{version}/files/item
-   * Request DTO: GetFile
-   */
-  getFile = (
-    request: Partial<CodeMashHub2.GetFile> = {} as Partial<CodeMashHub2.GetFile>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetFileResponse> => {
-    return this.transport.send<CodeMashHub2.GetFileResponse>({
-      target: 'hub',
-      path: '/{version}/files/item',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * GET /{version}/files/item/by-id
    * Request DTO: GetFileById
    */
@@ -421,25 +326,6 @@ export class FilesModule {
     return this.transport.send<CodeMashHub2.GetFileByIdResponse>({
       target: 'hub',
       path: '/{version}/files/item/by-id',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/files/folder
-   * Request DTO: GetFolderFiles
-   */
-  getFolderFiles = (
-    request: Partial<CodeMashHub2.GetFolderFiles> = {} as Partial<CodeMashHub2.GetFolderFiles>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetFolderFilesResponse> => {
-    return this.transport.send<CodeMashHub2.GetFolderFilesResponse>({
-      target: 'hub',
-      path: '/{version}/files/folder',
       method: 'GET',
       request,
       pathParams: [],
@@ -460,6 +346,120 @@ export class FilesModule {
       target: 'hub',
       path: '/{version}/files/item/use',
       method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/private
+   * Request DTO: MakeFilePrivateRequest
+   */
+  makeFilePrivate = (
+    request: Partial<CodeMashHub2.MakeFilePrivateRequest> = {} as Partial<CodeMashHub2.MakeFilePrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/files/item/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/public
+   * Request DTO: MakeFilePublicRequest
+   */
+  makeFilePublic = (
+    request: Partial<CodeMashHub2.MakeFilePublicRequest> = {} as Partial<CodeMashHub2.MakeFilePublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/files/item/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/private
+   * Request DTO: MakeFolderPrivateRequest
+   */
+  makeFolderPrivate = (
+    request: Partial<CodeMashHub2.MakeFolderPrivateRequest> = {} as Partial<CodeMashHub2.MakeFolderPrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/public
+   * Request DTO: MakeFolderPublicRequest
+   */
+  makeFolderPublic = (
+    request: Partial<CodeMashHub2.MakeFolderPublicRequest> = {} as Partial<CodeMashHub2.MakeFolderPublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/item
+   * Request DTO: GetFile
+   */
+  getFile = (
+    request: Partial<CodeMashHub2.GetFile> = {} as Partial<CodeMashHub2.GetFile>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetFileResponse> => {
+    return this.transport.send<CodeMashHub2.GetFileResponse>({
+      target: 'hub',
+      path: '/{version}/files/item',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/folder
+   * Request DTO: GetFolderFiles
+   */
+  getFolderFiles = (
+    request: Partial<CodeMashHub2.GetFolderFiles> = {} as Partial<CodeMashHub2.GetFolderFiles>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetFolderFilesResponse> => {
+    return this.transport.send<CodeMashHub2.GetFolderFilesResponse>({
+      target: 'hub',
+      path: '/{version}/files/folder',
+      method: 'GET',
       request,
       pathParams: [],
       scope: 'project',

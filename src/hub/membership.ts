@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 48
+ * Endpoints: 50
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -614,6 +614,44 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/execution-identities
+   * Request DTO: GetExecutionIdentitiesRequest
+   */
+  getExecutionIdentities = (
+    request: Partial<CodeMashHub2.GetExecutionIdentitiesRequest> = {} as Partial<CodeMashHub2.GetExecutionIdentitiesRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetExecutionIdentitiesResponse> => {
+    return this.transport.send<CodeMashHub2.GetExecutionIdentitiesResponse>({
+      target: 'hub',
+      path: '/{version}/membership/execution-identities',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/execution-identities
+   * Request DTO: CreateExecutionIdentityRequest
+   */
+  createExecutionIdentity = (
+    request: Partial<CodeMashHub2.CreateExecutionIdentityRequest> = {} as Partial<CodeMashHub2.CreateExecutionIdentityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/membership/execution-identities',
+      method: 'POST',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

@@ -73,12 +73,6 @@ describe('hub.code', () => {
     expect(typeof ns['enableCodeWorkflows']).toBe('function');
     expect(typeof ns['disableCodeWorkflows']).toBe('function');
     expect(typeof ns['invokeCodeWorkflow']).toBe('function');
-    expect(typeof ns['getCodeWorkflowRuns']).toBe('function');
-    expect(typeof ns['getCodeWorkflowRun']).toBe('function');
-    expect(typeof ns['getCodeWorkflowRunLogs']).toBe('function');
-    expect(typeof ns['resumeCodeWorkflowRunByKey']).toBe('function');
-    expect(typeof ns['retryCodeWorkflowRunStep']).toBe('function');
-    expect(typeof ns['cancelCodeWorkflowRun']).toBe('function');
     expect(typeof ns['getMarketplaceIntegrationAccess']).toBe('function');
     expect(typeof ns['setMarketplaceIntegrationRoleAccess']).toBe('function');
     expect(typeof ns['saveMarketplaceIntegrationCustomAccess']).toBe('function');
@@ -99,6 +93,12 @@ describe('hub.code', () => {
     expect(typeof ns['resumeCodeWorkflowRun']).toBe('function');
     expect(typeof ns['openCodeWorkflowResumeLink']).toBe('function');
     expect(typeof ns['useCodeWorkflowResumeLink']).toBe('function');
+    expect(typeof ns['getCodeWorkflowRuns']).toBe('function');
+    expect(typeof ns['getCodeWorkflowRun']).toBe('function');
+    expect(typeof ns['getCodeWorkflowRunLogs']).toBe('function');
+    expect(typeof ns['resumeCodeWorkflowRunByKey']).toBe('function');
+    expect(typeof ns['retryCodeWorkflowRunStep']).toBe('function');
+    expect(typeof ns['cancelCodeWorkflowRun']).toBe('function');
   });
 
   it('enableCode: PUT /{version}/code/enable', async () => {
@@ -1137,144 +1137,6 @@ describe('hub.code', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('getCodeWorkflowRuns: GET /{version}/code/workflows/{Id}/runs', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/{Id}/runs');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/{Id}/runs',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['getCodeWorkflowRuns']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getCodeWorkflowRun: GET /{version}/code/workflows/runs/{RunId}', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/runs/{RunId}',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['getCodeWorkflowRun']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getCodeWorkflowRunLogs: GET /{version}/code/workflows/runs/{RunId}/logs', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/logs');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/runs/{RunId}/logs',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['getCodeWorkflowRunLogs']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('resumeCodeWorkflowRunByKey: POST /{version}/code/workflows/{Id}/resume', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/{Id}/resume');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/{Id}/resume',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['resumeCodeWorkflowRunByKey']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('retryCodeWorkflowRunStep: POST /{version}/code/workflows/runs/{RunId}/retry', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/retry');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/runs/{RunId}/retry',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['retryCodeWorkflowRunStep']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('cancelCodeWorkflowRun: POST /{version}/code/workflows/runs/{RunId}/cancel', async () => {
-    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/cancel');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/code/workflows/runs/{RunId}/cancel',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['code']!['cancelCodeWorkflowRun']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
   it('getMarketplaceIntegrationAccess: GET /{version}/code/marketplace/integrations/{IntegrationViewId}/access', async () => {
     const stub = stubRequestForPath(
       '/{version}/code/marketplace/integrations/{IntegrationViewId}/access',
@@ -1747,6 +1609,144 @@ describe('hub.code', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['code']!['useCodeWorkflowResumeLink']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getCodeWorkflowRuns: GET /{version}/code/workflows/{Id}/runs', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/{Id}/runs');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/{Id}/runs',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['getCodeWorkflowRuns']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getCodeWorkflowRun: GET /{version}/code/workflows/runs/{RunId}', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/runs/{RunId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['getCodeWorkflowRun']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getCodeWorkflowRunLogs: GET /{version}/code/workflows/runs/{RunId}/logs', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/logs');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/runs/{RunId}/logs',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['getCodeWorkflowRunLogs']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('resumeCodeWorkflowRunByKey: POST /{version}/code/workflows/{Id}/resume', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/{Id}/resume');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/{Id}/resume',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['resumeCodeWorkflowRunByKey']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('retryCodeWorkflowRunStep: POST /{version}/code/workflows/runs/{RunId}/retry', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/retry');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/runs/{RunId}/retry',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['retryCodeWorkflowRunStep']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('cancelCodeWorkflowRun: POST /{version}/code/workflows/runs/{RunId}/cancel', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/runs/{RunId}/cancel');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/workflows/runs/{RunId}/cancel',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['cancelCodeWorkflowRun']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

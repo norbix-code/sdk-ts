@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: files
- * Endpoints: 15
+ * Endpoints: 20
  */
 export class FilesModule {
   constructor(private readonly transport: Transport) {}
@@ -262,25 +262,6 @@ export class FilesModule {
   };
 
   /**
-   * POST /{version}/files/{filesIntegrationId}/test
-   * Request DTO: TestFilesIntegrationRequest
-   */
-  testFilesIntegration = (
-    request: Partial<CodeMashApi2.TestFilesIntegrationRequest> = {} as Partial<CodeMashApi2.TestFilesIntegrationRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.TestFilesIntegrationResponse> => {
-    return this.transport.send<CodeMashApi2.TestFilesIntegrationResponse>({
-      target: 'api',
-      path: '/{version}/files/{filesIntegrationId}/test',
-      method: 'POST',
-      request,
-      pathParams: ['filesIntegrationId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * POST /{version}/files/{filesIntegrationId}/use
    * Request DTO: UseFileRequest
    */
@@ -294,6 +275,120 @@ export class FilesModule {
       method: 'POST',
       request,
       pathParams: ['filesIntegrationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/private
+   * Request DTO: MakeFilePrivateRequest
+   */
+  makeFilePrivate = (
+    request: Partial<CodeMashApi2.MakeFilePrivateRequest> = {} as Partial<CodeMashApi2.MakeFilePrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/files/item/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/item/public
+   * Request DTO: MakeFilePublicRequest
+   */
+  makeFilePublic = (
+    request: Partial<CodeMashApi2.MakeFilePublicRequest> = {} as Partial<CodeMashApi2.MakeFilePublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/files/item/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/private
+   * Request DTO: MakeFolderPrivateRequest
+   */
+  makeFolderPrivate = (
+    request: Partial<CodeMashApi2.MakeFolderPrivateRequest> = {} as Partial<CodeMashApi2.MakeFolderPrivateRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/files/folder/private',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/files/folder/public
+   * Request DTO: MakeFolderPublicRequest
+   */
+  makeFolderPublic = (
+    request: Partial<CodeMashApi2.MakeFolderPublicRequest> = {} as Partial<CodeMashApi2.MakeFolderPublicRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/files/folder/public',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/item
+   * Request DTO: GetFile
+   */
+  getFile = (
+    request: Partial<CodeMashApi2.GetFile> = {} as Partial<CodeMashApi2.GetFile>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetFileResponse> => {
+    return this.transport.send<CodeMashApi2.GetFileResponse>({
+      target: 'api',
+      path: '/{version}/files/item',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/files/folder
+   * Request DTO: GetFolderFiles
+   */
+  getFolderFiles = (
+    request: Partial<CodeMashApi2.GetFolderFiles> = {} as Partial<CodeMashApi2.GetFolderFiles>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.GetFolderFilesResponse> => {
+    return this.transport.send<CodeMashApi2.GetFolderFilesResponse>({
+      target: 'api',
+      path: '/{version}/files/folder',
+      method: 'GET',
+      request,
+      pathParams: [],
       scope: 'project',
       ...options,
     });

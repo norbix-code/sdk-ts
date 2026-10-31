@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**629 endpoints across 27 modules.** Click a module
+**632 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -24,7 +24,7 @@ name for the full method reference and TypeScript examples.
 | [`integrations`](./integrations.md)   |         3 |                                                                                                                                          |
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        15 | Logging integrations and module on/off switches.                                                                                         |
-| [`membership`](./membership.md)       |        48 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
+| [`membership`](./membership.md)       |        50 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
 | [`notifications`](./notifications.md) |       132 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
 | [`oauth`](./oauth.md)                 |         6 |                                                                                                                                          |
 | [`payments`](./payments.md)           |        22 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
@@ -33,6 +33,6 @@ name for the full method reference and TypeScript examples.
 | [`resources`](./resources.md)         |         1 |                                                                                                                                          |
 | [`scheduler`](./scheduler.md)         |         9 |                                                                                                                                          |
 | [`support`](./support.md)             |         7 |                                                                                                                                          |
-| [`triggers`](./triggers.md)           |         3 |                                                                                                                                          |
+| [`triggers`](./triggers.md)           |         4 |                                                                                                                                          |
 | [`webhooks`](./webhooks.md)           |         9 |                                                                                                                                          |
 | [`wellKnown`](./well_known.md)        |         2 |                                                                                                                                          |
