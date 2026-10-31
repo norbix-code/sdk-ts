@@ -3093,3 +3093,11 @@ const result = await norbix.hub.notifications.unsubscribeContact({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## What a retry left out
+
+`retryFailedEmailNotifications`, `retryFailedSmsNotifications` and `retryFailedPushNotifications` answer `skipped`, a map of reason to count: `AlreadyAccepted`, `InFlight`, `Ambiguous`, `NotFound`, `Blocked`, `Category`. It can also carry `optedOut`, `compliance`, `undeliverable`: the people the send gates stopped during the retry. Those keys are added to the stored answer later and are part of `selected`. A row stopped this way has an attempt with the outcome `Blocked`.
+
+<!-- @hand-written:end -->
