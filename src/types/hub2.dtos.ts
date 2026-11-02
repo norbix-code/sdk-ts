@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 19:48:52
+Date: 2026-11-02 20:39:35
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -4852,6 +4852,43 @@ export module CodeMashHub2 {
     Production = 'Production',
   }
 
+  export enum MarketplaceListingKind {
+    Connector = 'Connector',
+    Workflow = 'Workflow',
+  }
+
+  // @DataContract
+  export class MarketplaceWorkflowReferenceDto {
+    // @DataMember
+    public key: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public label: string;
+
+    // @DataMember
+    public description?: string;
+
+    public constructor(init?: Partial<MarketplaceWorkflowReferenceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MarketplaceWorkflowTemplateDto {
+    // @DataMember
+    public definitionJson: string;
+
+    // @DataMember
+    public references: IReadOnlyList<MarketplaceWorkflowReferenceDto>;
+
+    public constructor(init?: Partial<MarketplaceWorkflowTemplateDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export enum MarketplaceFieldType {
     String = 'String',
     Number = 'Number',
@@ -5087,6 +5124,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public oAuthRedirectUrl?: string;
+
+    // @DataMember
+    public kind: MarketplaceListingKind;
+
+    // @DataMember
+    public workflow?: MarketplaceWorkflowTemplateDto;
 
     // @DataMember
     public isOfficial: boolean;
@@ -11254,177 +11297,6 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class WorkflowWaitingOnDto {
-    // @DataMember
-    public stepId: string;
-
-    // @DataMember
-    public kind: string;
-
-    // @DataMember
-    public until?: string;
-
-    // @DataMember
-    public key?: string;
-
-    // @DataMember
-    public assignees?: string[];
-
-    // @DataMember
-    public childRunId?: string;
-
-    public constructor(init?: Partial<WorkflowWaitingOnDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunStepDto {
-    // @DataMember
-    public stepId: string;
-
-    // @DataMember
-    public kind: string;
-
-    // @DataMember
-    public name?: string;
-
-    // @DataMember
-    public foreachStepId?: string;
-
-    // @DataMember
-    public itemIndex?: number;
-
-    // @DataMember
-    public status: string;
-
-    // @DataMember
-    public attempt: number;
-
-    // @DataMember
-    public pass: number;
-
-    // @DataMember
-    public startedAt?: string;
-
-    // @DataMember
-    public finishedAt?: string;
-
-    // @DataMember
-    public durationMs?: number;
-
-    // @DataMember
-    public input?: Object;
-
-    // @DataMember
-    public inputTruncated: boolean;
-
-    // @DataMember
-    public output?: Object;
-
-    // @DataMember
-    public outputTruncated: boolean;
-
-    // @DataMember
-    public error?: WorkflowRunErrorDto;
-
-    // @DataMember
-    public resumedBy?: WorkflowRunActorDto;
-
-    // @DataMember
-    public decision?: string;
-
-    public constructor(init?: Partial<WorkflowRunStepDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunDto {
-    // @DataMember
-    public runId: string;
-
-    // @DataMember
-    public workflowId: string;
-
-    // @DataMember
-    public version?: number;
-
-    // @DataMember
-    public isDraft: boolean;
-
-    // @DataMember
-    public status: string;
-
-    // @DataMember
-    public source: string;
-
-    // @DataMember
-    public startedBy?: WorkflowRunActorDto;
-
-    // @DataMember
-    public triggerId?: string;
-
-    // @DataMember
-    public taskId?: string;
-
-    // @DataMember
-    public parentRunId?: string;
-
-    // @DataMember
-    public depth: number;
-
-    // @DataMember
-    public env: string;
-
-    // @DataMember
-    public correlationId?: string;
-
-    // @DataMember
-    public executionIdentityId?: string;
-
-    // @DataMember
-    public executionIdentityName?: string;
-
-    // @DataMember
-    public executionIdentityIsDefault: boolean;
-
-    // @DataMember
-    public startedAt: string;
-
-    // @DataMember
-    public finishedAt?: string;
-
-    // @DataMember
-    public durationMs?: number;
-
-    // @DataMember
-    public waitingOn: WorkflowWaitingOnDto[] = [];
-
-    // @DataMember
-    public error?: WorkflowRunErrorDto;
-
-    // @DataMember
-    public output?: Object;
-
-    // @DataMember
-    public stepRuns: number;
-
-    // @DataMember
-    public steps: WorkflowRunStepDto[] = [];
-
-    // @DataMember
-    public request?: { [index: string]: Object };
-
-    // @DataMember
-    public trigger?: { [index: string]: Object };
-
-    public constructor(init?: Partial<WorkflowRunDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
   export class MarketplaceListingProjection implements IHasViewId {
     // @DataMember
     public viewId: string;
@@ -11458,6 +11330,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public availability: MarketplaceAvailability;
+
+    // @DataMember
+    public kind: MarketplaceListingKind;
 
     // @DataMember
     public videoUrl?: string;
@@ -11866,6 +11741,177 @@ export module CodeMashHub2 {
     public triggerRunId?: string;
 
     public constructor(init?: Partial<CodeFunctionRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowWaitingOnDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public until?: string;
+
+    // @DataMember
+    public key?: string;
+
+    // @DataMember
+    public assignees?: string[];
+
+    // @DataMember
+    public childRunId?: string;
+
+    public constructor(init?: Partial<WorkflowWaitingOnDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunStepDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public name?: string;
+
+    // @DataMember
+    public foreachStepId?: string;
+
+    // @DataMember
+    public itemIndex?: number;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public attempt: number;
+
+    // @DataMember
+    public pass: number;
+
+    // @DataMember
+    public startedAt?: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public input?: Object;
+
+    // @DataMember
+    public inputTruncated: boolean;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public outputTruncated: boolean;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public resumedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public decision?: string;
+
+    public constructor(init?: Partial<WorkflowRunStepDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunDto {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public triggerId?: string;
+
+    // @DataMember
+    public taskId?: string;
+
+    // @DataMember
+    public parentRunId?: string;
+
+    // @DataMember
+    public depth: number;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public correlationId?: string;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public stepRuns: number;
+
+    // @DataMember
+    public steps: WorkflowRunStepDto[] = [];
+
+    // @DataMember
+    public request?: { [index: string]: Object };
+
+    // @DataMember
+    public trigger?: { [index: string]: Object };
+
+    public constructor(init?: Partial<WorkflowRunDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -16018,32 +16064,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @DataContract
-  export class InvokeCodeWorkflowResponse extends ResponseBase {
-    // @DataMember
-    public runId?: string;
-
-    // @DataMember
-    public status?: string;
-
-    // @DataMember
-    public output?: Object;
-
-    // @DataMember
-    public durationMs?: number;
-
-    // @DataMember
-    public error?: WorkflowRunErrorDto;
-
-    // @DataMember
-    public run?: WorkflowRunDto;
-
-    public constructor(init?: Partial<InvokeCodeWorkflowResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetMarketplaceListingResponse extends ResponseBase {
     public listing?: MarketplaceListingDto;
 
@@ -16322,6 +16342,32 @@ export module CodeMashHub2 {
     public logs?: string;
 
     public constructor(init?: Partial<InvokeCodeFunctionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class InvokeCodeWorkflowResponse extends ResponseBase {
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public status?: string;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<InvokeCodeWorkflowResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -18023,6 +18069,10 @@ export module CodeMashHub2 {
     /** @description Filter by curated tag slugs (e.g. ai-llm, messaging, crm). Matches listings carrying any of the given tags. */
     // @ApiMember(Description="Filter by curated tag slugs (e.g. ai-llm, messaging, crm). Matches listings carrying any of the given tags.")
     public tags?: string[];
+
+    /** @description Connector (the default) or Workflow: a curated workflow to install as a draft with install_marketplace_workflow. */
+    // @ApiMember(Description="Connector (the default) or Workflow: a curated workflow to install as a draft with install_marketplace_workflow.")
+    public kind?: MarketplaceListingKind;
 
     public constructor(init?: Partial<GetMarketplaceListings>) {
       super(init);
@@ -27728,44 +27778,44 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/code/workflows/{Id}/invoke", "POST")
+  // @Route("/{version}/code/marketplace/listings/{ListingViewId}/install-workflow", "POST")
   // @DataContract
-  export class InvokeCodeWorkflow
+  export class InstallMarketplaceWorkflow
     extends CodeMashRequestBase
-    implements IReturn<InvokeCodeWorkflowResponse>
+    implements IReturn<WorkflowResponse>
   {
-    /** @description wf_… */
+    /** @description ml_… a listing of kind Workflow. */
     // @DataMember
-    // @ApiMember(Description="wf_…", IsRequired=true)
-    public id: string;
+    // @ApiMember(Description="ml_… a listing of kind Workflow.", IsRequired=true)
+    public listingViewId: string;
 
-    /** @description The @Model.Request object; checked against the definition's inputs when it has one. */
+    /** @description The new workflow's name; absent = the listing's. */
     // @DataMember
-    // @ApiMember(Description="The @Model.Request object; checked against the definition's inputs when it has one.")
-    public payload?: { [index: string]: Object };
+    // @ApiMember(Description="The new workflow's name; absent = the listing's.")
+    public name?: string;
 
-    /** @description 0–30 seconds to wait for the run; default 10; 0 answers 202 at once. */
+    /** @description usr_… the execution identity; absent = the env's default. */
     // @DataMember
-    // @ApiMember(DataType="integer", Description="0–30 seconds to wait for the run; default 10; 0 answers 202 at once.")
-    public waitSeconds?: number;
+    // @ApiMember(Description="usr_… the execution identity; absent = the env's default.")
+    public executionIdentityId?: string;
 
-    /** @description "draft" to test the draft, a version number to pin one; absent = the latest published. */
+    /** @description A value for every reference the listing declares, by key: a collection name, a template id, an integration id. */
     // @DataMember
-    // @ApiMember(Description="\"draft\" to test the draft, a version number to pin one; absent = the latest published.")
-    public runVersion?: string;
+    // @ApiMember(Description="A value for every reference the listing declares, by key: a collection name, a template id, an integration id.", IsRequired=true)
+    public references: { [index: string]: string } = {};
 
-    public constructor(init?: Partial<InvokeCodeWorkflow>) {
+    public constructor(init?: Partial<InstallMarketplaceWorkflow>) {
       super(init);
       (Object as any).assign(this, init);
     }
     public getTypeName() {
-      return 'InvokeCodeWorkflow';
+      return 'InstallMarketplaceWorkflow';
     }
     public getMethod() {
       return 'POST';
     }
     public createResponse() {
-      return new InvokeCodeWorkflowResponse();
+      return new WorkflowResponse();
     }
   }
 
@@ -28275,6 +28325,47 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new InvokeCodeFunctionResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/invoke", "POST")
+  // @DataContract
+  export class InvokeCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeWorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The @Model.Request object; checked against the definition's inputs when it has one. */
+    // @DataMember
+    // @ApiMember(Description="The @Model.Request object; checked against the definition's inputs when it has one.")
+    public payload?: { [index: string]: Object };
+
+    /** @description 0–30 seconds to wait for the run; default 10; 0 answers 202 at once. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="0–30 seconds to wait for the run; default 10; 0 answers 202 at once.")
+    public waitSeconds?: number;
+
+    /** @description "draft" to test the draft, a version number to pin one; absent = the latest published. */
+    // @DataMember
+    // @ApiMember(Description="\"draft\" to test the draft, a version number to pin one; absent = the latest published.")
+    public runVersion?: string;
+
+    public constructor(init?: Partial<InvokeCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeWorkflowResponse();
     }
   }
 

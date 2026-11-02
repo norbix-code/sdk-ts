@@ -9,7 +9,7 @@ import { LogsModule } from './logs.js'; // @hand-written
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 70
+ * Endpoints: 71
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -826,6 +826,25 @@ export class CodeModule {
       method: 'PUT',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/marketplace/listings/{ListingViewId}/install-workflow
+   * Request DTO: InstallMarketplaceWorkflow
+   */
+  installMarketplaceWorkflow = (
+    request: Partial<CodeMashHub2.InstallMarketplaceWorkflow> = {} as Partial<CodeMashHub2.InstallMarketplaceWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/marketplace/listings/{ListingViewId}/install-workflow',
+      method: 'POST',
+      request,
+      pathParams: ['ListingViewId'],
       scope: 'project',
       ...options,
     });

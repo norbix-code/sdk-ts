@@ -439,6 +439,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "InvokeCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "InvokeEndUserAiToolRequest": {
     "requiresAuth": true,
     "returnsBytes": false

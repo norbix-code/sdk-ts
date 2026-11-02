@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 19:48:51
+Date: 2026-11-02 20:39:34
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1944,6 +1944,25 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class WorkflowRunErrorDto {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public stepId?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<WorkflowRunErrorDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowRunActorDto {
     // @DataMember
     public userId?: string;
@@ -1977,80 +1996,6 @@ export module CodeMashApi2 {
     public childRunId?: string;
 
     public constructor(init?: Partial<WorkflowWaitingOnDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunErrorDto {
-    // @DataMember
-    public code?: string;
-
-    // @DataMember
-    public stepId?: string;
-
-    // @DataMember
-    public reason?: string;
-
-    // @DataMember
-    public message?: string;
-
-    public constructor(init?: Partial<WorkflowRunErrorDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class WorkflowRunListProjection {
-    // @DataMember
-    public runId: string;
-
-    // @DataMember
-    public workflowId: string;
-
-    // @DataMember
-    public version?: number;
-
-    // @DataMember
-    public isDraft: boolean;
-
-    // @DataMember
-    public status: string;
-
-    // @DataMember
-    public source: string;
-
-    // @DataMember
-    public startedAt: string;
-
-    // @DataMember
-    public finishedAt?: string;
-
-    // @DataMember
-    public durationMs?: number;
-
-    // @DataMember
-    public startedBy?: WorkflowRunActorDto;
-
-    // @DataMember
-    public executionIdentityId?: string;
-
-    // @DataMember
-    public executionIdentityName?: string;
-
-    // @DataMember
-    public executionIdentityIsDefault: boolean;
-
-    // @DataMember
-    public currentStepIds: string[] = [];
-
-    // @DataMember
-    public waitingOn: WorkflowWaitingOnDto[] = [];
-
-    // @DataMember
-    public error?: WorkflowRunErrorDto;
-
-    public constructor(init?: Partial<WorkflowRunListProjection>) {
       (Object as any).assign(this, init);
     }
   }
@@ -2197,6 +2142,61 @@ export module CodeMashApi2 {
     public trigger?: { [index: string]: Object };
 
     public constructor(init?: Partial<WorkflowRunDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowRunListProjection {
+    // @DataMember
+    public runId: string;
+
+    // @DataMember
+    public workflowId: string;
+
+    // @DataMember
+    public version?: number;
+
+    // @DataMember
+    public isDraft: boolean;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public startedAt: string;
+
+    // @DataMember
+    public finishedAt?: string;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public startedBy?: WorkflowRunActorDto;
+
+    // @DataMember
+    public executionIdentityId?: string;
+
+    // @DataMember
+    public executionIdentityName?: string;
+
+    // @DataMember
+    public executionIdentityIsDefault: boolean;
+
+    // @DataMember
+    public currentStepIds: string[] = [];
+
+    // @DataMember
+    public waitingOn: WorkflowWaitingOnDto[] = [];
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    public constructor(init?: Partial<WorkflowRunListProjection>) {
       (Object as any).assign(this, init);
     }
   }
@@ -4124,6 +4124,32 @@ export module CodeMashApi2 {
     public order?: PaymentOrderDto;
 
     public constructor(init?: Partial<StartPaymentCheckoutResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class InvokeCodeWorkflowResponse extends ResponseBase {
+    // @DataMember
+    public runId?: string;
+
+    // @DataMember
+    public status?: string;
+
+    // @DataMember
+    public output?: Object;
+
+    // @DataMember
+    public durationMs?: number;
+
+    // @DataMember
+    public error?: WorkflowRunErrorDto;
+
+    // @DataMember
+    public run?: WorkflowRunDto;
+
+    public constructor(init?: Partial<InvokeCodeWorkflowResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -8251,6 +8277,47 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new StartPaymentCheckoutResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/invoke", "POST")
+  // @DataContract
+  export class InvokeCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeWorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The @Model.Request object; checked against the definition's inputs when it has one. */
+    // @DataMember
+    // @ApiMember(Description="The @Model.Request object; checked against the definition's inputs when it has one.")
+    public payload?: { [index: string]: Object };
+
+    /** @description 0–30 seconds to wait for the run; default 10; 0 answers 202 at once. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="0–30 seconds to wait for the run; default 10; 0 answers 202 at once.")
+    public waitSeconds?: number;
+
+    /** @description "draft" to test the draft, a version number to pin one; absent = the latest published. */
+    // @DataMember
+    // @ApiMember(Description="\"draft\" to test the draft, a version number to pin one; absent = the latest published.")
+    public runVersion?: string;
+
+    public constructor(init?: Partial<InvokeCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeWorkflowResponse();
     }
   }
 
