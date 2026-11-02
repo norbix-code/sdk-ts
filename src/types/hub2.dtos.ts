@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 17:57:40
+Date: 2026-11-02 19:04:03
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7007,9 +7007,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Action kinds: the trigger action body (type may be left out — the kind implies it).")
     public action?: { [index: string]: Object };
 
-    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload | items, body, concurrency. */
+    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency. */
     // @DataMember
-    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload | items, body, concurrency.")
+    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency.")
     public config?: { [index: string]: Object };
 
     public constructor(init?: Partial<WorkflowStepDto>) {
@@ -11228,6 +11228,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public assignees?: string[];
+
+    // @DataMember
+    public childRunId?: string;
 
     public constructor(init?: Partial<WorkflowWaitingOnDto>) {
       (Object as any).assign(this, init);
