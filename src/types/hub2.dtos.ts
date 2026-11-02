@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 19:04:03
+Date: 2026-11-02 19:48:52
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7747,6 +7747,44 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class UsageWorkflowProjectDto {
+    // @DataMember
+    public projectId: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public runs: number;
+
+    // @DataMember
+    public stepRuns: number;
+
+    public constructor(init?: Partial<UsageWorkflowProjectDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class UsageWorkflowPeriodDto {
+    // @DataMember
+    public period: string;
+
+    // @DataMember
+    public runs: number;
+
+    // @DataMember
+    public stepRuns: number;
+
+    // @DataMember
+    public perProject: UsageWorkflowProjectDto[] = [];
+
+    public constructor(init?: Partial<UsageWorkflowPeriodDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class UsageBillingDto {
     // @DataMember
     public accountId: string;
@@ -7756,6 +7794,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public ingestionFailures: UsageBillingIngestionFailureDto[] = [];
+
+    // @DataMember
+    public workflows: { [index: string]: UsageWorkflowPeriodDto } = {};
 
     public constructor(init?: Partial<UsageBillingDto>) {
       (Object as any).assign(this, init);
@@ -28248,9 +28289,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="running | waiting (default) | succeeded | failed | cancelled")
     public status?: string;
 
-    /** @description approval | event | delay */
+    /** @description approval | event | delay | child */
     // @DataMember
-    // @ApiMember(Description="approval | event | delay")
+    // @ApiMember(Description="approval | event | delay | child")
     public waitingKind?: string;
 
     /** @description "me" or a usr_… id: only approvals assigned to that user. Without code:read only "me" (the default then). */
