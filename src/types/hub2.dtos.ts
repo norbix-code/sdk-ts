@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-31 10:59:28
+Date: 2026-11-02 17:57:40
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -765,6 +765,7 @@ export module CodeMashHub2 {
   export enum AwsS3LoggingIntegrationType {
     Iam = 'Iam',
     CrossAccountRole = 'CrossAccountRole',
+    Keyless = 'Keyless',
   }
 
   export class AwsS3LoggingIntegrationRequest extends LoggingIntegrationRequest {
@@ -1217,12 +1218,38 @@ export module CodeMashHub2 {
 
   export class GoogleInAppPaymentIntegrationRequest extends PaymentIntegrationRequest {
     public provider: PaymentGatewayPlatform;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure).")
+    public authMode?: CloudAuthMode;
+
     public webhookPackageName: string;
     public merchantId?: string;
     public merchantName?: string;
     public gateway?: string;
+    /** @description Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool. */
+    // @ApiMember(Description="Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool.")
+    public projectNumber?: string;
+
+    /** @description Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens).")
+    public poolId?: string;
+
+    /** @description Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens).")
+    public providerId?: string;
+
+    /** @description Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com). */
+    // @ApiMember(Description="Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com).")
+    public serviceAccountEmail?: string;
+
+    /** @description AccessKey: the service-account JSON key. A Google Pay gateway token may also go here, in either mode. */
+    // @ApiMember(Description="AccessKey: the service-account JSON key. A Google Pay gateway token may also go here, in either mode.")
     public privateKeyOrToken?: string;
+
     public gatewayMerchantId?: string;
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationRequest>) {
       super(init);
@@ -1473,9 +1500,41 @@ export module CodeMashHub2 {
 
   export class AndroidFirebasePushIntegrationRequest extends PushIntegrationRequest {
     public provider: PushProvider;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored service-account JSON key, less secure).")
+    public authMode?: CloudAuthMode;
+
+    /** @description The Firebase project id. */
+    // @ApiMember(Description="The Firebase project id.")
     public projectId: string;
+
+    /** @description AccessKey: the client_email of the service-account key. Keyless: leave empty. */
+    // @ApiMember(Description="AccessKey: the client_email of the service-account key. Keyless: leave empty.")
     public clientEmail: string;
-    public serviceAccountJson: string;
+
+    /** @description Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool. */
+    // @ApiMember(Description="Keyless: the Google Cloud project NUMBER (digits) that holds the workload identity pool.")
+    public projectNumber?: string;
+
+    /** @description Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool id (4–32 lowercase letters, digits and hyphens).")
+    public poolId?: string;
+
+    /** @description Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens). */
+    // @ApiMember(Description="Keyless: the workload identity pool provider id (4–32 lowercase letters, digits and hyphens).")
+    public providerId?: string;
+
+    /** @description Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com). */
+    // @ApiMember(Description="Keyless: the email of the service account Norbix acts as (…@<project>.iam.gserviceaccount.com).")
+    public serviceAccountEmail?: string;
+
+    /** @description AccessKey: the service-account JSON key. */
+    // @ApiMember(Description="AccessKey: the service-account JSON key.")
+    public serviceAccountJson?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AndroidFirebasePushIntegrationRequest>) {
       super(init);
@@ -3285,6 +3344,11 @@ export module CodeMashHub2 {
     public merchantName?: string;
     public gateway?: string;
     public gatewayMerchantId?: string;
+    public authMode: CloudAuthMode;
+    public projectNumber?: string;
+    public poolId?: string;
+    public providerId?: string;
+    public serviceAccountEmail?: string;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationDto>) {
       super(init);
@@ -4107,6 +4171,11 @@ export module CodeMashHub2 {
   export class AndroidFirebasePushIntegrationDto extends PushIntegrationDto {
     public projectId: string;
     public clientEmail: string;
+    public authMode: CloudAuthMode;
+    public projectNumber?: string;
+    public poolId?: string;
+    public providerId?: string;
+    public serviceAccountEmail?: string;
 
     public constructor(init?: Partial<AndroidFirebasePushIntegrationDto>) {
       super(init);
@@ -5772,8 +5841,25 @@ export module CodeMashHub2 {
     public region: string;
     public logGroup: string;
     public logStream: string;
-    public accessKey: string;
-    public secretKey: string;
+    /** @description Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure). */
+    // @ApiMember(Description="Keyless (the default when omitted; no stored secret) or AccessKey (a stored IAM access key, less secure).")
+    public authMode?: CloudAuthMode;
+
+    /** @description Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>). */
+    // @ApiMember(Description="Keyless: the ARN of the role that trusts this integration's Norbix token (arn:aws:iam::<account>:role/<name>).")
+    public roleArn?: string;
+
+    /** @description AccessKey: the IAM access key id. */
+    // @ApiMember(Description="AccessKey: the IAM access key id.")
+    public accessKey?: string;
+
+    /** @description AccessKey: the IAM secret access key. */
+    // @ApiMember(Description="AccessKey: the IAM secret access key.")
+    public secretKey?: string;
+
+    /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
+    // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
+    public acceptKeyRisk?: boolean;
 
     public constructor(init?: Partial<AwsCloudWatchLoggingIntegrationRequest>) {
       super(init);
@@ -5785,8 +5871,56 @@ export module CodeMashHub2 {
     public region: string;
     public logGroup: string;
     public logStream: string;
+    public authMode: CloudAuthMode;
+    public roleArn?: string;
 
     public constructor(init?: Partial<AwsCloudWatchLoggingIntegrationDto>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AzureMonitorLogsLoggingIntegrationRequest extends LoggingIntegrationRequest {
+    public provider: LoggingProvider;
+    /** @description Keyless, or omit it. This destination has no other mode. */
+    // @ApiMember(Description="Keyless, or omit it. This destination has no other mode.")
+    public authMode?: CloudAuthMode;
+
+    /** @description The Entra tenant id of the managed identity. */
+    // @ApiMember(Description="The Entra tenant id of the managed identity.")
+    public tenantId?: string;
+
+    /** @description The managed identity's client id. */
+    // @ApiMember(Description="The managed identity's client id.")
+    public clientId?: string;
+
+    /** @description The data collection rule's logs ingestion endpoint or a data collection endpoint: https://<name>.ingest.monitor.azure.com. */
+    // @ApiMember(Description="The data collection rule's logs ingestion endpoint or a data collection endpoint: https://<name>.ingest.monitor.azure.com.")
+    public ingestionEndpoint?: string;
+
+    /** @description The data collection rule's immutable id: dcr- and 32 hex digits. */
+    // @ApiMember(Description="The data collection rule's immutable id: dcr- and 32 hex digits.")
+    public dataCollectionRuleId?: string;
+
+    /** @description The rule's stream: Custom-<table>_CL. */
+    // @ApiMember(Description="The rule's stream: Custom-<table>_CL.")
+    public streamName?: string;
+
+    public constructor(init?: Partial<AzureMonitorLogsLoggingIntegrationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AzureMonitorLogsLoggingIntegrationDto extends LoggingIntegrationDto {
+    public ingestionEndpoint: string;
+    public dataCollectionRuleId: string;
+    public streamName: string;
+    public tenantId: string;
+    public clientId: string;
+    public authMode: CloudAuthMode;
+
+    public constructor(init?: Partial<AzureMonitorLogsLoggingIntegrationDto>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -6824,9 +6958,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="^[A-Za-z_][A-Za-z0-9_]{0,63}$, unique in the definition.", IsRequired=true)
     public id: string;
 
-    /** @description email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start */
+    /** @description email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start | database.find | database.insert | database.update | database.replace | database.delete | ai.invoke | foreach */
     // @DataMember
-    // @ApiMember(Description="email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start", IsRequired=true)
+    // @ApiMember(Description="email.send | sms.send | push.send | code.invoke | webhook.call | sse.publish | marketplace.invoke | condition | transform | log | delay | wait | parallel | join | workflow.start | database.find | database.insert | database.update | database.replace | database.delete | ai.invoke | foreach", IsRequired=true)
     public kind: string;
 
     // @DataMember
@@ -6873,9 +7007,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Action kinds: the trigger action body (type may be left out — the kind implies it).")
     public action?: { [index: string]: Object };
 
-    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload. */
+    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload | items, body, concurrency. */
     // @DataMember
-    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload.")
+    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload | items, body, concurrency.")
     public config?: { [index: string]: Object };
 
     public constructor(init?: Partial<WorkflowStepDto>) {
@@ -6910,6 +7044,16 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Nesting of workflow.start and trigger-started descendants; default 3, cap 5.")
     public maxDepth?: number;
 
+    /** @description Elements one foreach accepts; a longer list fails the step. Default 100, cap 1000. */
+    // @DataMember
+    // @ApiMember(Description="Elements one foreach accepts; a longer list fails the step. Default 100, cap 1000.")
+    public maxForeachItems?: number;
+
+    /** @description Elements of one foreach queued or running at once; default 5, cap 20. */
+    // @DataMember
+    // @ApiMember(Description="Elements of one foreach queued or running at once; default 5, cap 20.")
+    public maxForeachConcurrency?: number;
+
     public constructor(init?: Partial<WorkflowLimitsDto>) {
       (Object as any).assign(this, init);
     }
@@ -6917,9 +7061,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class WorkflowDefinitionDto {
-    /** @description The version of this shape: "1". */
+    /** @description Optional: the version of this shape; absent = "1". */
     // @DataMember
-    // @ApiMember(Description="The version of this shape: \"1\".")
+    // @ApiMember(Description="Optional: the version of this shape; absent = \"1\".")
     public schemaVersion: string;
 
     /** @description wf_… — absent on the first save, required on an update. */
@@ -6947,9 +7091,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Read-only on save (use the enable / disable routes).")
     public isEnabled: boolean;
 
-    /** @description usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity; until that exists the save is refused CM-ERRORS-WORKFLOWS-009. */
+    /** @description usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity "Project triggers"; the caller then needs what every step needs. Naming another one needs membership:assign on it. */
     // @DataMember
-    // @ApiMember(Description="usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity; until that exists the save is refused CM-ERRORS-WORKFLOWS-009.")
+    // @ApiMember(Description="usr_… — the service user every step runs as (the execution identity). Optional: absent = the env's default identity \"Project triggers\"; the caller then needs what every step needs. Naming another one needs membership:assign on it.")
     public executionIdentityId?: string;
 
     /** @description Optional JSON Schema (draft 2020-12, type object) of the manual-invoke payload. */
@@ -11102,6 +11246,12 @@ export module CodeMashHub2 {
     public name?: string;
 
     // @DataMember
+    public foreachStepId?: string;
+
+    // @DataMember
+    public itemIndex?: number;
+
+    // @DataMember
     public status: string;
 
     // @DataMember
@@ -12788,6 +12938,15 @@ export module CodeMashHub2 {
 
     // @DataMember
     public blockedTags: { [index: string]: string[] } = {};
+
+    // @DataMember
+    public bounceState: string;
+
+    // @DataMember
+    public lastBounceAt?: string;
+
+    // @DataMember
+    public spamComplaint: boolean;
 
     public constructor(init?: Partial<ChannelSubscriptionStateDto>) {
       (Object as any).assign(this, init);
@@ -18711,6 +18870,8 @@ export module CodeMashHub2 {
     public typegen_309_WorkflowSchedulerTaskRequest?: WorkflowSchedulerTaskRequest;
     public typegen_285_AwsCloudWatchLoggingIntegrationRequest?: AwsCloudWatchLoggingIntegrationRequest;
     public typegen_286_AwsCloudWatchLoggingIntegrationDto?: AwsCloudWatchLoggingIntegrationDto;
+    public typegen_324_AzureMonitorLogsLoggingIntegrationRequest?: AzureMonitorLogsLoggingIntegrationRequest;
+    public typegen_325_AzureMonitorLogsLoggingIntegrationDto?: AzureMonitorLogsLoggingIntegrationDto;
     public typegen_310_GetQuickConnectProviders?: GetQuickConnectProviders;
     public typegen_311_StartPaymentsIntegrationConnect?: StartPaymentsIntegrationConnect;
     public typegen_312_GetIntegrationConnectTargets?: GetIntegrationConnectTargets;
@@ -25425,8 +25586,8 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetKeylessIntegrationSetupResponse>
   {
-    /** @description files, email or code. */
-    // @ApiMember(Description="files, email or code.", IsRequired=true)
+    /** @description files, email, code, logs, push or payments (logs: aws or azure; push and payments: google). */
+    // @ApiMember(Description="files, email, code, logs, push or payments (logs: aws or azure; push and payments: google).", IsRequired=true)
     public module: string;
 
     /** @description azure, aws or google. */
@@ -28970,9 +29131,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The push integration id to test. Get it from get_push_integrations.", IsRequired=true)
     public integrationId: string;
 
-    /** @description The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Sandbox integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily. */
+    /** @description The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider, except that Firebase without one checks the connection and sends nothing (the Sandbox integration also tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily. */
     // @DataMember
-    // @ApiMember(Description="The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider (only the Sandbox integration tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily.")
+    // @ApiMember(Description="The device token the test is sent to — a device registered for the person receiving the test (get it from get_push_devices). Required for every real provider, except that Firebase without one checks the connection and sends nothing (the Sandbox integration also tests without one). For a web device it is the browser subscription JSON. Requires DeliveryFamily.")
     public testToken?: string;
 
     /** @description The delivery family of TestToken: ios, android, chrome (any browser web push) or safari. Requires TestToken. */
@@ -32216,6 +32377,36 @@ export module CodeMashHub2 {
     }
     public getMethod() {
       return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Clear a contact's hard bounce */
+  // @Route("/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce", "POST")
+  // @Api(Description="Clear a contact's hard bounce")
+  export class ClearContactBounceRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The contact id (ct_…) whose hard bounce is cleared. */
+    // @ApiMember(Description="The contact id (ct_…) whose hard bounce is cleared.", IsRequired=true)
+    public contactId: string;
+
+    /** @description Delivery channel: Email, Sms, or Push. */
+    // @ApiMember(Description="Delivery channel: Email, Sms, or Push.", IsRequired=true)
+    public channel: string;
+
+    public constructor(init?: Partial<ClearContactBounceRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ClearContactBounceRequest';
+    }
+    public getMethod() {
+      return 'POST';
     }
     public createResponse() {
       return new EmptyResponse();
