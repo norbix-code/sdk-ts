@@ -143,6 +143,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ClearContactBounceRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ClearRegimeRequest": {
     "requiresAuth": true,
     "returnsBytes": false

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-10-31 10:59:28
+Date: 2026-11-02 17:57:39
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -2064,6 +2064,12 @@ export module CodeMashApi2 {
     public name?: string;
 
     // @DataMember
+    public foreachStepId?: string;
+
+    // @DataMember
+    public itemIndex?: number;
+
+    // @DataMember
     public status: string;
 
     // @DataMember
@@ -2262,6 +2268,15 @@ export module CodeMashApi2 {
 
     // @DataMember
     public blockedTags: { [index: string]: string[] } = {};
+
+    // @DataMember
+    public bounceState: string;
+
+    // @DataMember
+    public lastBounceAt?: string;
+
+    // @DataMember
+    public spamComplaint: boolean;
 
     public constructor(init?: Partial<ChannelSubscriptionStateDto>) {
       (Object as any).assign(this, init);
@@ -8688,6 +8703,36 @@ export module CodeMashApi2 {
     }
     public getMethod() {
       return 'PUT';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  /** @description Clear a contact's hard bounce */
+  // @Route("/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce", "POST")
+  // @Api(Description="Clear a contact's hard bounce")
+  export class ClearContactBounceRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description The contact id (ct_…) whose hard bounce is cleared. */
+    // @ApiMember(Description="The contact id (ct_…) whose hard bounce is cleared.", IsRequired=true)
+    public contactId: string;
+
+    /** @description Delivery channel: Email, Sms, or Push. */
+    // @ApiMember(Description="Delivery channel: Email, Sms, or Push.", IsRequired=true)
+    public channel: string;
+
+    public constructor(init?: Partial<ClearContactBounceRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ClearContactBounceRequest';
+    }
+    public getMethod() {
+      return 'POST';
     }
     public createResponse() {
       return new EmptyResponse();

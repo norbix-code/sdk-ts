@@ -35,6 +35,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ClearContactBounceRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "CommitUploadRequest": {
     "requiresAuth": true,
     "returnsBytes": false
