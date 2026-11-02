@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.code (70 endpoints).
+ * Tests for hub.code (71 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.code', () => {
-  it('module exposes 70 method(s)', () => {
+  it('module exposes 71 method(s)', () => {
     const mock = createMockFetch();
     const mod = new CodeModule({} as never);
     void mod; // silence unused — we only need the type
@@ -72,6 +72,7 @@ describe('hub.code', () => {
     expect(typeof ns['getCodeWorkflowSchema']).toBe('function');
     expect(typeof ns['enableCodeWorkflows']).toBe('function');
     expect(typeof ns['disableCodeWorkflows']).toBe('function');
+    expect(typeof ns['installMarketplaceWorkflow']).toBe('function');
     expect(typeof ns['invokeCodeWorkflow']).toBe('function');
     expect(typeof ns['getMarketplaceIntegrationAccess']).toBe('function');
     expect(typeof ns['setMarketplaceIntegrationRoleAccess']).toBe('function');
@@ -1109,6 +1110,31 @@ describe('hub.code', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('installMarketplaceWorkflow: POST /{version}/code/marketplace/listings/{ListingViewId}/install-workflow', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/code/marketplace/listings/{ListingViewId}/install-workflow',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/code/marketplace/listings/{ListingViewId}/install-workflow',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['installMarketplaceWorkflow']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

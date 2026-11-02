@@ -14,7 +14,7 @@ name for the full method reference and TypeScript examples.
 | [`ai`](./ai.md)                       |        26 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         5 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
-| [`code`](./code.md)                   |        70 |                                                                                                                                          |
+| [`code`](./code.md)                   |        71 |                                                                                                                                          |
 | [`compliance`](./compliance.md)       |        18 |                                                                                                                                          |
 | [`database`](./database.md)           |        75 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`diagnostics`](./diagnostics.md)     |         7 |                                                                                                                                          |

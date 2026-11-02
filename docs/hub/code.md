@@ -51,6 +51,7 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`getCodeWorkflowSchema`](#getcodeworkflowschema)                                   | `GET`    | `/{version}/code/workflows/schema`                                                                | `project` |
 | [`enableCodeWorkflows`](#enablecodeworkflows)                                       | `PUT`    | `/{version}/code/workflows/enable`                                                                | `project` |
 | [`disableCodeWorkflows`](#disablecodeworkflows)                                     | `PUT`    | `/{version}/code/workflows/disable`                                                               | `project` |
+| [`installMarketplaceWorkflow`](#installmarketplaceworkflow)                         | `POST`   | `/{version}/code/marketplace/listings/{ListingViewId}/install-workflow`                           | `project` |
 | [`invokeCodeWorkflow`](#invokecodeworkflow)                                         | `POST`   | `/{version}/code/workflows/{Id}/invoke`                                                           | `project` |
 | [`getMarketplaceIntegrationAccess`](#getmarketplaceintegrationaccess)               | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access`                             | `project` |
 | [`setMarketplaceIntegrationRoleAccess`](#setmarketplaceintegrationroleaccess)       | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles`                       | `project` |
@@ -1047,6 +1048,36 @@ const result = await norbix.hub.code.disableCodeWorkflows({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### installMarketplaceWorkflow
+
+`POST` `/{version}/code/marketplace/listings/{ListingViewId}/install-workflow`
+
+Beta: fill a workflow listing's references and save the result as a new workflow's draft. Nothing runs and nothing is published. A value for every reference the listing declares goes in `references`, by key: a missing or undeclared key is `CM-ERRORS-MARKETPLACE-036`, one error per key; a connector listing is `CM-ERRORS-MARKETPLACE-035`. The env is the client's (`norbix-env`).
+
+**Request DTO**: `CodeMashHub2.InstallMarketplaceWorkflow`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+// Connector (the default) or Workflow; `workflow.references` names what to fill.
+const { list } = await norbix.hub.code.getMarketplaceListings({ kind: 'Workflow' });
+
+const result = await norbix.hub.code.installMarketplaceWorkflow({
+  listingViewId: 'ml_workflow_order_thanks_v1',
+  references: {
+    orders: 'orders',
+    thanks: 'tpl_6kbXOl8AX1HdVMyFwURznj',
+    emailIntegration: 'int_6Qp1dW2kRm8NsT4vYc0Hb',
+  },
+});
+// → typed as CodeMashHub2.WorkflowResponse
 ```
 
 [↑ Top](#endpoints)

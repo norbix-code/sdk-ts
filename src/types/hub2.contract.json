@@ -1647,6 +1647,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "InstallMarketplaceWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "InternalsTypeGen": {
     "requiresAuth": false,
     "returnsBytes": false
