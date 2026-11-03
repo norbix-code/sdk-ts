@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for api.code (10 endpoints).
+ * Tests for api.code (11 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('api.code', () => {
-  it('module exposes 10 method(s)', () => {
+  it('module exposes 11 method(s)', () => {
     const mock = createMockFetch();
     const mod = new CodeModule({} as never);
     void mod; // silence unused — we only need the type
@@ -29,6 +29,7 @@ describe('api.code', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['invokeCodeWorkflow']).toBe('function');
     expect(typeof ns['getCodeWorkflowWaitingRuns']).toBe('function');
     expect(typeof ns['resumeCodeWorkflowRun']).toBe('function');
     expect(typeof ns['openCodeWorkflowResumeLink']).toBe('function');
@@ -39,6 +40,29 @@ describe('api.code', () => {
     expect(typeof ns['resumeCodeWorkflowRunByKey']).toBe('function');
     expect(typeof ns['retryCodeWorkflowRunStep']).toBe('function');
     expect(typeof ns['cancelCodeWorkflowRun']).toBe('function');
+  });
+
+  it('invokeCodeWorkflow: POST /{version}/code/workflows/{Id}/invoke', async () => {
+    const stub = stubRequestForPath('/{version}/code/workflows/{Id}/invoke');
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/code/workflows/{Id}/invoke',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['code']!['invokeCodeWorkflow']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('getCodeWorkflowWaitingRuns: GET /{version}/code/workflows/runs', async () => {

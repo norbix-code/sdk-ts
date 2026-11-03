@@ -6,10 +6,29 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 10
+ * Endpoints: 11
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * POST /{version}/code/workflows/{Id}/invoke
+   * Request DTO: InvokeCodeWorkflow
+   */
+  invokeCodeWorkflow = (
+    request: Partial<CodeMashApi2.InvokeCodeWorkflow> = {} as Partial<CodeMashApi2.InvokeCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.InvokeCodeWorkflowResponse> => {
+    return this.transport.send<CodeMashApi2.InvokeCodeWorkflowResponse>({
+      target: 'api',
+      path: '/{version}/code/workflows/{Id}/invoke',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/code/workflows/runs

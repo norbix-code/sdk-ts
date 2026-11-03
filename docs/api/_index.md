@@ -4,7 +4,7 @@
 
 Project-scoped data operations: database collections, users, AI chat, auth, API keys.
 
-**192 endpoints across 13 modules.** Click a module
+**193 endpoints across 13 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -13,7 +13,7 @@ name for the full method reference and TypeScript examples.
 | [`ai`](./ai.md)                       |        18 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
-| [`code`](./code.md)                   |        10 |                                                                                                                                          |
+| [`code`](./code.md)                   |        11 |                                                                                                                                          |
 | [`database`](./database.md)           |        28 | Database schemas, integrations, triggers, taxonomies, and module on/off switches. For data-level CRUD on collections see `api.database`. |
 | [`echo`](./echo.md)                   |         1 | Echo helpers used by the gateway smoke checks.                                                                                           |
 | [`files`](./files.md)                 |        20 | File storage integrations and triggers. Upload + download is in `api.database` (FileResource fields).                                    |
