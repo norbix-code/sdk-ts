@@ -8,6 +8,7 @@ Accessed as `norbix.api.code` on the [`Norbix`](../../README.md#authentication) 
 
 | Method                                                      | Verb   | Path                                            | Scope     |
 | ----------------------------------------------------------- | ------ | ----------------------------------------------- | --------- |
+| [`invokeCodeWorkflow`](#invokecodeworkflow)                 | `POST` | `/{version}/code/workflows/{Id}/invoke`         | `project` |
 | [`getCodeWorkflowWaitingRuns`](#getcodeworkflowwaitingruns) | `GET`  | `/{version}/code/workflows/runs`                | `project` |
 | [`resumeCodeWorkflowRun`](#resumecodeworkflowrun)           | `POST` | `/{version}/code/workflows/runs/{RunId}/resume` | `project` |
 | [`openCodeWorkflowResumeLink`](#opencodeworkflowresumelink) | `GET`  | `/{version}/code/workflows/resume/{Token}`      | `project` |
@@ -20,6 +21,27 @@ Accessed as `norbix.api.code` on the [`Norbix`](../../README.md#authentication) 
 | [`cancelCodeWorkflowRun`](#cancelcodeworkflowrun)           | `POST` | `/{version}/code/workflows/runs/{RunId}/cancel` | `project` |
 
 ## Reference
+
+### invokeCodeWorkflow
+
+`POST` `/{version}/code/workflows/{Id}/invoke`
+
+**Request DTO**: `CodeMashApi2.InvokeCodeWorkflow`
+**Response**: `CodeMashApi2.InvokeCodeWorkflowResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.code.invokeCodeWorkflow({
+  Id: 'Id-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.InvokeCodeWorkflowResponse
+```
+
+[↑ Top](#endpoints)
 
 ### getCodeWorkflowWaitingRuns
 
