@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: database
- * Endpoints: 75
+ * Endpoints: 74
  */
 export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
@@ -1146,25 +1146,6 @@ export class DatabaseModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/database/integrations/{Id}/connection-string
-   * Request DTO: RevealManagedFlexConnectionString
-   */
-  revealManagedFlexConnectionString = (
-    request: Partial<CodeMashHub2.RevealManagedFlexConnectionString> = {} as Partial<CodeMashHub2.RevealManagedFlexConnectionString>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.RevealManagedFlexConnectionStringResponse> => {
-    return this.transport.send<CodeMashHub2.RevealManagedFlexConnectionStringResponse>({
-      target: 'hub',
-      path: '/{version}/database/integrations/{Id}/connection-string',
-      method: 'GET',
-      request,
-      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

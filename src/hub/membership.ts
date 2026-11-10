@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 50
+ * Endpoints: 51
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -766,6 +766,25 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: ['userId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce
+   * Request DTO: ClearContactBounceRequest
+   */
+  clearContactBounce = (
+    request: Partial<CodeMashHub2.ClearContactBounceRequest> = {} as Partial<CodeMashHub2.ClearContactBounceRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'channel'],
       scope: 'project',
       ...options,
     });

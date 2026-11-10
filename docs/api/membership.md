@@ -33,6 +33,7 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`setContactTagSubscription`](#setcontacttagsubscription)               | `PUT`    | `/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}` | `project` |
 | [`unblockUser`](#unblockuser)                                           | `PATCH`  | `/{version}/membership/auth/unblock`                                                         | `project` |
 | [`unsubscribeContact`](#unsubscribecontact)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe`              | `project` |
+| [`clearContactBounce`](#clearcontactbounce)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce`             | `project` |
 | [`updateUser`](#updateuser)                                             | `PUT`    | `/{version}/membership/auth`                                                                 | `project` |
 | [`updateUserPreferences`](#updateuserpreferences)                       | `PUT`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
 | [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
@@ -562,6 +563,28 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.api.membership.unsubscribeContact({
+  contactId: 'contactId-here',
+  channel: 'channel-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### clearContactBounce
+
+`POST` `/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce`
+
+**Request DTO**: `CodeMashApi2.ClearContactBounceRequest`
+**Response**: `CodeMashApi2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.clearContactBounce({
   contactId: 'contactId-here',
   channel: 'channel-here',
   // Other fields: see CodeMash type for the full request shape.

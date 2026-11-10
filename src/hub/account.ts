@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 130
+ * Endpoints: 132
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -543,6 +543,25 @@ export class AccountModule {
       request,
       pathParams: [],
       scope: 'unauthenticated',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/projects/{projectId}/health
+   * Request DTO: GetProjectHealth
+   */
+  getProjectHealth = (
+    request: Partial<CodeMashHub2.GetProjectHealth> = {} as Partial<CodeMashHub2.GetProjectHealth>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetProjectHealthResponse> => {
+    return this.transport.send<CodeMashHub2.GetProjectHealthResponse>({
+      target: 'hub',
+      path: '/{version}/account/projects/{projectId}/health',
+      method: 'GET',
+      request,
+      pathParams: ['projectId'],
+      scope: 'project',
       ...options,
     });
   };
@@ -1452,6 +1471,25 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/account/team/member/role-environments',
+      method: 'PUT',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/account/team/member/role-projects
+   * Request DTO: SetTeamMemberRoleProjectsRequest
+   */
+  setTeamMemberRoleProjects = (
+    request: Partial<CodeMashHub2.SetTeamMemberRoleProjectsRequest> = {} as Partial<CodeMashHub2.SetTeamMemberRoleProjectsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/member/role-projects',
       method: 'PUT',
       request,
       pathParams: [],

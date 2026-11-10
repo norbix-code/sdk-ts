@@ -851,25 +851,6 @@ export class CodeModule {
   };
 
   /**
-   * POST /{version}/code/workflows/{Id}/invoke
-   * Request DTO: InvokeCodeWorkflow
-   */
-  invokeCodeWorkflow = (
-    request: Partial<CodeMashHub2.InvokeCodeWorkflow> = {} as Partial<CodeMashHub2.InvokeCodeWorkflow>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.InvokeCodeWorkflowResponse> => {
-    return this.transport.send<CodeMashHub2.InvokeCodeWorkflowResponse>({
-      target: 'hub',
-      path: '/{version}/code/workflows/{Id}/invoke',
-      method: 'POST',
-      request,
-      pathParams: ['Id'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * GET /{version}/code/marketplace/integrations/{IntegrationViewId}/access
    * Request DTO: GetMarketplaceIntegrationAccess
    */
@@ -1168,6 +1149,25 @@ export class CodeModule {
       method: 'POST',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/{Id}/invoke
+   * Request DTO: InvokeCodeWorkflow
+   */
+  invokeCodeWorkflow = (
+    request: Partial<CodeMashHub2.InvokeCodeWorkflow> = {} as Partial<CodeMashHub2.InvokeCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.InvokeCodeWorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeCodeWorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/invoke',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

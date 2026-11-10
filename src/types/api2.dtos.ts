@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 20:39:34
+Date: 2026-11-10 14:34:40
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -983,6 +983,7 @@ export module CodeMashApi2 {
     public installationType: string;
     public onboardingDocsUrl: string;
     public toolsUrl: string;
+    public openApiUrl?: string;
     public cliPackage: string;
     public cliInstallCommand: string;
     public deviceAuthorizationUrl: string;
@@ -1623,12 +1624,6 @@ export module CodeMashApi2 {
 
     // @DataMember
     public activationCode?: string;
-
-    // @DataMember
-    public order?: number;
-
-    // @DataMember
-    public breakOnError: boolean;
 
     // @DataMember
     public savedByAuthId?: string;
@@ -3087,15 +3082,17 @@ export module CodeMashApi2 {
   }
 
   export enum EmailRecipientField {
-    To = 1,
-    Cc = 2,
-    Bcc = 3,
+    NotSet = 'NotSet',
+    To = 'To',
+    Cc = 'Cc',
+    Bcc = 'Bcc',
   }
 
   export enum RecipientRemovalReason {
-    OptedOut = 1,
-    Compliance = 2,
-    Undeliverable = 3,
+    NotSet = 'NotSet',
+    OptedOut = 'OptedOut',
+    Compliance = 'Compliance',
+    Undeliverable = 'Undeliverable',
   }
 
   // @DataContract
@@ -3165,6 +3162,18 @@ export module CodeMashApi2 {
 
     // @DataMember
     public removedRecipients: number;
+
+    // @DataMember
+    public delivered: number;
+
+    // @DataMember
+    public bounced: number;
+
+    // @DataMember
+    public complained: number;
+
+    // @DataMember
+    public rejected: number;
 
     // @DataMember
     public successRate: number;
@@ -3552,8 +3561,6 @@ export module CodeMashApi2 {
   export interface IQueuedTrigger {
     viewId: string;
     name: string;
-    order?: number;
-    breakOnError: boolean;
   }
 
   export interface IHasRazorTemplateCode {}
@@ -8913,8 +8920,8 @@ export module CodeMashApi2 {
     // @ApiMember(Description="How many contacts to return per page (default 50).")
     public pageSize?: number;
 
-    /** @description Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email. */
-    // @ApiMember(Description="Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email.")
+    /** @description Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email; an exact contact id (ct_…) or login id (usr_…) finds that contact. */
+    // @ApiMember(Description="Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email; an exact contact id (ct_…) or login id (usr_…) finds that contact.")
     public search?: string;
 
     /** @description Case-insensitive part of the email (primary email or any login's email). */
@@ -8936,6 +8943,10 @@ export module CodeMashApi2 {
     /** @description Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them. */
     // @ApiMember(Description="Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them.")
     public roleNames?: string[];
+
+    /** @description Contact tags; the contact carries any of them. */
+    // @ApiMember(Description="Contact tags; the contact carries any of them.")
+    public tags?: string[];
 
     public constructor(init?: Partial<GetAllContacts>) {
       super(init);

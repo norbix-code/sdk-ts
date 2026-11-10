@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('api.membership', () => {
-  it('module exposes 55 method(s)', () => {
+  it('module exposes 56 method(s)', () => {
     const mock = createMockFetch();
     const mod = new MembershipModule({} as never);
     void mod; // silence unused — we only need the type
@@ -52,6 +52,7 @@ describe('api.membership', () => {
     expect(typeof ns['setContactTagSubscription']).toBe('function');
     expect(typeof ns['unblockUser']).toBe('function');
     expect(typeof ns['unsubscribeContact']).toBe('function');
+    expect(typeof ns['clearContactBounce']).toBe('function');
     expect(typeof ns['updateUser']).toBe('function');
     expect(typeof ns['updateUserPreferences']).toBe('function');
     expect(typeof ns['changePassword']).toBe('function');
@@ -613,6 +614,31 @@ describe('api.membership', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['membership']!['unsubscribeContact']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('clearContactBounce: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['clearContactBounce']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

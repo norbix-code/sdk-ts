@@ -8,83 +8,82 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 
 ## Endpoints
 
-| Method                                                                    | Verb     | Path                                                                                | Scope     |
-| ------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------- | --------- |
-| [`disableDatabase`](#disabledatabase)                                     | `PUT`    | `/{version}/database/disable`                                                       | `project` |
-| [`enableDatabase`](#enabledatabase)                                       | `PUT`    | `/{version}/database/enable`                                                        | `project` |
-| [`deleteSchemaTrigger`](#deleteschematrigger)                             | `DELETE` | `/{version}/database/schemas/triggers/{triggerId}`                                  | `project` |
-| [`disableSchemaTrigger`](#disableschematrigger)                           | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/disable`                          | `project` |
-| [`enableSchemaTrigger`](#enableschematrigger)                             | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/enable`                           | `project` |
-| [`getSchemaTrigger`](#getschematrigger)                                   | `GET`    | `/{version}/database/schemas/triggers/{id}`                                         | `project` |
-| [`getSchemaTriggers`](#getschematriggers)                                 | `GET`    | `/{version}/database/schemas/triggers`                                              | `project` |
-| [`saveSchemaTrigger`](#saveschematrigger)                                 | `POST`   | `/{version}/database/schemas/triggers`                                              | `project` |
-| [`deleteDatabaseTaxonomy`](#deletedatabasetaxonomy)                       | `DELETE` | `/{version}/database/taxonomies/{Id}`                                               | `project` |
-| [`getDatabaseTaxonomy`](#getdatabasetaxonomy)                             | `GET`    | `/{version}/database/taxonomies/{id}`                                               | `project` |
-| [`getDatabaseTaxonomies`](#getdatabasetaxonomies)                         | `GET`    | `/{version}/database/taxonomies`                                                    | `project` |
-| [`getDatabaseTaxonomyTree`](#getdatabasetaxonomytree)                     | `GET`    | `/{version}/database/taxonomies/tree`                                               | `project` |
-| [`saveDatabaseTaxonomy`](#savedatabasetaxonomy)                           | `POST`   | `/{version}/database/taxonomies`                                                    | `project` |
-| [`deleteDatabaseTaxonomyTerm`](#deletedatabasetaxonomyterm)               | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
-| [`deleteManyDatabaseTaxonomyTerms`](#deletemanydatabasetaxonomyterms)     | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/many`                            | `project` |
-| [`getDatabaseTaxonomyTerm`](#getdatabasetaxonomyterm)                     | `GET`    | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
-| [`getDatabaseMergedTermTree`](#getdatabasemergedtermtree)                 | `GET`    | `/{version}/database/taxonomies/{TaxonomyName}/merged-tree`                         | `project` |
-| [`getDatabaseTaxonomyTermTree`](#getdatabasetaxonomytermtree)             | `GET`    | `/{version}/database/taxonomies/{TaxonomyName}/terms/tree`                          | `project` |
-| [`saveDatabaseTaxonomyTerm`](#savedatabasetaxonomyterm)                   | `POST`   | `/{version}/database/taxonomies/{TaxonomyId}/terms`                                 | `project` |
-| [`updateDatabaseTaxonomyTerm`](#updatedatabasetaxonomyterm)               | `PUT`    | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
-| [`applyDatabaseSchemaBundle`](#applydatabaseschemabundle)                 | `POST`   | `/{version}/database/schemas/apply-bundle`                                          | `project` |
-| [`deleteDatabaseSchema`](#deletedatabaseschema)                           | `DELETE` | `/{version}/database/schemas/{Id}`                                                  | `project` |
-| [`discardDatabaseSchemaDraft`](#discarddatabaseschemadraft)               | `DELETE` | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
-| [`endUserOwnRecordsReport`](#enduserownrecordsreport)                     | `POST`   | `/{version}/database/schemas/end-user-own-records`                                  | `project` |
-| [`getDatabaseSchema`](#getdatabaseschema)                                 | `GET`    | `/{version}/database/schemas/{id}`                                                  | `project` |
-| [`getDatabaseSchemas`](#getdatabaseschemas)                               | `GET`    | `/{version}/database/schemas`                                                       | `project` |
-| [`getDatabaseSchemaDraft`](#getdatabaseschemadraft)                       | `GET`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
-| [`getDatabaseSchemaIndexStatus`](#getdatabaseschemaindexstatus)           | `GET`    | `/{version}/database/schemas/{Id}/index-status`                                     | `project` |
-| [`getDatabaseSchemaListSettings`](#getdatabaseschemalistsettings)         | `GET`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
-| [`getDatabaseSchemaVersionDiff`](#getdatabaseschemaversiondiff)           | `GET`    | `/{version}/database/schemas/{Id}/versions/diff`                                    | `project` |
-| [`getDatabaseSchemaVersions`](#getdatabaseschemaversions)                 | `GET`    | `/{version}/database/schemas/{Id}/versions`                                         | `project` |
-| [`publishDatabaseSchema`](#publishdatabaseschema)                         | `POST`   | `/{version}/database/schemas/{Id}/publish`                                          | `project` |
-| [`renameDatabaseSchema`](#renamedatabaseschema)                           | `PUT`    | `/{version}/database/schemas/{Id}/rename`                                           | `project` |
-| [`saveDatabaseSchema`](#savedatabaseschema)                               | `POST`   | `/{version}/database/schemas`                                                       | `project` |
-| [`updateDatabaseSchemaDraft`](#updatedatabaseschemadraft)                 | `PUT`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
-| [`updateDatabaseSchemaEmbed`](#updatedatabaseschemaembed)                 | `PUT`    | `/{version}/database/schemas/{Id}/embed`                                            | `project` |
-| [`updateDatabaseSchemaListSettings`](#updatedatabaseschemalistsettings)   | `PUT`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
-| [`updateDatabaseSchemaSettings`](#updatedatabaseschemasettings)           | `PUT`    | `/{version}/database/schemas/{Id}/settings`                                         | `project` |
-| [`aggregateRecords`](#aggregaterecords)                                   | `POST`   | `/{version}/database/collections/{collectionName}/aggregate`                        | `project` |
-| [`changeRecordResponsibility`](#changerecordresponsibility)               | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/responsibility`              | `project` |
-| [`countRecords`](#countrecords)                                           | `GET`    | `/{version}/database/collections/{collectionName}/count`                            | `project` |
-| [`deleteManyRecords`](#deletemanyrecords)                                 | `DELETE` | `/{version}/database/collections/{collectionName}/many`                             | `project` |
-| [`deleteRecord`](#deleterecord)                                           | `DELETE` | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
-| [`distinctRecordValues`](#distinctrecordvalues)                           | `GET`    | `/{version}/database/collections/{collectionName}/distinct`                         | `project` |
-| [`executeRecordsAggregate`](#executerecordsaggregate)                     | `POST`   | `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute` | `project` |
-| [`findRecords`](#findrecords)                                             | `GET`    | `/{version}/database/collections/{collectionName}`                                  | `project` |
-| [`findOneRecord`](#findonerecord)                                         | `GET`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
-| [`getCollectionIndexes`](#getcollectionindexes)                           | `GET`    | `/{version}/database/collections/{collectionName}/indexes`                          | `project` |
-| [`insertManyRecords`](#insertmanyrecords)                                 | `POST`   | `/{version}/database/collections/{collectionName}/many`                             | `project` |
-| [`insertRecord`](#insertrecord)                                           | `POST`   | `/{version}/database/collections/{collectionName}`                                  | `project` |
-| [`replaceRecord`](#replacerecord)                                         | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/replace`                     | `project` |
-| [`seedCollectionRecords`](#seedcollectionrecords)                         | `POST`   | `/{version}/database/collections/seed`                                              | `project` |
-| [`updateManyRecords`](#updatemanyrecords)                                 | `PUT`    | `/{version}/database/collections/{collectionName}/many`                             | `project` |
-| [`updateOneRecord`](#updateonerecord)                                     | `PUT`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
-| [`deleteDatabaseIntegration`](#deletedatabaseintegration)                 | `DELETE` | `/{version}/database/integrations/{Id}`                                             | `project` |
-| [`disableDatabaseIntegration`](#disabledatabaseintegration)               | `PUT`    | `/{version}/database/integrations/{Id}/disable`                                     | `project` |
-| [`enableDatabaseIntegration`](#enabledatabaseintegration)                 | `PUT`    | `/{version}/database/integrations/{Id}/enable`                                      | `project` |
-| [`getDatabaseIntegration`](#getdatabaseintegration)                       | `GET`    | `/{version}/database/integrations/{id}`                                             | `project` |
-| [`getDatabaseIntegrations`](#getdatabaseintegrations)                     | `GET`    | `/{version}/database/integrations`                                                  | `project` |
-| [`getAllowedFlexTiers`](#getallowedflextiers)                             | `GET`    | `/{version}/database/integrations/flex-tiers`                                       | `project` |
-| [`revealManagedFlexConnectionString`](#revealmanagedflexconnectionstring) | `GET`    | `/{version}/database/integrations/{Id}/connection-string`                           | `project` |
-| [`saveDatabaseIntegration`](#savedatabaseintegration)                     | `POST`   | `/{version}/database/integrations`                                                  | `project` |
-| [`setDatabaseIntegrationAsDefault`](#setdatabaseintegrationasdefault)     | `PUT`    | `/{version}/database/integrations/{Id}/default`                                     | `project` |
-| [`testDatabaseIntegration`](#testdatabaseintegration)                     | `POST`   | `/{version}/database/integrations/test`                                             | `project` |
-| [`deleteDatabaseAggregate`](#deletedatabaseaggregate)                     | `DELETE` | `/{version}/database/aggregates/{Id}`                                               | `project` |
-| [`getDatabaseAggregate`](#getdatabaseaggregate)                           | `GET`    | `/{version}/database/aggregates/{Id}`                                               | `project` |
-| [`getDatabaseAggregates`](#getdatabaseaggregates)                         | `GET`    | `/{version}/database/aggregates`                                                    | `project` |
-| [`saveDatabaseAggregate`](#savedatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates`                                                    | `project` |
-| [`testDatabaseAggregate`](#testdatabaseaggregate)                         | `POST`   | `/{version}/database/aggregates/test`                                               | `project` |
-| [`createCollectionImport`](#createcollectionimport)                       | `POST`   | `/{version}/database/imports`                                                       | `project` |
-| [`deleteCollectionImport`](#deletecollectionimport)                       | `DELETE` | `/{version}/database/imports/{Id}`                                                  | `project` |
-| [`getCollectionImport`](#getcollectionimport)                             | `GET`    | `/{version}/database/imports/{Id}`                                                  | `project` |
-| [`getCollectionImports`](#getcollectionimports)                           | `GET`    | `/{version}/database/imports`                                                       | `project` |
-| [`requestImportUploadUrl`](#requestimportuploadurl)                       | `POST`   | `/{version}/database/imports/upload-url`                                            | `project` |
-| [`analyzeImportFile`](#analyzeimportfile)                                 | `POST`   | `/{version}/database/imports/analyze`                                               | `project` |
+| Method                                                                  | Verb     | Path                                                                                | Scope     |
+| ----------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------- | --------- |
+| [`disableDatabase`](#disabledatabase)                                   | `PUT`    | `/{version}/database/disable`                                                       | `project` |
+| [`enableDatabase`](#enabledatabase)                                     | `PUT`    | `/{version}/database/enable`                                                        | `project` |
+| [`deleteSchemaTrigger`](#deleteschematrigger)                           | `DELETE` | `/{version}/database/schemas/triggers/{triggerId}`                                  | `project` |
+| [`disableSchemaTrigger`](#disableschematrigger)                         | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/disable`                          | `project` |
+| [`enableSchemaTrigger`](#enableschematrigger)                           | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/enable`                           | `project` |
+| [`getSchemaTrigger`](#getschematrigger)                                 | `GET`    | `/{version}/database/schemas/triggers/{id}`                                         | `project` |
+| [`getSchemaTriggers`](#getschematriggers)                               | `GET`    | `/{version}/database/schemas/triggers`                                              | `project` |
+| [`saveSchemaTrigger`](#saveschematrigger)                               | `POST`   | `/{version}/database/schemas/triggers`                                              | `project` |
+| [`deleteDatabaseTaxonomy`](#deletedatabasetaxonomy)                     | `DELETE` | `/{version}/database/taxonomies/{Id}`                                               | `project` |
+| [`getDatabaseTaxonomy`](#getdatabasetaxonomy)                           | `GET`    | `/{version}/database/taxonomies/{id}`                                               | `project` |
+| [`getDatabaseTaxonomies`](#getdatabasetaxonomies)                       | `GET`    | `/{version}/database/taxonomies`                                                    | `project` |
+| [`getDatabaseTaxonomyTree`](#getdatabasetaxonomytree)                   | `GET`    | `/{version}/database/taxonomies/tree`                                               | `project` |
+| [`saveDatabaseTaxonomy`](#savedatabasetaxonomy)                         | `POST`   | `/{version}/database/taxonomies`                                                    | `project` |
+| [`deleteDatabaseTaxonomyTerm`](#deletedatabasetaxonomyterm)             | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
+| [`deleteManyDatabaseTaxonomyTerms`](#deletemanydatabasetaxonomyterms)   | `DELETE` | `/{version}/database/taxonomies/{TaxonomyId}/terms/many`                            | `project` |
+| [`getDatabaseTaxonomyTerm`](#getdatabasetaxonomyterm)                   | `GET`    | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
+| [`getDatabaseMergedTermTree`](#getdatabasemergedtermtree)               | `GET`    | `/{version}/database/taxonomies/{TaxonomyName}/merged-tree`                         | `project` |
+| [`getDatabaseTaxonomyTermTree`](#getdatabasetaxonomytermtree)           | `GET`    | `/{version}/database/taxonomies/{TaxonomyName}/terms/tree`                          | `project` |
+| [`saveDatabaseTaxonomyTerm`](#savedatabasetaxonomyterm)                 | `POST`   | `/{version}/database/taxonomies/{TaxonomyId}/terms`                                 | `project` |
+| [`updateDatabaseTaxonomyTerm`](#updatedatabasetaxonomyterm)             | `PUT`    | `/{version}/database/taxonomies/{TaxonomyId}/terms/{Id}`                            | `project` |
+| [`applyDatabaseSchemaBundle`](#applydatabaseschemabundle)               | `POST`   | `/{version}/database/schemas/apply-bundle`                                          | `project` |
+| [`deleteDatabaseSchema`](#deletedatabaseschema)                         | `DELETE` | `/{version}/database/schemas/{Id}`                                                  | `project` |
+| [`discardDatabaseSchemaDraft`](#discarddatabaseschemadraft)             | `DELETE` | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`endUserOwnRecordsReport`](#enduserownrecordsreport)                   | `POST`   | `/{version}/database/schemas/end-user-own-records`                                  | `project` |
+| [`getDatabaseSchema`](#getdatabaseschema)                               | `GET`    | `/{version}/database/schemas/{id}`                                                  | `project` |
+| [`getDatabaseSchemas`](#getdatabaseschemas)                             | `GET`    | `/{version}/database/schemas`                                                       | `project` |
+| [`getDatabaseSchemaDraft`](#getdatabaseschemadraft)                     | `GET`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`getDatabaseSchemaIndexStatus`](#getdatabaseschemaindexstatus)         | `GET`    | `/{version}/database/schemas/{Id}/index-status`                                     | `project` |
+| [`getDatabaseSchemaListSettings`](#getdatabaseschemalistsettings)       | `GET`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
+| [`getDatabaseSchemaVersionDiff`](#getdatabaseschemaversiondiff)         | `GET`    | `/{version}/database/schemas/{Id}/versions/diff`                                    | `project` |
+| [`getDatabaseSchemaVersions`](#getdatabaseschemaversions)               | `GET`    | `/{version}/database/schemas/{Id}/versions`                                         | `project` |
+| [`publishDatabaseSchema`](#publishdatabaseschema)                       | `POST`   | `/{version}/database/schemas/{Id}/publish`                                          | `project` |
+| [`renameDatabaseSchema`](#renamedatabaseschema)                         | `PUT`    | `/{version}/database/schemas/{Id}/rename`                                           | `project` |
+| [`saveDatabaseSchema`](#savedatabaseschema)                             | `POST`   | `/{version}/database/schemas`                                                       | `project` |
+| [`updateDatabaseSchemaDraft`](#updatedatabaseschemadraft)               | `PUT`    | `/{version}/database/schemas/{Id}/draft`                                            | `project` |
+| [`updateDatabaseSchemaEmbed`](#updatedatabaseschemaembed)               | `PUT`    | `/{version}/database/schemas/{Id}/embed`                                            | `project` |
+| [`updateDatabaseSchemaListSettings`](#updatedatabaseschemalistsettings) | `PUT`    | `/{version}/database/schemas/{Id}/list-settings`                                    | `project` |
+| [`updateDatabaseSchemaSettings`](#updatedatabaseschemasettings)         | `PUT`    | `/{version}/database/schemas/{Id}/settings`                                         | `project` |
+| [`aggregateRecords`](#aggregaterecords)                                 | `POST`   | `/{version}/database/collections/{collectionName}/aggregate`                        | `project` |
+| [`changeRecordResponsibility`](#changerecordresponsibility)             | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/responsibility`              | `project` |
+| [`countRecords`](#countrecords)                                         | `GET`    | `/{version}/database/collections/{collectionName}/count`                            | `project` |
+| [`deleteManyRecords`](#deletemanyrecords)                               | `DELETE` | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`deleteRecord`](#deleterecord)                                         | `DELETE` | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
+| [`distinctRecordValues`](#distinctrecordvalues)                         | `GET`    | `/{version}/database/collections/{collectionName}/distinct`                         | `project` |
+| [`executeRecordsAggregate`](#executerecordsaggregate)                   | `POST`   | `/{version}/database/collections/{collectionName}/aggregates/{aggregateId}/execute` | `project` |
+| [`findRecords`](#findrecords)                                           | `GET`    | `/{version}/database/collections/{collectionName}`                                  | `project` |
+| [`findOneRecord`](#findonerecord)                                       | `GET`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
+| [`getCollectionIndexes`](#getcollectionindexes)                         | `GET`    | `/{version}/database/collections/{collectionName}/indexes`                          | `project` |
+| [`insertManyRecords`](#insertmanyrecords)                               | `POST`   | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`insertRecord`](#insertrecord)                                         | `POST`   | `/{version}/database/collections/{collectionName}`                                  | `project` |
+| [`replaceRecord`](#replacerecord)                                       | `PUT`    | `/{version}/database/collections/{collectionName}/{id}/replace`                     | `project` |
+| [`seedCollectionRecords`](#seedcollectionrecords)                       | `POST`   | `/{version}/database/collections/seed`                                              | `project` |
+| [`updateManyRecords`](#updatemanyrecords)                               | `PUT`    | `/{version}/database/collections/{collectionName}/many`                             | `project` |
+| [`updateOneRecord`](#updateonerecord)                                   | `PUT`    | `/{version}/database/collections/{collectionName}/{id}`                             | `project` |
+| [`deleteDatabaseIntegration`](#deletedatabaseintegration)               | `DELETE` | `/{version}/database/integrations/{Id}`                                             | `project` |
+| [`disableDatabaseIntegration`](#disabledatabaseintegration)             | `PUT`    | `/{version}/database/integrations/{Id}/disable`                                     | `project` |
+| [`enableDatabaseIntegration`](#enabledatabaseintegration)               | `PUT`    | `/{version}/database/integrations/{Id}/enable`                                      | `project` |
+| [`getDatabaseIntegration`](#getdatabaseintegration)                     | `GET`    | `/{version}/database/integrations/{id}`                                             | `project` |
+| [`getDatabaseIntegrations`](#getdatabaseintegrations)                   | `GET`    | `/{version}/database/integrations`                                                  | `project` |
+| [`getAllowedFlexTiers`](#getallowedflextiers)                           | `GET`    | `/{version}/database/integrations/flex-tiers`                                       | `project` |
+| [`saveDatabaseIntegration`](#savedatabaseintegration)                   | `POST`   | `/{version}/database/integrations`                                                  | `project` |
+| [`setDatabaseIntegrationAsDefault`](#setdatabaseintegrationasdefault)   | `PUT`    | `/{version}/database/integrations/{Id}/default`                                     | `project` |
+| [`testDatabaseIntegration`](#testdatabaseintegration)                   | `POST`   | `/{version}/database/integrations/test`                                             | `project` |
+| [`deleteDatabaseAggregate`](#deletedatabaseaggregate)                   | `DELETE` | `/{version}/database/aggregates/{Id}`                                               | `project` |
+| [`getDatabaseAggregate`](#getdatabaseaggregate)                         | `GET`    | `/{version}/database/aggregates/{Id}`                                               | `project` |
+| [`getDatabaseAggregates`](#getdatabaseaggregates)                       | `GET`    | `/{version}/database/aggregates`                                                    | `project` |
+| [`saveDatabaseAggregate`](#savedatabaseaggregate)                       | `POST`   | `/{version}/database/aggregates`                                                    | `project` |
+| [`testDatabaseAggregate`](#testdatabaseaggregate)                       | `POST`   | `/{version}/database/aggregates/test`                                               | `project` |
+| [`createCollectionImport`](#createcollectionimport)                     | `POST`   | `/{version}/database/imports`                                                       | `project` |
+| [`deleteCollectionImport`](#deletecollectionimport)                     | `DELETE` | `/{version}/database/imports/{Id}`                                                  | `project` |
+| [`getCollectionImport`](#getcollectionimport)                           | `GET`    | `/{version}/database/imports/{Id}`                                                  | `project` |
+| [`getCollectionImports`](#getcollectionimports)                         | `GET`    | `/{version}/database/imports`                                                       | `project` |
+| [`requestImportUploadUrl`](#requestimportuploadurl)                     | `POST`   | `/{version}/database/imports/upload-url`                                            | `project` |
+| [`analyzeImportFile`](#analyzeimportfile)                               | `POST`   | `/{version}/database/imports/analyze`                                               | `project` |
 
 ## Reference
 
@@ -1443,29 +1442,6 @@ const result = await norbix.hub.database.getAllowedFlexTiers({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetAllowedFlexTiersResponse
-```
-
-[↑ Top](#endpoints)
-
-### revealManagedFlexConnectionString
-
-`GET` `/{version}/database/integrations/{Id}/connection-string`
-
-Reveal the masked value.
-
-**Request DTO**: `CodeMashHub2.RevealManagedFlexConnectionString`
-**Response**: `CodeMashHub2.RevealManagedFlexConnectionStringResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.revealManagedFlexConnectionString({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.RevealManagedFlexConnectionStringResponse
 ```
 
 [↑ Top](#endpoints)

@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 55
+ * Endpoints: 56
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -861,6 +861,25 @@ export class MembershipModule {
       method: 'PUT',
       request,
       pathParams: ['userId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce
+   * Request DTO: ClearContactBounceRequest
+   */
+  clearContactBounce = (
+    request: Partial<CodeMashApi2.ClearContactBounceRequest> = {} as Partial<CodeMashApi2.ClearContactBounceRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmptyResponse> => {
+    return this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+      method: 'POST',
+      request,
+      pathParams: ['contactId', 'channel'],
       scope: 'project',
       ...options,
     });

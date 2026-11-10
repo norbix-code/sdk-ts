@@ -1403,6 +1403,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetProjectHealth": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetProjectTokens": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1935,10 +1939,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "RevealManagedFlexConnectionString": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "RevealMarketplaceIntegrationSecretsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2196,6 +2196,10 @@
     "returnsBytes": false
   },
   "SetTeamMemberRoleEnvironmentsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SetTeamMemberRoleProjectsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
