@@ -40,6 +40,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getAccountRegions`](#getaccountregions)                                     | `GET`    | `/{version}/account/regions`                                                 | `project` |
 | [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project` |
 | [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project` |
+| [`getProjectHealth`](#getprojecthealth)                                       | `GET`    | `/{version}/account/projects/{projectId}/health`                             | `project` |
 | [`setAdminPortalEnabled`](#setadminportalenabled)                             | `PUT`    | `/{version}/account/projects/{projectId}/admin-portal/enabled`               | `project` |
 | [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
 | [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project` |
@@ -86,6 +87,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getAccountTeamPolicies`](#getaccountteampolicies)                           | `GET`    | `/{version}/account/team/policies`                                           | `project` |
 | [`removeTeamMember`](#removeteammember)                                       | `DELETE` | `/{version}/account/team/member/{MemberId}`                                  | `project` |
 | [`setTeamMemberRoleEnvironments`](#setteammemberroleenvironments)             | `PUT`    | `/{version}/account/team/member/role-environments`                           | `project` |
+| [`setTeamMemberRoleProjects`](#setteammemberroleprojects)                     | `PUT`    | `/{version}/account/team/member/role-projects`                               | `project` |
 | [`getAccountTeamRoles`](#getaccountteamroles)                                 | `GET`    | `/{version}/account/team/roles`                                              | `project` |
 | [`sendInviteToTeamMember`](#sendinvitetoteammember)                           | `POST`   | `/{version}/account/team/member/invite`                                      | `project` |
 | [`getAccountTeamInvitations`](#getaccountteaminvitations)                     | `GET`    | `/{version}/account/team/invitations`                                        | `project` |
@@ -798,6 +800,29 @@ const result = await norbix.hub.account.getProjectTokens({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetProjectTokensResponse
+```
+
+[↑ Top](#endpoints)
+
+### getProjectHealth
+
+`GET` `/{version}/account/projects/{projectId}/health`
+
+Fetch a single item by ID.
+
+**Request DTO**: `CodeMashHub2.GetProjectHealth`
+**Response**: `CodeMashHub2.GetProjectHealthResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getProjectHealth({
+  projectId: 'projectId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.GetProjectHealthResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1838,6 +1863,26 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.account.setTeamMemberRoleEnvironments({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### setTeamMemberRoleProjects
+
+`PUT` `/{version}/account/team/member/role-projects`
+
+**Request DTO**: `CodeMashHub2.SetTeamMemberRoleProjectsRequest`
+**Response**: `CodeMashHub2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.setTeamMemberRoleProjects({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse

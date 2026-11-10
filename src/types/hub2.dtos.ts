@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-02 20:39:35
+Date: 2026-11-10 14:34:42
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -127,6 +127,9 @@ export module CodeMashHub2 {
 
     public deliveryEventsEnabled?: boolean;
     public snsTopicArn?: string;
+    /** @description The SQS queue URL (https://sqs.<region>.amazonaws.com/<account>/<name>) the configuration set's SNS topic delivers to. Norbix polls it with this integration's credentials. Requires ConfigurationSet. */
+    // @ApiMember(Description="The SQS queue URL (https://sqs.<region>.amazonaws.com/<account>/<name>) the configuration set's SNS topic delivers to. Norbix polls it with this integration's credentials. Requires ConfigurationSet.")
+    public deliveryEventsQueueUrl?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationRequest>) {
       super(init);
@@ -377,8 +380,6 @@ export module CodeMashHub2 {
     public description?: string;
     public isEnabled: boolean;
     public preExecuteCode?: string;
-    public order?: number;
-    public breakOnError: boolean;
     public action: TriggerActionDto;
     public executionIdentityId?: string;
 
@@ -483,6 +484,8 @@ export module CodeMashHub2 {
   export class MongoDbConnectionStringDatabaseIntegrationRequest extends DatabaseIntegrationRequest {
     public provider: DatabaseProvider;
     public databaseName?: string;
+    public authMode?: CloudAuthMode;
+    public audience?: string;
     public connectionString: string;
 
     public constructor(init?: Partial<MongoDbConnectionStringDatabaseIntegrationRequest>) {
@@ -839,8 +842,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The Datadog site of your account, one of: datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, datadoghq.eu, ap1.datadoghq.com, ap2.datadoghq.com, ddog-gov.com (DataDogSites.All).", IsRequired=true)
     public site: string;
 
-    public serviceName: string;
-    public environment: string;
+    /** @description The Datadog service tag of the forwarded logs. Optional: empty = the project id (pr_…). The env tag is not asked: it is the Norbix environment of the entry, lower-cased (prod, test, …). */
+    // @ApiMember(Description="The Datadog service tag of the forwarded logs. Optional: empty = the project id (pr_…). The env tag is not asked: it is the Norbix environment of the entry, lower-cased (prod, test, …).")
+    public serviceName?: string;
+
     public apiKey: string;
 
     public constructor(init?: Partial<DataDogLoggingIntegrationRequest>) {
@@ -3805,7 +3810,6 @@ export module CodeMashHub2 {
   export class DataDogLoggingIntegrationDto extends LoggingIntegrationDto {
     public site: string;
     public serviceName: string;
-    public environment: string;
 
     public constructor(init?: Partial<DataDogLoggingIntegrationDto>) {
       super(init);
@@ -4037,6 +4041,9 @@ export module CodeMashHub2 {
 
   export class MongoDbConnectionStringIntegrationDto extends DatabaseIntegrationDto {
     public databaseName?: string;
+    public authMode: CloudAuthMode;
+    public audience?: string;
+    public projectViewId?: string;
 
     public constructor(init?: Partial<MongoDbConnectionStringIntegrationDto>) {
       super(init);
@@ -4269,6 +4276,7 @@ export module CodeMashHub2 {
     public configurationSetName?: string;
     public deliveryEventsEnabled?: boolean;
     public snsTopicArn?: string;
+    public deliveryEventsQueueUrl?: string;
 
     public constructor(init?: Partial<AwsSesEmailIntegrationDto>) {
       super(init);
@@ -6572,6 +6580,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Environment names the role applies in, e.g. [\"TEST\"]. Empty or omitted = every environment.")
     public environments?: string[];
 
+    /** @description Project ids (pr_…) the role applies to. Empty or omitted = every project. Not allowed on the Account Administrator role. */
+    // @ApiMember(Description="Project ids (pr_…) the role applies to. Empty or omitted = every project. Not allowed on the Account Administrator role.")
+    public projects?: string[];
+
     public constructor(init?: Partial<TeamMemberRoleInput>) {
       (Object as any).assign(this, init);
     }
@@ -7373,6 +7385,7 @@ export module CodeMashHub2 {
     public installationType: string;
     public onboardingDocsUrl: string;
     public toolsUrl: string;
+    public openApiUrl?: string;
     public cliPackage: string;
     public cliInstallCommand: string;
     public deviceAuthorizationUrl: string;
@@ -8421,12 +8434,6 @@ export module CodeMashHub2 {
     public activationCode?: string;
 
     // @DataMember
-    public order?: number;
-
-    // @DataMember
-    public breakOnError: boolean;
-
-    // @DataMember
     public savedByAuthId?: string;
 
     // @DataMember
@@ -8603,12 +8610,31 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class LogSettingsDto {
+    // @DataMember
+    public skipCloudDashboardLogs: boolean;
+
+    // @DataMember
+    public skipHttpBodyMeta: boolean;
+
+    // @DataMember
+    public aiChatLoggingEnabled: boolean;
+
+    public constructor(init?: Partial<LogSettingsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class LoggingDto {
     // @DataMember
     public isEnabled: boolean;
 
     // @DataMember
     public isEstablished: boolean;
+
+    // @DataMember
+    public settings?: LogSettingsDto;
 
     public constructor(init?: Partial<LoggingDto>) {
       (Object as any).assign(this, init);
@@ -8958,6 +8984,130 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum ProjectHealthSeverity {
+    Warning = 'Warning',
+    Error = 'Error',
+  }
+
+  // @Flags()
+  export enum ApplicationModule {
+    Account = 0,
+    Membership = 1,
+    Database = 2,
+    Files = 4,
+    Code = 8,
+    Email = 16,
+    Push = 32,
+    Payment = 64,
+    Scheduler = 128,
+    Logging = 256,
+    ServerEvents = 512,
+    Ai = 1024,
+    Sms = 2048,
+    Project = 4096,
+    Compliance = 8192,
+    Contacts = 16384,
+    Marketplace = 32768,
+    Diagnostics = 65536,
+  }
+
+  // @DataContract
+  export class ProjectHealthWarningDto {
+    // @DataMember
+    public code: string;
+
+    // @DataMember
+    public severity: ProjectHealthSeverity;
+
+    // @DataMember
+    public module: ApplicationModule;
+
+    // @DataMember
+    public title: string;
+
+    // @DataMember
+    public detail: string;
+
+    // @DataMember
+    public fixPath: string;
+
+    // @DataMember
+    public itemId?: string;
+
+    public constructor(init?: Partial<ProjectHealthWarningDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectHealthStatsDto {
+    // @DataMember
+    public usersTotal?: number;
+
+    // @DataMember
+    public usersNew30d?: number;
+
+    // @DataMember
+    public usersNewPrev30d?: number;
+
+    // @DataMember
+    public emailsSent30d?: number;
+
+    // @DataMember
+    public emailsSentPrev30d?: number;
+
+    // @DataMember
+    public emailsFailed30d?: number;
+
+    // @DataMember
+    public emailsFailedPrev30d?: number;
+
+    // @DataMember
+    public apiCallsThisMonth?: number;
+
+    // @DataMember
+    public apiCallsPrevMonth?: number;
+
+    public constructor(init?: Partial<ProjectHealthStatsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectHealthSkippedCheckDto {
+    // @DataMember
+    public check: string;
+
+    // @DataMember
+    public reason: string;
+
+    public constructor(init?: Partial<ProjectHealthSkippedCheckDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ProjectHealthDto {
+    // @DataMember
+    public checkedAtUtc: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public warnings: ProjectHealthWarningDto[] = [];
+
+    // @DataMember
+    public stats: ProjectHealthStatsDto;
+
+    // @DataMember
+    public skippedChecks: ProjectHealthSkippedCheckDto[] = [];
+
+    public constructor(init?: Partial<ProjectHealthDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   // @DataContract
   export class AiCreditPackCheckoutDto {
     // @DataMember
@@ -9137,28 +9287,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Flags()
-  export enum ApplicationModule {
-    Account = 0,
-    Membership = 1,
-    Database = 2,
-    Files = 4,
-    Code = 8,
-    Email = 16,
-    Push = 32,
-    Payment = 64,
-    Scheduler = 128,
-    Logging = 256,
-    ServerEvents = 512,
-    Ai = 1024,
-    Sms = 2048,
-    Project = 4096,
-    Compliance = 8192,
-    Contacts = 16384,
-    Marketplace = 32768,
-    Diagnostics = 65536,
-  }
-
   export enum LanguageGapKind {
     Template = 'Template',
     Footer = 'Footer',
@@ -9289,6 +9417,7 @@ export module CodeMashHub2 {
     public id: string;
     public email: string;
     public roles: string[] = [];
+    public roleProjects: { [index: string]: string[] } = {};
     public sentOn: string;
     public expiresOn: string;
 
@@ -9764,12 +9893,6 @@ export module CodeMashHub2 {
 
     // @DataMember
     public isEnabled: boolean;
-
-    // @DataMember
-    public order?: number;
-
-    // @DataMember
-    public breakOnError: boolean;
 
     // @DataMember
     public executionIdentityId?: string;
@@ -12056,6 +12179,12 @@ export module CodeMashHub2 {
     public userId: string;
 
     // @DataMember
+    public userDisplayName?: string;
+
+    // @DataMember
+    public userEmail?: string;
+
+    // @DataMember
     public deviceOs: string;
 
     // @DataMember
@@ -12268,6 +12397,9 @@ export module CodeMashHub2 {
   export class LoggingIntegrationListProjection extends IntegrationListProjection {
     // @DataMember
     public provider: LoggingProvider;
+
+    // @DataMember
+    public env?: string;
 
     public constructor(init?: Partial<LoggingIntegrationListProjection>) {
       super(init);
@@ -13728,15 +13860,17 @@ export module CodeMashHub2 {
   }
 
   export enum EmailRecipientField {
-    To = 1,
-    Cc = 2,
-    Bcc = 3,
+    NotSet = 'NotSet',
+    To = 'To',
+    Cc = 'Cc',
+    Bcc = 'Bcc',
   }
 
   export enum RecipientRemovalReason {
-    OptedOut = 1,
-    Compliance = 2,
-    Undeliverable = 3,
+    NotSet = 'NotSet',
+    OptedOut = 'OptedOut',
+    Compliance = 'Compliance',
+    Undeliverable = 'Undeliverable',
   }
 
   // @DataContract
@@ -13806,6 +13940,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public removedRecipients: number;
+
+    // @DataMember
+    public delivered: number;
+
+    // @DataMember
+    public bounced: number;
+
+    // @DataMember
+    public complained: number;
+
+    // @DataMember
+    public rejected: number;
 
     // @DataMember
     public successRate: number;
@@ -14594,8 +14740,6 @@ export module CodeMashHub2 {
   export interface IQueuedTrigger {
     viewId: string;
     name: string;
-    order?: number;
-    breakOnError: boolean;
   }
 
   export interface IHasResponsibleUserId {
@@ -14861,6 +15005,17 @@ export module CodeMashHub2 {
     public items?: ProjectRegionDto[];
 
     public constructor(init?: Partial<GetAccountRegionsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class GetProjectHealthResponse extends ResponseBase {
+    // @DataMember
+    public item?: ProjectHealthDto;
+
+    public constructor(init?: Partial<GetProjectHealthResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -15611,15 +15766,6 @@ export module CodeMashHub2 {
     public tiers?: FlexTierDto[];
 
     public constructor(init?: Partial<GetAllowedFlexTiersResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class RevealManagedFlexConnectionStringResponse extends ResponseBase {
-    public connectionString?: string;
-
-    public constructor(init?: Partial<RevealManagedFlexConnectionStringResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -20088,6 +20234,34 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Gets the project health: problems with fix links, and home screen stats. */
+  // @Route("/{version}/account/projects/{projectId}/health", "GET")
+  // @Api(Description="Gets the project health: problems with fix links, and home screen stats.")
+  // @DataContract
+  export class GetProjectHealth
+    extends CodeMashRequestBase
+    implements IReturn<GetProjectHealthResponse>
+  {
+    /** @description Compute the health now instead of reading the last result (at most every 6 hours old). */
+    // @DataMember
+    // @ApiMember(Description="Compute the health now instead of reading the last result (at most every 6 hours old).")
+    public refresh: boolean;
+
+    public constructor(init?: Partial<GetProjectHealth>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetProjectHealth';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetProjectHealthResponse();
+    }
+  }
+
   /** @description Waits (bounded, server-side) for a project to finish provisioning and become active. */
   // @Route("/{version}/account/projects/{projectId}/wait-active", "GET")
   // @Api(Description="Waits (bounded, server-side) for a project to finish provisioning and become active.")
@@ -21063,6 +21237,7 @@ export module CodeMashHub2 {
     public displayName?: string;
     public password?: string;
     public roles?: string[];
+    public roleProjects?: { [index: string]: string[] };
     public sendInvitation: boolean;
 
     public constructor(init?: Partial<CreateTeamMember>) {
@@ -21329,6 +21504,35 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/team/member/role-projects", "PUT")
+  export class SetTeamMemberRoleProjectsRequest extends RequestBase implements IReturn<IdResponse> {
+    /** @description The team member's id (usr_…), as GET /account/collaborators lists it. */
+    // @ApiMember(Description="The team member's id (usr_…), as GET /account/collaborators lists it.", IsRequired=true)
+    public memberId: string;
+
+    /** @description The account role the member holds: its id (acc_…_nr_…) or its template id (GUID, as GetAccountTeamRoles lists it). */
+    // @ApiMember(Description="The account role the member holds: its id (acc_…_nr_…) or its template id (GUID, as GetAccountTeamRoles lists it).", IsRequired=true)
+    public roleId: string;
+
+    /** @description Project ids (pr_…) of this account. Empty = every project. */
+    // @ApiMember(Description="Project ids (pr_…) of this account. Empty = every project.")
+    public projects?: string[];
+
+    public constructor(init?: Partial<SetTeamMemberRoleProjectsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetTeamMemberRoleProjectsRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
   // @Route("/{version}/account/team/roles", "GET")
   export class GetAccountTeamRoles
     extends RequestBase
@@ -21360,6 +21564,10 @@ export module CodeMashHub2 {
     /** @description Account role ids (GUIDs from get_account_team_roles) the member gets on accepting. Omit for the default member role. */
     // @ApiMember(Description="Account role ids (GUIDs from get_account_team_roles) the member gets on accepting. Omit for the default member role.")
     public roles?: string[];
+
+    /** @description Optional, per role: the projects (pr_… ids) the role applies to, keyed by the role id (GUID from get_account_team_roles, or acc_…_nr_…). Each key must also be in `roles`. A role with no entry (or an empty list) applies to every project. The Account Administrator role can not be limited. */
+    // @ApiMember(Description="Optional, per role: the projects (pr_… ids) the role applies to, keyed by the role id (GUID from get_account_team_roles, or acc_…_nr_…). Each key must also be in `roles`. A role with no entry (or an empty list) applies to every project. The Account Administrator role can not be limited.")
+    public roleProjects?: { [index: string]: string[] };
 
     public constructor(init?: Partial<SendInviteToTeamMember>) {
       super(init);
@@ -25132,28 +25340,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/database/integrations/{Id}/connection-string", "GET")
-  export class RevealManagedFlexConnectionString
-    extends CodeMashRequestBase
-    implements IReturn<RevealManagedFlexConnectionStringResponse>
-  {
-    public id: string;
-
-    public constructor(init?: Partial<RevealManagedFlexConnectionString>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'RevealManagedFlexConnectionString';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new RevealManagedFlexConnectionStringResponse();
-    }
-  }
-
   /** @description Saves database integration */
   // @Route("/{version}/database/integrations", "POST")
   // @Api(Description="Saves database integration")
@@ -25680,12 +25866,12 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<GetKeylessIntegrationSetupResponse>
   {
-    /** @description files, email, code, logs, push or payments (logs: aws or azure; push and payments: google). */
-    // @ApiMember(Description="files, email, code, logs, push or payments (logs: aws or azure; push and payments: google).", IsRequired=true)
+    /** @description files, email, code, logs, push, payments or database (logs: aws or azure; push and payments: google; database: atlas). */
+    // @ApiMember(Description="files, email, code, logs, push, payments or database (logs: aws or azure; push and payments: google; database: atlas).", IsRequired=true)
     public module: string;
 
-    /** @description azure, aws or google. */
-    // @ApiMember(Description="azure, aws or google.", IsRequired=true)
+    /** @description azure, aws, google or atlas (MongoDB Atlas M10+, module database). */
+    // @ApiMember(Description="azure, aws, google or atlas (MongoDB Atlas M10+, module database).", IsRequired=true)
     public cloud: string;
 
     /** @description The integration view id; empty = a new one is made for the save. */
@@ -30384,6 +30570,8 @@ export module CodeMashHub2 {
     extends RequestBase
     implements IReturn<GetAgentOnboardingResponse>
   {
+    public projectId?: string;
+
     public constructor(init?: Partial<GetAgentOnboardingRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -32652,8 +32840,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="How many contacts to return per page (default 50).")
     public pageSize?: number;
 
-    /** @description Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email. */
-    // @ApiMember(Description="Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email.")
+    /** @description Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email; an exact contact id (ct_…) or login id (usr_…) finds that contact. */
+    // @ApiMember(Description="Free text, case-insensitive: matches the email, phone, display / first / last / full name, or any login's user name or email; an exact contact id (ct_…) or login id (usr_…) finds that contact.")
     public search?: string;
 
     /** @description Case-insensitive part of the email (primary email or any login's email). */
@@ -32675,6 +32863,10 @@ export module CodeMashHub2 {
     /** @description Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them. */
     // @ApiMember(Description="Composite project-role ids (pr_{project}_nr_{role}); the contact holds any of them.")
     public roleNames?: string[];
+
+    /** @description Contact tags; the contact carries any of them. */
+    // @ApiMember(Description="Contact tags; the contact carries any of them.")
+    public tags?: string[];
 
     public constructor(init?: Partial<GetAllContacts>) {
       super(init);
