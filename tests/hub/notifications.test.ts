@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.notifications (132 endpoints).
+ * Tests for hub.notifications (134 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.notifications', () => {
-  it('module exposes 132 method(s)', () => {
+  it('module exposes 134 method(s)', () => {
     const mock = createMockFetch();
     const mod = new NotificationsModule({} as never);
     void mod; // silence unused — we only need the type
@@ -49,6 +49,7 @@ describe('hub.notifications', () => {
     expect(typeof ns['getEmailSignature']).toBe('function');
     expect(typeof ns['getEmailSignatures']).toBe('function');
     expect(typeof ns['saveEmailSignature']).toBe('function');
+    expect(typeof ns['updateEmailClickTracking']).toBe('function');
     expect(typeof ns['getEmailSettings']).toBe('function');
     expect(typeof ns['confirmEmailIntegrationHumanDelivery']).toBe('function');
     expect(typeof ns['deleteEmailIntegration']).toBe('function');
@@ -67,6 +68,7 @@ describe('hub.notifications', () => {
     expect(typeof ns['getEmailFooter']).toBe('function');
     expect(typeof ns['getEmailFooters']).toBe('function');
     expect(typeof ns['saveEmailFooter']).toBe('function');
+    expect(typeof ns['recordEmailClicks']).toBe('function');
     expect(typeof ns['disableSms']).toBe('function');
     expect(typeof ns['getSmsDisableDependencies']).toBe('function');
     expect(typeof ns['enableSms']).toBe('function');
@@ -623,6 +625,29 @@ describe('hub.notifications', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
+  it('updateEmailClickTracking: PATCH /{version}/notifications/email/settings/click-tracking', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/notifications/email/settings/click-tracking',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['notifications']!['updateEmailClickTracking']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('PATCH');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
   it('getEmailSettings: GET /{version}/notifications/email/settings', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -1029,6 +1054,29 @@ describe('hub.notifications', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['notifications']!['saveEmailFooter']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('recordEmailClicks: POST /{version}/notifications/email/clicks', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/notifications/email/clicks',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['notifications']!['recordEmailClicks']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');

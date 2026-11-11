@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: notifications
- * Endpoints: 132
+ * Endpoints: 134
  */
 export class NotificationsModule {
   constructor(private readonly transport: Transport) {}
@@ -392,6 +392,25 @@ export class NotificationsModule {
   };
 
   /**
+   * PATCH /{version}/notifications/email/settings/click-tracking
+   * Request DTO: UpdateEmailClickTracking
+   */
+  updateEmailClickTracking = (
+    request: Partial<CodeMashHub2.UpdateEmailClickTracking> = {} as Partial<CodeMashHub2.UpdateEmailClickTracking>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/settings/click-tracking',
+      method: 'PATCH',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/notifications/email/settings
    * Request DTO: GetEmailSettings
    */
@@ -725,6 +744,25 @@ export class NotificationsModule {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/notifications/email/footers',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/notifications/email/clicks
+   * Request DTO: RecordEmailClicksRequest
+   */
+  recordEmailClicks = (
+    request: Partial<CodeMashHub2.RecordEmailClicksRequest> = {} as Partial<CodeMashHub2.RecordEmailClicksRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.RecordEmailClicksResponse> => {
+    return this.transport.send<CodeMashHub2.RecordEmailClicksResponse>({
+      target: 'hub',
+      path: '/{version}/notifications/email/clicks',
       method: 'POST',
       request,
       pathParams: [],

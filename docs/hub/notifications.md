@@ -30,6 +30,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailSignature`](#getemailsignature)                                       | `GET`    | `/{version}/notifications/email/signatures/{id}`                                   | `project` |
 | [`getEmailSignatures`](#getemailsignatures)                                     | `GET`    | `/{version}/notifications/email/signatures`                                        | `project` |
 | [`saveEmailSignature`](#saveemailsignature)                                     | `POST`   | `/{version}/notifications/email/signatures`                                        | `project` |
+| [`updateEmailClickTracking`](#updateemailclicktracking)                         | `PATCH`  | `/{version}/notifications/email/settings/click-tracking`                           | `project` |
 | [`getEmailSettings`](#getemailsettings)                                         | `GET`    | `/{version}/notifications/email/settings`                                          | `project` |
 | [`confirmEmailIntegrationHumanDelivery`](#confirmemailintegrationhumandelivery) | `POST`   | `/{version}/notifications/email/integrations/confirm-human-delivery`               | `project` |
 | [`deleteEmailIntegration`](#deleteemailintegration)                             | `DELETE` | `/{version}/notifications/email/integrations/{Id}`                                 | `project` |
@@ -48,6 +49,7 @@ Accessed as `norbix.hub.notifications` on the [`Norbix`](../../README.md#authent
 | [`getEmailFooter`](#getemailfooter)                                             | `GET`    | `/{version}/notifications/email/footers/{id}`                                      | `project` |
 | [`getEmailFooters`](#getemailfooters)                                           | `GET`    | `/{version}/notifications/email/footers`                                           | `project` |
 | [`saveEmailFooter`](#saveemailfooter)                                           | `POST`   | `/{version}/notifications/email/footers`                                           | `project` |
+| [`recordEmailClicks`](#recordemailclicks)                                       | `POST`   | `/{version}/notifications/email/clicks`                                            | `project` |
 | [`disableSms`](#disablesms)                                                     | `PUT`    | `/{version}/notifications/sms/disable`                                             | `project` |
 | [`getSmsDisableDependencies`](#getsmsdisabledependencies)                       | `GET`    | `/{version}/notifications/sms/disable-dependencies`                                | `project` |
 | [`enableSms`](#enablesms)                                                       | `PUT`    | `/{version}/notifications/sms/enable`                                              | `project` |
@@ -589,6 +591,25 @@ const result = await norbix.hub.notifications.saveEmailSignature({
 
 [↑ Top](#endpoints)
 
+### updateEmailClickTracking
+
+`PATCH` `/{version}/notifications/email/settings/click-tracking`
+
+Switch the project's email click ids on or off (off by default; one switch per project, not per environment). When on, every web link in the project's **marketing** emails gets `?nblid=<click id>`; transactional mail never does. Clicks come back only from sites you own: your pages, server logs or analytics hand the `nblid` back with [`recordEmailClicks`](#recordemailclicks). The current value is `emailClickTracking` on the project (`ProjectDto`).
+
+**Request DTO**: `CodeMashHub2.UpdateEmailClickTracking`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+await norbix.hub.notifications.updateEmailClickTracking({ enabled: true });
+```
+
+[↑ Top](#endpoints)
+
 ### getEmailSettings
 
 `GET` `/{version}/notifications/email/settings`
@@ -985,6 +1006,36 @@ const result = await norbix.hub.notifications.saveEmailFooter({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### recordEmailClicks
+
+`POST` `/{version}/notifications/email/clicks`
+
+Record email clicks handed back with their click ids (`nblid`), 1 to 500 per call (0 or more than 500 is `CM-ERRORS-EMAILS-030`). Each click lands on the email's notification row as `Clicked`. The same click (`nblid` + `url` + `clickedAt`) sent again answers `duplicate`, so an import can be re-run. A click that cannot be recorded is not an error: it answers `status: 'rejected'` with a `reason` (`not-valid`, `not-found`, `in-future`). A likely mail-scanner click is recorded but flagged (`flag: 'suspected-scanner'`, `flagReason`: `user-agent`, `too-soon` or `burst`). Each recorded click names its `campaignId`, `notificationId`, `linkIndex` and recipient (`to`), so your backend can update its own lead record.
+
+**Request DTO**: `CodeMashHub2.RecordEmailClicksRequest`
+**Response**: `CodeMashHub2.RecordEmailClicksResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.notifications.recordEmailClicks({
+  clicks: [
+    {
+      nblid: 'ntf_6kbXOl8AX1HdVMyFwURznj.3.v1.Ab12Cd34Ef56Gh78', // from the opened link's query
+      url: 'https://shop.example.com/sale', // optional
+      clickedAt: '2026-11-11T10:00:05Z', // optional, UTC; default now
+      userAgent: 'Mozilla/5.0 …', // optional; a known scanner is flagged
+    },
+  ],
+});
+// result.recorded, result.duplicates, result.flagged, result.rejected
+// result.clicks[i]: { index, status, reason?, flag?, flagReason?, campaignId?, notificationId?, linkIndex?, to? }
 ```
 
 [↑ Top](#endpoints)

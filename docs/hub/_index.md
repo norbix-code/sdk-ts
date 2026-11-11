@@ -4,7 +4,7 @@
 
 Project & account configuration: schemas, integrations, team management, billing, observability.
 
-**641 endpoints across 27 modules.** Click a module
+**643 endpoints across 27 modules.** Click a module
 name for the full method reference and TypeScript examples.
 
 | Module                                | Endpoints | Description                                                                                                                              |
@@ -25,7 +25,7 @@ name for the full method reference and TypeScript examples.
 | [`licensing`](./licensing.md)         |         3 |                                                                                                                                          |
 | [`logs`](./logs.md)                   |        15 | Logging integrations and module on/off switches.                                                                                         |
 | [`membership`](./membership.md)       |        50 | Roles, policies, and user preferences (Hub side). For user CRUD and registration see `api.membership`.                                   |
-| [`notifications`](./notifications.md) |       132 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
+| [`notifications`](./notifications.md) |       134 | Email and push templates, integrations, campaigns, devices, signatures, footers, and one-click unsubscribe.                              |
 | [`oauth`](./oauth.md)                 |         6 |                                                                                                                                          |
 | [`payments`](./payments.md)           |        22 | Payment provider integrations and triggers (Stripe, etc.).                                                                               |
 | [`projects`](./projects.md)           |         5 |                                                                                                                                          |
