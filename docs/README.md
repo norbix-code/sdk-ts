@@ -9,7 +9,7 @@ integration guides live under `integrations/`.
 | Surface                  |                    Modules | Description                                                                                      |
 | ------------------------ | -------------------------: | ------------------------------------------------------------------------------------------------ |
 | [`API`](./api/_index.md) | 13 modules · 194 endpoints | Project-scoped data operations: database collections, users, AI chat, auth, API keys.            |
-| [`Hub`](./hub/_index.md) | 27 modules · 637 endpoints | Project & account configuration: schemas, integrations, team management, billing, observability. |
+| [`Hub`](./hub/_index.md) | 27 modules · 641 endpoints | Project & account configuration: schemas, integrations, team management, billing, observability. |
 
 ## Integration guides
 

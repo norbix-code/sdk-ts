@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (130 endpoints).
+ * Tests for hub.account (136 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 132 method(s)', () => {
+  it('module exposes 136 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -29,12 +29,16 @@ describe('hub.account', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
+    expect(typeof ns['getFlexClusters']).toBe('function');
+    expect(typeof ns['upgradeFlexCluster']).toBe('function');
     expect(typeof ns['getAccountProfile']).toBe('function');
     expect(typeof ns['updateAccountProfile']).toBe('function');
     expect(typeof ns['resendAccountVerificationToken']).toBe('function');
     expect(typeof ns['getAccountStatus']).toBe('function');
+    expect(typeof ns['changeManagedServiceBundle']).toBe('function');
     expect(typeof ns['createStripeCheckoutSession']).toBe('function');
     expect(typeof ns['getStripeBillingPortalUrl']).toBe('function');
+    expect(typeof ns['getManagedServiceBundles']).toBe('function');
     expect(typeof ns['createTeamMemberFromInvitation']).toBe('function');
     expect(typeof ns['getAccountUsageBilling']).toBe('function');
     expect(typeof ns['verifyAccount']).toBe('function');
@@ -163,6 +167,54 @@ describe('hub.account', () => {
     expect(typeof ns['mcp']).toBe('function');
   });
 
+  it('getFlexClusters: GET /{version}/account/flex-clusters', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/flex-clusters',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getFlexClusters']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('upgradeFlexCluster: POST /{version}/account/flex-clusters/{flexClusterId}/upgrade', async () => {
+    const stub = stubRequestForPath('/{version}/account/flex-clusters/{flexClusterId}/upgrade');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/flex-clusters/{flexClusterId}/upgrade',
+      version: 'v2',
+      stub,
+    });
+    const request = { ...stub, tierCode: 'M10' };
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['upgradeFlexCluster']!;
+    await fn(request);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+    expect(JSON.parse(mock.lastCall!.body!)).toMatchObject({ tierCode: 'M10' });
+  });
+
   it('getAccountProfile: GET /{version}/account/profile', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -255,6 +307,34 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
+  it('changeManagedServiceBundle: POST /{version}/account/stripe/change-bundle', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/stripe/change-bundle',
+      version: 'v2',
+      stub,
+    });
+    const request = { bundle: 'Growth', billingPeriod: 'Annual' };
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['changeManagedServiceBundle']!;
+    await fn(request);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+    expect(JSON.parse(mock.lastCall!.body!)).toMatchObject({
+      bundle: 'Growth',
+      billingPeriod: 'Annual',
+    });
+  });
+
   it('createStripeCheckoutSession: POST /{version}/account/stripe/create-checkout-session', async () => {
     const stub = {};
     const expected = expectedUrl({
@@ -296,6 +376,29 @@ describe('hub.account', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getManagedServiceBundles: GET /{version}/account/stripe/bundles', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/stripe/bundles',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getManagedServiceBundles']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

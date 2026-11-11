@@ -1452,6 +1452,11 @@ const result = await norbix.hub.database.getAllowedFlexTiers({
 
 Upsert an item (create or update).
 
+For a Norbix-managed Atlas database (`MongoDbAtlasFlexManagedDatabaseIntegrationRequest`) you can choose the
+cluster: send `flexClusterId` to put the database on a cluster the account already has (see
+[`hub.account.getFlexClusters`](./account.md#getflexclusters)), or leave it out to get a new cluster and
+name it with `clusterDisplayName`. The saved integration returns its cluster as `flexClusterId`.
+
 **Request DTO**: `CodeMashHub2.SaveDatabaseIntegration`
 **Response**: `CodeMashHub2.IdResponse`
 

@@ -6,10 +6,48 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 132
+ * Endpoints: 136
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
+
+  /**
+   * GET /{version}/account/flex-clusters
+   * Request DTO: GetFlexClusters
+   */
+  getFlexClusters = (
+    request: Partial<CodeMashHub2.GetFlexClusters> = {} as Partial<CodeMashHub2.GetFlexClusters>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetFlexClustersResponse> => {
+    return this.transport.send<CodeMashHub2.GetFlexClustersResponse>({
+      target: 'hub',
+      path: '/{version}/account/flex-clusters',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/flex-clusters/{flexClusterId}/upgrade
+   * Request DTO: UpgradeFlexCluster
+   */
+  upgradeFlexCluster = (
+    request: Partial<CodeMashHub2.UpgradeFlexCluster> = {} as Partial<CodeMashHub2.UpgradeFlexCluster>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/flex-clusters/{flexClusterId}/upgrade',
+      method: 'POST',
+      request,
+      pathParams: ['flexClusterId'],
+      scope: 'project',
+      ...options,
+    });
+  };
 
   /**
    * GET /{version}/account/profile
@@ -88,6 +126,25 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/stripe/change-bundle
+   * Request DTO: ChangeManagedServiceBundle
+   */
+  changeManagedServiceBundle = (
+    request: Partial<CodeMashHub2.ChangeManagedServiceBundle> = {} as Partial<CodeMashHub2.ChangeManagedServiceBundle>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/stripe/change-bundle',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/stripe/create-checkout-session
    * Request DTO: CreateStripeCheckoutSession
    */
@@ -118,6 +175,25 @@ export class AccountModule {
       target: 'hub',
       path: '/{version}/account/stripe/get-portal-url',
       method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/stripe/bundles
+   * Request DTO: GetManagedServiceBundles
+   */
+  getManagedServiceBundles = (
+    request: Partial<CodeMashHub2.GetManagedServiceBundles> = {} as Partial<CodeMashHub2.GetManagedServiceBundles>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetManagedServiceBundlesResponse> => {
+    return this.transport.send<CodeMashHub2.GetManagedServiceBundlesResponse>({
+      target: 'hub',
+      path: '/{version}/account/stripe/bundles',
+      method: 'GET',
       request,
       pathParams: [],
       scope: 'project',

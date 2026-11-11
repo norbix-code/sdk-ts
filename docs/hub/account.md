@@ -10,12 +10,16 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 
 | Method                                                                        | Verb     | Path                                                                         | Scope     |
 | ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- | --------- |
+| [`getFlexClusters`](#getflexclusters)                                         | `GET`    | `/{version}/account/flex-clusters`                                           | `project` |
+| [`upgradeFlexCluster`](#upgradeflexcluster)                                   | `POST`   | `/{version}/account/flex-clusters/{flexClusterId}/upgrade`                   | `project` |
 | [`getAccountProfile`](#getaccountprofile)                                     | `GET`    | `/{version}/account/profile`                                                 | `project` |
 | [`updateAccountProfile`](#updateaccountprofile)                               | `PUT`    | `/{version}/account/profile`                                                 | `project` |
 | [`resendAccountVerificationToken`](#resendaccountverificationtoken)           | `POST`   | `/{version}/account/verify/resend`                                           | `project` |
 | [`getAccountStatus`](#getaccountstatus)                                       | `GET`    | `/{version}/account/status`                                                  | `project` |
+| [`changeManagedServiceBundle`](#changemanagedservicebundle)                   | `POST`   | `/{version}/account/stripe/change-bundle`                                    | `project` |
 | [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project` |
 | [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project` |
+| [`getManagedServiceBundles`](#getmanagedservicebundles)                       | `GET`    | `/{version}/account/stripe/bundles`                                          | `project` |
 | [`createTeamMemberFromInvitation`](#createteammemberfrominvitation)           | `POST`   | `/{version}/account/team/member`                                             | `project` |
 | [`getAccountUsageBilling`](#getaccountusagebilling)                           | `GET`    | `/{version}/account/usage-billing`                                           | `project` |
 | [`verifyAccount`](#verifyaccount)                                             | `POST`   | `/{version}/account/verify`                                                  | `project` |
@@ -145,6 +149,56 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 
 ## Reference
 
+### getFlexClusters
+
+`GET` `/{version}/account/flex-clusters`
+
+List the account's Norbix-managed Atlas clusters. Each cluster comes with its databases, its usage and the
+limits it is close to (`nearLimits`). `canCreateNew` says if the account can add one more cluster; when it
+cannot, `cannotCreateReason` is `TrialOneCluster` or `ClusterLimitReached`.
+
+**Request DTO**: `CodeMashHub2.GetFlexClusters`
+**Response**: `CodeMashHub2.GetFlexClustersResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getFlexClusters();
+// → typed as CodeMashHub2.GetFlexClustersResponse
+
+for (const cluster of result.clusters ?? []) {
+  console.log(cluster.displayName, cluster.tierCode, cluster.status, cluster.usage.databaseCount);
+}
+```
+
+[↑ Top](#endpoints)
+
+### upgradeFlexCluster
+
+`POST` `/{version}/account/flex-clusters/{flexClusterId}/upgrade`
+
+Queue the upgrade of one cluster to the `M10` tier. `flexClusterId` goes in the path; take it from
+[`getFlexClusters`](#getflexclusters). `M10` is the only tier you can upgrade to.
+
+**Request DTO**: `CodeMashHub2.UpgradeFlexCluster`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.upgradeFlexCluster({
+  flexClusterId: 'flexClusterId-here',
+  tierCode: 'M10',
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### getAccountProfile
 
 `GET` `/{version}/account/profile`
@@ -231,22 +285,56 @@ const result = await norbix.hub.account.getAccountStatus({
 
 [↑ Top](#endpoints)
 
+### changeManagedServiceBundle
+
+`POST` `/{version}/account/stripe/change-bundle`
+
+Move the account to another Managed Service bundle or billing period. Send both `bundle` (`Starter`,
+`Growth` or `Scale`) and `billingPeriod` (`Monthly` or `Annual`). The call is refused with
+`CM-ERRORS-ACCOUNT-023` when the account has more enabled projects than the new bundle allows.
+
+**Request DTO**: `CodeMashHub2.ChangeManagedServiceBundle`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+import { CodeMashHub2 } from '@norbix.ai/ts/types/hub';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.changeManagedServiceBundle({
+  bundle: CodeMashHub2.ManagedServiceBundle.Growth,
+  billingPeriod: CodeMashHub2.SubscriptionBillingPeriod.Annual,
+});
+// → typed as CodeMashHub2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
 ### createStripeCheckoutSession
 
 `POST` `/{version}/account/stripe/create-checkout-session`
 
 Create a new item.
 
+A Managed Service checkout needs both `bundle` (`Starter`, `Growth` or `Scale`) and `billingPeriod`
+(`Monthly` or `Annual`). The request no longer has `projectCap`: the bundle sets the project limit.
+[`getManagedServiceBundles`](#getmanagedservicebundles) lists the bundles with their limits and prices.
+
 **Request DTO**: `CodeMashHub2.CreateStripeCheckoutSession`
 **Response**: `CodeMashHub2.CreateStripeCheckoutSessionResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
+import { CodeMashHub2 } from '@norbix.ai/ts/types/hub';
 
 const norbix = new Norbix();
 
 const result = await norbix.hub.account.createStripeCheckoutSession({
-  // See CodeMash type for the full request shape.
+  subscriptionType: CodeMashHub2.SubscriptionType.ManagedService,
+  bundle: CodeMashHub2.ManagedServiceBundle.Starter,
+  billingPeriod: CodeMashHub2.SubscriptionBillingPeriod.Monthly,
+  // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.CreateStripeCheckoutSessionResponse
 ```
@@ -271,6 +359,32 @@ const result = await norbix.hub.account.getStripeBillingPortalUrl({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetStripeBillingPortalUrlResponse
+```
+
+[↑ Top](#endpoints)
+
+### getManagedServiceBundles
+
+`GET` `/{version}/account/stripe/bundles`
+
+List the three Managed Service bundles (`Starter`, `Growth`, `Scale`). Each one has its project limit
+(`projectCap`) and two prices, `monthly` and `annual`. A price `amount` is in minor units (cents) and
+`currency` is lower case, for example `usd`.
+
+**Request DTO**: `CodeMashHub2.GetManagedServiceBundles`
+**Response**: `CodeMashHub2.GetManagedServiceBundlesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getManagedServiceBundles();
+// → typed as CodeMashHub2.GetManagedServiceBundlesResponse
+
+for (const item of result.bundles ?? []) {
+  console.log(item.bundle, item.projectCap, item.monthly.amount, item.monthly.currency);
+}
 ```
 
 [↑ Top](#endpoints)
