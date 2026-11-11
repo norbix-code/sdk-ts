@@ -310,7 +310,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -519,7 +519,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -538,7 +538,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -576,7 +576,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -595,7 +595,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -671,7 +671,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -690,7 +690,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -709,7 +709,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -728,7 +728,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -747,7 +747,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -766,7 +766,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -785,7 +785,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -804,7 +804,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -823,7 +823,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -842,7 +842,7 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

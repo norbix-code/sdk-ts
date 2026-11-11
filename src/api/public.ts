@@ -45,7 +45,7 @@ export class PublicModule {
       method: 'GET',
       request,
       pathParams: ['ProjectId'],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -64,7 +64,7 @@ export class PublicModule {
       method: 'GET',
       request,
       pathParams: ['ProjectId', 'Kind'],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

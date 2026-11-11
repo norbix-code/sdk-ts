@@ -25,7 +25,7 @@ export class OauthModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -44,7 +44,7 @@ export class OauthModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -101,7 +101,7 @@ export class OauthModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -120,7 +120,7 @@ export class OauthModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
