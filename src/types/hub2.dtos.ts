@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 05:58:20
+Date: 2026-11-11 09:04:41
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -5037,6 +5037,9 @@ export module CodeMashHub2 {
     // @DataMember
     public probe?: MarketplaceHttpRequestSpecDto;
 
+    // @DataMember
+    public authKinds?: string[];
+
     public constructor(init?: Partial<MarketplaceValidationStepDto>) {
       (Object as any).assign(this, init);
     }
@@ -5135,6 +5138,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public oAuthRedirectUrl?: string;
+
+    // @DataMember
+    public oAuthSignIn: boolean;
+
+    // @DataMember
+    public oAuthInstallAppReady?: boolean;
 
     // @DataMember
     public kind: MarketplaceListingKind;
@@ -16571,17 +16580,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class InvokeMarketplaceFunctionResponse extends ResponseBase {
-    public isSuccess: boolean;
-    public output?: Object;
-    public vendorRequestId?: string;
-
-    public constructor(init?: Partial<InvokeMarketplaceFunctionResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetCodeIntegrationResponse extends ResponseBase {
     public item?: CodeIntegrationDto;
 
@@ -16655,6 +16653,17 @@ export module CodeMashHub2 {
     public logs?: string;
 
     public constructor(init?: Partial<InvokeCodeFunctionResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class InvokeMarketplaceFunctionResponse extends ResponseBase {
+    public isSuccess: boolean;
+    public output?: Object;
+    public vendorRequestId?: string;
+
+    public constructor(init?: Partial<InvokeMarketplaceFunctionResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
