@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 14:09:40
+Date: 2026-11-11 14:56:37
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6968,6 +6968,33 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class EmailClickDto {
+    /** @description The nblid value from the clicked link's query string. */
+    // @DataMember
+    // @ApiMember(Description="The nblid value from the clicked link's query string.", IsRequired=true)
+    public nblid: string;
+
+    /** @description Optional. The page that was opened (kept on the click, at most 2048 characters). */
+    // @DataMember
+    // @ApiMember(Description="Optional. The page that was opened (kept on the click, at most 2048 characters).")
+    public url?: string;
+
+    /** @description Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once. */
+    // @DataMember
+    // @ApiMember(Description="Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once.")
+    public clickedAt?: string;
+
+    /** @description Optional. The browser's user agent. A known mail scanner or bot is flagged suspected-scanner. */
+    // @DataMember
+    // @ApiMember(Description="Optional. The browser's user agent. A known mail scanner or bot is flagged suspected-scanner.")
+    public userAgent?: string;
+
+    public constructor(init?: Partial<EmailClickDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class SaveSmsTemplate extends CodeMashRequestBase {
     /** @description Display name for the SMS template. */
     // @ApiMember(Description="Display name for the SMS template.", IsRequired=true)
@@ -8978,6 +9005,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public allowedOrigins?: string[];
+
+    // @DataMember
+    public emailClickTracking: boolean;
 
     // @DataMember
     public environmentAdminUrls?: ProjectEnvironmentAdminUrlDto[];
@@ -11283,6 +11313,40 @@ export module CodeMashHub2 {
     public blockReasons: string[] = [];
 
     public constructor(init?: Partial<EmailLinkPreferencesDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class EmailClickResultDto {
+    // @DataMember
+    public index: number;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public flag?: string;
+
+    // @DataMember
+    public flagReason?: string;
+
+    // @DataMember
+    public campaignId?: string;
+
+    // @DataMember
+    public notificationId?: string;
+
+    // @DataMember
+    public linkIndex?: number;
+
+    // @DataMember
+    public to?: string[];
+
+    public constructor(init?: Partial<EmailClickResultDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -13835,6 +13899,8 @@ export module CodeMashHub2 {
     public sourceId?: string;
     public errors?: ErrorDto[];
     public tags?: string[];
+    public flag?: string;
+    public flagReason?: string;
 
     public constructor(init?: Partial<NotificationStatusChangeEntryDto>) {
       (Object as any).assign(this, init);
@@ -16233,6 +16299,29 @@ export module CodeMashHub2 {
     public item?: EmailLinkPreferencesDto;
 
     public constructor(init?: Partial<GetEmailPreferencesByLinkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class RecordEmailClicksResponse extends ResponseBase {
+    // @DataMember
+    public recorded: number;
+
+    // @DataMember
+    public duplicates: number;
+
+    // @DataMember
+    public flagged: number;
+
+    // @DataMember
+    public rejected: number;
+
+    // @DataMember
+    public clicks?: EmailClickResultDto[];
+
+    public constructor(init?: Partial<RecordEmailClicksResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -26784,6 +26873,32 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Switches email click ids on or off. When on, every web link in the project's marketing emails gets ?nblid=<click id>. Clicks come back only from sites you own: your pages, server logs or analytics hand the nblid back with POST /notifications/email/clicks. */
+  // @Route("/{version}/notifications/email/settings/click-tracking", "PATCH")
+  // @Api(Description="Switches email click ids on or off. When on, every web link in the project's marketing emails gets ?nblid=<click id>. Clicks come back only from sites you own: your pages, server logs or analytics hand the nblid back with POST /notifications/email/clicks.")
+  export class UpdateEmailClickTracking
+    extends CodeMashRequestBase
+    implements IReturn<EmptyResponse>
+  {
+    /** @description true: links of marketing emails get ?nblid=<click id>. false: links are sent as written. */
+    // @ApiMember(Description="true: links of marketing emails get ?nblid=<click id>. false: links are sent as written.", IsRequired=true)
+    public enabled: boolean;
+
+    public constructor(init?: Partial<UpdateEmailClickTracking>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpdateEmailClickTracking';
+    }
+    public getMethod() {
+      return 'PATCH';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   /** @description Get email settings */
   // @Route("/{version}/notifications/email/settings", "GET")
   // @Api(Description="Get email settings")
@@ -27299,6 +27414,34 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetEmailPreferencesByLinkResponse();
+    }
+  }
+
+  /** @description Records email clicks handed back with their click ids (nblid). */
+  // @Route("/{version}/notifications/email/clicks", "POST")
+  // @Api(Description="Records email clicks handed back with their click ids (nblid).")
+  // @DataContract
+  export class RecordEmailClicksRequest
+    extends CodeMashRequestBase
+    implements IReturn<RecordEmailClicksResponse>
+  {
+    /** @description 1 to 500 clicks. */
+    // @DataMember
+    // @ApiMember(Description="1 to 500 clicks.", IsRequired=true)
+    public clicks: EmailClickDto[] = [];
+
+    public constructor(init?: Partial<RecordEmailClicksRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RecordEmailClicksRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new RecordEmailClicksResponse();
     }
   }
 

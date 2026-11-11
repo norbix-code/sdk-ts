@@ -1835,6 +1835,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "RecordEmailClicksRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RegisterDevice": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2372,6 +2376,10 @@
     "returnsBytes": false
   },
   "UpdateDatabaseTaxonomyTermRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpdateEmailClickTracking": {
     "requiresAuth": true,
     "returnsBytes": false
   },
