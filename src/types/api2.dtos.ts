@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 09:04:40
+Date: 2026-11-11 14:09:39
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -5769,6 +5769,11 @@ export module CodeMashApi2 {
     // @DataMember
     // @ApiMember(Description="Optional. How e-mails greet the person (\"Hi {salutation},\"), e.g. \"Rūta\". Stored as the display name. When empty the full name is used. The user may change it when finishing.")
     public salutation?: string;
+
+    /** @description Optional. Roles the invited user gets, by name ("Editor") or role id. Empty = the project's default registration role. The same rules as creating a user: an administrator may give any role, anyone else only the allowed registration roles. */
+    // @DataMember
+    // @ApiMember(Description="Optional. Roles the invited user gets, by name (\"Editor\") or role id. Empty = the project's default registration role. The same rules as creating a user: an administrator may give any role, anyone else only the allowed registration roles.")
+    public roles?: string[];
 
     /** @description Database integration id. Optional — defaults to the request environment's default integration. */
     // @DataMember

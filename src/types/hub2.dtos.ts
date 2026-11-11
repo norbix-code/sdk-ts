@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 09:04:41
+Date: 2026-11-11 14:09:40
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -23580,6 +23580,22 @@ export module CodeMashHub2 {
     /** @description "Allow anyone to sign up": grants (true) / revokes (false) membership:register on the project's Guest role. Omit = keep. */
     // @ApiMember(Description="\"Allow anyone to sign up\": grants (true) / revokes (false) membership:register on the project's Guest role. Omit = keep.")
     public allowAnyoneToSignUp?: boolean;
+
+    /** @description Setting = 'AllowPasswordReset': true = a reset request sends the e-mail, false = it sends nothing (the answer stays the same). */
+    // @ApiMember(Description="Setting = 'AllowPasswordReset': true = a reset request sends the e-mail, false = it sends nothing (the answer stays the same).")
+    public allowResetPassword?: boolean;
+
+    /** @description Setting = 'PasswordResetTemplate': the project's e-mail template id (tmpl_…); empty = the built-in "Password reset" template. */
+    // @ApiMember(Description="Setting = 'PasswordResetTemplate': the project's e-mail template id (tmpl_…); empty = the built-in \"Password reset\" template.")
+    public resetPasswordEmailTemplate?: string;
+
+    /** @description Setting = 'PasswordResetExpiration': how many minutes the reset link works (5–1440); empty = 30. */
+    // @ApiMember(Description="Setting = 'PasswordResetExpiration': how many minutes the reset link works (5–1440); empty = 30.")
+    public resetPasswordTokenExpiration?: number;
+
+    /** @description Setting = 'PasswordResetCallback': your own "choose a new password" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page. */
+    // @ApiMember(Description="Setting = 'PasswordResetCallback': your own \"choose a new password\" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page.")
+    public resetPasswordCallback?: string;
 
     public minLength: number;
     public maxLength?: number;
