@@ -27,7 +27,7 @@ export class WellKnownModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -48,7 +48,7 @@ export class WellKnownModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

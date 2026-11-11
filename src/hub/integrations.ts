@@ -25,7 +25,7 @@ export class IntegrationsModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

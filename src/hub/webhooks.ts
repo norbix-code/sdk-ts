@@ -101,7 +101,7 @@ export class WebhooksModule {
       method: 'POST',
       request,
       pathParams: ['source', 'integrationInstanceId'],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

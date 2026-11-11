@@ -25,7 +25,7 @@ export class AuthModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -44,7 +44,7 @@ export class AuthModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };

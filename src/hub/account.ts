@@ -1360,7 +1360,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1493,7 +1493,7 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1721,7 +1721,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1740,7 +1740,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1759,7 +1759,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1778,7 +1778,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1797,7 +1797,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1816,7 +1816,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
@@ -1835,7 +1835,7 @@ export class AccountModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
+      scope: 'optional',
       ...options,
     });
   };
