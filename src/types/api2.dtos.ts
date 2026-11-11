@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-10 14:34:40
+Date: 2026-11-11 09:04:40
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -4131,6 +4131,17 @@ export module CodeMashApi2 {
     public order?: PaymentOrderDto;
 
     public constructor(init?: Partial<StartPaymentCheckoutResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class InvokeMarketplaceFunctionResponse extends ResponseBase {
+    public isSuccess: boolean;
+    public output?: Object;
+    public vendorRequestId?: string;
+
+    public constructor(init?: Partial<InvokeMarketplaceFunctionResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -8284,6 +8295,35 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new StartPaymentCheckoutResponse();
+    }
+  }
+
+  // @Route("/{version}/code/marketplace/functions/{FunctionViewId}/invoke", "POST")
+  // @DataContract
+  export class InvokeMarketplaceFunction
+    extends CodeMashRequestBase
+    implements IReturn<InvokeMarketplaceFunctionResponse>
+  {
+    /** @description Function view id (func_…), from get_marketplace_functions. */
+    // @DataMember
+    // @ApiMember(Description="Function view id (func_…), from get_marketplace_functions.", IsRequired=true)
+    public functionViewId: string;
+
+    // @DataMember
+    public payload: { [index: string]: Object } = {};
+
+    public constructor(init?: Partial<InvokeMarketplaceFunction>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'InvokeMarketplaceFunction';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeMarketplaceFunctionResponse();
     }
   }
 

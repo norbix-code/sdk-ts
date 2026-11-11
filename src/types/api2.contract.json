@@ -447,6 +447,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "InvokeMarketplaceFunction": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "LinkIdentityRequest": {
     "requiresAuth": true,
     "returnsBytes": false
