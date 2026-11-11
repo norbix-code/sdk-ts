@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-10 14:34:42
+Date: 2026-11-11 05:58:20
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -497,6 +497,8 @@ export module CodeMashHub2 {
   export class MongoDbAtlasFlexManagedDatabaseIntegrationRequest extends DatabaseIntegrationRequest {
     public provider: DatabaseProvider;
     public norbixRegionCode: string;
+    public flexClusterId?: string;
+    public clusterDisplayName?: string;
 
     public constructor(init?: Partial<MongoDbAtlasFlexManagedDatabaseIntegrationRequest>) {
       super(init);
@@ -4067,6 +4069,7 @@ export module CodeMashHub2 {
     public status: IntegrationStatus;
     public atlasProjectId?: string;
     public atlasClusterName?: string;
+    public flexClusterId?: string;
     public failureReason?: string;
 
     public constructor(init?: Partial<MongoDbAtlasFlexManagedIntegrationDto>) {
@@ -6342,6 +6345,17 @@ export module CodeMashHub2 {
     env?: string;
   }
 
+  export enum ManagedServiceBundle {
+    Starter = 'Starter',
+    Growth = 'Growth',
+    Scale = 'Scale',
+  }
+
+  export enum SubscriptionBillingPeriod {
+    Monthly = 'Monthly',
+    Annual = 'Annual',
+  }
+
   export enum SubscriptionType {
     ManagedService = 'ManagedService',
     License = 'License',
@@ -7668,6 +7682,84 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class FlexClusterDatabaseDto {
+    // @DataMember
+    public projectId: string;
+
+    // @DataMember
+    public projectName: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public integrationId: string;
+
+    // @DataMember
+    public integrationName: string;
+
+    // @DataMember
+    public databaseName?: string;
+
+    public constructor(init?: Partial<FlexClusterDatabaseDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class FlexClusterUsageDto {
+    // @DataMember
+    public databaseCount: number;
+
+    // @DataMember
+    public storageBytes?: number;
+
+    // @DataMember
+    public connections?: number;
+
+    // @DataMember
+    public operationsPerSecond?: number;
+
+    public constructor(init?: Partial<FlexClusterUsageDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class FlexClusterDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public displayName: string;
+
+    // @DataMember
+    public atlasClusterName: string;
+
+    // @DataMember
+    public norbixRegionCode: string;
+
+    // @DataMember
+    public tierCode: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public databases: FlexClusterDatabaseDto[] = [];
+
+    // @DataMember
+    public usage: FlexClusterUsageDto;
+
+    // @DataMember
+    public nearLimits: string[] = [];
+
+    public constructor(init?: Partial<FlexClusterDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AccountOwnerDto {
     // @DataMember
     public email: string;
@@ -7735,12 +7827,59 @@ export module CodeMashHub2 {
     public trialWasIssued: boolean;
 
     // @DataMember
+    public bundle?: ManagedServiceBundle;
+
+    // @DataMember
+    public billingPeriod?: SubscriptionBillingPeriod;
+
+    // @DataMember
+    public isTrial: boolean;
+
+    // @DataMember
+    public renewsOn?: string;
+
+    // @DataMember
+    public enabledProjects: number;
+
+    // @DataMember
     public emailVerified: boolean;
 
     // @DataMember
     public joinedByInvitation: boolean;
 
     public constructor(init?: Partial<AccountStatusDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class BundlePriceDto {
+    // @DataMember
+    public amount: number;
+
+    // @DataMember
+    public currency: string;
+
+    public constructor(init?: Partial<BundlePriceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class ManagedServiceBundleDto {
+    // @DataMember
+    public bundle: ManagedServiceBundle;
+
+    // @DataMember
+    public projectCap: number;
+
+    // @DataMember
+    public monthly: BundlePriceDto;
+
+    // @DataMember
+    public annual: BundlePriceDto;
+
+    public constructor(init?: Partial<ManagedServiceBundleDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -9550,7 +9689,7 @@ export module CodeMashHub2 {
 
   export class LicenseDto extends CodeMashSubscriptionDto {
     public isEnterprise: boolean;
-    public projectCap: number;
+    public projectCap?: number;
 
     public constructor(init?: Partial<LicenseDto>) {
       super(init);
@@ -9613,7 +9752,7 @@ export module CodeMashHub2 {
     public isTrial: boolean;
 
     // @DataMember(Name="cap")
-    public cap: number;
+    public cap?: number;
 
     public constructor(init?: Partial<InstallationLicenseDetailsDto>) {
       (Object as any).assign(this, init);
@@ -14880,10 +15019,18 @@ export module CodeMashHub2 {
     }
   }
 
-  export class GetAccountProfileResponse extends ResponseBase {
-    public item?: AccountOwnerDto;
+  // @DataContract
+  export class GetFlexClustersResponse extends ResponseBase {
+    // @DataMember
+    public clusters?: IReadOnlyList<FlexClusterDto>;
 
-    public constructor(init?: Partial<GetAccountProfileResponse>) {
+    // @DataMember
+    public canCreateNew: boolean;
+
+    // @DataMember
+    public cannotCreateReason?: string;
+
+    public constructor(init?: Partial<GetFlexClustersResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -14891,6 +15038,15 @@ export module CodeMashHub2 {
 
   export class EmptyResponse extends ResponseBase {
     public constructor(init?: Partial<EmptyResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetAccountProfileResponse extends ResponseBase {
+    public item?: AccountOwnerDto;
+
+    public constructor(init?: Partial<GetAccountProfileResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -14922,6 +15078,17 @@ export module CodeMashHub2 {
   // @DataContract
   export class GetStripeBillingPortalUrlResponse extends IdResponse {
     public constructor(init?: Partial<GetStripeBillingPortalUrlResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class GetManagedServiceBundlesResponse extends ResponseBase {
+    // @DataMember
+    public bundles?: IReadOnlyList<ManagedServiceBundleDto>;
+
+    public constructor(init?: Partial<GetManagedServiceBundlesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -19465,6 +19632,48 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/flex-clusters", "GET")
+  // @DataContract
+  export class GetFlexClusters extends RequestBase implements IReturn<GetFlexClustersResponse> {
+    public constructor(init?: Partial<GetFlexClusters>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetFlexClusters';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetFlexClustersResponse();
+    }
+  }
+
+  // @Route("/{version}/account/flex-clusters/{flexClusterId}/upgrade", "POST")
+  // @DataContract
+  export class UpgradeFlexCluster extends RequestBase implements IReturn<EmptyResponse> {
+    // @DataMember
+    public flexClusterId?: string;
+
+    // @DataMember
+    public tierCode?: string;
+
+    public constructor(init?: Partial<UpgradeFlexCluster>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UpgradeFlexCluster';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/profile", "GET")
   export class GetAccountProfile extends RequestBase implements IReturn<GetAccountProfileResponse> {
     public constructor(init?: Partial<GetAccountProfile>) {
@@ -19559,6 +19768,30 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/stripe/change-bundle", "POST")
+  // @DataContract
+  export class ChangeManagedServiceBundle extends RequestBase implements IReturn<EmptyResponse> {
+    // @DataMember
+    public bundle?: ManagedServiceBundle;
+
+    // @DataMember
+    public billingPeriod?: SubscriptionBillingPeriod;
+
+    public constructor(init?: Partial<ChangeManagedServiceBundle>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ChangeManagedServiceBundle';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/stripe/create-checkout-session", "POST")
   // @DataContract
   export class CreateStripeCheckoutSession
@@ -19569,10 +19802,13 @@ export module CodeMashHub2 {
     public subscriptionType: SubscriptionType;
 
     // @DataMember
-    public domain?: string;
+    public bundle?: ManagedServiceBundle;
 
     // @DataMember
-    public projectCap: number;
+    public billingPeriod?: SubscriptionBillingPeriod;
+
+    // @DataMember
+    public domain?: string;
 
     // @DataMember
     public newProjectSessionId?: string;
@@ -19623,6 +19859,27 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetStripeBillingPortalUrlResponse();
+    }
+  }
+
+  // @Route("/{version}/account/stripe/bundles", "GET")
+  // @DataContract
+  export class GetManagedServiceBundles
+    extends RequestBase
+    implements IReturn<GetManagedServiceBundlesResponse>
+  {
+    public constructor(init?: Partial<GetManagedServiceBundles>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetManagedServiceBundles';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetManagedServiceBundlesResponse();
     }
   }
 
@@ -28450,6 +28707,14 @@ export module CodeMashHub2 {
     /** @description The scheduler task whose function runs to list (tsk_…). One of triggerId / taskId. */
     // @ApiMember(Description="The scheduler task whose function runs to list (tsk_…). One of triggerId / taskId.")
     public taskId?: string;
+
+    /** @description The Code integration of the function (int_…). With functionId: every call of that function. */
+    // @ApiMember(Description="The Code integration of the function (int_…). With functionId: every call of that function.")
+    public integrationId?: string;
+
+    /** @description The provider's function id (name or ARN), as GET /code/functions lists it. Needs integrationId. */
+    // @ApiMember(Description="The provider's function id (name or ARN), as GET /code/functions lists it. Needs integrationId.")
+    public functionId?: string;
 
     /** @description How many runs, newest first: 1-50. Default 20. */
     // @ApiMember(DataType="integer", Description="How many runs, newest first: 1-50. Default 20.")

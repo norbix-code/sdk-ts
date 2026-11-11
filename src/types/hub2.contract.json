@@ -111,6 +111,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ChangeManagedServiceBundle": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ChangeRecordResponsibility": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1183,6 +1187,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetFlexClusters": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetFolderFiles": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1248,6 +1256,10 @@
     "returnsBytes": false
   },
   "GetLogsByCorrelationId": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetManagedServiceBundles": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2492,6 +2504,10 @@
     "returnsBytes": false
   },
   "UpdateWebhookIntegrationExtraHeadersRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "UpgradeFlexCluster": {
     "requiresAuth": true,
     "returnsBytes": false
   },
