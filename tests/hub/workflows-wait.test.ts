@@ -1,14 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { NorbixTimeoutError, stepOutput } from '../../src/index.js';
+import type { CodeMashApi2 } from '../../src/types/api2.dtos.js';
 import type { CodeMashHub2 } from '../../src/types/hub2.dtos.js';
-import { makeClient } from '../_helpers.js';
+import { createMockFetch, makeClient } from '../_helpers.js';
 
 /**
  * Hand-written workflow helpers (Code.Workflows.md §15):
  * `hub.code.workflows.waitForRun(runId, { timeoutMs, pollMs })` reads
  * GET /{version}/code/workflows/runs/{runId} until the run is finished or
  * waiting; `run.stepOutput<T>(stepId)` reads the latest succeeded execution.
+ * Group approval (§3.3b): a resume answers the run still `waiting`, with
+ * `require` and the `answers` so far on `waitingOn[]`.
  */
 const RUN_ID = 'wfr_1p4R3gTobGZpD6fXvHT4rd';
 
@@ -124,5 +127,80 @@ describe('stepOutput', () => {
 
     expect(stepOutput(r, 'fetch')).toBeUndefined();
     expect(stepOutput(r, 'missing')).toBeUndefined();
+  });
+});
+
+describe('group approval — resumeCodeWorkflowRun answers a run that still waits', () => {
+  const waitingRun = {
+    runId: RUN_ID,
+    workflowId: 'wf_1',
+    status: 'waiting',
+    waitingOn: [
+      {
+        stepId: 'approve',
+        kind: 'approval',
+        assignees: ['usr_anna', 'usr_ben'],
+        require: 2,
+        answers: [{ userId: 'usr_anna', decision: 'approved', at: '2026-11-12T10:15:00Z' }],
+      },
+    ],
+    steps: [],
+  };
+
+  it('hub: the run comes back waiting, with require and answers typed', async () => {
+    const mock = createMockFetch({ body: { run: waitingRun } });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+
+    const response = await norbix.hub.code.resumeCodeWorkflowRun({
+      runId: RUN_ID,
+      stepId: 'approve',
+      decision: 'approved',
+    });
+
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe(
+      `https://hub.norbix.io/v2/code/workflows/runs/${RUN_ID}/resume`,
+    );
+    expect(JSON.parse(mock.lastCall?.body ?? '{}')).toMatchObject({
+      stepId: 'approve',
+      decision: 'approved',
+    });
+
+    // Typed reads: these lines fail `npm run typecheck` if the fields leave the DTOs.
+    const wait: CodeMashHub2.WorkflowWaitingOnDto | undefined = response.run?.waitingOn[0];
+    const require: number | undefined = wait?.require;
+    const answers: CodeMashHub2.WorkflowWaitAnswerDto[] = wait?.answers ?? [];
+    const first: CodeMashHub2.WorkflowWaitAnswerDto | undefined = answers[0];
+
+    expect(response.run?.status).toBe('waiting');
+    expect(require).toBe(2);
+    expect(answers).toHaveLength(1);
+    expect(first?.userId).toBe('usr_anna');
+    expect(first?.decision).toBe('approved');
+    expect(first?.at).toBe('2026-11-12T10:15:00Z');
+    // who has not answered yet
+    const answered = new Set(answers.map((a) => a.userId));
+    expect((wait?.assignees ?? []).filter((id) => !answered.has(id))).toEqual(['usr_ben']);
+  });
+
+  it('api: the app-user route gives the same typed waiting record', async () => {
+    const mock = createMockFetch({ body: { run: waitingRun } });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+
+    const response = await norbix.api.code.resumeCodeWorkflowRun({
+      runId: RUN_ID,
+      decision: 'approved',
+    });
+
+    expect(mock.lastCall?.url).toBe(
+      `https://api.norbix.io/v2/code/workflows/runs/${RUN_ID}/resume`,
+    );
+    const wait: CodeMashApi2.WorkflowWaitingOnDto | undefined = response.run?.waitingOn[0];
+    const answers: CodeMashApi2.WorkflowWaitAnswerDto[] = wait?.answers ?? [];
+    const require: number | undefined = wait?.require;
+
+    expect(response.run?.status).toBe('waiting');
+    expect(require).toBe(2);
+    expect(answers.map((a) => `${a.userId}:${a.decision}`)).toEqual(['usr_anna:approved']);
   });
 });
