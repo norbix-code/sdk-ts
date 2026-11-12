@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 14:56:37
+Date: 2026-11-12 13:10:06
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6980,9 +6980,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional. The page that was opened (kept on the click, at most 2048 characters).")
     public url?: string;
 
-    /** @description Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once. */
+    /** @description Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once; with no time, a link already clicked is not recorded again. */
     // @DataMember
-    // @ApiMember(Description="Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once.")
+    // @ApiMember(Description="Optional. When the link was opened (UTC; a time with no zone is taken as UTC). Default: now. The same nblid, url and time sent again is recorded once; with no time, a link already clicked is not recorded again.")
     public clickedAt?: string;
 
     /** @description Optional. The browser's user agent. A known mail scanner or bot is flagged suspected-scanner. */
@@ -12081,6 +12081,22 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowWaitAnswerDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public decision: string;
+
+    // @DataMember
+    public at: string;
+
+    public constructor(init?: Partial<WorkflowWaitAnswerDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowWaitingOnDto {
     // @DataMember
     public stepId: string;
@@ -12096,6 +12112,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public assignees?: string[];
+
+    // @DataMember
+    public require?: number;
+
+    // @DataMember
+    public answers?: WorkflowWaitAnswerDto[];
 
     // @DataMember
     public childRunId?: string;

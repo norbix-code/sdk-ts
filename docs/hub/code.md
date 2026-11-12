@@ -1732,4 +1732,19 @@ if (run.status === 'succeeded') {
 
 `stepOutput(run, stepId)` is also exported for a run read with `getCodeWorkflowRun`.
 
+**Group approval.** A `wait` step with `require` (`"all"` or a number) asks several people, and each one answers once with `resumeCodeWorkflowRun` (or `resumeCodeWorkflowRunByKey`, or the Api host's `api.code.resumeCodeWorkflowRun` for an app user). The call records the caller's answer and returns the run **still `waiting`** until enough people have answered, so do not read `waiting` after a resume as a failure. Read `run.waitingOn[]`: `require` is how many approvals are needed, `answers` (`{ userId, decision, at }`) who has answered, and `assignees` everyone asked. The same person answering twice is `CM-ERRORS-WORKFLOWS-016`.
+
+```ts
+const { run } = await norbix.hub.code.resumeCodeWorkflowRun({
+  runId: 'wfr_…',
+  stepId: 'approve',
+  decision: 'approved',
+});
+const wait = run?.waitingOn.find((w) => w.stepId === 'approve');
+if (run?.status === 'waiting' && wait?.require) {
+  const approvals = (wait.answers ?? []).filter((a) => a.decision === 'approved').length;
+  console.log(`${approvals} of ${wait.require} approvals`);
+}
+```
+
 <!-- @hand-written:end -->

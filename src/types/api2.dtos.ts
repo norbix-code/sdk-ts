@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-11 14:56:37
+Date: 2026-11-12 13:10:05
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1971,6 +1971,22 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class WorkflowWaitAnswerDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public decision: string;
+
+    // @DataMember
+    public at: string;
+
+    public constructor(init?: Partial<WorkflowWaitAnswerDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowWaitingOnDto {
     // @DataMember
     public stepId: string;
@@ -1986,6 +2002,12 @@ export module CodeMashApi2 {
 
     // @DataMember
     public assignees?: string[];
+
+    // @DataMember
+    public require?: number;
+
+    // @DataMember
+    public answers?: WorkflowWaitAnswerDto[];
 
     // @DataMember
     public childRunId?: string;
