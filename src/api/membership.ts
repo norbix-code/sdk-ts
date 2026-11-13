@@ -413,25 +413,6 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/auth/social/{Provider}/exchange
-   * Request DTO: ExchangeSocialSignInCodeRequest
-   */
-  exchangeSocialSignInCode = (
-    request: Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest> = {} as Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashApi2.SocialSignInTokenResponse> => {
-    return this.transport.send<CodeMashApi2.SocialSignInTokenResponse>({
-      target: 'api',
-      path: '/{version}/membership/auth/social/{Provider}/exchange',
-      method: 'POST',
-      request,
-      pathParams: ['Provider'],
-      scope: 'optional',
-      ...options,
-    });
-  };
-
-  /**
    * PATCH /{version}/membership/auth/unblock
    * Request DTO: UnblockUserRequest
    */
@@ -1097,6 +1078,36 @@ export class MembershipModule {
   };
 
   // @hand-written:begin
+  /**
+   * POST /{version}/membership/auth/social/{Provider}/exchange — the raw call;
+   * `api.auth.exchangeSocialCode(provider, code)` is the same call with a typed
+   * answer. Request DTO: ExchangeSocialSignInCodeRequest.
+   *
+   * Hand-written for its scope: it sends no credentials (`'unauthenticated'`),
+   * not the generated `'optional'`. The gateway judges any token it gets, even
+   * on an open route, and refuses a JWT from before a password change (401);
+   * the exchange is how a user signs in again.
+   *
+   * The start (`GET …/social/{Provider}`, a 302) and the provider callback have
+   * no method on purpose. The endpoint generator does not skip them yet:
+   * after `npm run generate-endpoints`, remove `startSocialSignIn` and
+   * `socialSignInCallback` again.
+   */
+  exchangeSocialSignInCode = (
+    request: Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest> = {} as Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.SocialSignInTokenResponse> => {
+    return this.transport.send<CodeMashApi2.SocialSignInTokenResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/social/{Provider}/exchange',
+      method: 'POST',
+      request,
+      pathParams: ['Provider'],
+      scope: 'unauthenticated',
+      ...options,
+    });
+  };
+
   /**
    * POST /{version}/membership/auth/{UserId}/link-identity/start — signed in, for
    * yourself only (`userId` is your own `usr_…` or `ct_…`). Answers the

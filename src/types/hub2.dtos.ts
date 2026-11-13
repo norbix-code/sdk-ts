@@ -7486,6 +7486,16 @@ export module CodeMashHub2 {
     }
   }
 
+  export class PublicSocialSignInDto {
+    public provider: string;
+    public displayName: string;
+    public startPath: string;
+
+    public constructor(init?: Partial<PublicSocialSignInDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class PublicPasswordPolicyDto {
     public minLength: number;
     public maxLength?: number;
@@ -7502,6 +7512,7 @@ export module CodeMashHub2 {
 
   export class PublicAuthDto {
     public socialProviders: string[] = [];
+    public socialSignIn: PublicSocialSignInDto[] = [];
     public passkey: boolean;
     public methods?: string[];
     public passwordPolicy?: PublicPasswordPolicyDto;
@@ -19492,9 +19503,10 @@ export module CodeMashHub2 {
   // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
   export class GetPublicProjectConfig
     extends RequestBase
-    implements IReturn<PublicProjectConfigDto>
+    implements IReturn<PublicProjectConfigDto>, IHasEnv
   {
     public projectId?: string;
+    public env?: string;
 
     public constructor(init?: Partial<GetPublicProjectConfig>) {
       super(init);
