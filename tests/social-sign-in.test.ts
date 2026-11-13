@@ -9,7 +9,7 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { Norbix } from '../src/index.js';
+import { Norbix, createPkcePair, pkceChallenge } from '../src/index.js';
 import type { NorbixConfig, NorbixError } from '../src/index.js';
 import type { CodeMashApi2 } from '../src/types/api2.dtos.js';
 
@@ -316,11 +316,13 @@ describe('api.auth.redirectToSocialSignIn', () => {
     vi.unstubAllGlobals();
   });
 
-  it('sends the page to the start URL', () => {
+  it('sends the page to the start URL (no sessionStorage: no challenge)', async () => {
     const assign = vi.fn();
     vi.stubGlobal('location', { href: 'https://app.example.com/', assign });
     const { norbix } = client();
-    norbix.api.auth.redirectToSocialSignIn('google', { returnUrl: 'https://app.example.com/cb' });
+    await norbix.api.auth.redirectToSocialSignIn('google', {
+      returnUrl: 'https://app.example.com/cb',
+    });
     expect(assign).toHaveBeenCalledWith(
       'https://api.test/v3/membership/auth/social/google?projectId=pr_1' +
         '&returnUrl=https%3A%2F%2Fapp.example.com%2Fcb',
@@ -340,8 +342,224 @@ describe('api.auth.redirectToSocialSignIn', () => {
     });
   });
 
-  it('outside a browser it is an error', () => {
+  it('outside a browser it is an error', async () => {
     const { norbix } = client();
-    expect(() => norbix.api.auth.redirectToSocialSignIn('google')).toThrow(/needs a browser/);
+    await expect(norbix.api.auth.redirectToSocialSignIn('google')).rejects.toThrow(
+      /needs a browser/,
+    );
+  });
+});
+
+/** A sessionStorage stand-in: a Map behind the Storage methods the SDK uses. */
+function fakeSessionStorage() {
+  const map = new Map<string, string>();
+  return {
+    map,
+    storage: {
+      getItem: (k: string) => map.get(k) ?? null,
+      setItem: (k: string, v: string) => void map.set(k, v),
+      removeItem: (k: string) => void map.delete(k),
+    },
+  };
+}
+
+describe('PKCE helper', () => {
+  it('matches the RFC 7636 appendix B test vector', async () => {
+    expect(await pkceChallenge('dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk')).toBe(
+      'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM',
+    );
+  });
+
+  it('makes a 43-character verifier and its S256 challenge', async () => {
+    const a = await createPkcePair();
+    const b = await createPkcePair();
+    expect(a.codeVerifier).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    expect(a.codeChallenge).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    expect(a.codeChallenge).toBe(await pkceChallenge(a.codeVerifier));
+    expect(b.codeVerifier).not.toBe(a.codeVerifier);
+  });
+
+  it('refuses a verifier that is not 43-128 unreserved characters', async () => {
+    await expect(pkceChallenge('short')).rejects.toMatchObject({ code: 'NORBIX_PKCE_VERIFIER' });
+  });
+});
+
+describe('PKCE on the wire', () => {
+  const challenge = 'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM';
+  const verifier = 'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk';
+
+  it('socialSignInUrl: codeChallenge in the query, after mode and returnUrl', () => {
+    const { norbix } = client();
+    expect(
+      norbix.api.auth.socialSignInUrl('google', {
+        mode: 'app',
+        returnUrl: 'https://app.test/cb',
+        codeChallenge: challenge,
+      }),
+    ).toBe(
+      'https://api.test/v3/membership/auth/social/google?projectId=pr_1&mode=app' +
+        `&returnUrl=https%3A%2F%2Fapp.test%2Fcb&codeChallenge=${challenge}`,
+    );
+  });
+
+  it('exchangeSocialCode: body { code, codeVerifier }', async () => {
+    const { norbix, mock } = client({}, { body: tokenAnswer });
+    await norbix.api.auth.exchangeSocialCode('google', 'one-time', { codeVerifier: verifier });
+    expect(mock.lastCall!.url).toBe('https://api.test/v3/membership/auth/social/google/exchange');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ code: 'one-time', codeVerifier: verifier });
+    expect(mock.lastCall!.headers.get('Authorization')).toBeNull();
+  });
+
+  it('startLinkIdentity: body { provider, returnUrl, codeChallenge }', async () => {
+    const { norbix, mock } = client(
+      { bearerToken: 'jwt-1' },
+      { body: { authorizeUrl: 'https://a' } },
+    );
+    await norbix.api.membership.startLinkIdentity('usr_1', 'github', {
+      returnUrl: 'https://app.test/settings',
+      codeChallenge: challenge,
+    });
+    expect(mock.lastCall!.url).toBe(
+      'https://api.test/v3/membership/auth/usr_1/link-identity/start',
+    );
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({
+      provider: 'github',
+      returnUrl: 'https://app.test/settings',
+      codeChallenge: challenge,
+    });
+  });
+
+  it('finishLinkIdentity: body { code, codeVerifier }', async () => {
+    const { norbix, mock } = client({ bearerToken: 'jwt-1' }, { body: {} });
+    await norbix.api.membership.finishLinkIdentity('usr_1', 'link-code', {
+      codeVerifier: verifier,
+    });
+    expect(mock.lastCall!.url).toBe('https://api.test/v3/membership/auth/usr_1/link-identity');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ code: 'link-code', codeVerifier: verifier });
+  });
+
+  it('058 comes back with its reason', async () => {
+    const { norbix } = client(
+      {},
+      {
+        status: 400,
+        body: {
+          responseStatus: {
+            errorCode: 'CM-ERRORS-MEMBERSHIP-058',
+            message: 'verifier',
+            errors: [
+              {
+                errorCode: 'CM-ERRORS-MEMBERSHIP-058',
+                message: 'verifier',
+                context: { Reason: 'verifier_missing' },
+              },
+            ],
+          },
+        },
+      },
+    );
+    const error = await rejected(norbix.api.auth.exchangeSocialCode('google', 'c'));
+    expect(error.status).toBe(400);
+    expect(JSON.stringify(error)).toContain('verifier_missing');
+  });
+});
+
+describe('browser helpers keep and clear the PKCE verifier', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('redirectToSocialSignIn stores a verifier per provider and sends its challenge; completeSocialSignIn sends it and clears it', async () => {
+    const { map, storage } = fakeSessionStorage();
+    vi.stubGlobal('sessionStorage', storage);
+    const assign = vi.fn();
+    vi.stubGlobal('location', { href: 'https://app.test/', assign });
+    const { norbix, mock } = client({}, { body: tokenAnswer });
+
+    await norbix.api.auth.redirectToSocialSignIn('Google', { returnUrl: 'https://app.test/cb' });
+
+    const kept = map.get('norbix:pkce:signIn:google');
+    expect(kept).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    const url = new URL(assign.mock.calls[0]![0] as string);
+    expect(url.searchParams.get('codeChallenge')).toBe(await pkceChallenge(kept!));
+    expect(url.searchParams.get('codeVerifier')).toBeNull();
+
+    const done = await norbix.api.auth.completeSocialSignIn(
+      'https://app.test/cb?code=c1&provider=google',
+    );
+    expect(done.kind).toBe('signedIn');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ code: 'c1', codeVerifier: kept });
+    expect(map.size).toBe(0);
+  });
+
+  it('a failed exchange still clears the verifier (the code is used up)', async () => {
+    const { map, storage } = fakeSessionStorage();
+    vi.stubGlobal('sessionStorage', storage);
+    map.set('norbix:pkce:signIn:google', 'x'.repeat(43));
+    const { norbix } = client(
+      {},
+      { status: 400, body: { responseStatus: { errorCode: 'CM-ERRORS-MEMBERSHIP-058' } } },
+    );
+    await rejected(
+      norbix.api.auth.completeSocialSignIn('https://app.test/cb?code=c1&provider=google'),
+    );
+    expect(map.size).toBe(0);
+  });
+
+  it('pkce: false sends no challenge and forgets an old verifier', async () => {
+    const { map, storage } = fakeSessionStorage();
+    vi.stubGlobal('sessionStorage', storage);
+    map.set('norbix:pkce:signIn:google', 'old');
+    const assign = vi.fn();
+    vi.stubGlobal('location', { href: 'https://app.test/', assign });
+    const { norbix } = client();
+    await norbix.api.auth.redirectToSocialSignIn('google', { pkce: false });
+    expect(assign).toHaveBeenCalledWith(
+      'https://api.test/v3/membership/auth/social/google?projectId=pr_1',
+    );
+    expect(map.size).toBe(0);
+  });
+
+  it('redirectToLinkIdentity / completeLinkIdentity keep and clear the link verifier', async () => {
+    const { map, storage } = fakeSessionStorage();
+    vi.stubGlobal('sessionStorage', storage);
+    const assign = vi.fn();
+    vi.stubGlobal('location', { href: 'https://app.test/', assign });
+    const { norbix, mock } = client(
+      { bearerToken: 'jwt-1' },
+      { body: { authorizeUrl: 'https://accounts.example/authorize' } },
+    );
+
+    await norbix.api.membership.redirectToLinkIdentity('usr_1', 'github', {
+      returnUrl: 'https://app.test/settings',
+    });
+    const kept = map.get('norbix:pkce:link:github');
+    expect(kept).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({
+      provider: 'github',
+      returnUrl: 'https://app.test/settings',
+      codeChallenge: await pkceChallenge(kept!),
+    });
+    expect(assign).toHaveBeenCalledWith('https://accounts.example/authorize');
+
+    const done = await norbix.api.membership.completeLinkIdentity(
+      'usr_1',
+      'https://app.test/settings?intent=link&code=l1&provider=github',
+    );
+    expect(done).toEqual({ kind: 'linked', provider: 'github' });
+    expect(mock.lastCall!.url).toBe('https://api.test/v3/membership/auth/usr_1/link-identity');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ code: 'l1', codeVerifier: kept });
+    expect(map.size).toBe(0);
+  });
+
+  it('completeLinkIdentity hands a sign-in code back and sends nothing', async () => {
+    const { norbix, mock } = client({ bearerToken: 'jwt-1' });
+    expect(
+      await norbix.api.membership.completeLinkIdentity(
+        'usr_1',
+        'https://app.test/cb?code=c1&provider=google',
+      ),
+    ).toEqual({ kind: 'signIn', provider: 'google', code: 'c1' });
+    expect(mock.calls).toHaveLength(0);
   });
 });

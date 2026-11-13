@@ -1302,16 +1302,18 @@ const result = await norbix.api.membership.removeContactIdentity({
 | `finishLinkIdentity` | `POST` | `/{version}/membership/auth/{UserId}/link-identity`       |
 
 ```ts
-// Account settings, signed in as usr_1: "Link Google"
-const { authorizeUrl } = await norbix.api.membership.startLinkIdentity('usr_1', 'google', {
+// Account settings, signed in as usr_1: "Link Google" (PKCE by default)
+await norbix.api.membership.redirectToLinkIdentity('usr_1', 'google', {
   returnUrl: 'https://app.example.com/oauth/callback', // optional; origin must be allowed
 });
-location.assign(authorizeUrl);
 
 // The return page: ?intent=link&code=…&provider=google
-const back = norbix.api.auth.readSocialReturn();
-if (back.kind === 'link') await norbix.api.membership.finishLinkIdentity('usr_1', back.code);
+const done = await norbix.api.membership.completeLinkIdentity('usr_1');
+// { kind: 'linked', provider } | { kind: 'signIn', … } | { kind: 'error', error } | { kind: 'none' }
 ```
+
+- `redirectToLinkIdentity(userId, provider, { mode?, returnUrl?, pkce? })` makes a verifier, keeps it in `sessionStorage` under `norbix:pkce:link:<provider>`, starts the link with its challenge and sends the browser to `authorizeUrl`. `completeLinkIdentity(userId, url?)` finishes with the kept verifier and forgets it.
+- By hand: `startLinkIdentity(userId, provider, { mode?, returnUrl?, codeChallenge? })` → `{ authorizeUrl }`, then `finishLinkIdentity(userId, code, { codeVerifier? })`. A finish without the verifier of a challenged start, or with one for an unchallenged start, is `CM-ERRORS-MEMBERSHIP-058` and the code is used up; a bad challenge is `-059`.
 
 - `startLinkIdentity(userId, provider, { mode?, returnUrl? })` answers `{ authorizeUrl }`; send the browser there.
 - `finishLinkIdentity(userId, code)` must be called by the same signed-in user who started, within 2 minutes; the code works once.

@@ -1,6 +1,17 @@
 import { NorbixError } from '../client/errors.js'; // @hand-written
+import {
+  createPkcePair,
+  storePkceVerifier,
+  takePkceVerifier,
+  clearPkceVerifier,
+} from '../client/pkce.js'; // @hand-written
+import { browserLocation, parseSocialReturn } from '../client/social.js'; // @hand-written
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
-import type { SocialProvider } from '../client/types.js'; // @hand-written
+import type {
+  LinkIdentityCompletion,
+  LinkRedirectOptions,
+  SocialProvider,
+} from '../client/types.js'; // @hand-written
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
@@ -1115,20 +1126,30 @@ export class MembershipModule {
    * sends it back to your page with `?intent=link&code=…&provider=…`; finish
    * with `finishLinkIdentity` as the same user within 2 minutes.
    *
+   * `codeChallenge`: PKCE S256 (see `createPkcePair`); the finish then needs
+   * the matching `codeVerifier`. CM-ERRORS-MEMBERSHIP-059 when it is not a
+   * valid S256 challenge.
+   *
    * Not generated as a plain request method: the start answers a URL the app
    * must navigate to, so the SDK checks it is there.
    */
   startLinkIdentity = async (
     userId: string,
     provider: SocialProvider | string,
-    link: { mode?: string; returnUrl?: string } = {},
+    link: { mode?: string; returnUrl?: string; codeChallenge?: string } = {},
     options: RequestOverrideOptions = {},
   ): Promise<{ authorizeUrl: string }> => {
     const answer = await this.transport.send<CodeMashApi2.StartLinkIdentityResponse>({
       target: 'api',
       path: '/{version}/membership/auth/{UserId}/link-identity/start',
       method: 'POST',
-      request: { userId, provider, mode: link.mode, returnUrl: link.returnUrl },
+      request: {
+        userId,
+        provider,
+        mode: link.mode,
+        returnUrl: link.returnUrl,
+        codeChallenge: link.codeChallenge,
+      },
       pathParams: ['UserId'],
       scope: 'project',
       ...options,
@@ -1149,21 +1170,92 @@ export class MembershipModule {
    * return page (`intent=link`). A provider account that belongs to another
    * user is refused with CM-ERRORS-MEMBERSHIP-055 (409); a `userId` that is not
    * yours, or a code someone else started, with -056 (403).
+   *
+   * `codeVerifier`: required when the start carried a `codeChallenge`, and
+   * must be left out when it did not. Otherwise CM-ERRORS-MEMBERSHIP-058
+   * (`context.Reason` `verifier_missing`, `verifier_wrong` or
+   * `challenge_missing`), and the code is used up.
    */
   finishLinkIdentity = async (
     userId: string,
     code: string,
-    options: RequestOverrideOptions = {},
+    options: RequestOverrideOptions & { codeVerifier?: string } = {},
   ): Promise<void> => {
+    const { codeVerifier, ...overrides } = options;
     await this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
       path: '/{version}/membership/auth/{UserId}/link-identity',
       method: 'POST',
-      request: { userId, code },
+      request: { userId, code, codeVerifier },
       pathParams: ['UserId'],
       scope: 'project',
-      ...options,
+      ...overrides,
     });
+  };
+
+  /**
+   * Browser only, signed in: start a link and send the page to the provider.
+   * PKCE by default: makes a verifier, keeps it in `sessionStorage` (one per
+   * provider), sends its challenge on the start; `completeLinkIdentity` sends
+   * it back and forgets it. `pkce: false` sends no challenge. Without a usable
+   * `sessionStorage` the start goes without a challenge.
+   */
+  redirectToLinkIdentity = async (
+    userId: string,
+    provider: SocialProvider | string,
+    link: LinkRedirectOptions = {},
+    options: RequestOverrideOptions = {},
+  ): Promise<void> => {
+    const location = browserLocation();
+    if (!location) {
+      throw new NorbixError({
+        message: 'redirectToLinkIdentity needs a browser; use startLinkIdentity on a server.',
+        status: 0,
+        code: 'NORBIX_NOT_BROWSER',
+      });
+    }
+    const { pkce = true, ...rest } = link;
+    clearPkceVerifier('link', provider);
+    let codeChallenge: string | undefined;
+    if (pkce) {
+      const pair = await createPkcePair();
+      if (storePkceVerifier('link', provider, pair.codeVerifier))
+        codeChallenge = pair.codeChallenge;
+    }
+    try {
+      const { authorizeUrl } = await this.startLinkIdentity(
+        userId,
+        provider,
+        { ...rest, codeChallenge },
+        options,
+      );
+      location.assign(authorizeUrl);
+    } catch (err) {
+      clearPkceVerifier('link', provider);
+      throw err;
+    }
+  };
+
+  /**
+   * The link return page in one call, as the same signed-in user: read the
+   * answer (`url` defaults to the current page) and, for a link code, finish
+   * the link with the verifier `redirectToLinkIdentity` kept (then forgotten,
+   * also when the finish fails: the code is used up either way). A sign-in
+   * code is handed back untouched (`kind: 'signIn'`).
+   */
+  completeLinkIdentity = async (
+    userId: string,
+    url?: string | URL,
+    options: RequestOverrideOptions & { codeVerifier?: string } = {},
+  ): Promise<LinkIdentityCompletion> => {
+    const answer = parseSocialReturn(url);
+    if (answer.kind !== 'link') return answer;
+    const kept = takePkceVerifier('link', answer.provider);
+    await this.finishLinkIdentity(userId, answer.code, {
+      ...options,
+      codeVerifier: options.codeVerifier ?? kept,
+    });
+    return { kind: 'linked', provider: answer.provider };
   };
   // @hand-written:end
 }

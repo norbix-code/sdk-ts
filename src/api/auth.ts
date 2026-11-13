@@ -1,10 +1,18 @@
 import { NorbixError, NorbixSessionExpiredError } from '../client/errors.js'; // @hand-written
+import {
+  clearPkceVerifier,
+  createPkcePair,
+  storePkceVerifier,
+  takePkceVerifier,
+} from '../client/pkce.js'; // @hand-written
+import { browserLocation, parseSocialReturn } from '../client/social.js'; // @hand-written
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
 import type {
   BrowserSignInResult,
   SignInCredentials,
   SignInResult,
   SocialProvider,
+  SocialRedirectOptions,
   SocialReturn,
   SocialSignInCompletion,
   SocialSignInResult,
@@ -139,12 +147,13 @@ export class AuthModule {
 
   /**
    * The URL that starts a project social sign-in:
-   * `GET {api}/{version}/membership/auth/social/{provider}?projectId=…[&env=…][&mode=…][&returnUrl=…]`.
+   * `GET {api}/{version}/membership/auth/social/{provider}?projectId=…[&env=…][&mode=…][&returnUrl=…][&codeChallenge=…]`.
    * Not a call: the browser navigates there and the gateway answers with a
    * redirect to the provider. A navigation carries no headers, so the project id
    * and a non-PROD env travel in the query. The same URL is
    * `{api}{startPath}` from the public config's `auth.socialSignIn`, plus your
-   * `mode` / `returnUrl`.
+   * `mode` / `returnUrl` / `codeChallenge`. With a `codeChallenge` (see
+   * `createPkcePair`), the exchange needs the matching `codeVerifier`.
    */
   socialSignInUrl = (
     provider: SocialProvider | string,
@@ -153,7 +162,12 @@ export class AuthModule {
     this.transport.navigationUrl({
       target: 'api',
       path: '/{version}/membership/auth/social/{provider}',
-      request: { provider, mode: options.mode, returnUrl: options.returnUrl },
+      request: {
+        provider,
+        mode: options.mode,
+        returnUrl: options.returnUrl,
+        codeChallenge: options.codeChallenge,
+      },
       env: options.env,
     });
 
@@ -164,20 +178,26 @@ export class AuthModule {
    * session. Use it as a bearer token, e.g. `norbix.setBearerToken(bearerToken)`.
    * Sends no token of its own. A used, expired or unknown code is refused with
    * CM-ERRORS-MEMBERSHIP-051.
+   *
+   * `codeVerifier`: required when the start carried a `codeChallenge`, and
+   * must be left out when it did not. Otherwise CM-ERRORS-MEMBERSHIP-058
+   * (`context.Reason` `verifier_missing`, `verifier_wrong` or
+   * `challenge_missing`), and the code is used up.
    */
   exchangeSocialCode = async (
     provider: SocialProvider | string,
     code: string,
-    options: RequestOverrideOptions = {},
+    options: RequestOverrideOptions & { codeVerifier?: string } = {},
   ): Promise<SocialSignInResult> => {
+    const { codeVerifier, ...overrides } = options;
     const answer = await this.transport.send<CodeMashApi2.SocialSignInTokenResponse>({
       target: 'api',
       path: '/{version}/membership/auth/social/{provider}/exchange',
       method: 'POST',
-      request: { provider, code },
+      request: { provider, code, codeVerifier },
       pathParams: ['provider'],
       scope: 'unauthenticated',
-      ...options,
+      ...overrides,
     });
     if (!answer?.bearerToken) {
       throw new NorbixError({
@@ -199,11 +219,16 @@ export class AuthModule {
    * Browser only: send the page to `socialSignInUrl(provider, options)`. Pass a
    * `returnUrl` (or use a mode whose page is your return page), and on that page
    * call `completeSocialSignIn()`.
+   *
+   * PKCE by default: makes a verifier, keeps it in `sessionStorage` (one per
+   * provider) and sends its challenge; `completeSocialSignIn` sends it back and
+   * forgets it. `pkce: false` sends no challenge (and forgets an old verifier).
+   * Without a usable `sessionStorage` the start goes without a challenge.
    */
-  redirectToSocialSignIn = (
+  redirectToSocialSignIn = async (
     provider: SocialProvider | string,
-    options: SocialSignInUrlOptions = {},
-  ): void => {
+    options: SocialRedirectOptions = {},
+  ): Promise<void> => {
     const location = browserLocation();
     if (!location) {
       throw new NorbixError({
@@ -212,7 +237,15 @@ export class AuthModule {
         code: 'NORBIX_NOT_BROWSER',
       });
     }
-    location.assign(this.socialSignInUrl(provider, options));
+    const { pkce = true, ...urlOptions } = options;
+    clearPkceVerifier('signIn', provider);
+    let codeChallenge: string | undefined;
+    if (pkce) {
+      const pair = await createPkcePair();
+      if (storePkceVerifier('signIn', provider, pair.codeVerifier))
+        codeChallenge = pair.codeChallenge;
+    }
+    location.assign(this.socialSignInUrl(provider, { ...urlOptions, codeChallenge }));
   };
 
   /**
@@ -220,19 +253,7 @@ export class AuthModule {
    * current page. Tokens never travel in the URL: only a one-time code
    * (`code`, `provider`, and `intent=link` for a link) or `error`.
    */
-  readSocialReturn = (url?: string | URL): SocialReturn => {
-    const href = url ?? browserLocation()?.href;
-    if (!href) return { kind: 'none' };
-    const query = new URL(String(href), 'http://localhost').searchParams;
-    const provider = query.get('provider') ?? undefined;
-    const error = query.get('error');
-    if (error) return provider ? { kind: 'error', error, provider } : { kind: 'error', error };
-    const code = query.get('code');
-    if (!code || !provider) return { kind: 'none' };
-    return query.get('intent') === 'link'
-      ? { kind: 'link', provider, code }
-      : { kind: 'signIn', provider, code };
-  };
+  readSocialReturn = (url?: string | URL): SocialReturn => parseSocialReturn(url);
 
   /**
    * The return page in one call: read the answer (`url` defaults to the current
@@ -240,14 +261,22 @@ export class AuthModule {
    * untouched (`kind: 'link'`) — finish it with
    * `api.membership.finishLinkIdentity` as the signed-in user. The SDK does not
    * store the token: call `norbix.setBearerToken(result.bearerToken)`.
+   *
+   * Sends the verifier `redirectToSocialSignIn` kept for this provider, if
+   * any, and forgets it — also when the exchange fails, because the code is
+   * used up either way. A `codeVerifier` in `options` wins.
    */
   completeSocialSignIn = async (
     url?: string | URL,
-    options: RequestOverrideOptions = {},
+    options: RequestOverrideOptions & { codeVerifier?: string } = {},
   ): Promise<SocialSignInCompletion> => {
     const answer = this.readSocialReturn(url);
     if (answer.kind !== 'signIn') return answer;
-    const result = await this.exchangeSocialCode(answer.provider, answer.code, options);
+    const kept = takePkceVerifier('signIn', answer.provider);
+    const result = await this.exchangeSocialCode(answer.provider, answer.code, {
+      ...options,
+      codeVerifier: options.codeVerifier ?? kept,
+    });
     return { kind: 'signedIn', provider: answer.provider, result };
   };
   // @hand-written:end
@@ -261,9 +290,4 @@ function passwordChangeOf(meta: { [key: string]: string } | undefined): {
   passwordChangeRequired?: true;
 } {
   return meta?.['passwordChangeRequired'] === 'true' ? { passwordChangeRequired: true } : {};
-}
-
-/** The page's location in a browser; undefined in Node. */
-function browserLocation(): { href: string; assign(url: string): void } | undefined {
-  return (globalThis as { location?: { href: string; assign(url: string): void } }).location;
 }
