@@ -108,7 +108,7 @@ jobs:
             console.log('File count:', p.files.length);
             // Generated hub2/api2 DTO bundles + sourcemaps legitimately exceed 500 KB.
             // Guard against accidental src/tests inclusion, not DTO growth.
-            const MAX_KB = 750;
+            const MAX_KB = 850;
             if (p.size / 1024 > MAX_KB) {
               console.error('::error::Tarball exceeds ' + MAX_KB + ' KB. Check files/.npmignore for accidentally included paths.');
               process.exit(1);
