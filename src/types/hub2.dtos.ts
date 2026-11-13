@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-12 13:10:06
+Date: 2026-11-13 18:35:01
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -995,7 +995,6 @@ export module CodeMashHub2 {
   export class OAuthModeConfig {
     public name: DisplayName;
     public callbackUrl: string;
-    public logoutUrl?: string;
     public failureRedirectUrl?: string;
     public roleName?: RoleName;
 
@@ -6785,15 +6784,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class CredentialsSettingsModeDto {
-    public name?: string;
-    public logoutUrl?: string;
-
-    public constructor(init?: Partial<CredentialsSettingsModeDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class CursorArgs implements ICursorArgs {
     public field: string;
     public order: number;
@@ -10355,28 +10345,9 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
-  export class MembershipCredentialsSettingsModeDto {
-    // @DataMember
-    public name?: string;
-
-    // @DataMember
-    public logoutUrl?: string;
-
-    public constructor(init?: Partial<MembershipCredentialsSettingsModeDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
   export class MembershipCredentialsSettingsDto {
     // @DataMember
-    public logoutUrl?: string;
-
-    // @DataMember
     public allowUsernames: boolean;
-
-    // @DataMember
-    public modes?: MembershipCredentialsSettingsModeDto[];
 
     public constructor(init?: Partial<MembershipCredentialsSettingsDto>) {
       (Object as any).assign(this, init);
@@ -23754,8 +23725,8 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<UpdatePasswordComplexityResponse>
   {
-    /** @description Minimum password length. */
-    // @ApiMember(Description="Minimum password length.")
+    /** @description Minimum password length. Default 6 — the rule a project uses when it stores none. */
+    // @ApiMember(Description="Minimum password length. Default 6 — the rule a project uses when it stores none.")
     public minLength: number;
 
     /** @description Maximum password length, if capped. */
@@ -23842,17 +23813,9 @@ export module CodeMashHub2 {
     extends CodeMashRequestBase
     implements IReturn<EmptyResponse>
   {
-    /** @description Default URL to redirect end users to after logout. */
-    // @ApiMember(Description="Default URL to redirect end users to after logout.")
-    public logoutUrl?: string;
-
     /** @description Whether end users may sign in with a username in addition to email. */
     // @ApiMember(Description="Whether end users may sign in with a username in addition to email.")
     public allowUsernames: boolean;
-
-    /** @description Per-authentication-mode logout URL overrides. */
-    // @ApiMember(Description="Per-authentication-mode logout URL overrides.")
-    public modes?: CredentialsSettingsModeDto[];
 
     public constructor(init?: Partial<UpdateAuthenticationSettings>) {
       super(init);
