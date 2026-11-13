@@ -46,9 +46,14 @@ Sign in for a [cookie session](../../README.md#cookie-sessions). Answers `{ sess
 
 ```ts
 const anon = new Norbix({ projectId, auth: { type: 'none' } });
-const { sessionId } = await anon.api.auth.signIn({ userName, password });
+const { sessionId, passwordChangeRequired } = await anon.api.auth.signIn({ userName, password });
 const user = new Norbix({ projectId, auth: { type: 'session', sessionId } });
+if (passwordChangeRequired) {
+  // Signed in, but the password breaks the project's current rules: send the user to change it.
+}
 ```
+
+`passwordChangeRequired: true` is set when the typed password breaks the project's current password rules. The sign-in already succeeded; send the user to change their password. The key is absent when the password passes. `browserSignIn` answers it the same way.
 
 ### signOut
 

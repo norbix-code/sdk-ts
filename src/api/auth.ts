@@ -76,6 +76,7 @@ export class AuthModule {
       sessionId: answer.sessionId,
       userId: answer.userId,
       credentialVersion: answer.meta?.['credentialVersion'],
+      ...passwordChangeOf(answer.meta),
     };
   };
 
@@ -102,6 +103,7 @@ export class AuthModule {
       userId: answer?.userId,
       displayName: answer?.displayName,
       credentialVersion: answer?.meta?.['credentialVersion'],
+      ...passwordChangeOf(answer?.meta),
     };
   };
 
@@ -126,4 +128,14 @@ export class AuthModule {
     }
   };
   // @hand-written:end
+}
+
+/**
+ * `meta.passwordChangeRequired` is `"true"` when the typed password breaks the
+ * project's current rule; the key is absent otherwise (`meta` is a string map).
+ */
+function passwordChangeOf(meta: { [key: string]: string } | undefined): {
+  passwordChangeRequired?: true;
+} {
+  return meta?.['passwordChangeRequired'] === 'true' ? { passwordChangeRequired: true } : {};
 }
