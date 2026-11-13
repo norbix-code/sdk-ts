@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.database (74 endpoints).
+ * Tests for hub.database (73 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -29,7 +29,6 @@ describe('hub.database', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
-    expect(typeof ns['enableDatabase']).toBe('function');
     expect(typeof ns['deleteSchemaTrigger']).toBe('function');
     expect(typeof ns['disableSchemaTrigger']).toBe('function');
     expect(typeof ns['enableSchemaTrigger']).toBe('function');
@@ -102,29 +101,6 @@ describe('hub.database', () => {
     expect(typeof ns['getCollectionImports']).toBe('function');
     expect(typeof ns['requestImportUploadUrl']).toBe('function');
     expect(typeof ns['analyzeImportFile']).toBe('function');
-  });
-
-  it('enableDatabase: PUT /{version}/database/enable', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/database/enable',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['database']!['enableDatabase']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('deleteSchemaTrigger: DELETE /{version}/database/schemas/triggers/{triggerId}', async () => {

@@ -12,25 +12,6 @@ export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * PUT /{version}/database/enable
-   * Request DTO: EnableDatabase
-   */
-  enableDatabase = (
-    request: Partial<CodeMashHub2.EnableDatabase> = {} as Partial<CodeMashHub2.EnableDatabase>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/database/enable',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * DELETE /{version}/database/schemas/triggers/{triggerId}
    * Request DTO: DeleteSchemaTrigger
    */

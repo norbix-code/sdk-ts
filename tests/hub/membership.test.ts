@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.membership (49 endpoints).
+ * Tests for hub.membership (48 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -29,7 +29,6 @@ describe('hub.membership', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
-    expect(typeof ns['enableMembership']).toBe('function');
     expect(typeof ns['importUsers']).toBe('function');
     expect(typeof ns['repairLoginProjectIds']).toBe('function');
     expect(typeof ns['issueServiceUserApiKey']).toBe('function');
@@ -78,29 +77,6 @@ describe('hub.membership', () => {
     expect(typeof ns['addContactIdentity']).toBe('function');
     expect(typeof ns['promoteContactIdentity']).toBe('function');
     expect(typeof ns['removeContactIdentity']).toBe('function');
-  });
-
-  it('enableMembership: PUT /{version}/membership/enable', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/membership/enable',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['enableMembership']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('importUsers: POST /{version}/membership/users/import', async () => {

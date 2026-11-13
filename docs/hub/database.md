@@ -10,7 +10,6 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 
 | Method                                                                  | Verb     | Path                                                                                | Scope     |
 | ----------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------- | --------- |
-| [`enableDatabase`](#enabledatabase)                                     | `PUT`    | `/{version}/database/enable`                                                        | `project` |
 | [`deleteSchemaTrigger`](#deleteschematrigger)                           | `DELETE` | `/{version}/database/schemas/triggers/{triggerId}`                                  | `project` |
 | [`disableSchemaTrigger`](#disableschematrigger)                         | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/disable`                          | `project` |
 | [`enableSchemaTrigger`](#enableschematrigger)                           | `PATCH`  | `/{version}/database/schemas/triggers/{triggerId}/enable`                           | `project` |
@@ -85,28 +84,6 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`analyzeImportFile`](#analyzeimportfile)                               | `POST`   | `/{version}/database/imports/analyze`                                               | `project` |
 
 ## Reference
-
-### enableDatabase
-
-`PUT` `/{version}/database/enable`
-
-Enable the resource.
-
-**Request DTO**: `CodeMashHub2.EnableDatabase`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.database.enableDatabase({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
 
 ### deleteSchemaTrigger
 

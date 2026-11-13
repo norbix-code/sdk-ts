@@ -12,25 +12,6 @@ export class MembershipModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * PUT /{version}/membership/enable
-   * Request DTO: EnableMembership
-   */
-  enableMembership = (
-    request: Partial<CodeMashHub2.EnableMembership> = {} as Partial<CodeMashHub2.EnableMembership>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/membership/enable',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * POST /{version}/membership/users/import
    * Request DTO: ImportUsersRequest
    */

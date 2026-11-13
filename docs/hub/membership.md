@@ -10,7 +10,6 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 
 | Method                                                          | Verb     | Path                                                                  | Scope     |
 | --------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | --------- |
-| [`enableMembership`](#enablemembership)                         | `PUT`    | `/{version}/membership/enable`                                        | `project` |
 | [`importUsers`](#importusers)                                   | `POST`   | `/{version}/membership/users/import`                                  | `project` |
 | [`repairLoginProjectIds`](#repairloginprojectids)               | `POST`   | `/{version}/membership/users/repair-logins`                           | `project` |
 | [`issueServiceUserApiKey`](#issueserviceuserapikey)             | `POST`   | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
@@ -60,28 +59,6 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`removeContactIdentity`](#removecontactidentity)               | `DELETE` | `/{version}/membership/users/{contactId}/identities/{authId}`         | `project` |
 
 ## Reference
-
-### enableMembership
-
-`PUT` `/{version}/membership/enable`
-
-Enable the resource.
-
-**Request DTO**: `CodeMashHub2.EnableMembership`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.membership.enableMembership({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
 
 ### importUsers
 
