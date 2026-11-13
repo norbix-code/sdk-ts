@@ -211,6 +211,17 @@ In all three no `Authorization` header leaves the client, redirects are not foll
 - **Streams are not covered.** `sse()`, `inbox()` and `aiChat()` authenticate with a token, which these clients do not have.
 - `onRequest` sees the `Cookie` header in `session` mode, so do not log headers.
 
+**Social sign-in.** Google, Apple, Microsoft, GitHub, Facebook, X and Okta, for project users. The project's enabled providers are in the public config (`auth.socialSignIn`: `provider`, `displayName`, `startPath`). The browser goes to `api.auth.socialSignInUrl(provider, { returnUrl })` (or `redirectToSocialSignIn`), and your return page calls `api.auth.completeSocialSignIn()`, which trades the one-time code for a JWT (`{ bearerToken, userId, displayName, expiresAt, credentialVersion }`, 14 days, no refresh token). A signed-in user links another provider with `api.membership.startLinkIdentity` and `finishLinkIdentity`. Details: [docs/api/auth.md](docs/api/auth.md#social-sign-in).
+
+```ts
+norbix.api.auth.redirectToSocialSignIn('google', {
+  returnUrl: `${location.origin}/oauth/callback`,
+});
+// on /oauth/callback
+const done = await norbix.api.auth.completeSocialSignIn();
+if (done.kind === 'signedIn') norbix.setBearerToken(done.result.bearerToken);
+```
+
 **Service-user API keys.** A key issued to a service user (`ak-…`) is just another `apiKey` — the SDK sends it as `Authorization: Bearer ak-…`, which the gateway accepts like `X-Api-Key`. Issuing a key (`norbix.hub.membership.issueServiceUserApiKey`) answers with `id`, `environment` and the `key` itself — shown **once**, store it then.
 
 **Project users get no refresh token.** Sign-in answers a project user with a bearer token and `userId` (`usr_…`), but no `refreshToken`, and the SDK never keeps the credentials. When the token expires, the next call fails with a `NorbixError` of status 401 — show your sign-in screen and call `login(...)` again:

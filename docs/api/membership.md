@@ -26,11 +26,12 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`grantContactConsent`](#grantcontactconsent)                           | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/consent`                  | `project` |
 | [`inviteUser`](#inviteuser)                                             | `POST`   | `/{version}/membership/auth/invite`                                                          | `project` |
 | [`finishInvitation`](#finishinvitation)                                 | `POST`   | `/{version}/membership/auth/invitation/finish`                                               | `project` |
-| [`linkIdentity`](#linkidentity)                                         | `POST`   | `/{version}/membership/auth/{userId}/link-identity`                                          | `project` |
+| [`linkIdentity`](#linkidentity)                                         | `POST`   | `/{version}/membership/auth/{UserId}/link-identity`                                          | `project` |
 | [`mapAuthToUser`](#mapauthtouser)                                       | `POST`   | `/{version}/membership/users/{userId}/map-auth`                                              | `project` |
 | [`assignRolePermissions`](#assignrolepermissions)                       | `PUT`    | `/{version}/membership/auth/assign-roles`                                                    | `project` |
 | [`setContactRoles`](#setcontactroles)                                   | `PUT`    | `/{version}/membership/users/{userId}/roles`                                                 | `project` |
 | [`setContactTagSubscription`](#setcontacttagsubscription)               | `PUT`    | `/{version}/membership/users/{contactId}/marketing-state/{commChannel}/{channel}/tags/{tag}` | `project` |
+| [`exchangeSocialSignInCode`](#exchangesocialsignincode)                 | `POST`   | `/{version}/membership/auth/social/{Provider}/exchange`                                      | `project` |
 | [`unblockUser`](#unblockuser)                                           | `PATCH`  | `/{version}/membership/auth/unblock`                                                         | `project` |
 | [`unsubscribeContact`](#unsubscribecontact)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/unsubscribe`              | `project` |
 | [`clearContactBounce`](#clearcontactbounce)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce`             | `project` |
@@ -421,7 +422,7 @@ const result = await norbix.api.membership.finishInvitation({
 
 ### linkIdentity
 
-`POST` `/{version}/membership/auth/{userId}/link-identity`
+`POST` `/{version}/membership/auth/{UserId}/link-identity`
 
 **Request DTO**: `CodeMashApi2.LinkIdentityRequest`
 **Response**: `CodeMashApi2.EmptyResponse`
@@ -432,8 +433,8 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.api.membership.linkIdentity({
-  userId: 'userId-here',
-  // Other fields: see CodeMash type for the full request shape.
+  userId: 'usr_…',
+  code: 'one-time link code',
 });
 // → typed as CodeMashApi2.EmptyResponse
 ```
@@ -524,6 +525,29 @@ const result = await norbix.api.membership.setContactTagSubscription({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### exchangeSocialSignInCode
+
+`POST` `/{version}/membership/auth/social/{Provider}/exchange`
+
+The raw call. `norbix.api.auth.exchangeSocialCode(provider, code)` is the same call with a typed answer; see [Social sign-in](./auth.md#social-sign-in).
+
+**Request DTO**: `CodeMashApi2.ExchangeSocialSignInCodeRequest`
+**Response**: `CodeMashApi2.SocialSignInTokenResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.exchangeSocialSignInCode({
+  provider: 'google',
+  code: 'one-time code',
+});
+// → typed as CodeMashApi2.SocialSignInTokenResponse
 ```
 
 [↑ Top](#endpoints)
@@ -1265,3 +1289,33 @@ const result = await norbix.api.membership.removeContactIdentity({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## Link a social account
+
+`startLinkIdentity` and `finishLinkIdentity` link a Google, Apple, Microsoft, GitHub, Facebook, X or Okta account to the **signed-in** user, for themselves only (`userId` is their own `usr_…` or `ct_…`; they need `membership:updateOwn`).
+
+| Method               | Verb   | Path                                                      |
+| -------------------- | ------ | --------------------------------------------------------- |
+| `startLinkIdentity`  | `POST` | `/{version}/membership/auth/{UserId}/link-identity/start` |
+| `finishLinkIdentity` | `POST` | `/{version}/membership/auth/{UserId}/link-identity`       |
+
+```ts
+// Account settings, signed in as usr_1: "Link Google"
+const { authorizeUrl } = await norbix.api.membership.startLinkIdentity('usr_1', 'google', {
+  returnUrl: 'https://app.example.com/oauth/callback', // optional; origin must be allowed
+});
+location.assign(authorizeUrl);
+
+// The return page: ?intent=link&code=…&provider=google
+const back = norbix.api.auth.readSocialReturn();
+if (back.kind === 'link') await norbix.api.membership.finishLinkIdentity('usr_1', back.code);
+```
+
+- `startLinkIdentity(userId, provider, { mode?, returnUrl? })` answers `{ authorizeUrl }`; send the browser there.
+- `finishLinkIdentity(userId, code)` must be called by the same signed-in user who started, within 2 minutes; the code works once.
+- An account that already belongs to another user is refused with `CM-ERRORS-MEMBERSHIP-055` (409) and is never moved. A `userId` that is not yours, or a code someone else started, is `CM-ERRORS-MEMBERSHIP-056` (403).
+- `linkIdentity` above is the same finishing call with the raw request.
+
+<!-- @hand-written:end -->

@@ -128,6 +128,36 @@ export type TransportMiddleware = (ctx: {
 export class Transport {
   constructor(private readonly cfg: ResolvedNorbixConfig) {}
 
+  /**
+   * The full URL of a `GET` route that a browser navigates to (a link or a
+   * redirect, not a fetch). A navigation carries no headers, so the project id
+   * and a non-PROD env go into the query string instead of `norbix-project-id`
+   * and `norbix-env` (`?projectId=…&env=…`, env only when not PROD). Path tokens
+   * are filled from `request`; its other fields follow as query parameters, in
+   * order, and `undefined` is left out.
+   */
+  navigationUrl(opts: {
+    target: 'api' | 'hub';
+    path: string;
+    request: Record<string, unknown>;
+    env?: string;
+  }): string {
+    const env = opts.env ?? this.cfg.env;
+    const request: Record<string, unknown> = { projectId: this.cfg.projectId };
+    if (env && env !== 'PROD') request.env = env;
+    for (const [key, value] of Object.entries(opts.request)) {
+      if (value !== undefined) request[key] = value;
+    }
+    return buildUrlAndBody({
+      baseUrl: opts.target === 'api' ? this.cfg.baseUrl.api : this.cfg.baseUrl.hub,
+      path: opts.path,
+      method: 'GET',
+      version: opts.target === 'api' ? this.cfg.apiVersion : this.cfg.hubVersion,
+      request,
+      pathParams: [],
+    }).url;
+  }
+
   async send<TResponse>(opts: RequestOptions): Promise<TResponse> {
     if (opts.scope === 'account' && !this.cfg.accountId) {
       throw new NorbixError({

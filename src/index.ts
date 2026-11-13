@@ -20,6 +20,11 @@ export type {
   NorbixConfig,
   SignInCredentials,
   SignInResult,
+  SocialProvider,
+  SocialReturn,
+  SocialSignInCompletion,
+  SocialSignInResult,
+  SocialSignInUrlOptions,
 } from './client/types.js';
 export { loadEnvConfig } from './client/env.js';
 export type { EnvConfig } from './client/env.js';
