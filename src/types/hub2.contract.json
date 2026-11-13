@@ -523,10 +523,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "DisableDatabase": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "DisableDatabaseIntegrationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -572,10 +568,6 @@
     "returnsBytes": false
   },
   "DisableMcpIntegrationRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "DisableMembership": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -675,10 +667,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "EnableDatabase": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "EnableDatabaseIntegrationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -724,10 +712,6 @@
     "returnsBytes": false
   },
   "EnableMcpIntegrationRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "EnableMembership": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2196,10 +2180,6 @@
     "returnsBytes": false
   },
   "SetMarketplaceIntegrationTokenMappingsRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetMembershipIntegrationAsDefaultRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
