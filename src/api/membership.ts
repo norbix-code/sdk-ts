@@ -1,4 +1,6 @@
+import { NorbixError } from '../client/errors.js'; // @hand-written
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
+import type { SocialProvider } from '../client/types.js'; // @hand-written
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
@@ -6,7 +8,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 56
+ * Endpoints: 58
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -316,7 +318,7 @@ export class MembershipModule {
   };
 
   /**
-   * POST /{version}/membership/auth/{userId}/link-identity
+   * POST /{version}/membership/auth/{UserId}/link-identity
    * Request DTO: LinkIdentityRequest
    */
   linkIdentity = (
@@ -325,10 +327,10 @@ export class MembershipModule {
   ): Promise<CodeMashApi2.EmptyResponse> => {
     return this.transport.send<CodeMashApi2.EmptyResponse>({
       target: 'api',
-      path: '/{version}/membership/auth/{userId}/link-identity',
+      path: '/{version}/membership/auth/{UserId}/link-identity',
       method: 'POST',
       request,
-      pathParams: ['userId'],
+      pathParams: ['UserId'],
       scope: 'project',
       ...options,
     });
@@ -406,6 +408,25 @@ export class MembershipModule {
       request,
       pathParams: ['contactId', 'commChannel', 'channel', 'tag'],
       scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/auth/social/{Provider}/exchange
+   * Request DTO: ExchangeSocialSignInCodeRequest
+   */
+  exchangeSocialSignInCode = (
+    request: Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest> = {} as Partial<CodeMashApi2.ExchangeSocialSignInCodeRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.SocialSignInTokenResponse> => {
+    return this.transport.send<CodeMashApi2.SocialSignInTokenResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/social/{Provider}/exchange',
+      method: 'POST',
+      request,
+      pathParams: ['Provider'],
+      scope: 'optional',
       ...options,
     });
   };
@@ -1074,4 +1095,64 @@ export class MembershipModule {
       ...options,
     });
   };
+
+  // @hand-written:begin
+  /**
+   * POST /{version}/membership/auth/{UserId}/link-identity/start — signed in, for
+   * yourself only (`userId` is your own `usr_…` or `ct_…`). Answers the
+   * provider's sign-in page: send the browser to `authorizeUrl`. The gateway
+   * sends it back to your page with `?intent=link&code=…&provider=…`; finish
+   * with `finishLinkIdentity` as the same user within 2 minutes.
+   *
+   * Not generated as a plain request method: the start answers a URL the app
+   * must navigate to, so the SDK checks it is there.
+   */
+  startLinkIdentity = async (
+    userId: string,
+    provider: SocialProvider | string,
+    link: { mode?: string; returnUrl?: string } = {},
+    options: RequestOverrideOptions = {},
+  ): Promise<{ authorizeUrl: string }> => {
+    const answer = await this.transport.send<CodeMashApi2.StartLinkIdentityResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/{UserId}/link-identity/start',
+      method: 'POST',
+      request: { userId, provider, mode: link.mode, returnUrl: link.returnUrl },
+      pathParams: ['UserId'],
+      scope: 'project',
+      ...options,
+    });
+    if (!answer?.authorizeUrl) {
+      throw new NorbixError({
+        message: 'The link-identity answer carries no authorizeUrl.',
+        status: 0,
+        code: 'NORBIX_NO_AUTHORIZE_URL',
+      });
+    }
+    return { authorizeUrl: answer.authorizeUrl };
+  };
+
+  /**
+   * POST /{version}/membership/auth/{UserId}/link-identity — signed in, as the
+   * same user who started the link. `code` is the one-time link code from the
+   * return page (`intent=link`). A provider account that belongs to another
+   * user is refused with CM-ERRORS-MEMBERSHIP-055 (409); a `userId` that is not
+   * yours, or a code someone else started, with -056 (403).
+   */
+  finishLinkIdentity = async (
+    userId: string,
+    code: string,
+    options: RequestOverrideOptions = {},
+  ): Promise<void> => {
+    await this.transport.send<CodeMashApi2.EmptyResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/{UserId}/link-identity',
+      method: 'POST',
+      request: { userId, code },
+      pathParams: ['UserId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+  // @hand-written:end
 }

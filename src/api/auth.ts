@@ -1,6 +1,15 @@
 import { NorbixError, NorbixSessionExpiredError } from '../client/errors.js'; // @hand-written
 import type { RequestOverrideOptions, Transport } from '../client/transport.js';
-import type { BrowserSignInResult, SignInCredentials, SignInResult } from '../client/types.js'; // @hand-written
+import type {
+  BrowserSignInResult,
+  SignInCredentials,
+  SignInResult,
+  SocialProvider,
+  SocialReturn,
+  SocialSignInCompletion,
+  SocialSignInResult,
+  SocialSignInUrlOptions,
+} from '../client/types.js'; // @hand-written
 import type { CodeMashApi2 } from '../types/api2.dtos.js';
 
 /**
@@ -127,6 +136,120 @@ export class AuthModule {
       if (!(err instanceof NorbixSessionExpiredError)) throw err;
     }
   };
+
+  /**
+   * The URL that starts a project social sign-in:
+   * `GET {api}/{version}/membership/auth/social/{provider}?projectId=…[&env=…][&mode=…][&returnUrl=…]`.
+   * Not a call: the browser navigates there and the gateway answers with a
+   * redirect to the provider. A navigation carries no headers, so the project id
+   * and a non-PROD env travel in the query. The same URL is
+   * `{api}{startPath}` from the public config's `auth.socialSignIn`, plus your
+   * `mode` / `returnUrl`.
+   */
+  socialSignInUrl = (
+    provider: SocialProvider | string,
+    options: SocialSignInUrlOptions = {},
+  ): string =>
+    this.transport.navigationUrl({
+      target: 'api',
+      path: '/{version}/membership/auth/social/{provider}',
+      request: { provider, mode: options.mode, returnUrl: options.returnUrl },
+      env: options.env,
+    });
+
+  /**
+   * POST /{version}/membership/auth/social/{provider}/exchange. Trades the
+   * one-time code from the return page (2 minutes, once) for the same JWT a
+   * project password sign-in gives: 14 days, no refresh token, no cookie
+   * session. Use it as a bearer token, e.g. `norbix.setBearerToken(bearerToken)`.
+   * Sends no token of its own. A used, expired or unknown code is refused with
+   * CM-ERRORS-MEMBERSHIP-051.
+   */
+  exchangeSocialCode = async (
+    provider: SocialProvider | string,
+    code: string,
+    options: RequestOverrideOptions = {},
+  ): Promise<SocialSignInResult> => {
+    const answer = await this.transport.send<CodeMashApi2.SocialSignInTokenResponse>({
+      target: 'api',
+      path: '/{version}/membership/auth/social/{provider}/exchange',
+      method: 'POST',
+      request: { provider, code },
+      pathParams: ['provider'],
+      scope: 'unauthenticated',
+      ...options,
+    });
+    if (!answer?.bearerToken) {
+      throw new NorbixError({
+        message: 'The social sign-in answer carries no bearer token.',
+        status: 0,
+        code: 'NORBIX_NO_TOKEN',
+      });
+    }
+    return {
+      bearerToken: answer.bearerToken,
+      userId: answer.userId,
+      displayName: answer.displayName,
+      expiresAt: answer.expiresAt,
+      credentialVersion: answer.meta?.['credentialVersion'],
+    };
+  };
+
+  /**
+   * Browser only: send the page to `socialSignInUrl(provider, options)`. Pass a
+   * `returnUrl` (or use a mode whose page is your return page), and on that page
+   * call `completeSocialSignIn()`.
+   */
+  redirectToSocialSignIn = (
+    provider: SocialProvider | string,
+    options: SocialSignInUrlOptions = {},
+  ): void => {
+    const location = browserLocation();
+    if (!location) {
+      throw new NorbixError({
+        message: 'redirectToSocialSignIn needs a browser; use socialSignInUrl on a server.',
+        status: 0,
+        code: 'NORBIX_NOT_BROWSER',
+      });
+    }
+    location.assign(this.socialSignInUrl(provider, options));
+  };
+
+  /**
+   * Read what the gateway sent the browser back with. `url` defaults to the
+   * current page. Tokens never travel in the URL: only a one-time code
+   * (`code`, `provider`, and `intent=link` for a link) or `error`.
+   */
+  readSocialReturn = (url?: string | URL): SocialReturn => {
+    const href = url ?? browserLocation()?.href;
+    if (!href) return { kind: 'none' };
+    const query = new URL(String(href), 'http://localhost').searchParams;
+    const provider = query.get('provider') ?? undefined;
+    const error = query.get('error');
+    if (error) return provider ? { kind: 'error', error, provider } : { kind: 'error', error };
+    const code = query.get('code');
+    if (!code || !provider) return { kind: 'none' };
+    return query.get('intent') === 'link'
+      ? { kind: 'link', provider, code }
+      : { kind: 'signIn', provider, code };
+  };
+
+  /**
+   * The return page in one call: read the answer (`url` defaults to the current
+   * page) and, for a sign-in code, exchange it. A link code is handed back
+   * untouched (`kind: 'link'`) — finish it with
+   * `api.membership.finishLinkIdentity` as the signed-in user. The SDK does not
+   * store the token: call `norbix.setBearerToken(result.bearerToken)`.
+   */
+  completeSocialSignIn = async (
+    url?: string | URL,
+    options: RequestOverrideOptions = {},
+  ): Promise<SocialSignInCompletion> => {
+    const answer = this.readSocialReturn(url);
+    if (answer.kind !== 'signIn') return answer;
+    const result = await this.exchangeSocialCode(answer.provider, answer.code, options);
+    return { kind: 'signedIn', provider: answer.provider, result };
+  };
   // @hand-written:end
 }
 
@@ -138,4 +261,9 @@ function passwordChangeOf(meta: { [key: string]: string } | undefined): {
   passwordChangeRequired?: true;
 } {
   return meta?.['passwordChangeRequired'] === 'true' ? { passwordChangeRequired: true } : {};
+}
+
+/** The page's location in a browser; undefined in Node. */
+function browserLocation(): { href: string; assign(url: string): void } | undefined {
+  return (globalThis as { location?: { href: string; assign(url: string): void } }).location;
 }

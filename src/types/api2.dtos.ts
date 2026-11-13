@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-12 13:10:05
+Date: 2026-11-13 16:53:16
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1065,6 +1065,16 @@ export module CodeMashApi2 {
     }
   }
 
+  export class PublicSocialSignInDto {
+    public provider: string;
+    public displayName: string;
+    public startPath: string;
+
+    public constructor(init?: Partial<PublicSocialSignInDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class PublicPasswordPolicyDto {
     public minLength: number;
     public maxLength?: number;
@@ -1081,6 +1091,7 @@ export module CodeMashApi2 {
 
   export class PublicAuthDto {
     public socialProviders: string[] = [];
+    public socialSignIn: PublicSocialSignInDto[] = [];
     public passkey: boolean;
     public methods?: string[];
     public passwordPolicy?: PublicPasswordPolicyDto;
@@ -3792,6 +3803,48 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class StartLinkIdentityResponse extends ResponseBase {
+    // @DataMember
+    public authorizeUrl?: string;
+
+    public constructor(init?: Partial<StartLinkIdentityResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SocialSignInStartResponse extends ResponseBase {
+    public constructor(init?: Partial<SocialSignInStartResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class SocialSignInTokenResponse extends ResponseBase {
+    // @DataMember
+    public bearerToken?: string;
+
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public displayName?: string;
+
+    // @DataMember
+    public expiresAt?: string;
+
+    // @DataMember
+    public meta?: { [index: string]: string };
+
+    public constructor(init?: Partial<SocialSignInTokenResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CredentialChangedResponse extends ResponseBase {
     // @DataMember
     public authId?: string;
@@ -4823,9 +4876,10 @@ export module CodeMashApi2 {
   // @Route("/{version}/public/projects/{ProjectId}/config", "GET")
   export class GetPublicProjectConfig
     extends RequestBase
-    implements IReturn<PublicProjectConfigDto>
+    implements IReturn<PublicProjectConfigDto>, IHasEnv
   {
     public projectId?: string;
+    public env?: string;
 
     public constructor(init?: Partial<GetPublicProjectConfig>) {
       super(init);
@@ -5878,7 +5932,44 @@ export module CodeMashApi2 {
   }
 
   /** @description Membership */
-  // @Route("/{version}/membership/auth/{userId}/link-identity", "POST")
+  // @Route("/{version}/membership/auth/{UserId}/link-identity/start", "POST")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class StartLinkIdentityRequest
+    extends CodeMashRequestBase
+    implements IReturn<StartLinkIdentityResponse>
+  {
+    // @DataMember
+    public userId: string;
+
+    /** @description google, apple, microsoft, github, facebook, x or okta. */
+    // @DataMember
+    // @ApiMember(Description="google, apple, microsoft, github, facebook, x or okta.", IsRequired=true)
+    public provider: string;
+
+    // @DataMember
+    public mode?: string;
+
+    // @DataMember
+    public returnUrl?: string;
+
+    public constructor(init?: Partial<StartLinkIdentityRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartLinkIdentityRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartLinkIdentityResponse();
+    }
+  }
+
+  /** @description Membership */
+  // @Route("/{version}/membership/auth/{UserId}/link-identity", "POST")
   // @Api(Description="Membership")
   // @DataContract
   export class LinkIdentityRequest extends CodeMashRequestBase implements IReturn<EmptyResponse> {
@@ -5886,16 +5977,7 @@ export module CodeMashApi2 {
     public userId: string;
 
     // @DataMember
-    public provider: string;
-
-    // @DataMember
-    public providerToken: string;
-
-    // @DataMember
-    public emailToVerify?: string;
-
-    // @DataMember
-    public databaseIntegrationId?: string;
+    public code: string;
 
     public constructor(init?: Partial<LinkIdentityRequest>) {
       super(init);
@@ -6048,6 +6130,112 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Membership */
+  // @Route("/{version}/membership/auth/social/{Provider}", "GET")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class StartSocialSignInRequest
+    extends CodeMashRequestBase
+    implements IReturn<SocialSignInStartResponse>
+  {
+    /** @description google, apple, microsoft, github, facebook, x or okta. */
+    // @DataMember
+    // @ApiMember(Description="google, apple, microsoft, github, facebook, x or okta.", IsRequired=true)
+    public provider: string;
+
+    /** @description Name of the integration's OAuth mode (which app page to come back to). Default: the only mode, else the first by name. */
+    // @DataMember
+    // @ApiMember(Description="Name of the integration's OAuth mode (which app page to come back to). Default: the only mode, else the first by name.")
+    public mode?: string;
+
+    /** @description Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins. Wins over the mode's pages. */
+    // @DataMember
+    // @ApiMember(Description="Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins. Wins over the mode's pages.")
+    public returnUrl?: string;
+
+    public constructor(init?: Partial<StartSocialSignInRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartSocialSignInRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new SocialSignInStartResponse();
+    }
+  }
+
+  /** @description Membership */
+  // @Route("/{version}/membership/auth/social/{Provider}/callback/{ProjectId}", "GET POST")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class SocialSignInCallbackRequest
+    extends CodeMashRequestBase
+    implements IReturn<SocialSignInStartResponse>
+  {
+    // @DataMember
+    public provider: string;
+
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public state?: string;
+
+    // @DataMember
+    public error?: string;
+
+    public constructor(init?: Partial<SocialSignInCallbackRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SocialSignInCallbackRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new SocialSignInStartResponse();
+    }
+  }
+
+  /** @description Membership */
+  // @Route("/{version}/membership/auth/social/{Provider}/exchange", "POST")
+  // @Api(Description="Membership")
+  // @DataContract
+  export class ExchangeSocialSignInCodeRequest
+    extends CodeMashRequestBase
+    implements IReturn<SocialSignInTokenResponse>
+  {
+    /** @description google, apple, microsoft, github, facebook, x or okta. */
+    // @DataMember
+    // @ApiMember(Description="google, apple, microsoft, github, facebook, x or okta.", IsRequired=true)
+    public provider: string;
+
+    /** @description The one-time code from the callback URL (valid 2 minutes, once). */
+    // @DataMember
+    // @ApiMember(Description="The one-time code from the callback URL (valid 2 minutes, once).", IsRequired=true)
+    public code: string;
+
+    public constructor(init?: Partial<ExchangeSocialSignInCodeRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ExchangeSocialSignInCodeRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new SocialSignInTokenResponse();
     }
   }
 

@@ -306,3 +306,67 @@ export interface BrowserSignInResult {
    */
   passwordChangeRequired?: boolean;
 }
+
+/**
+ * A social sign-in provider the gateway knows. Any case is accepted; a project
+ * offers only the providers it has an enabled Membership integration for (the
+ * public config lists them in `auth.socialSignIn`).
+ */
+export type SocialProvider =
+  'google' | 'apple' | 'microsoft' | 'github' | 'facebook' | 'x' | 'okta';
+
+/** Options of `api.auth.socialSignInUrl(...)` and `redirectToSocialSignIn(...)`. */
+export interface SocialSignInUrlOptions {
+  /**
+   * Name of the integration's OAuth mode (which app page to come back to, and
+   * which role a new user may get). Default: the only mode, else the first by name.
+   */
+  mode?: string;
+  /**
+   * App page to come back to, on success and on failure. Absolute https (http
+   * only on localhost), and its origin must be one of the project's allowed
+   * origins. Wins over the mode's pages.
+   */
+  returnUrl?: string;
+  /** Project environment. Default: the client's `env`; PROD adds nothing to the URL. */
+  env?: string;
+}
+
+/**
+ * What `api.auth.exchangeSocialCode(...)` answers: the same JWT a project
+ * password sign-in gives (14 days, no refresh token, no cookie session).
+ */
+export interface SocialSignInResult {
+  /** The JWT. Use it as a bearer token: `norbix.setBearerToken(bearerToken)`. */
+  bearerToken: string;
+  /** The user's id, `usr_…`. */
+  userId?: string;
+  displayName?: string;
+  /** When the JWT expires (ISO 8601). */
+  expiresAt?: string;
+  /** Version of the user's credentials when the token was issued. */
+  credentialVersion?: string;
+}
+
+/**
+ * What the app page that the gateway sends the browser back to holds, read by
+ * `api.auth.readSocialReturn(...)`:
+ *  - `signIn`: a one-time sign-in code (2 minutes, once) — exchange it;
+ *  - `link`: a one-time link code — finish with `api.membership.finishLinkIdentity`
+ *    as the same signed-in user who started the link;
+ *  - `error`: the gateway refused; `error` is a reason such as `email_in_use`,
+ *    `invite_only`, `user_blocked`, `access_denied` or `state_mismatch`;
+ *  - `none`: the page was opened without a social sign-in answer.
+ */
+export type SocialReturn =
+  | { kind: 'signIn'; provider: string; code: string }
+  | { kind: 'link'; provider: string; code: string }
+  | { kind: 'error'; error: string; provider?: string }
+  | { kind: 'none' };
+
+/** What `api.auth.completeSocialSignIn(...)` answers. */
+export type SocialSignInCompletion =
+  | { kind: 'signedIn'; provider: string; result: SocialSignInResult }
+  | { kind: 'link'; provider: string; code: string }
+  | { kind: 'error'; error: string; provider?: string }
+  | { kind: 'none' };

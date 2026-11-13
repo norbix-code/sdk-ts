@@ -155,6 +155,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "ExchangeSocialSignInCodeRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "ExecuteAggregateRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -687,6 +691,10 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
+  "SocialSignInCallbackRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "StartEmailVerificationRequest": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -695,8 +703,16 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "StartLinkIdentityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "StartPaymentCheckoutRequest": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StartSocialSignInRequest": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "StopEmailCampaignRequest": {
