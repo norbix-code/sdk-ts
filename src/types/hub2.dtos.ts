@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-13 18:35:01
+Date: 2026-11-13 19:23:45
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6345,12 +6345,12 @@ export module CodeMashHub2 {
     correlationId?: string;
   }
 
-  export interface IHasProjectId {
-    projectId: string;
-  }
-
   export interface IHasEnv {
     env?: string;
+  }
+
+  export interface IHasProjectId {
+    projectId: string;
   }
 
   export enum ManagedServiceBundle {
@@ -7102,9 +7102,9 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Action kinds: the trigger action body (type may be left out — the kind implies it).")
     public action?: { [index: string]: Object };
 
-    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency. */
+    /** @description Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds, notify | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency. One assignees entry is a usr_ id, a @Model.* binding, or a rule: role:<name or id>, tag:<name>, the two joined with '+', or teamrole:<name>. */
     // @DataMember
-    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency.")
+    // @ApiMember(Description="Flow kinds: expression | level, message, meta | seconds, until | mode, key, inputs, assignees, timeoutSeconds, notify | branches, join | mode | workflowRef, payload, wait, timeoutSeconds | items, body, concurrency. One assignees entry is a usr_ id, a @Model.* binding, or a rule: role:<name or id>, tag:<name>, the two joined with '+', or teamrole:<name>.")
     public config?: { [index: string]: Object };
 
     public constructor(init?: Partial<WorkflowStepDto>) {
@@ -7119,14 +7119,14 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Step executions per run; default 200, cap 5000.")
     public maxStepRuns?: number;
 
-    /** @description Wall-clock from start, including parked time; default 604800 (7 days), cap 2592000. */
+    /** @description Wall-clock from start, including parked time; default 604800 (7 days), cap 31536000 (one year). */
     // @DataMember
-    // @ApiMember(Description="Wall-clock from start, including parked time; default 604800 (7 days), cap 2592000.")
+    // @ApiMember(Description="Wall-clock from start, including parked time; default 604800 (7 days), cap 31536000 (one year).")
     public maxDurationSeconds?: number;
 
-    /** @description The longest one delay / wait may park; default 604800, cap 2592000. */
+    /** @description The longest one delay / wait may park; default 604800 (7 days), cap 31536000 (one year). A signed resume link still lives at most 7 days, so a longer wait is answered in the dashboard, the CLI or an SDK. */
     // @DataMember
-    // @ApiMember(Description="The longest one delay / wait may park; default 604800, cap 2592000.")
+    // @ApiMember(Description="The longest one delay / wait may park; default 604800 (7 days), cap 31536000 (one year). A signed resume link still lives at most 7 days, so a longer wait is answered in the dashboard, the CLI or an SDK.")
     public maxWaitSeconds?: number;
 
     /** @description Branch heads per parallel; default 10, cap 20. */
@@ -12063,12 +12063,63 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowWaitSlotDto {
+    /** @description As the author wrote it: a usr_ id, role:<name>, tag:<name>, role:<name>+tag:<name> or teamrole:<name>. Show this. */
+    // @DataMember
+    // @ApiMember(Description="As the author wrote it: a usr_ id, role:<name>, tag:<name>, role:<name>+tag:<name> or teamrole:<name>. Show this.")
+    public label: string;
+
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public role?: string;
+
+    // @DataMember
+    public tag?: string;
+
+    // @DataMember
+    public teamRole?: boolean;
+
+    // @DataMember
+    public answeredBy?: string;
+
+    // @DataMember
+    public decision?: string;
+
+    // @DataMember
+    public at?: string;
+
+    /** @description True = somebody who was not asked answered for this slot, using the override right. */
+    // @DataMember
+    // @ApiMember(Description="True = somebody who was not asked answered for this slot, using the override right.")
+    public override?: boolean;
+
+    public constructor(init?: Partial<WorkflowWaitSlotDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowWaitAnswerDto {
     // @DataMember
     public userId: string;
 
     // @DataMember
+    public kind?: string;
+
+    // @DataMember
     public decision: string;
+
+    /** @description Which slots this answer filled (places in `slots`, from 0). One person who matches two rules fills both with one answer. */
+    // @DataMember
+    // @ApiMember(Description="Which slots this answer filled (places in `slots`, from 0). One person who matches two rules fills both with one answer.")
+    public slots?: number[];
+
+    /** @description True = this person was not asked and answered on the override right. */
+    // @DataMember
+    // @ApiMember(Description="True = this person was not asked and answered on the override right.")
+    public override?: boolean;
 
     // @DataMember
     public at: string;
@@ -12092,14 +12143,28 @@ export module CodeMashHub2 {
     // @DataMember
     public key?: string;
 
+    /** @description The people told when the wait parked. An approval addressed to a role tells everybody who held that role then, so this list can be longer or shorter than `slots` — count `slots`, never this. */
     // @DataMember
+    // @ApiMember(Description="The people told when the wait parked. An approval addressed to a role tells everybody who held that role then, so this list can be longer or shorter than `slots` — count `slots`, never this.")
     public assignees?: string[];
 
+    /** @description A group approval: how many of `slots` must approve. Absent = the first answer decides. */
     // @DataMember
+    // @ApiMember(Description="A group approval: how many of `slots` must approve. Absent = the first answer decides.")
     public require?: number;
+
+    /** @description One entry per thing the approval asks for: a person or a rule, and whether it is filled. The unit `require`, `approvals` and `rejections` count. */
+    // @DataMember
+    // @ApiMember(Description="One entry per thing the approval asks for: a person or a rule, and whether it is filled. The unit `require`, `approvals` and `rejections` count.")
+    public slots?: WorkflowWaitSlotDto[];
 
     // @DataMember
     public answers?: WorkflowWaitAnswerDto[];
+
+    /** @description Inbox rows only: true = this approval is yours; false = none of it is yours, so answering it is an override, if you hold the right. Absent = nobody is asked for a slot here, or it was not worked out. */
+    // @DataMember
+    // @ApiMember(Description="Inbox rows only: true = this approval is yours; false = none of it is yours, so answering it is an override, if you hold the right. Absent = nobody is asked for a slot here, or it was not worked out.")
+    public mine?: boolean;
 
     // @DataMember
     public childRunId?: string;
@@ -22740,40 +22805,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/membership/disable", "PUT")
-  export class DisableMembership extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    public constructor(init?: Partial<DisableMembership>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DisableMembership';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  // @Route("/{version}/membership/enable", "PUT")
-  export class EnableMembership extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    public constructor(init?: Partial<EnableMembership>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'EnableMembership';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
   /** @description Import users with their existing password hashes */
   // @Route("/{version}/membership/users/import", "POST")
   // @Api(Description="Import users with their existing password hashes")
@@ -23525,30 +23556,6 @@ export module CodeMashHub2 {
     }
   }
 
-  // @Route("/{version}/membership/integrations/{Id}/default", "PUT")
-  export class SetMembershipIntegrationAsDefaultRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description Integration id, from get_membership_integrations. */
-    // @ApiMember(Description="Integration id, from get_membership_integrations.", IsRequired=true)
-    public id: string;
-
-    public constructor(init?: Partial<SetMembershipIntegrationAsDefaultRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'SetMembershipIntegrationAsDefaultRequest';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
   /** @description Lists the execution identities (project service users) of an environment. */
   // @Route("/{version}/membership/execution-identities", "GET")
   // @Api(Description="Lists the execution identities (project service users) of an environment.")
@@ -23823,42 +23830,6 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'UpdateAuthenticationSettings';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Disable database service */
-  // @Route("/{version}/database/disable", "PUT")
-  // @Api(Description="Disable database service")
-  export class DisableDatabase extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    public constructor(init?: Partial<DisableDatabase>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'DisableDatabase';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  // @Route("/{version}/database/enable", "PUT")
-  export class EnableDatabase extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    public constructor(init?: Partial<EnableDatabase>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'EnableDatabase';
     }
     public getMethod() {
       return 'PUT';

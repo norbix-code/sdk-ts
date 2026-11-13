@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-13 18:35:00
+Date: 2026-11-13 19:23:44
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -378,6 +378,10 @@ export module CodeMashApi2 {
     correlationId?: string;
   }
 
+  export interface IHasEnv {
+    env?: string;
+  }
+
   // @DataContract(Namespace="http://codemash.io/types/")
   export class CodeMashRequestBase extends RequestBase implements IHasProjectId, IHasEnv {
     /** @description ID of your project. Can be passed in a header as norbix-project-id. */
@@ -398,10 +402,6 @@ export module CodeMashApi2 {
 
   export interface IHasProjectId {
     projectId: string;
-  }
-
-  export interface IHasEnv {
-    env?: string;
   }
 
   export enum Gender {
@@ -1982,12 +1982,63 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class WorkflowWaitSlotDto {
+    /** @description As the author wrote it: a usr_ id, role:<name>, tag:<name>, role:<name>+tag:<name> or teamrole:<name>. Show this. */
+    // @DataMember
+    // @ApiMember(Description="As the author wrote it: a usr_ id, role:<name>, tag:<name>, role:<name>+tag:<name> or teamrole:<name>. Show this.")
+    public label: string;
+
+    // @DataMember
+    public userId?: string;
+
+    // @DataMember
+    public role?: string;
+
+    // @DataMember
+    public tag?: string;
+
+    // @DataMember
+    public teamRole?: boolean;
+
+    // @DataMember
+    public answeredBy?: string;
+
+    // @DataMember
+    public decision?: string;
+
+    // @DataMember
+    public at?: string;
+
+    /** @description True = somebody who was not asked answered for this slot, using the override right. */
+    // @DataMember
+    // @ApiMember(Description="True = somebody who was not asked answered for this slot, using the override right.")
+    public override?: boolean;
+
+    public constructor(init?: Partial<WorkflowWaitSlotDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowWaitAnswerDto {
     // @DataMember
     public userId: string;
 
     // @DataMember
+    public kind?: string;
+
+    // @DataMember
     public decision: string;
+
+    /** @description Which slots this answer filled (places in `slots`, from 0). One person who matches two rules fills both with one answer. */
+    // @DataMember
+    // @ApiMember(Description="Which slots this answer filled (places in `slots`, from 0). One person who matches two rules fills both with one answer.")
+    public slots?: number[];
+
+    /** @description True = this person was not asked and answered on the override right. */
+    // @DataMember
+    // @ApiMember(Description="True = this person was not asked and answered on the override right.")
+    public override?: boolean;
 
     // @DataMember
     public at: string;
@@ -2011,14 +2062,28 @@ export module CodeMashApi2 {
     // @DataMember
     public key?: string;
 
+    /** @description The people told when the wait parked. An approval addressed to a role tells everybody who held that role then, so this list can be longer or shorter than `slots` — count `slots`, never this. */
     // @DataMember
+    // @ApiMember(Description="The people told when the wait parked. An approval addressed to a role tells everybody who held that role then, so this list can be longer or shorter than `slots` — count `slots`, never this.")
     public assignees?: string[];
 
+    /** @description A group approval: how many of `slots` must approve. Absent = the first answer decides. */
     // @DataMember
+    // @ApiMember(Description="A group approval: how many of `slots` must approve. Absent = the first answer decides.")
     public require?: number;
+
+    /** @description One entry per thing the approval asks for: a person or a rule, and whether it is filled. The unit `require`, `approvals` and `rejections` count. */
+    // @DataMember
+    // @ApiMember(Description="One entry per thing the approval asks for: a person or a rule, and whether it is filled. The unit `require`, `approvals` and `rejections` count.")
+    public slots?: WorkflowWaitSlotDto[];
 
     // @DataMember
     public answers?: WorkflowWaitAnswerDto[];
+
+    /** @description Inbox rows only: true = this approval is yours; false = none of it is yours, so answering it is an override, if you hold the right. Absent = nobody is asked for a slot here, or it was not worked out. */
+    // @DataMember
+    // @ApiMember(Description="Inbox rows only: true = this approval is yours; false = none of it is yours, so answering it is an override, if you hold the right. Absent = nobody is asked for a slot here, or it was not worked out.")
+    public mine?: boolean;
 
     // @DataMember
     public childRunId?: string;
