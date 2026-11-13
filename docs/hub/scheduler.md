@@ -222,3 +222,50 @@ const result = await norbix.hub.scheduler.saveSchedulerTask({
 ```
 
 [↑ Top](#endpoints)
+
+<!-- @hand-written:begin -->
+
+## Task bodies: Code call and Workflow call
+
+`task` is picked by its `type`. Besides the email, SMS and push campaign tasks, the gateway runs a cloud-function call and a workflow start; build them from the generated types:
+
+```ts
+import { CodeMashHub2 } from '@norbix.ai/ts';
+
+// Call a cloud function on every fire (the task's initiator needs code:execute on the integration).
+await norbix.hub.scheduler.saveSchedulerTask({
+  name: 'Nightly report',
+  cron: '0 2 * * *', // 5 fields, UTC
+  initiatorUserId: 'usr_…',
+  isEnabled: true,
+  stopOnError: false,
+  task: new CodeMashHub2.CodeFunctionSchedulerTaskRequest({
+    type: CodeMashHub2.SchedulerTaskType.CodeFunctionalCall,
+    functionRef: {
+      integrationId: 'int_lambda',
+      functionId: 'nightly-report',
+      qualifier: 'live',
+    } as CodeMashHub2.FunctionRefDto,
+    invocationType: CodeMashHub2.CodeInvocationType.Async,
+    config: '{"source":"scheduler"}', // map every @Model.X binding in mappedTokens
+  }),
+});
+
+// Start a workflow on every fire (the run acts as the workflow's own identity).
+await norbix.hub.scheduler.saveSchedulerTask({
+  name: 'Nightly onboarding sweep',
+  cron: '0 3 * * *',
+  initiatorUserId: 'usr_…',
+  isEnabled: true,
+  stopOnError: false,
+  task: new CodeMashHub2.WorkflowSchedulerTaskRequest({
+    type: CodeMashHub2.SchedulerTaskType.WorkflowCall,
+    workflowRef: 'wf_…',
+    payload: { source: 'scheduler' }, // strings only: the run's @Model.Request.* values
+  }),
+});
+```
+
+They go on the wire as `"task": {"type": "CodeFunctionalCall", "functionRef": {…}, "invocationType": "Async", "config": "…"}` and `"task": {"type": "WorkflowCall", "workflowRef": "wf_…", "payload": {"source": "scheduler"}}` (`tests/hub/scheduler-task-bodies.test.ts`). `WebhookCall` is refused on save. `getSchedulerTaskRuns({ id, take })` reads a task's latest runs (1–50, default 10), newest first; `outcome` is the string `'Fired'`, `'Failed'` or `'Skipped'`.
+
+<!-- @hand-written:end -->

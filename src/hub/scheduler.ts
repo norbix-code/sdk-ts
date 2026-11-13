@@ -146,10 +146,14 @@ export type PushCampaignSchedulerTaskInput = Omit<
 /**
  * The `task` of {@link SchedulerModule.saveSchedulerTask}. The gateway runs
  * email, SMS and push campaign tasks (`EmailCampaign`, `SmsCampaign`,
- * `PushCampaign`); webhook and code tasks (`WebhookCall`,
- * `CodeFunctionalCall`) are not supported yet and are rejected. A
+ * `PushCampaign`), cloud-function calls (`CodeFunctionalCall`:
+ * `CodeMashHub2.CodeFunctionSchedulerTaskRequest` with `functionRef`,
+ * `invocationType`, `config`, `mappedTokens`), marketplace-function calls
+ * (`MarketplaceFunctionCall`) and workflow starts (`WorkflowCall`:
+ * `CodeMashHub2.WorkflowSchedulerTaskRequest` with `workflowRef` and a
+ * string `payload`); `WebhookCall` is refused on save. Any
  * `SchedulerTaskRequest` subclass instance (e.g.
- * `SmsCampaignSchedulerTaskRequest`) is accepted too.
+ * `SmsCampaignSchedulerTaskRequest`) is accepted.
  */
 export type SchedulerTaskInput =
   | EmailCampaignSchedulerTaskInput
@@ -365,7 +369,10 @@ export class SchedulerModule {
    *
    * Creates a task, or updates it when `taskId` is set. `task` is typed
    * (hand-set): `{ type: 'EmailCampaign' | 'SmsCampaign' | 'PushCampaign',
-   * campaign: { templateId, … } }` — see {@link SchedulerTaskInput}.
+   * campaign: { templateId, … } }`, or a generated task body such as
+   * `new CodeMashHub2.CodeFunctionSchedulerTaskRequest({…})` /
+   * `new CodeMashHub2.WorkflowSchedulerTaskRequest({…})` — see
+   * {@link SchedulerTaskInput}.
    *
    * The task runs as `initiatorUserId`. The save is refused with
    * `CM-ERRORS-SCHEDULER-012` when that user lacks a permission the task
