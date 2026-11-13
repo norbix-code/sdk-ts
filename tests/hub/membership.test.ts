@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.membership (50 endpoints).
+ * Tests for hub.membership (51 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.membership', () => {
-  it('module exposes 50 method(s)', () => {
+  it('module exposes 51 method(s)', () => {
     const mock = createMockFetch();
     const mod = new MembershipModule({} as never);
     void mod; // silence unused — we only need the type
@@ -69,6 +69,7 @@ describe('hub.membership', () => {
     expect(typeof ns['getAuthenticationSettings']).toBe('function');
     expect(typeof ns['updateAuthenticationSettings']).toBe('function');
     expect(typeof ns['setUserAiPlan']).toBe('function');
+    expect(typeof ns['clearContactBounce']).toBe('function');
     expect(typeof ns['createContact']).toBe('function');
     expect(typeof ns['deleteContact']).toBe('function');
     expect(typeof ns['getContact']).toBe('function');
@@ -1229,6 +1230,31 @@ describe('hub.membership', () => {
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('DELETE');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('clearContactBounce: POST /{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce', async () => {
+    const stub = stubRequestForPath(
+      '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+    );
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['clearContactBounce']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe(expected);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
