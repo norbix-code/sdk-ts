@@ -533,7 +533,7 @@ const result = await norbix.api.membership.setContactTagSubscription({
 
 `POST` `/{version}/membership/auth/social/{Provider}/exchange`
 
-The raw call. `norbix.api.auth.exchangeSocialCode(provider, code)` is the same call with a typed answer; see [Social sign-in](./auth.md#social-sign-in).
+The raw call. `norbix.api.auth.exchangeSocialCode(provider, code)` is the same call with a typed answer; see [Social sign-in](./auth.md#social-sign-in). It sends no credentials, even when the client has a key or a JWT.
 
 **Request DTO**: `CodeMashApi2.ExchangeSocialSignInCodeRequest`
 **Response**: `CodeMashApi2.SocialSignInTokenResponse`

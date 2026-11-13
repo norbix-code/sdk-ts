@@ -132,6 +132,22 @@ describe('api.auth.exchangeSocialCode', () => {
     expect(result).not.toHaveProperty('passwordChangeRequired');
   });
 
+  it('sends no credentials, though the client has a JWT (the gateway refuses an old one)', async () => {
+    const { norbix, mock } = client({ bearerToken: 'old.jwt' }, { body: tokenAnswer });
+    await norbix.api.auth.exchangeSocialCode('google', 'one-time');
+    expect(mock.lastCall!.headers.get('Authorization')).toBeNull();
+  });
+
+  it('the raw api.membership.exchangeSocialSignInCode sends no credentials either', async () => {
+    const { norbix, mock } = client({ apiKey: 'ak-1' }, { body: tokenAnswer });
+    await norbix.api.membership.exchangeSocialSignInCode({ provider: 'google', code: 'one-time' });
+    expect(mock.lastCall!.method).toBe('POST');
+    expect(mock.lastCall!.url).toBe('https://api.test/v3/membership/auth/social/google/exchange');
+    expect(JSON.parse(mock.lastCall!.body!)).toEqual({ code: 'one-time' });
+    expect(mock.lastCall!.headers.get('Authorization')).toBeNull();
+    expect(mock.lastCall!.headers.get('norbix-project-id')).toBe('pr_1');
+  });
+
   it('sends a non-PROD env as the norbix-env header', async () => {
     const { norbix, mock } = client({ env: 'TEST' }, { body: tokenAnswer });
     await norbix.api.auth.exchangeSocialCode('google', 'c');

@@ -576,29 +576,6 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('exchangeSocialSignInCode: POST /{version}/membership/auth/social/{Provider}/exchange', async () => {
-    const stub = stubRequestForPath('/{version}/membership/auth/social/{Provider}/exchange');
-    const expected = expectedUrl({
-      baseUrl: 'https://api.norbix.io',
-      path: '/{version}/membership/auth/social/{Provider}/exchange',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.api as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['exchangeSocialSignInCode']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
   it('unblockUser: PATCH /{version}/membership/auth/unblock', async () => {
     const stub = {};
     const expected = expectedUrl({
