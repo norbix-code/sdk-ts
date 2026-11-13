@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-13 16:53:16
+Date: 2026-11-13 18:35:00
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -5953,6 +5953,9 @@ export module CodeMashApi2 {
     // @DataMember
     public returnUrl?: string;
 
+    // @DataMember
+    public codeChallenge?: string;
+
     public constructor(init?: Partial<StartLinkIdentityRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -5978,6 +5981,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public code: string;
+
+    // @DataMember
+    public codeVerifier?: string;
 
     public constructor(init?: Partial<LinkIdentityRequest>) {
       super(init);
@@ -6151,10 +6157,15 @@ export module CodeMashApi2 {
     // @ApiMember(Description="Name of the integration's OAuth mode (which app page to come back to). Default: the only mode, else the first by name.")
     public mode?: string;
 
-    /** @description Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins. Wins over the mode's pages. */
+    /** @description Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins or the project's own hosted Admin Portal. Wins over the mode's pages. Refused: the browser goes to the mode's failure page with error=return_url_not_allowed (JSON 052 when the mode has none). */
     // @DataMember
-    // @ApiMember(Description="Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins. Wins over the mode's pages.")
+    // @ApiMember(Description="Optional app page to come back to (success and failure). Absolute https (http only on localhost), origin in the project's allowed origins or the project's own hosted Admin Portal. Wins over the mode's pages. Refused: the browser goes to the mode's failure page with error=return_url_not_allowed (JSON 052 when the mode has none).")
     public returnUrl?: string;
+
+    /** @description Optional PKCE S256 challenge of the app: base64url (no padding) SHA-256 of a random code verifier the app keeps (43 characters). When set, the exchange needs the matching codeVerifier, so only the browser / app that started can use the one-time code. Strongly recommended for web apps. */
+    // @DataMember
+    // @ApiMember(Description="Optional PKCE S256 challenge of the app: base64url (no padding) SHA-256 of a random code verifier the app keeps (43 characters). When set, the exchange needs the matching codeVerifier, so only the browser / app that started can use the one-time code. Strongly recommended for web apps.")
+    public codeChallenge?: string;
 
     public constructor(init?: Partial<StartSocialSignInRequest>) {
       super(init);
@@ -6223,6 +6234,11 @@ export module CodeMashApi2 {
     // @DataMember
     // @ApiMember(Description="The one-time code from the callback URL (valid 2 minutes, once).", IsRequired=true)
     public code: string;
+
+    /** @description The PKCE code verifier whose S256 was sent as codeChallenge at the start. Required when the start had a codeChallenge; must be left out when it had none (CM-ERRORS-MEMBERSHIP-058, the code is used up). */
+    // @DataMember
+    // @ApiMember(Description="The PKCE code verifier whose S256 was sent as codeChallenge at the start. Required when the start had a codeChallenge; must be left out when it had none (CM-ERRORS-MEMBERSHIP-058, the code is used up).")
+    public codeVerifier?: string;
 
     public constructor(init?: Partial<ExchangeSocialSignInCodeRequest>) {
       super(init);

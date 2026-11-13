@@ -330,6 +330,26 @@ export interface SocialSignInUrlOptions {
   returnUrl?: string;
   /** Project environment. Default: the client's `env`; PROD adds nothing to the URL. */
   env?: string;
+  /**
+   * PKCE S256 challenge (43 characters, see `createPkcePair`). The exchange
+   * then needs the matching `codeVerifier`. CM-ERRORS-MEMBERSHIP-059 when it is
+   * not a valid S256 challenge.
+   */
+  codeChallenge?: string;
+}
+
+/** Options of `api.auth.redirectToSocialSignIn(...)`: the URL options plus PKCE. */
+export interface SocialRedirectOptions extends Omit<SocialSignInUrlOptions, 'codeChallenge'> {
+  /** Default true: make a verifier, keep it in sessionStorage and send its challenge. */
+  pkce?: boolean;
+}
+
+/** Options of `api.membership.redirectToLinkIdentity(...)`. */
+export interface LinkRedirectOptions {
+  mode?: string;
+  returnUrl?: string;
+  /** Default true: make a verifier, keep it in sessionStorage and send its challenge. */
+  pkce?: boolean;
 }
 
 /**
@@ -361,6 +381,13 @@ export interface SocialSignInResult {
 export type SocialReturn =
   | { kind: 'signIn'; provider: string; code: string }
   | { kind: 'link'; provider: string; code: string }
+  | { kind: 'error'; error: string; provider?: string }
+  | { kind: 'none' };
+
+/** What `api.membership.completeLinkIdentity(...)` answers. */
+export type LinkIdentityCompletion =
+  | { kind: 'linked'; provider: string }
+  | { kind: 'signIn'; provider: string; code: string }
   | { kind: 'error'; error: string; provider?: string }
   | { kind: 'none' };
 
