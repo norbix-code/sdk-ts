@@ -280,6 +280,12 @@ export interface SignInResult {
   userId?: string;
   /** Version of the credentials that were just verified. Changes with the password. */
   credentialVersion?: string;
+  /**
+   * True when the typed password breaks the project's current password rule
+   * (the rule got stricter after the password was set). The sign-in still
+   * succeeded: send the user to change their password. Absent otherwise.
+   */
+  passwordChangeRequired?: boolean;
 }
 
 /**
@@ -293,4 +299,10 @@ export interface BrowserSignInResult {
   displayName?: string;
   /** Version of the credentials that were just verified. Changes with the password. */
   credentialVersion?: string;
+  /**
+   * True when the typed password breaks the project's current password rule
+   * (the rule got stricter after the password was set). The sign-in still
+   * succeeded: send the user to change their password. Absent otherwise.
+   */
+  passwordChangeRequired?: boolean;
 }

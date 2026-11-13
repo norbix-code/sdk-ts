@@ -340,6 +340,28 @@ describe('api.auth.signIn', () => {
     expect(error).not.toBeInstanceOf(NorbixSessionExpiredError);
   });
 
+  it('passwordChangeRequired is true when the meta says "true": the sign-in still succeeded', async () => {
+    const { norbix } = client(
+      { auth: { type: 'none' } },
+      { body: { ...answer, meta: { credentialVersion: 'v7', passwordChangeRequired: 'true' } } },
+    );
+    const result = await norbix.api.auth.signIn({ userName: 'anna', password: 'abc' });
+
+    expect(result).toEqual({
+      sessionId: SESSION,
+      userId: 'usr_1',
+      credentialVersion: 'v7',
+      passwordChangeRequired: true,
+    });
+  });
+
+  it('passwordChangeRequired is absent when the meta has no such key', async () => {
+    const { norbix } = client({ auth: { type: 'none' } }, { body: answer });
+    const result = await norbix.api.auth.signIn({ userName: 'anna', password: 'pw' });
+
+    expect(result).not.toHaveProperty('passwordChangeRequired');
+  });
+
   it('an answer without a session id is an error', async () => {
     const { norbix } = client({ auth: { type: 'none' } }, { body: { userId: 'usr_1' } });
     const error = await rejected(norbix.api.auth.signIn({ userName: 'a', password: 'b' }));
@@ -373,6 +395,24 @@ describe('api.auth.browserSignIn', () => {
     expect(JSON.stringify(result)).not.toContain(SESSION);
     expect(JSON.stringify(result)).not.toContain('a.b.c');
     expect(result.credentialVersion).toBe('v7');
+  });
+
+  it('passwordChangeRequired is true when the meta says "true", absent otherwise', async () => {
+    const flagged = client(browser, {
+      body: { userId: 'usr_1', meta: { credentialVersion: 'v7', passwordChangeRequired: 'true' } },
+    });
+    const result = await flagged.norbix.api.auth.browserSignIn({
+      userName: 'anna',
+      password: 'abc',
+    });
+    expect(result.passwordChangeRequired).toBe(true);
+
+    const plain = client(browser, { body: { userId: 'usr_1', meta: { credentialVersion: 'v7' } } });
+    const ok = await plain.norbix.api.auth.browserSignIn({
+      userName: 'anna',
+      password: 'long-enough',
+    });
+    expect(ok).not.toHaveProperty('passwordChangeRequired');
   });
 
   it('an empty answer is still a sign-in: the cookie is what counts', async () => {
