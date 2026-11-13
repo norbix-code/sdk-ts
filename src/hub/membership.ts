@@ -12,25 +12,6 @@ export class MembershipModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * PUT /{version}/membership/disable
-   * Request DTO: DisableMembership
-   */
-  disableMembership = (
-    request: Partial<CodeMashHub2.DisableMembership> = {} as Partial<CodeMashHub2.DisableMembership>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/membership/disable',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * PUT /{version}/membership/enable
    * Request DTO: EnableMembership
    */
@@ -595,25 +576,6 @@ export class MembershipModule {
       method: 'POST',
       request,
       pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PUT /{version}/membership/integrations/{Id}/default
-   * Request DTO: SetMembershipIntegrationAsDefaultRequest
-   */
-  setMembershipIntegrationAsDefault = (
-    request: Partial<CodeMashHub2.SetMembershipIntegrationAsDefaultRequest> = {} as Partial<CodeMashHub2.SetMembershipIntegrationAsDefaultRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/membership/integrations/{Id}/default',
-      method: 'PUT',
-      request,
-      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });
