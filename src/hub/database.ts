@@ -12,25 +12,6 @@ export class DatabaseModule {
   constructor(private readonly transport: Transport) {}
 
   /**
-   * PUT /{version}/database/disable
-   * Request DTO: DisableDatabase
-   */
-  disableDatabase = (
-    request: Partial<CodeMashHub2.DisableDatabase> = {} as Partial<CodeMashHub2.DisableDatabase>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/database/disable',
-      method: 'PUT',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * PUT /{version}/database/enable
    * Request DTO: EnableDatabase
    */

@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.membership (51 endpoints).
+ * Tests for hub.membership (49 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -29,7 +29,6 @@ describe('hub.membership', () => {
     >;
     expect(ns).toBeDefined();
     void mock;
-    expect(typeof ns['disableMembership']).toBe('function');
     expect(typeof ns['enableMembership']).toBe('function');
     expect(typeof ns['importUsers']).toBe('function');
     expect(typeof ns['repairLoginProjectIds']).toBe('function');
@@ -60,7 +59,6 @@ describe('hub.membership', () => {
     expect(typeof ns['getMembershipIntegration']).toBe('function');
     expect(typeof ns['getMembershipIntegrations']).toBe('function');
     expect(typeof ns['saveMembershipIntegration']).toBe('function');
-    expect(typeof ns['setMembershipIntegrationAsDefault']).toBe('function');
     expect(typeof ns['getExecutionIdentities']).toBe('function');
     expect(typeof ns['createExecutionIdentity']).toBe('function');
     expect(typeof ns['getAuthorizationSettings']).toBe('function');
@@ -80,29 +78,6 @@ describe('hub.membership', () => {
     expect(typeof ns['addContactIdentity']).toBe('function');
     expect(typeof ns['promoteContactIdentity']).toBe('function');
     expect(typeof ns['removeContactIdentity']).toBe('function');
-  });
-
-  it('disableMembership: PUT /{version}/membership/disable', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/membership/disable',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['disableMembership']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
   it('enableMembership: PUT /{version}/membership/enable', async () => {
@@ -790,29 +765,6 @@ describe('hub.membership', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('POST');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('setMembershipIntegrationAsDefault: PUT /{version}/membership/integrations/{Id}/default', async () => {
-    const stub = stubRequestForPath('/{version}/membership/integrations/{Id}/default');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/membership/integrations/{Id}/default',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['membership']!['setMembershipIntegrationAsDefault']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
