@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-13 19:23:45
+Date: 2026-11-15 10:21:03
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -2638,6 +2638,11 @@ export module CodeMashHub2 {
 
     // @DataMember
     public payload?: { [index: string]: string };
+
+    /** @description Resume the run of the workflow that waits on this key instead of starting one. May hold @Model.Trigger.* tokens of the event. No waiting run = the trigger run is skipped (no-waiting-run). */
+    // @DataMember
+    // @ApiMember(Description="Resume the run of the workflow that waits on this key instead of starting one. May hold @Model.Trigger.* tokens of the event. No waiting run = the trigger run is skipped (no-waiting-run).")
+    public resumeKey?: string;
 
     public constructor(init?: Partial<TriggerActionWorkflowDto>) {
       super(init);
@@ -14632,6 +14637,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public messageCount: number;
+
+    // @DataMember
+    public countedMessageIds?: string[];
 
     // @DataMember
     public lastMessageOn?: number;

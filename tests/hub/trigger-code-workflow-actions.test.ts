@@ -8,7 +8,7 @@ import { makeClient } from '../_helpers.js';
  * function" (Code) action and a "Run a workflow" (Workflow) action, built
  * from the generated DTOs, reach the wire under `trigger.action` of every
  * host's save with the gateway's field names — functionRef / invocationType /
- * config, and workflowRef / payload. No runAsUserId: the trigger's
+ * config, and workflowRef / payload / resumeKey. No runAsUserId: the trigger's
  * executionIdentityId says who runs.
  *
  * Twins: Go `TestTriggerSaveSendsCodeAndWorkflowActions`
@@ -43,6 +43,14 @@ const workflow: CodeMashHub2.TriggerActionWorkflowDto = {
   payload: { source: 'ts' },
 };
 
+/** The same action resuming the run that waits on a key instead of starting one (gateway 2026-11-15). */
+const resume: CodeMashHub2.TriggerActionWorkflowDto = {
+  type: CodeMashHub2.TriggerActionType.Workflow,
+  workflowRef: 'wf_onboard',
+  resumeKey: 'purchase-@Model.Trigger.User.Id',
+  payload: { plan: '@Model.Trigger.Record.plan' },
+};
+
 const actions: { name: string; action: CodeMashHub2.TriggerActionDto; wire: unknown }[] = [
   {
     name: 'Code',
@@ -58,6 +66,16 @@ const actions: { name: string; action: CodeMashHub2.TriggerActionDto; wire: unkn
     name: 'Workflow',
     action: workflow,
     wire: { type: 'Workflow', workflowRef: 'wf_onboard', payload: { source: 'ts' } },
+  },
+  {
+    name: 'Workflow resume',
+    action: resume,
+    wire: {
+      type: 'Workflow',
+      workflowRef: 'wf_onboard',
+      resumeKey: 'purchase-@Model.Trigger.User.Id',
+      payload: { plan: '@Model.Trigger.Record.plan' },
+    },
   },
 ];
 
@@ -144,9 +162,9 @@ const saves: {
 ];
 
 describe('trigger saves send a Code and a Workflow action as they are', () => {
-  it('covers five hosts and two actions', () => {
+  it('covers five hosts and three actions', () => {
     expect(saves.map((s) => s.host)).toEqual(['Database', 'Files', 'Membership', 'Payments', 'Ai']);
-    expect(actions.map((a) => a.name)).toEqual(['Code', 'Workflow']);
+    expect(actions.map((a) => a.name)).toEqual(['Code', 'Workflow', 'Workflow resume']);
   });
 
   for (const save of saves) {
