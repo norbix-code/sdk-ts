@@ -132,10 +132,6 @@ describe('hub.account', () => {
     expect(typeof ns['accountVerifyPasskeyEnrollment']).toBe('function');
     expect(typeof ns['getMyAccountUserProfile']).toBe('function');
     expect(typeof ns['updateMyAccountUserPhone']).toBe('function');
-    expect(typeof ns['getLicenseDomainDnsStatus']).toBe('function');
-    expect(typeof ns['getLicenses']).toBe('function');
-    expect(typeof ns['getInstallationLicenseStatus']).toBe('function');
-    expect(typeof ns['getLicenseKey']).toBe('function');
     expect(typeof ns['createAiServiceUser']).toBe('function');
     expect(typeof ns['listAiServiceUsers']).toBe('function');
     expect(typeof ns['rotateAiServiceUserKey']).toBe('function');
@@ -2572,98 +2568,6 @@ describe('hub.account', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PUT');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getLicenseDomainDnsStatus: GET /{version}/account/licensing/dns-status', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/licensing/dns-status',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['getLicenseDomainDnsStatus']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getLicenses: GET /{version}/account/licenses', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/licenses',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['getLicenses']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getInstallationLicenseStatus: GET /{version}/account/licensing/status', async () => {
-    const stub = {};
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/licensing/status',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['getInstallationLicenseStatus']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('getLicenseKey: GET /{version}/account/licenses/{Id}/key', async () => {
-    const stub = stubRequestForPath('/{version}/account/licenses/{Id}/key');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/licenses/{Id}/key',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['getLicenseKey']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

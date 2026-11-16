@@ -1179,10 +1179,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "GetInstallationLicenseStatus": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "GetIntegrationConnectTargets": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1192,22 +1188,6 @@
     "returnsBytes": false
   },
   "GetLegalHolds": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetLicenseDomainDnsStatus": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetLicenseDomainVerificationStatus": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetLicenseKey": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetLicenses": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1775,10 +1755,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "PostLicenseHeartbeat": {
-    "requiresAuth": false,
-    "returnsBytes": false
-  },
   "PreviewEmailNotification": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -2208,10 +2184,6 @@
     "returnsBytes": false
   },
   "SignOutMarketplaceIntegration": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "StartLicenseDomainVerificationRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

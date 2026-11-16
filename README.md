@@ -51,7 +51,7 @@
 
 Norbix is a **Backend-as-a-Service** built for the agentic era. One platform exposes everything an app needs — auth, database, file storage, email, push, payments, code functions, logging — as both a typed SDK _and_ an MCP server, so a developer and their agent can call the same backend the same way.
 
-It runs three ways: as a fully **managed cloud** at [`cloud.norbix.ai`](https://cloud.norbix.ai) (zero DevOps), **self-hosted** on your own machine or server, or as **enterprise** in your VPC. Same modules, same APIs, same SDKs — pick the runway, not the runtime.
+It runs two ways: as a fully **managed cloud** at [`cloud.norbix.ai`](https://cloud.norbix.ai) (zero DevOps), or as **enterprise** in your VPC. Same modules, same APIs, same SDKs — pick the runway, not the runtime.
 
 This repo is the **TypeScript SDK** — one package on npm (`@norbix.ai/ts`) that exposes both the runtime **API** and the configuration **Hub** as separate import paths so you only ship the surface you actually use. Plus a third surface, the [Norbix MCP server](#norbix-mcp--same-modules-agent-native), that exposes the same modules to your IDE. Works in Node 18+ and modern browsers.
 
@@ -103,7 +103,7 @@ npm install @norbix.ai/ts
 
 ### Three real things in 30 lines
 
-The examples below assume an API key from the [Norbix Cloud Dashboard](https://cloud.norbix.ai) and a project ID. The same code works against self-hosted and enterprise deployments — only the base URL changes (see [Authentication & configuration](#authentication--configuration)).
+The examples below assume an API key from the [Norbix Cloud Dashboard](https://cloud.norbix.ai) and a project ID. The same code works against enterprise deployments — only the base URL changes (see [Authentication & configuration](#authentication--configuration)).
 
 #### 1. Register a user
 
@@ -245,10 +245,10 @@ When you install the package, no base URL is required — the SDK points at Norb
 
 ### Overriding the base URL
 
-Override the base URL when you self-host Norbix on your own infrastructure or run it locally. Pass it as a constructor option, or set the corresponding env var. Two real-world examples:
+Override the base URL when Norbix answers on a custom domain or runs locally. Pass it as a constructor option, or set the corresponding env var. Two real-world examples:
 
 ```ts
-// Self-hosted on your company domain
+// A custom domain
 const norbix = new Norbix({
   apiKey: process.env.NORBIX_API_KEY,
   projectId: 'proj_123',
@@ -273,8 +273,8 @@ NORBIX_PROJECT_ID=proj_123
 NORBIX_ACCOUNT_ID=acc_456            # optional, sent as the norbix-account-id header
 NORBIX_REGION=nb-eu-germany          # optional, pins requests to a Norbix region (see Regions)
 NORBIX_LANGUAGE=lt                   # optional, sent as Accept-Language (see Language)
-NORBIX_API_URL=https://api.norbix.ai            # override for self-hosted, e.g. https://api.norbix.isidos.lt
-NORBIX_HUB_URL=https://hub.norbix.ai            # override for self-hosted, e.g. https://hub.norbix.isidos.lt
+NORBIX_API_URL=https://api.norbix.ai            # override for a custom domain, e.g. https://api.norbix.isidos.lt
+NORBIX_HUB_URL=https://hub.norbix.ai            # override for a custom domain, e.g. https://hub.norbix.isidos.lt
 ```
 
 ```ts
@@ -313,7 +313,7 @@ await norbix.api.database.find({ collectionName: 'orders' }, { region: 'nb-us-ea
 await norbix.hub.account.getProjects({}, { region: 'nb-us-east' });
 ```
 
-**How a region affects the request.** The resolved region (per-call override → client `region` → `NORBIX_REGION`) is sent as the `nb-region` header. There is **no default region** — when nothing is set, no header is sent and the backend routes to the project's primary region. Self-hosted deployments are unaffected: no region configured means requests are byte-identical to the pre-regions behavior.
+**How a region affects the request.** The resolved region (per-call override → client `region` → `NORBIX_REGION`) is sent as the `nb-region` header. There is **no default region** — when nothing is set, no header is sent and the backend routes to the project's primary region. No region configured means requests are byte-identical to the pre-regions behavior.
 
 **Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional URL by prefixing the region code as a subdomain — `https://api.norbix.ai` becomes `https://nb-eu-germany.api.norbix.ai` (and likewise for the Hub URL). `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the defaults. Two rules to remember:
 
@@ -674,7 +674,7 @@ Norbix ships an MCP (Model Context Protocol) server that exposes every API and H
 
 - **Total SDK & API knowledge.** The Norbix MCP knows every module, every method, every request/response type — across _all_ Norbix SDKs (TypeScript, .NET, Python, Dart, Kotlin, Swift) and the underlying gateway. Ask "how do I send a templated email from the .NET SDK?" in your IDE chat and the agent answers from the same source the docs are generated from.
 - **Code-aware actions.** Connect it to your repo and the agent can update project constants, regenerate types after a Hub schema change, scaffold a new module integration, run a Norbix CLI command, or open a PR — without leaving the chat. Run a script or talk to it; same surface, two interaction modes.
-- **Drop-in IDE setup.** One config block in your IDE's MCP settings and you're done. The MCP server runs locally and proxies to your Cloud / self-hosted / enterprise Norbix instance using the same `NORBIX_API_URL` / `NORBIX_HUB_URL` env vars as the SDK.
+- **Drop-in IDE setup.** One config block in your IDE's MCP settings and you're done. The MCP server runs locally and proxies to your Cloud / enterprise Norbix instance using the same `NORBIX_API_URL` / `NORBIX_HUB_URL` env vars as the SDK.
 
 **Setup in your IDE:**
 
@@ -688,7 +688,7 @@ Norbix ships an MCP (Model Context Protocol) server that exposes every API and H
 | **VS Code (Continue)** | [`docs.norbix.ai/mcp/vscode`](https://docs.norbix.ai/mcp/vscode)                 |
 | **Zed**                | [`docs.norbix.ai/mcp/zed`](https://docs.norbix.ai/mcp/zed)                       |
 
-→ [Full MCP documentation](https://docs.norbix.ai/mcp) · [Why MCP?](https://docs.norbix.ai/mcp/why) · [Self-hosted MCP](https://docs.norbix.ai/mcp/self-hosted)
+→ [Full MCP documentation](https://docs.norbix.ai/mcp) · [Why MCP?](https://docs.norbix.ai/mcp/why)
 
 <!-- END: MCP -->
 
@@ -714,7 +714,7 @@ Same modules, same method shapes, every language. Each row links to the repo for
 
 ## Install Norbix
 
-Three ways to run the backend this SDK talks to. Pick by who owns the infrastructure and how strict the compliance bar is.
+Two ways to run the backend this SDK talks to. Pick by who owns the infrastructure and how strict the compliance bar is.
 
 ### A. Try it on Norbix Cloud — fastest
 
@@ -730,54 +730,9 @@ export NORBIX_PROJECT_ID=proj_...
 
 → [Sign up](https://cloud.norbix.ai) · [Cloud docs](https://docs.norbix.ai/cloud)
 
-### B. Self-host on your machine or your server
+### B. Enterprise — your cloud, your compliance
 
-Run Norbix on Docker, Kamal, Terraform, AWS CDK, Kubernetes, DigitalOcean, a VPS, or bare metal. Issue a license from the Cloud Dashboard, then deploy with one command. Override the SDK's base URL to point at your deployment.
-
-**1. Get a self-hosted license.** Sign in at [`cloud.norbix.ai`](https://cloud.norbix.ai), open the Self-Hosted tab, generate a license key.
-
-**2. Deploy.** Build your install in the Cloud Dashboard's installer UI **or** clone the install repo:
-
-```sh
-# Quickest — Docker Compose
-git clone https://github.com/norbix-code/install
-cd install/docker-compose
-NORBIX_LICENSE_KEY=lic_... docker compose up -d
-# Norbix is up at http://localhost:5000 (API) and http://localhost:5001 (Hub) by default
-```
-
-**Other deployment paths** (each in a sibling folder of the install repo):
-
-| Method              | Folder            | Best for                        |
-| ------------------- | ----------------- | ------------------------------- |
-| 🐳 Docker           | `docker-compose/` | Local dev, single VM            |
-| 🚢 Kamal            | `kamal/`          | One-server deploys, Rails-style |
-| 🏗️ Terraform        | `terraform/`      | Multi-cloud IaC                 |
-| ☁️ AWS CDK          | `aws-cdk/`        | AWS-native                      |
-| ⎈ Kubernetes        | `kubernetes/`     | k3s / k8s at scale              |
-| 🌊 DigitalOcean     | `digitalocean/`   | Droplets + DO Kubernetes        |
-| 🖥️ VPS / bare metal | `vps/`            | Any provider, total control     |
-| 🏢 On-premises      | `on-prem/`        | Air-gapped or private DC        |
-
-**3. Point the SDK at it.** Two patterns — pick whichever fits.
-
-```sh
-# Local development on your machine
-export NORBIX_API_URL=http://localhost:5000
-export NORBIX_HUB_URL=http://localhost:5001
-```
-
-```sh
-# Self-hosted on your company's domain
-export NORBIX_API_URL=https://api.norbix.isidos.lt
-export NORBIX_HUB_URL=https://hub.norbix.isidos.lt
-```
-
-→ [Install repo](https://github.com/norbix-code/install) · [Self-host docs](https://docs.norbix.ai/self-hosted)
-
-### C. Enterprise — your cloud, your compliance
-
-Run Norbix in your VPC or dedicated infrastructure. SOC2-ready, GDPR/HIPAA-compatible, full audit trails, custom SLA, dedicated support, deployment review with the Norbix team. Same APIs as Cloud and Self-Hosted — just behind your perimeter. Override the SDK's base URL to your private endpoint.
+Run Norbix in your VPC or dedicated infrastructure. SOC2-ready, GDPR/HIPAA-compatible, full audit trails, custom SLA, dedicated support, deployment review with the Norbix team. Same APIs as Cloud — just behind your perimeter. Override the SDK's base URL to your private endpoint.
 
 → [Contact sales](https://norbix.ai/enterprise) · [Enterprise docs](https://docs.norbix.ai/enterprise)
 
