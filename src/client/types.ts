@@ -113,7 +113,7 @@ export interface NorbixConfig {
   language?: string;
 
   /**
-   * Override default base URLs. Useful for self-hosted deployments,
+   * Override default base URLs. Useful for custom domains,
    * staging environments, or pointing the SDK at localhost in tests.
    * Each URL falls back to its env var (`NORBIX_API_URL`, `NORBIX_HUB_URL`).
    */

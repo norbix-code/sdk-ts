@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 136
+ * Endpoints: 132
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -1968,82 +1968,6 @@ export class AccountModule {
       method: 'PUT',
       request,
       pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/account/licensing/dns-status
-   * Request DTO: GetLicenseDomainDnsStatus
-   */
-  getLicenseDomainDnsStatus = (
-    request: Partial<CodeMashHub2.GetLicenseDomainDnsStatus> = {} as Partial<CodeMashHub2.GetLicenseDomainDnsStatus>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetLicenseDomainDnsStatusResponse> => {
-    return this.transport.send<CodeMashHub2.GetLicenseDomainDnsStatusResponse>({
-      target: 'hub',
-      path: '/{version}/account/licensing/dns-status',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/account/licenses
-   * Request DTO: GetLicenses
-   */
-  getLicenses = (
-    request: Partial<CodeMashHub2.GetLicenses> = {} as Partial<CodeMashHub2.GetLicenses>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetLicensesResponse> => {
-    return this.transport.send<CodeMashHub2.GetLicensesResponse>({
-      target: 'hub',
-      path: '/{version}/account/licenses',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/account/licensing/status
-   * Request DTO: GetInstallationLicenseStatus
-   */
-  getInstallationLicenseStatus = (
-    request: Partial<CodeMashHub2.GetInstallationLicenseStatus> = {} as Partial<CodeMashHub2.GetInstallationLicenseStatus>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetInstallationLicenseStatusResponse> => {
-    return this.transport.send<CodeMashHub2.GetInstallationLicenseStatusResponse>({
-      target: 'hub',
-      path: '/{version}/account/licensing/status',
-      method: 'GET',
-      request,
-      pathParams: [],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * GET /{version}/account/licenses/{Id}/key
-   * Request DTO: GetLicenseKey
-   */
-  getLicenseKey = (
-    request: Partial<CodeMashHub2.GetLicenseKey> = {} as Partial<CodeMashHub2.GetLicenseKey>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetLicenseKeyResponse> => {
-    return this.transport.send<CodeMashHub2.GetLicenseKeyResponse>({
-      target: 'hub',
-      path: '/{version}/account/licenses/{Id}/key',
-      method: 'GET',
-      request,
-      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

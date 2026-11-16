@@ -113,10 +113,6 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`accountVerifyPasskeyEnrollment`](#accountverifypasskeyenrollment)           | `POST`   | `/{version}/account/userauth/passkey/verify-enrollment`                      | `project` |
 | [`getMyAccountUserProfile`](#getmyaccountuserprofile)                         | `GET`    | `/{version}/account/me`                                                      | `project` |
 | [`updateMyAccountUserPhone`](#updatemyaccountuserphone)                       | `PUT`    | `/{version}/account/me/phone`                                                | `project` |
-| [`getLicenseDomainDnsStatus`](#getlicensedomaindnsstatus)                     | `GET`    | `/{version}/account/licensing/dns-status`                                    | `project` |
-| [`getLicenses`](#getlicenses)                                                 | `GET`    | `/{version}/account/licenses`                                                | `project` |
-| [`getInstallationLicenseStatus`](#getinstallationlicensestatus)               | `GET`    | `/{version}/account/licensing/status`                                        | `project` |
-| [`getLicenseKey`](#getlicensekey)                                             | `GET`    | `/{version}/account/licenses/{Id}/key`                                       | `project` |
 | [`createAiServiceUser`](#createaiserviceuser)                                 | `POST`   | `/{version}/account/ai/service-users`                                        | `project` |
 | [`listAiServiceUsers`](#listaiserviceusers)                                   | `GET`    | `/{version}/account/ai/service-users`                                        | `project` |
 | [`rotateAiServiceUserKey`](#rotateaiserviceuserkey)                           | `POST`   | `/{version}/account/ai/service-users/{Id}/keys`                              | `project` |
@@ -2439,95 +2435,6 @@ const result = await norbix.hub.account.updateMyAccountUserPhone({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### getLicenseDomainDnsStatus
-
-`GET` `/{version}/account/licensing/dns-status`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetLicenseDomainDnsStatus`
-**Response**: `CodeMashHub2.GetLicenseDomainDnsStatusResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getLicenseDomainDnsStatus({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetLicenseDomainDnsStatusResponse
-```
-
-[↑ Top](#endpoints)
-
-### getLicenses
-
-`GET` `/{version}/account/licenses`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetLicenses`
-**Response**: `CodeMashHub2.GetLicensesResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getLicenses({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetLicensesResponse
-```
-
-[↑ Top](#endpoints)
-
-### getInstallationLicenseStatus
-
-`GET` `/{version}/account/licensing/status`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetInstallationLicenseStatus`
-**Response**: `CodeMashHub2.GetInstallationLicenseStatusResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getInstallationLicenseStatus({
-  // See CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetInstallationLicenseStatusResponse
-```
-
-[↑ Top](#endpoints)
-
-### getLicenseKey
-
-`GET` `/{version}/account/licenses/{Id}/key`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetLicenseKey`
-**Response**: `CodeMashHub2.GetLicenseKeyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getLicenseKey({
-  Id: 'Id-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetLicenseKeyResponse
 ```
 
 [↑ Top](#endpoints)
