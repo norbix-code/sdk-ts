@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: membership
- * Endpoints: 51
+ * Endpoints: 53
  */
 export class MembershipModule {
   constructor(private readonly transport: Transport) {}
@@ -193,6 +193,25 @@ export class MembershipModule {
     return this.transport.send<CodeMashHub2.GetMembershipTriggersResponse>({
       target: 'hub',
       path: '/{version}/membership/triggers',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/triggers/event-values
+   * Request DTO: GetMembershipTriggerEventValues
+   */
+  getMembershipTriggerEventValues = (
+    request: Partial<CodeMashHub2.GetMembershipTriggerEventValues> = {} as Partial<CodeMashHub2.GetMembershipTriggerEventValues>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMembershipTriggerEventValuesResponse> => {
+    return this.transport.send<CodeMashHub2.GetMembershipTriggerEventValuesResponse>({
+      target: 'hub',
+      path: '/{version}/membership/triggers/event-values',
       method: 'GET',
       request,
       pathParams: [],
@@ -611,6 +630,25 @@ export class MembershipModule {
     return this.transport.send<CodeMashHub2.GetAuthorizationSettingsResponse>({
       target: 'hub',
       path: '/{version}/membership/authorization',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/membership/settings/email-bindings
+   * Request DTO: GetMembershipEmailBindings
+   */
+  getMembershipEmailBindings = (
+    request: Partial<CodeMashHub2.GetMembershipEmailBindings> = {} as Partial<CodeMashHub2.GetMembershipEmailBindings>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetMembershipEmailBindingsResponse> => {
+    return this.transport.send<CodeMashHub2.GetMembershipEmailBindingsResponse>({
+      target: 'hub',
+      path: '/{version}/membership/settings/email-bindings',
       method: 'GET',
       request,
       pathParams: [],

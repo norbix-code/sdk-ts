@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.membership', () => {
-  it('module exposes 51 method(s)', () => {
+  it('module exposes 53 method(s)', () => {
     const mock = createMockFetch();
     const mod = new MembershipModule({} as never);
     void mod; // silence unused — we only need the type
@@ -39,6 +39,7 @@ describe('hub.membership', () => {
     expect(typeof ns['enableMembershipTrigger']).toBe('function');
     expect(typeof ns['getMembershipTrigger']).toBe('function');
     expect(typeof ns['getMembershipTriggers']).toBe('function');
+    expect(typeof ns['getMembershipTriggerEventValues']).toBe('function');
     expect(typeof ns['saveMembershipTrigger']).toBe('function');
     expect(typeof ns['createRole']).toBe('function');
     expect(typeof ns['deleteRole']).toBe('function');
@@ -61,6 +62,7 @@ describe('hub.membership', () => {
     expect(typeof ns['getExecutionIdentities']).toBe('function');
     expect(typeof ns['createExecutionIdentity']).toBe('function');
     expect(typeof ns['getAuthorizationSettings']).toBe('function');
+    expect(typeof ns['getMembershipEmailBindings']).toBe('function');
     expect(typeof ns['updateAuthorizationSettings']).toBe('function');
     expect(typeof ns['updatePasswordComplexity']).toBe('function');
     expect(typeof ns['getAuthenticationSettings']).toBe('function');
@@ -301,6 +303,29 @@ describe('hub.membership', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['membership']!['getMembershipTriggers']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getMembershipTriggerEventValues: GET /{version}/membership/triggers/event-values', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/membership/triggers/event-values',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['getMembershipTriggerEventValues']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
@@ -808,6 +833,31 @@ describe('hub.membership', () => {
       >
     )['membership']!['getAuthorizationSettings']!;
     await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getMembershipEmailBindings: GET /{version}/membership/settings/email-bindings', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/membership/settings/email-bindings',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['getMembershipEmailBindings']!;
+    await fn({ setting: 'Welcome', templateId: 'tmpl_1' });
+    expect(mock.lastCall?.url).toContain('setting=Welcome');
+    expect(mock.lastCall?.url).toContain('templateId=tmpl_1');
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
