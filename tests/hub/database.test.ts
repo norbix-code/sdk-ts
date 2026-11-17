@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.database (73 endpoints).
+ * Tests for hub.database (74 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.database', () => {
-  it('module exposes 74 method(s)', () => {
+  it('module exposes 75 method(s)', () => {
     const mock = createMockFetch();
     const mod = new DatabaseModule({} as never);
     void mod; // silence unused — we only need the type
@@ -87,6 +87,7 @@ describe('hub.database', () => {
     expect(typeof ns['getDatabaseIntegration']).toBe('function');
     expect(typeof ns['getDatabaseIntegrations']).toBe('function');
     expect(typeof ns['getAllowedFlexTiers']).toBe('function');
+    expect(typeof ns['getNetworkAddresses']).toBe('function');
     expect(typeof ns['saveDatabaseIntegration']).toBe('function');
     expect(typeof ns['setDatabaseIntegrationAsDefault']).toBe('function');
     expect(typeof ns['testDatabaseIntegration']).toBe('function');
@@ -1441,6 +1442,29 @@ describe('hub.database', () => {
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getNetworkAddresses: GET /{version}/database/network-addresses with regionCode in the query', async () => {
+    const stub = { regionCode: 'nb-eu-germany' };
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/database/network-addresses',
+      version: 'v2',
+      stub: {},
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['database']!['getNetworkAddresses']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.url).toContain('regionCode=nb-eu-germany');
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
   });
 
   it('saveDatabaseIntegration: POST /{version}/database/integrations', async () => {

@@ -1114,6 +1114,25 @@ export class DatabaseModule {
   };
 
   /**
+   * GET /{version}/database/network-addresses
+   * Request DTO: GetNetworkAddresses
+   */
+  getNetworkAddresses = (
+    request: Partial<CodeMashHub2.GetNetworkAddresses> = {} as Partial<CodeMashHub2.GetNetworkAddresses>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetNetworkAddressesResponse> => {
+    return this.transport.send<CodeMashHub2.GetNetworkAddressesResponse>({
+      target: 'hub',
+      path: '/{version}/database/network-addresses',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/database/integrations
    * Request DTO: SaveDatabaseIntegration
    */

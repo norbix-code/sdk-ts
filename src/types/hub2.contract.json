@@ -1287,6 +1287,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetMembershipEmailBindings": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetMembershipIntegration": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1308,6 +1312,10 @@
     "returnsBytes": false
   },
   "GetMyAccountUserProfile": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetNetworkAddresses": {
     "requiresAuth": true,
     "returnsBytes": false
   },
