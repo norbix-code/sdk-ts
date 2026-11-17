@@ -178,9 +178,9 @@ for (const cluster of result.clusters ?? []) {
 Queue the upgrade of one cluster by one step on the ladder Flex → M10 → M20 → M30 → M40, within your plan
 (trial: Flex only · Starter: up to M20 · Growth: up to M30 · Scale: up to M40). `flexClusterId` goes in the
 path; take it from [`getFlexClusters`](#getflexclusters). Each cluster there has `nextTierCode` (the next step,
-empty when there is none) and `topTierCode` (the highest tier your plan allows); send `nextTierCode` as
-`tierCode`. Any other tier is refused with the next step named; a cluster at its plan's top is refused with
-`CM-ERRORS-DATABASE-068`.
+empty when there is none) and `topTierCode` (the highest tier your plan allows). Leave `tierCode` out to
+take the next step, or send `nextTierCode`; any other tier is refused with the next step named. A cluster at
+its plan's top is refused with `CM-ERRORS-DATABASE-068`.
 
 **Request DTO**: `CodeMashHub2.UpgradeFlexCluster`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -192,10 +192,8 @@ const norbix = new Norbix();
 
 const { clusters } = await norbix.hub.account.getFlexClusters({});
 const cluster = clusters?.find((c) => c.nextTierCode);
-const result = await norbix.hub.account.upgradeFlexCluster({
-  flexClusterId: cluster!.id,
-  tierCode: cluster!.nextTierCode,
-});
+// No tierCode: the cluster moves one step up (cluster.nextTierCode).
+const result = await norbix.hub.account.upgradeFlexCluster({ flexClusterId: cluster!.id });
 // → typed as CodeMashHub2.EmptyResponse
 ```
 
