@@ -149,7 +149,13 @@ export class Transport {
       if (value !== undefined) request[key] = value;
     }
     return buildUrlAndBody({
-      baseUrl: opts.target === 'api' ? this.cfg.baseUrl.api : this.cfg.baseUrl.hub,
+      // The shared API host, not the project's own: the gateway's social
+      // sign-in callback comes back to the shared host, and the nonce cookie
+      // set by this link belongs to the host that answered it.
+      baseUrl:
+        opts.target === 'api'
+          ? (this.cfg.sharedApiBaseUrl ?? this.cfg.baseUrl.api)
+          : this.cfg.baseUrl.hub,
       path: opts.path,
       method: 'GET',
       version: opts.target === 'api' ? this.cfg.apiVersion : this.cfg.hubVersion,

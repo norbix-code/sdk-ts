@@ -315,7 +315,7 @@ await norbix.hub.account.getProjects({}, { region: 'nb-us-east' });
 
 **How a region affects the request.** The resolved region (per-call override → client `region` → `NORBIX_REGION`) is sent as the `nb-region` header. There is **no default region** — when nothing is set, no header is sent and the backend routes to the project's primary region. No region configured means requests are byte-identical to the pre-regions behavior.
 
-**Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional URL by prefixing the region code as a subdomain — `https://api.norbix.ai` becomes `https://nb-eu-germany.api.norbix.ai` (and likewise for the Hub URL). `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the defaults. Two rules to remember:
+**Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional Hub URL by prefixing the region code as a subdomain — `https://hub.norbix.ai` becomes `https://nb-eu-germany.hub.norbix.ai`. `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the default. API calls go to the project's own host (see [Project host](#project-host)), which already points at the project's region, so no region label is added there. Two rules to remember:
 
 - A custom `baseUrl` (or `NORBIX_API_URL` / `NORBIX_HUB_URL`) is **never rewritten** — with a region set, only the `nb-region` header is added.
 - A **per-call** `region` override affects the **header only** — it never changes the request URL.
@@ -335,6 +335,29 @@ await norbix.hub.regions.updateProjectRegions({
 ```
 
 `hub.account.createProject` accepts the same `primaryRegion` / `additionalRegions` fields, project DTOs report `primaryRegion`, `additionalRegions`, and the combined `regions[]`, and the `echo` endpoint lists the regions a deployment exposes with their regional endpoints. Full reference: [`docs/hub/regions.md`](./docs/hub/regions.md).
+
+### Project host
+
+Every project has its own API host: `pr-<32 hex>.api.norbix.ai`, where the label is the project id written as hex. With the default base URL the SDK sends every API call there — data, files, membership, sign-in, notifications, payments, the AI chat stream — and still sends the `norbix-project-id` header. The host is built from the project id on the client, with no extra call, and its DNS record follows the project's region.
+
+```ts
+import { Norbix, projectHostLabel } from '@norbix.ai/ts';
+
+const norbix = new Norbix({ apiKey, projectId: 'pr_5XvmrTA6JVggZdmEE5bGdm' });
+await norbix.api.database.find({ collectionName: 'orders' });
+// → https://pr-022c4aca9f9e4df787ab0a20c83c44b6.api.norbix.ai/v3/...
+
+projectHostLabel('pr_5XvmrTA6JVggZdmEE5bGdm'); // 'pr-022c4aca9f9e4df787ab0a20c83c44b6'
+```
+
+What does not change:
+
+- A custom `baseUrl.api` (or `NORBIX_API_URL`) is **never rewritten** — a custom domain, staging and localhost are called as given.
+- Hub calls stay on `https://hub.norbix.ai` (or the regional Hub host).
+- The social sign-in link (`api.auth.socialSignInUrl`) stays on the shared API host, because the provider's callback comes back there.
+- A project id that is not a Norbix id (`pr_…`) keeps the shared host.
+
+`setScope({ projectId })` moves the calls to the new project's host. If your network allows outgoing calls by host name, allow `*.api.norbix.ai`.
 
 ### Language
 

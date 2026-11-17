@@ -13,6 +13,7 @@ export {
 } from './client/errors.js';
 export type { NorbixErrorItem, NorbixErrorPayload } from './client/errors.js';
 export { createPkcePair, pkceChallenge } from './client/pkce.js';
+export { projectHostLabel } from './client/projectHost.js';
 export type { PkcePair } from './client/pkce.js';
 export type {
   BrowserSignInResult,
