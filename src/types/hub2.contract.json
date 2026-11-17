@@ -175,6 +175,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ConfirmAccountPasswordResetRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "ConfirmCodeIntegrationHumanDeliveryRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1873,6 +1877,10 @@
   },
   "ReplaceRecord": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RequestAccountPasswordResetRequest": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "RequestImportUploadUrlRequest": {

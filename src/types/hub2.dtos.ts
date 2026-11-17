@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-16 09:04:03
+Date: 2026-11-17 13:27:38
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -11843,6 +11843,16 @@ export module CodeMashHub2 {
     // @DataMember
     public teamRole?: boolean;
 
+    /** @description Set when this slot is an AI agent's: the agent's id in the step. `userId` is then the agent's service user. */
+    // @DataMember
+    // @ApiMember(Description="Set when this slot is an AI agent's: the agent's id in the step. `userId` is then the agent's service user.")
+    public agent?: string;
+
+    /** @description The reason given with the answer that filled this slot. An AI agent always gives one. */
+    // @DataMember
+    // @ApiMember(Description="The reason given with the answer that filled this slot. An AI agent always gives one.")
+    public reason?: string;
+
     // @DataMember
     public answeredBy?: string;
 
@@ -11869,6 +11879,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public kind?: string;
+
+    // @DataMember
+    public reason?: string;
 
     // @DataMember
     public decision: string;
@@ -21853,6 +21866,51 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/password/reset/request", "POST")
+  export class RequestAccountPasswordResetRequest
+    extends RequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public email: string;
+
+    public constructor(init?: Partial<RequestAccountPasswordResetRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RequestAccountPasswordResetRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
+  // @Route("/{version}/account/password/reset/confirm", "POST")
+  export class ConfirmAccountPasswordResetRequest
+    extends RequestBase
+    implements IReturn<EmptyResponse>
+  {
+    public token: string;
+    public newPassword: string;
+
+    public constructor(init?: Partial<ConfirmAccountPasswordResetRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ConfirmAccountPasswordResetRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/userauth/has-passkey", "POST")
   // @DataContract
   export class AccountHasPasskeyRequest
@@ -28578,6 +28636,11 @@ export module CodeMashHub2 {
     // @DataMember
     public payload?: { [index: string]: Object };
 
+    /** @description Optional: why — one or two sentences. Kept with the answer and shown on the run (at most 2 000 characters). */
+    // @DataMember
+    // @ApiMember(Description="Optional: why — one or two sentences. Kept with the answer and shown on the run (at most 2 000 characters).")
+    public reason?: string;
+
     public constructor(init?: Partial<ResumeCodeWorkflowRun>) {
       super(init);
       (Object as any).assign(this, init);
@@ -28774,6 +28837,11 @@ export module CodeMashHub2 {
 
     // @DataMember
     public payload?: { [index: string]: Object };
+
+    /** @description Optional: why — one or two sentences. Kept with the answer and shown on the run (at most 2 000 characters). */
+    // @DataMember
+    // @ApiMember(Description="Optional: why — one or two sentences. Kept with the answer and shown on the run (at most 2 000 characters).")
+    public reason?: string;
 
     public constructor(init?: Partial<ResumeCodeWorkflowRunByKey>) {
       super(init);
