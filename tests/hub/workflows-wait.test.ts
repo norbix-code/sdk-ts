@@ -204,3 +204,86 @@ describe('group approval — resumeCodeWorkflowRun answers a run that still wait
     expect(answers.map((a) => `${a.userId}:${a.decision}`)).toEqual(['usr_anna:approved']);
   });
 });
+
+describe('an AI agent among the approvers (Code.Workflows.md §3.3c)', () => {
+  const waitingRun = {
+    runId: RUN_ID,
+    workflowId: 'wf_1',
+    status: 'waiting',
+    waitingOn: [
+      {
+        stepId: 'approve',
+        kind: 'approval',
+        require: 2,
+        slots: [
+          { label: 'role:Accountant' },
+          {
+            label: 'agent:reviewer',
+            userId: 'usr_bot',
+            agent: 'reviewer',
+            answeredBy: 'usr_bot',
+            decision: 'approved',
+            reason: 'The amount is within the limit.',
+          },
+        ],
+        answers: [
+          {
+            userId: 'usr_bot',
+            kind: 'agent',
+            decision: 'approved',
+            at: '2026-11-17T10:15:00Z',
+            reason: 'The amount is within the limit.',
+          },
+        ],
+      },
+    ],
+    steps: [],
+  };
+
+  it('a resume carries a reason; the run names the agent slot and the reason of its answer, typed', async () => {
+    const mock = createMockFetch({ body: { run: waitingRun } });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+
+    const response = await norbix.hub.code.resumeCodeWorkflowRun({
+      runId: RUN_ID,
+      decision: 'rejected',
+      reason: 'Over the monthly budget',
+    });
+
+    expect(JSON.parse(mock.lastCall?.body ?? '{}')).toEqual({
+      decision: 'rejected',
+      reason: 'Over the monthly budget',
+    });
+
+    // Typed reads: these lines fail `npm run typecheck` if the fields leave the DTOs.
+    const wait: CodeMashHub2.WorkflowWaitingOnDto | undefined = response.run?.waitingOn[0];
+    const slot: CodeMashHub2.WorkflowWaitSlotDto | undefined = wait?.slots?.[1];
+    const agent: string | undefined = slot?.agent;
+    const slotReason: string | undefined = slot?.reason;
+    const answerReason: string | undefined = wait?.answers?.[0]?.reason;
+
+    expect(agent).toBe('reviewer');
+    expect(slotReason).toBe('The amount is within the limit.');
+    expect(answerReason).toBe('The amount is within the limit.');
+    expect(wait?.slots?.[0]?.agent).toBeUndefined();
+  });
+
+  it('a resume by key carries the reason too, on the Api host', async () => {
+    const mock = createMockFetch({ body: { run: waitingRun } });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+
+    await norbix.api.code.resumeCodeWorkflowRunByKey({
+      id: 'wf_1',
+      key: 'order-o1',
+      decision: 'approved',
+      reason: 'Looks fine',
+    });
+
+    expect(mock.lastCall?.url).toBe('https://api.norbix.io/v2/code/workflows/wf_1/resume');
+    expect(JSON.parse(mock.lastCall?.body ?? '{}')).toEqual({
+      key: 'order-o1',
+      decision: 'approved',
+      reason: 'Looks fine',
+    });
+  });
+});
