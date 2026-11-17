@@ -8,6 +8,7 @@ import type { NorbixSseClientOptions } from '../sse/types.js';
 
 import { loadEnvConfig } from './env.js';
 import { NorbixError } from './errors.js';
+import { composeProjectUrl } from './projectHost.js';
 import { Transport } from './transport.js';
 import type {
   LoginCredentials,
@@ -169,7 +170,7 @@ export class Norbix {
       middleware: config.middleware ?? [],
     };
 
-    this.applyRegionToBaseUrls();
+    this.applyHostsToBaseUrls();
 
     this.transport = new Transport(this.cfg);
     this.api = new ApiNamespace(this.transport);
@@ -178,16 +179,25 @@ export class Norbix {
   }
 
   /**
-   * (Re)compose the base URLs for the configured region. Only the SDK's
-   * default URLs are ever rewritten — `https://api.norbix.ai` becomes
-   * `https://nb-eu-germany.api.norbix.ai` — and clearing the region restores
-   * the defaults. A user-supplied custom base URL is never touched.
+   * (Re)compose the base URLs for the configured project and region. Only the
+   * SDK's default URLs are ever rewritten; a user-supplied custom base URL is
+   * never touched.
+   *
+   * - API: the project's own host, `https://pr-<32 hex>.api.norbix.ai` (the
+   *   project id written as hex). Its DNS record already points at the
+   *   project's region, so no region label is added. A project id that is not
+   *   a Norbix id keeps the shared host (`https://api.norbix.ai`, or
+   *   `https://nb-eu-germany.api.norbix.ai` with a region).
+   * - Hub: `https://hub.norbix.ai`, or `https://nb-eu-germany.hub.norbix.ai`
+   *   with a region.
    */
-  private applyRegionToBaseUrls(): void {
+  private applyHostsToBaseUrls(): void {
     if (this.usesDefaultBaseUrl.api) {
-      this.cfg.baseUrl.api = this.cfg.region
+      const shared = this.cfg.region
         ? composeRegionalUrl(this.cfg.region, DEFAULT_BASE_URL_API)
         : DEFAULT_BASE_URL_API;
+      this.cfg.sharedApiBaseUrl = shared;
+      this.cfg.baseUrl.api = composeProjectUrl(this.cfg.projectId, DEFAULT_BASE_URL_API) ?? shared;
     }
     if (this.usesDefaultBaseUrl.hub) {
       this.cfg.baseUrl.hub = this.cfg.region
@@ -258,10 +268,15 @@ export class Norbix {
     this.cfg.apiKey = apiKey;
   }
 
-  /** Switch the client to a different project (and optionally account) at runtime. */
+  /**
+   * Switch the client to a different project (and optionally account) at
+   * runtime. With the SDK's default API URL the calls move to the new
+   * project's own host; a custom `baseUrl` is never rewritten.
+   */
   setScope(scope: { projectId: string; accountId?: string }): void {
     this.cfg.projectId = scope.projectId;
     this.cfg.accountId = scope.accountId;
+    this.applyHostsToBaseUrls();
   }
 
   /**
@@ -282,13 +297,14 @@ export class Norbix {
    * Switch the Norbix region all subsequent requests target (sent as the
    * `nb-region` header). Pass `undefined` to clear the region — no header is
    * sent when no region is set. When the client uses the SDK's default base
-   * URLs, the regional URL is recomposed under the same rule as construction;
-   * a custom `baseUrl` is never rewritten. Per-call `region` overrides still
+   * URLs, the Hub URL is recomposed for the region; API calls stay on the
+   * project's own host, which already follows the project's region. A custom
+   * `baseUrl` is never rewritten. Per-call `region` overrides still
    * take precedence for individual requests (header only — never the URL).
    */
   setRegion(region: string | undefined): void {
     this.cfg.region = region || undefined;
-    this.applyRegionToBaseUrls();
+    this.applyHostsToBaseUrls();
   }
 
   /** Current Norbix region the client targets (e.g. `nb-eu-germany`), if any. */

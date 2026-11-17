@@ -87,8 +87,10 @@ export interface NorbixConfig {
    * primary region. Falls back to `NORBIX_REGION`.
    *
    * When the client uses the SDK's default base URLs, setting a region also
-   * composes the regional URL (`https://nb-eu-germany.api.norbix.ai`); a
-   * user-supplied custom `baseUrl` is never rewritten.
+   * composes the regional Hub URL (`https://nb-eu-germany.hub.norbix.ai`).
+   * API calls go to the project's own host (`https://pr-<hex>.api.norbix.ai`),
+   * which already follows the project's region. A user-supplied custom
+   * `baseUrl` is never rewritten.
    *
    * Override per call via the `region` option on any request (header only —
    * never changes the URL), or switch the client default at runtime with
@@ -221,6 +223,13 @@ export interface ResolvedNorbixConfig {
   /** Resolved `Accept-Language` value. No default — may be unset. */
   language?: string;
   baseUrl: { api: string; hub: string };
+  /**
+   * The API address without the project's own host label. Set only when
+   * `baseUrl.api` is the project's host (`https://pr-<hex>.api.norbix.ai`);
+   * links a browser navigates to (social sign-in) are built on it, because
+   * the gateway's callback comes back to the shared host.
+   */
+  sharedApiBaseUrl?: string;
   apiVersion: string;
   hubVersion: string;
   timeoutMs: number;
