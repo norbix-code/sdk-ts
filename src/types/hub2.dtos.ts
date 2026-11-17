@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-17 13:27:38
+Date: 2026-11-17 17:15:09
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6789,6 +6789,38 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class MembershipTokenTranslationDto {
+    // @DataMember
+    public language: string;
+
+    // @DataMember
+    public value: string;
+
+    public constructor(init?: Partial<MembershipTokenTranslationDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipTokenBindingDto {
+    // @DataMember
+    public token: string;
+
+    // @DataMember
+    public kind: string;
+
+    // @DataMember
+    public value?: string;
+
+    // @DataMember
+    public translations?: MembershipTokenTranslationDto[];
+
+    public constructor(init?: Partial<MembershipTokenBindingDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class CursorArgs implements ICursorArgs {
     public field: string;
     public order: number;
@@ -7795,6 +7827,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public nearLimits: string[] = [];
+
+    // @DataMember
+    public nextTierCode?: string;
+
+    // @DataMember
+    public topTierCode: string;
 
     public constructor(init?: Partial<FlexClusterDto>) {
       (Object as any).assign(this, init);
@@ -9229,6 +9267,9 @@ export module CodeMashHub2 {
     public usersTotal?: number;
 
     // @DataMember
+    public periodDays: number;
+
+    // @DataMember
     public usersNew30d?: number;
 
     // @DataMember
@@ -10101,7 +10142,82 @@ export module CodeMashHub2 {
     // @DataMember
     public allowAnyoneToSignUp: boolean;
 
+    // @DataMember
+    public welcomeEmailTriggers: string[] = [];
+
     public constructor(init?: Partial<MembershipAuthorizationViewDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipEmailTokenDto {
+    // @DataMember
+    public token: string;
+
+    // @DataMember
+    public status: string;
+
+    // @DataMember
+    public source?: string;
+
+    // @DataMember
+    public reason?: string;
+
+    // @DataMember
+    public isHelper: boolean;
+
+    // @DataMember
+    public resolver?: MembershipTokenBindingDto;
+
+    // @DataMember
+    public hasValue: boolean;
+
+    public constructor(init?: Partial<MembershipEmailTokenDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipEventFieldDto {
+    // @DataMember
+    public key: string;
+
+    // @DataMember
+    public label: string;
+
+    public constructor(init?: Partial<MembershipEventFieldDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipEmailBindingsDto {
+    // @DataMember
+    public event: string;
+
+    // @DataMember
+    public env: string;
+
+    // @DataMember
+    public templateId?: string;
+
+    // @DataMember
+    public templateName?: string;
+
+    // @DataMember
+    public isBuiltIn: boolean;
+
+    // @DataMember
+    public withoutValueCount: number;
+
+    // @DataMember
+    public tokens: MembershipEmailTokenDto[] = [];
+
+    // @DataMember
+    public fields: MembershipEventFieldDto[] = [];
+
+    public constructor(init?: Partial<MembershipEmailBindingsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -10750,6 +10866,19 @@ export module CodeMashHub2 {
     public displayName: string;
 
     public constructor(init?: Partial<FlexTierDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class NetworkAddressesDto {
+    // @DataMember
+    public regionCode: string;
+
+    // @DataMember
+    public addresses: string[] = [];
+
+    public constructor(init?: Partial<NetworkAddressesDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -15510,6 +15639,15 @@ export module CodeMashHub2 {
     }
   }
 
+  export class GetMembershipEmailBindingsResponse extends ResponseBase {
+    public result?: MembershipEmailBindingsDto;
+
+    public constructor(init?: Partial<GetMembershipEmailBindingsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class UpdatePasswordComplexityResponse extends ResponseBase {
     public result: boolean;
 
@@ -15792,6 +15930,15 @@ export module CodeMashHub2 {
     public tiers?: FlexTierDto[];
 
     public constructor(init?: Partial<GetAllowedFlexTiersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetNetworkAddressesResponse extends ResponseBase {
+    public regions?: NetworkAddressesDto[];
+
+    public constructor(init?: Partial<GetNetworkAddressesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -20387,6 +20534,11 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Compute the health now instead of reading the last result (at most every 6 hours old).")
     public refresh: boolean;
 
+    /** @description Days the user and e-mail numbers cover: 7, 30 (default) or 90. The problem list is the same for every period. */
+    // @DataMember
+    // @ApiMember(Description="Days the user and e-mail numbers cover: 7, 30 (default) or 90. The problem list is the same for every period.")
+    public periodDays?: number;
+
     public constructor(init?: Partial<GetProjectHealth>) {
       super(init);
       (Object as any).assign(this, init);
@@ -23240,6 +23392,36 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Lists the tokens of a membership e-mail template and how each one gets its value. */
+  // @Route("/{version}/membership/settings/email-bindings", "GET")
+  // @Api(Description="Lists the tokens of a membership e-mail template and how each one gets its value.")
+  export class GetMembershipEmailBindings
+    extends CodeMashRequestBase
+    implements IReturn<GetMembershipEmailBindingsResponse>
+  {
+    /** @description Welcome, Verification, PasswordReset, Invitation, Deactivation or LoginAlert. */
+    // @ApiMember(Description="Welcome, Verification, PasswordReset, Invitation, Deactivation or LoginAlert.", IsRequired=true)
+    public setting: string;
+
+    /** @description The template to check (tmpl_…). Omit = the template chosen now, else the built-in one. */
+    // @ApiMember(Description="The template to check (tmpl_…). Omit = the template chosen now, else the built-in one.")
+    public templateId?: string;
+
+    public constructor(init?: Partial<GetMembershipEmailBindings>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMembershipEmailBindings';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMembershipEmailBindingsResponse();
+    }
+  }
+
   /** @description Updates the project's membership authorization settings. */
   // @Route("/{version}/membership/authorization", "PUT")
   // @Api(Description="Updates the project's membership authorization settings.")
@@ -23307,6 +23489,18 @@ export module CodeMashHub2 {
     /** @description Setting = 'PasswordResetCallback': your own "choose a new password" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page. */
     // @ApiMember(Description="Setting = 'PasswordResetCallback': your own \"choose a new password\" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page.")
     public resetPasswordCallback?: string;
+
+    /** @description Setting = 'RegistrationTemplate': the welcome e-mail template id (tmpl_…) of this environment; empty = no welcome e-mail in this environment (a sign-up trigger may send it instead). */
+    // @ApiMember(Description="Setting = 'RegistrationTemplate': the welcome e-mail template id (tmpl_…) of this environment; empty = no welcome e-mail in this environment (a sign-up trigger may send it instead).")
+    public welcomeEmailTemplate?: string;
+
+    /** @description With a template setting (RegistrationTemplate, PasswordResetTemplate, UserInvitationTemplate, UserVerificationTemplate, UserDeactivationTemplate) or Setting = 'EmailBindings': the values of the template's tokens Norbix does not fill (GET membership/settings/email-bindings lists them). Omit = keep the stored ones; the save is refused while a token has no value. */
+    // @ApiMember(Description="With a template setting (RegistrationTemplate, PasswordResetTemplate, UserInvitationTemplate, UserVerificationTemplate, UserDeactivationTemplate) or Setting = 'EmailBindings': the values of the template's tokens Norbix does not fill (GET membership/settings/email-bindings lists them). Omit = keep the stored ones; the save is refused while a token has no value.")
+    public bindings?: MembershipTokenBindingDto[];
+
+    /** @description Setting = 'EmailBindings': which e-mail the bindings are for (Welcome, Verification, PasswordReset, Invitation, Deactivation, LoginAlert). */
+    // @ApiMember(Description="Setting = 'EmailBindings': which e-mail the bindings are for (Welcome, Verification, PasswordReset, Invitation, Deactivation, LoginAlert).")
+    public bindingsEvent?: string;
 
     public minLength: number;
     public maxLength?: number;
@@ -25286,6 +25480,32 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetAllowedFlexTiersResponse();
+    }
+  }
+
+  /** @description Returns the IP addresses Norbix connects to databases from, per region */
+  // @Route("/{version}/database/network-addresses", "GET")
+  // @Api(Description="Returns the IP addresses Norbix connects to databases from, per region")
+  export class GetNetworkAddresses
+    extends CodeMashRequestBase
+    implements IReturn<GetNetworkAddressesResponse>
+  {
+    /** @description A Norbix region code, e.g. nb-eu-germany; empty = every region */
+    // @ApiMember(Description="A Norbix region code, e.g. nb-eu-germany; empty = every region", ParameterType="query")
+    public regionCode?: string;
+
+    public constructor(init?: Partial<GetNetworkAddresses>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetNetworkAddresses';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetNetworkAddressesResponse();
     }
   }
 

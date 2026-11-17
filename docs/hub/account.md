@@ -175,8 +175,12 @@ for (const cluster of result.clusters ?? []) {
 
 `POST` `/{version}/account/flex-clusters/{flexClusterId}/upgrade`
 
-Queue the upgrade of one cluster to the `M10` tier. `flexClusterId` goes in the path; take it from
-[`getFlexClusters`](#getflexclusters). `M10` is the only tier you can upgrade to.
+Queue the upgrade of one cluster by one step on the ladder Flex → M10 → M20 → M30 → M40, within your plan
+(trial: Flex only · Starter: up to M20 · Growth: up to M30 · Scale: up to M40). `flexClusterId` goes in the
+path; take it from [`getFlexClusters`](#getflexclusters). Each cluster there has `nextTierCode` (the next step,
+empty when there is none) and `topTierCode` (the highest tier your plan allows); send `nextTierCode` as
+`tierCode`. Any other tier is refused with the next step named; a cluster at its plan's top is refused with
+`CM-ERRORS-DATABASE-068`.
 
 **Request DTO**: `CodeMashHub2.UpgradeFlexCluster`
 **Response**: `CodeMashHub2.EmptyResponse`
@@ -186,9 +190,11 @@ import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
+const { clusters } = await norbix.hub.account.getFlexClusters({});
+const cluster = clusters?.find((c) => c.nextTierCode);
 const result = await norbix.hub.account.upgradeFlexCluster({
-  flexClusterId: 'flexClusterId-here',
-  tierCode: 'M10',
+  flexClusterId: cluster!.id,
+  tierCode: cluster!.nextTierCode,
 });
 // → typed as CodeMashHub2.EmptyResponse
 ```
@@ -918,7 +924,9 @@ const result = await norbix.hub.account.getProjectTokens({
 
 `GET` `/{version}/account/projects/{projectId}/health`
 
-Fetch a single item by ID.
+The project's health: the problem list and the user and e-mail numbers. `periodDays` sets the days the
+numbers cover — `7`, `30` (default) or `90`; the answer's `stats.periodDays` says which was used. The
+problem list is the same for every period.
 
 **Request DTO**: `CodeMashHub2.GetProjectHealth`
 **Response**: `CodeMashHub2.GetProjectHealthResponse`
@@ -930,7 +938,7 @@ const norbix = new Norbix();
 
 const result = await norbix.hub.account.getProjectHealth({
   projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
+  periodDays: 7,
 });
 // → typed as CodeMashHub2.GetProjectHealthResponse
 ```

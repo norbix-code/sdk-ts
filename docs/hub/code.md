@@ -1034,7 +1034,10 @@ const result = await norbix.hub.code.enableCodeWorkflows({
 
 `PUT` `/{version}/code/workflows/disable`
 
-Disable the resource.
+Refused since 2026-11-17: workflows are part of every project and cannot be switched off — the call answers
+`CM-ERRORS-WORKFLOWS-045` and changes nothing. The method stays so existing code still compiles. To stop
+one workflow, use [`disableCodeWorkflow`](#disablecodeworkflow); [`enableCodeWorkflows`](#enablecodeworkflows)
+still switches workflows back on for a project that was switched off before.
 
 **Request DTO**: `CodeMashHub2.DisableCodeWorkflows`
 **Response**: `CodeMashHub2.EmptyResponse`

@@ -815,6 +815,10 @@ export class CodeModule {
   /**
    * PUT /{version}/code/workflows/disable
    * Request DTO: DisableCodeWorkflows
+   *
+   * Refused since 2026-11-17 (CM-ERRORS-WORKFLOWS-045): workflows cannot be switched off.
+   * Kept so existing code compiles; use disableCodeWorkflow to stop one workflow.
+   * @deprecated The gateway refuses this call.
    */
   disableCodeWorkflows = (
     request: Partial<CodeMashHub2.DisableCodeWorkflows> = {} as Partial<CodeMashHub2.DisableCodeWorkflows>,

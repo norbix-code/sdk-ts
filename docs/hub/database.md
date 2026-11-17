@@ -68,6 +68,7 @@ Accessed as `norbix.hub.database` on the [`Norbix`](../../README.md#authenticati
 | [`getDatabaseIntegration`](#getdatabaseintegration)                     | `GET`    | `/{version}/database/integrations/{id}`                                             | `project` |
 | [`getDatabaseIntegrations`](#getdatabaseintegrations)                   | `GET`    | `/{version}/database/integrations`                                                  | `project` |
 | [`getAllowedFlexTiers`](#getallowedflextiers)                           | `GET`    | `/{version}/database/integrations/flex-tiers`                                       | `project` |
+| [`getNetworkAddresses`](#getnetworkaddresses)                           | `GET`    | `/{version}/database/network-addresses`                                             | `project` |
 | [`saveDatabaseIntegration`](#savedatabaseintegration)                   | `POST`   | `/{version}/database/integrations`                                                  | `project` |
 | [`setDatabaseIntegrationAsDefault`](#setdatabaseintegrationasdefault)   | `PUT`    | `/{version}/database/integrations/{Id}/default`                                     | `project` |
 | [`testDatabaseIntegration`](#testdatabaseintegration)                   | `POST`   | `/{version}/database/integrations/test`                                             | `project` |
@@ -1374,6 +1375,26 @@ const result = await norbix.hub.database.getDatabaseIntegrations({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetDatabaseIntegrationsResponse
+```
+
+[↑ Top](#endpoints)
+
+### getNetworkAddresses
+
+`GET` `/{version}/database/network-addresses`
+
+The IP addresses Norbix connects to databases from, per region. Add them to your MongoDB Atlas IP access list (Network Access) when you connect your own database with a connection string. Pass `regionCode` (for example `nb-eu-germany`) for one region; leave it out for every region.
+
+**Request DTO**: `CodeMashHub2.GetNetworkAddresses`
+**Response**: `CodeMashHub2.GetNetworkAddressesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.database.getNetworkAddresses({ regionCode: 'nb-eu-germany' });
+// → result.regions: [{ regionCode: 'nb-eu-germany', addresses: ['…/32'] }]
 ```
 
 [↑ Top](#endpoints)
