@@ -8,55 +8,57 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 
 ## Endpoints
 
-| Method                                                          | Verb     | Path                                                                  | Scope     |
-| --------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | --------- |
-| [`importUsers`](#importusers)                                   | `POST`   | `/{version}/membership/users/import`                                  | `project` |
-| [`repairLoginProjectIds`](#repairloginprojectids)               | `POST`   | `/{version}/membership/users/repair-logins`                           | `project` |
-| [`issueServiceUserApiKey`](#issueserviceuserapikey)             | `POST`   | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
-| [`listServiceUserApiKeys`](#listserviceuserapikeys)             | `GET`    | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
-| [`deleteServiceUserApiKey`](#deleteserviceuserapikey)           | `DELETE` | `/{version}/membership/users/{Id}/api-keys/{KeyId}`                   | `project` |
-| [`deleteMembershipTrigger`](#deletemembershiptrigger)           | `DELETE` | `/{version}/membership/triggers/{triggerId}`                          | `project` |
-| [`disableMembershipTrigger`](#disablemembershiptrigger)         | `PATCH`  | `/{version}/membership/triggers/{triggerId}/disable`                  | `project` |
-| [`enableMembershipTrigger`](#enablemembershiptrigger)           | `PATCH`  | `/{version}/membership/triggers/{triggerId}/enable`                   | `project` |
-| [`getMembershipTrigger`](#getmembershiptrigger)                 | `GET`    | `/{version}/membership/triggers/{id}`                                 | `project` |
-| [`getMembershipTriggers`](#getmembershiptriggers)               | `GET`    | `/{version}/membership/triggers`                                      | `project` |
-| [`saveMembershipTrigger`](#savemembershiptrigger)               | `POST`   | `/{version}/membership/triggers`                                      | `project` |
-| [`createRole`](#createrole)                                     | `POST`   | `/{version}/membership/roles`                                         | `project` |
-| [`deleteRole`](#deleterole)                                     | `DELETE` | `/{version}/membership/roles`                                         | `project` |
-| [`getRole`](#getrole)                                           | `GET`    | `/{version}/membership/roles/{Id}`                                    | `project` |
-| [`getRoles`](#getroles)                                         | `GET`    | `/{version}/membership/roles`                                         | `project` |
-| [`updateRolePolicies`](#updaterolepolicies)                     | `PATCH`  | `/{version}/membership/roles`                                         | `project` |
-| [`createPolicy`](#createpolicy)                                 | `POST`   | `/{version}/membership/policies`                                      | `project` |
-| [`deletePolicy`](#deletepolicy)                                 | `DELETE` | `/{version}/membership/policies`                                      | `project` |
-| [`getPolicy`](#getpolicy)                                       | `GET`    | `/{version}/membership/policies/{Id}`                                 | `project` |
-| [`getPolicies`](#getpolicies)                                   | `GET`    | `/{version}/membership/policies`                                      | `project` |
-| [`updatePolicy`](#updatepolicy)                                 | `PUT`    | `/{version}/membership/policies`                                      | `project` |
-| [`getPasskeySettings`](#getpasskeysettings)                     | `GET`    | `/{version}/membership/passkey/settings`                              | `project` |
-| [`savePasskeySettings`](#savepasskeysettings)                   | `POST`   | `/{version}/membership/passkey/settings`                              | `project` |
-| [`deleteMembershipIntegration`](#deletemembershipintegration)   | `DELETE` | `/{version}/membership/integrations/{Id}`                             | `project` |
-| [`disableMembershipIntegration`](#disablemembershipintegration) | `PUT`    | `/{version}/membership/integrations/{Id}/disable`                     | `project` |
-| [`enableMembershipIntegration`](#enablemembershipintegration)   | `PUT`    | `/{version}/membership/integrations/{Id}/enable`                      | `project` |
-| [`getMembershipIntegration`](#getmembershipintegration)         | `GET`    | `/{version}/membership/integrations/{id}`                             | `project` |
-| [`getMembershipIntegrations`](#getmembershipintegrations)       | `GET`    | `/{version}/membership/integrations`                                  | `project` |
-| [`saveMembershipIntegration`](#savemembershipintegration)       | `POST`   | `/{version}/membership/integrations`                                  | `project` |
-| [`getExecutionIdentities`](#getexecutionidentities)             | `GET`    | `/{version}/membership/execution-identities`                          | `project` |
-| [`createExecutionIdentity`](#createexecutionidentity)           | `POST`   | `/{version}/membership/execution-identities`                          | `project` |
-| [`getAuthorizationSettings`](#getauthorizationsettings)         | `GET`    | `/{version}/membership/authorization`                                 | `project` |
-| [`updateAuthorizationSettings`](#updateauthorizationsettings)   | `PUT`    | `/{version}/membership/authorization`                                 | `project` |
-| [`updatePasswordComplexity`](#updatepasswordcomplexity)         | `PUT`    | `/{version}/membership/authorization/password-complexity`             | `project` |
-| [`getAuthenticationSettings`](#getauthenticationsettings)       | `GET`    | `/{version}/membership/authentication`                                | `project` |
-| [`updateAuthenticationSettings`](#updateauthenticationsettings) | `PUT`    | `/{version}/membership/authentication`                                | `project` |
-| [`setUserAiPlan`](#setuseraiplan)                               | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                        | `project` |
-| [`createContact`](#createcontact)                               | `POST`   | `/{version}/membership/users`                                         | `project` |
-| [`deleteContact`](#deletecontact)                               | `DELETE` | `/{version}/membership/users/{contactId}`                             | `project` |
-| [`getContact`](#getcontact)                                     | `GET`    | `/{version}/membership/users/{contactId}`                             | `project` |
-| [`getAllContacts`](#getallcontacts)                             | `GET`    | `/{version}/membership/users`                                         | `project` |
-| [`mergeContacts`](#mergecontacts)                               | `POST`   | `/{version}/membership/users/merge`                                   | `project` |
-| [`repairContactRoles`](#repaircontactroles)                     | `POST`   | `/{version}/membership/users/repair-roles`                            | `project` |
-| [`updateContact`](#updatecontact)                               | `PATCH`  | `/{version}/membership/users/{contactId}`                             | `project` |
-| [`addContactIdentity`](#addcontactidentity)                     | `POST`   | `/{version}/membership/users/{contactId}/identities`                  | `project` |
-| [`promoteContactIdentity`](#promotecontactidentity)             | `POST`   | `/{version}/membership/users/{contactId}/identities/{authId}/promote` | `project` |
-| [`removeContactIdentity`](#removecontactidentity)               | `DELETE` | `/{version}/membership/users/{contactId}/identities/{authId}`         | `project` |
+| Method                                                                | Verb     | Path                                                                  | Scope     |
+| --------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | --------- |
+| [`importUsers`](#importusers)                                         | `POST`   | `/{version}/membership/users/import`                                  | `project` |
+| [`repairLoginProjectIds`](#repairloginprojectids)                     | `POST`   | `/{version}/membership/users/repair-logins`                           | `project` |
+| [`issueServiceUserApiKey`](#issueserviceuserapikey)                   | `POST`   | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
+| [`listServiceUserApiKeys`](#listserviceuserapikeys)                   | `GET`    | `/{version}/membership/users/{Id}/api-keys`                           | `project` |
+| [`deleteServiceUserApiKey`](#deleteserviceuserapikey)                 | `DELETE` | `/{version}/membership/users/{Id}/api-keys/{KeyId}`                   | `project` |
+| [`deleteMembershipTrigger`](#deletemembershiptrigger)                 | `DELETE` | `/{version}/membership/triggers/{triggerId}`                          | `project` |
+| [`disableMembershipTrigger`](#disablemembershiptrigger)               | `PATCH`  | `/{version}/membership/triggers/{triggerId}/disable`                  | `project` |
+| [`enableMembershipTrigger`](#enablemembershiptrigger)                 | `PATCH`  | `/{version}/membership/triggers/{triggerId}/enable`                   | `project` |
+| [`getMembershipTrigger`](#getmembershiptrigger)                       | `GET`    | `/{version}/membership/triggers/{id}`                                 | `project` |
+| [`getMembershipTriggers`](#getmembershiptriggers)                     | `GET`    | `/{version}/membership/triggers`                                      | `project` |
+| [`getMembershipTriggerEventValues`](#getmembershiptriggereventvalues) | `GET`    | `/{version}/membership/triggers/event-values`                         | `project` |
+| [`saveMembershipTrigger`](#savemembershiptrigger)                     | `POST`   | `/{version}/membership/triggers`                                      | `project` |
+| [`createRole`](#createrole)                                           | `POST`   | `/{version}/membership/roles`                                         | `project` |
+| [`deleteRole`](#deleterole)                                           | `DELETE` | `/{version}/membership/roles`                                         | `project` |
+| [`getRole`](#getrole)                                                 | `GET`    | `/{version}/membership/roles/{Id}`                                    | `project` |
+| [`getRoles`](#getroles)                                               | `GET`    | `/{version}/membership/roles`                                         | `project` |
+| [`updateRolePolicies`](#updaterolepolicies)                           | `PATCH`  | `/{version}/membership/roles`                                         | `project` |
+| [`createPolicy`](#createpolicy)                                       | `POST`   | `/{version}/membership/policies`                                      | `project` |
+| [`deletePolicy`](#deletepolicy)                                       | `DELETE` | `/{version}/membership/policies`                                      | `project` |
+| [`getPolicy`](#getpolicy)                                             | `GET`    | `/{version}/membership/policies/{Id}`                                 | `project` |
+| [`getPolicies`](#getpolicies)                                         | `GET`    | `/{version}/membership/policies`                                      | `project` |
+| [`updatePolicy`](#updatepolicy)                                       | `PUT`    | `/{version}/membership/policies`                                      | `project` |
+| [`getPasskeySettings`](#getpasskeysettings)                           | `GET`    | `/{version}/membership/passkey/settings`                              | `project` |
+| [`savePasskeySettings`](#savepasskeysettings)                         | `POST`   | `/{version}/membership/passkey/settings`                              | `project` |
+| [`deleteMembershipIntegration`](#deletemembershipintegration)         | `DELETE` | `/{version}/membership/integrations/{Id}`                             | `project` |
+| [`disableMembershipIntegration`](#disablemembershipintegration)       | `PUT`    | `/{version}/membership/integrations/{Id}/disable`                     | `project` |
+| [`enableMembershipIntegration`](#enablemembershipintegration)         | `PUT`    | `/{version}/membership/integrations/{Id}/enable`                      | `project` |
+| [`getMembershipIntegration`](#getmembershipintegration)               | `GET`    | `/{version}/membership/integrations/{id}`                             | `project` |
+| [`getMembershipIntegrations`](#getmembershipintegrations)             | `GET`    | `/{version}/membership/integrations`                                  | `project` |
+| [`saveMembershipIntegration`](#savemembershipintegration)             | `POST`   | `/{version}/membership/integrations`                                  | `project` |
+| [`getExecutionIdentities`](#getexecutionidentities)                   | `GET`    | `/{version}/membership/execution-identities`                          | `project` |
+| [`createExecutionIdentity`](#createexecutionidentity)                 | `POST`   | `/{version}/membership/execution-identities`                          | `project` |
+| [`getAuthorizationSettings`](#getauthorizationsettings)               | `GET`    | `/{version}/membership/authorization`                                 | `project` |
+| [`getMembershipEmailBindings`](#getmembershipemailbindings)           | `GET`    | `/{version}/membership/settings/email-bindings`                       | `project` |
+| [`updateAuthorizationSettings`](#updateauthorizationsettings)         | `PUT`    | `/{version}/membership/authorization`                                 | `project` |
+| [`updatePasswordComplexity`](#updatepasswordcomplexity)               | `PUT`    | `/{version}/membership/authorization/password-complexity`             | `project` |
+| [`getAuthenticationSettings`](#getauthenticationsettings)             | `GET`    | `/{version}/membership/authentication`                                | `project` |
+| [`updateAuthenticationSettings`](#updateauthenticationsettings)       | `PUT`    | `/{version}/membership/authentication`                                | `project` |
+| [`setUserAiPlan`](#setuseraiplan)                                     | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                        | `project` |
+| [`createContact`](#createcontact)                                     | `POST`   | `/{version}/membership/users`                                         | `project` |
+| [`deleteContact`](#deletecontact)                                     | `DELETE` | `/{version}/membership/users/{contactId}`                             | `project` |
+| [`getContact`](#getcontact)                                           | `GET`    | `/{version}/membership/users/{contactId}`                             | `project` |
+| [`getAllContacts`](#getallcontacts)                                   | `GET`    | `/{version}/membership/users`                                         | `project` |
+| [`mergeContacts`](#mergecontacts)                                     | `POST`   | `/{version}/membership/users/merge`                                   | `project` |
+| [`repairContactRoles`](#repaircontactroles)                           | `POST`   | `/{version}/membership/users/repair-roles`                            | `project` |
+| [`updateContact`](#updatecontact)                                     | `PATCH`  | `/{version}/membership/users/{contactId}`                             | `project` |
+| [`addContactIdentity`](#addcontactidentity)                           | `POST`   | `/{version}/membership/users/{contactId}/identities`                  | `project` |
+| [`promoteContactIdentity`](#promotecontactidentity)                   | `POST`   | `/{version}/membership/users/{contactId}/identities/{authId}/promote` | `project` |
+| [`removeContactIdentity`](#removecontactidentity)                     | `DELETE` | `/{version}/membership/users/{contactId}/identities/{authId}`         | `project` |
 
 ## Reference
 
@@ -276,6 +278,32 @@ const result = await norbix.hub.membership.getMembershipTriggers({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetMembershipTriggersResponse
+```
+
+[↑ Top](#endpoints)
+
+### getMembershipTriggerEventValues
+
+`GET` `/{version}/membership/triggers/event-values`
+
+Lists every membership trigger event (`when`: `OnRegistered`, `OnInvited`, `OnVerified`, `OnUpdated`,
+`OnDeleted`, `OnBlocked`, `OnReactivated`, `OnUserCreated`) and the values it carries by name — for example
+"Registered user → e-mail address" is key `User.Email` with resolver `New`. To bind a template token of a
+membership trigger's e-mail / SMS / push action to one of them, save the token mapping as
+`{ key: <template token>, value: <key>, resolver: <resolver> }` — never resolver `Custom` (that sends the key
+as fixed text). `initiatorNote` says why `Initiator.*` is not the person of the event. Read-only.
+
+**Request DTO**: `CodeMashHub2.GetMembershipTriggerEventValues`
+**Response**: `CodeMashHub2.GetMembershipTriggerEventValuesResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { result } = await norbix.hub.membership.getMembershipTriggerEventValues();
+const registered = result?.events.find((e) => e.when === 'OnRegistered');
+// registered?.values → [{ key: 'User.Email', owner: 'Registered user', label: 'e-mail address', resolver: 'New' }, …]
 ```
 
 [↑ Top](#endpoints)
@@ -770,6 +798,36 @@ const result = await norbix.hub.membership.getAuthorizationSettings({
 
 [↑ Top](#endpoints)
 
+### getMembershipEmailBindings
+
+`GET` `/{version}/membership/settings/email-bindings`
+
+For one membership e-mail (`setting`: `Welcome`, `Verification`, `PasswordReset`, `Invitation`,
+`Deactivation`, `LoginAlert`) lists every token its template uses: `Auto` (Norbix fills it — `source` says
+with what), `NeedsValue` (a binding must give it a value: `Fixed` text, `Field` of the event, or `Empty`) or
+`NotAvailable` (never filled for this e-mail — `reason` says why). `templateId` is the template about to be
+chosen; leave it out for the one chosen now (or the built-in). Values are saved with
+`updateAuthorizationSettings` (`bindings`); the save is refused with `CM-ERRORS-MEMBERSHIP-060` while a token
+has no value.
+
+**Request DTO**: `CodeMashHub2.GetMembershipEmailBindings`
+**Response**: `CodeMashHub2.GetMembershipEmailBindingsResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { result } = await norbix.hub.membership.getMembershipEmailBindings({
+  setting: 'Welcome',
+  templateId: 'tmpl_…', // optional
+});
+// result?.withoutValueCount → tokens that still need a value
+// result?.tokens → [{ token: 'Order.Number', status: 'NeedsValue', hasValue: false, … }, …]
+```
+
+[↑ Top](#endpoints)
+
 ### updateAuthorizationSettings
 
 `PUT` `/{version}/membership/authorization`
@@ -788,6 +846,21 @@ const result = await norbix.hub.membership.updateAuthorizationSettings({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.EmptyResponse
+```
+
+The welcome e-mail of the environment is one setting: `setting: 'RegistrationTemplate'` with
+`welcomeEmailTemplate` (a `tmpl_…` id; empty = no welcome e-mail in this environment). `bindings` gives the
+tokens Norbix does not fill a value (`{ token, kind: 'Fixed' | 'Field' | 'Empty', value, translations }`, see
+`getMembershipEmailBindings`); it can go with any template setting, or alone with `setting: 'EmailBindings'`
+and `bindingsEvent` (which e-mail). `getAuthorizationSettings` answers the welcome template and
+`welcomeEmailTriggers` — enabled sign-up triggers that already e-mail the new user (two welcome e-mails).
+
+```ts
+await norbix.hub.membership.updateAuthorizationSettings({
+  setting: 'RegistrationTemplate',
+  welcomeEmailTemplate: 'tmpl_…',
+  bindings: [{ token: 'Order.Number', kind: 'Empty' }],
+});
 ```
 
 [↑ Top](#endpoints)

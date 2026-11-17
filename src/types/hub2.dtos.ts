@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-17 17:15:09
+Date: 2026-11-17 18:29:20
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -9898,6 +9898,57 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class MembershipTriggerEventValueDto {
+    // @DataMember
+    public key: string;
+
+    // @DataMember
+    public owner: string;
+
+    // @DataMember
+    public label: string;
+
+    // @DataMember
+    public resolver: string;
+
+    public constructor(init?: Partial<MembershipTriggerEventValueDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipTriggerEventValuesDto {
+    // @DataMember
+    public when: string;
+
+    // @DataMember
+    public subject?: string;
+
+    // @DataMember
+    public subjectBefore?: string;
+
+    // @DataMember
+    public values: MembershipTriggerEventValueDto[] = [];
+
+    // @DataMember
+    public initiatorNote: string;
+
+    public constructor(init?: Partial<MembershipTriggerEventValuesDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class MembershipTriggerEventsDto {
+    // @DataMember
+    public events: MembershipTriggerEventValuesDto[] = [];
+
+    public constructor(init?: Partial<MembershipTriggerEventsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class RoleListProjectionDto {
     public viewId: string;
     public name: string;
@@ -15553,6 +15604,15 @@ export module CodeMashHub2 {
     public list?: PaginatedResponse<MembershipTriggerProjectionList>;
 
     public constructor(init?: Partial<GetMembershipTriggersResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetMembershipTriggerEventValuesResponse extends ResponseBase {
+    public result?: MembershipTriggerEventsDto;
+
+    public constructor(init?: Partial<GetMembershipTriggerEventValuesResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -22827,6 +22887,28 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Lists the values each membership trigger event carries, by name, for token bindings. */
+  // @Route("/{version}/membership/triggers/event-values", "GET")
+  // @Api(Description="Lists the values each membership trigger event carries, by name, for token bindings.")
+  export class GetMembershipTriggerEventValues
+    extends CodeMashRequestBase
+    implements IReturn<GetMembershipTriggerEventValuesResponse>
+  {
+    public constructor(init?: Partial<GetMembershipTriggerEventValues>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetMembershipTriggerEventValues';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetMembershipTriggerEventValuesResponse();
+    }
+  }
+
   // @Route("/{version}/membership/triggers", "POST")
   // @DataContract
   export class SaveMembershipTrigger extends SaveTrigger implements IReturn<IdResponse> {
@@ -26437,6 +26519,14 @@ export module CodeMashHub2 {
     /** @description Set true when rendering for a preview (vs. a final save), to affect how missing tokens are handled. */
     // @ApiMember(Description="Set true when rendering for a preview (vs. a final save), to affect how missing tokens are handled.")
     public isForPreview: boolean;
+
+    /** @description Membership trigger preview: the project user (usr_…) the simulated event is about — the 'Registered user'. Set = the event's User.* tokens and every New / Old binding in Tokens are resolved as the trigger send resolves them. */
+    // @ApiMember(Description="Membership trigger preview: the project user (usr_…) the simulated event is about — the 'Registered user'. Set = the event's User.* tokens and every New / Old binding in Tokens are resolved as the trigger send resolves them.")
+    public triggerSubjectUserId?: string;
+
+    /** @description Membership trigger preview: the same person before the change (Old.User.* tokens), for update events. */
+    // @ApiMember(Description="Membership trigger preview: the same person before the change (Old.User.* tokens), for update events.")
+    public triggerSubjectBeforeUserId?: string;
 
     public constructor(init?: Partial<GetMjml>) {
       super(init);

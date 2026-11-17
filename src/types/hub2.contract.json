@@ -1303,6 +1303,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetMembershipTriggerEventValues": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetMembershipTriggers": {
     "requiresAuth": true,
     "returnsBytes": false

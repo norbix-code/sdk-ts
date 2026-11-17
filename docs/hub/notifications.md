@@ -409,6 +409,11 @@ const result = await norbix.hub.notifications.getMjml({
 // → typed as CodeMashHub2.GetHtmlFromMjmlResponse
 ```
 
+To preview a membership trigger's e-mail as it is sent, pass the simulated people of the event:
+`triggerSubjectUserId` (the user the event is about — "Registered user") and, for an update,
+`triggerSubjectBeforeUserId` (the user before the change). The preview then fills the event's tokens and
+resolves the `New` / `Old` bindings the way the send does.
+
 [↑ Top](#endpoints)
 
 ### getSystemEmailTemplate
