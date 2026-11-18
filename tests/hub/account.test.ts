@@ -41,6 +41,8 @@ describe('hub.account', () => {
     expect(typeof ns['createStripeCheckoutSession']).toBe('function');
     expect(typeof ns['getStripeBillingPortalUrl']).toBe('function');
     expect(typeof ns['getManagedServiceBundles']).toBe('function');
+    expect(typeof ns['getTrialAvailability']).toBe('function');
+    expect(typeof ns['joinTrialWaitlist']).toBe('function');
     expect(typeof ns['createTeamMemberFromInvitation']).toBe('function');
     expect(typeof ns['getAccountUsageBilling']).toBe('function');
     expect(typeof ns['verifyAccount']).toBe('function');

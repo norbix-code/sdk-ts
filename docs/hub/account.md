@@ -22,6 +22,8 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project` |
 | [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project` |
 | [`getManagedServiceBundles`](#getmanagedservicebundles)                       | `GET`    | `/{version}/account/stripe/bundles`                                          | `project` |
+| [`getTrialAvailability`](#gettrialavailability)                               | `GET`    | `/{version}/account/trial-availability`                                      | `project` |
+| [`joinTrialWaitlist`](#jointrialwaitlist)                                     | `POST`   | `/{version}/account/trial-waitlist`                                          | `project` |
 | [`createTeamMemberFromInvitation`](#createteammemberfrominvitation)           | `POST`   | `/{version}/account/team/member`                                             | `project` |
 | [`getAccountUsageBilling`](#getaccountusagebilling)                           | `GET`    | `/{version}/account/usage-billing`                                           | `project` |
 | [`verifyAccount`](#verifyaccount)                                             | `POST`   | `/{version}/account/verify`                                                  | `project` |
@@ -443,6 +445,70 @@ const result = await norbix.hub.account.getManagedServiceBundles();
 for (const item of result.bundles ?? []) {
   console.log(item.bundle, item.projectCap, item.monthly.amount, item.monthly.currency);
 }
+```
+
+[↑ Top](#endpoints)
+
+### getTrialAvailability
+
+`GET` `/{version}/account/trial-availability`
+
+Ask whether a free Managed Service trial can start in a region now, before opening a checkout.
+`region` is the region code from the new-project wizard; leave it out for the default region.
+
+- `limitsOn` false — this installation has no trial limits; start the trial as before.
+- `trialsOpen` false — the region's trials are full. Offer two choices: buy now without a trial
+  (`createStripeCheckoutSession` with `withoutTrial: true`) or join the waiting list
+  ([`joinTrialWaitlist`](#jointrialwaitlist)) when `waitlistOpen` is true.
+- `onWaitlist` — this account's owner email is already on the list.
+- `refusal` — why this account's trial was refused after the checkout (`CardAlreadyHadTrial`), or empty.
+
+A trial checkout that opens while the region is full fails with `CM-ERRORS-ACCOUNT-040`. An
+invitation from the waiting list carries a token; pass it as `trialInvite` on
+`createStripeCheckoutSession` to start the trial once even when the region is full (an expired or
+someone else's invitation fails with `CM-ERRORS-ACCOUNT-042`).
+
+**Request DTO**: `CodeMashHub2.GetTrialAvailabilityRequest`
+**Response**: `CodeMashHub2.TrialAvailabilityResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const availability = await norbix.hub.account.getTrialAvailability({ region: 'nb-eu-germany' });
+// availability → { limitsOn: true, region: 'nb-eu-germany', trialsOpen: false, waitlistOpen: true, onWaitlist: false }
+```
+
+[↑ Top](#endpoints)
+
+### joinTrialWaitlist
+
+`POST` `/{version}/account/trial-waitlist`
+
+Put the account owner's email on the trial waiting list for a region. `consent` must be true
+(the person agreed to be emailed when a trial slot frees); `consentVersion` names the consent text
+that was shown. When a slot frees, Norbix emails an invitation link that is valid for a few days.
+
+The answer's `status` is `added`, `alreadyListed` or `alreadyCustomer` (an email that already had a
+trial or pays is never added); `message` can be shown as it is. Errors: `CM-ERRORS-ACCOUNT-044`
+when the waiting list is switched off, `CM-ERRORS-ACCOUNT-043` for an unknown region, and a
+validation error when `consent` is not true.
+
+**Request DTO**: `CodeMashHub2.JoinTrialWaitlistRequest`
+**Response**: `CodeMashHub2.TrialWaitlistResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const { status, message } = await norbix.hub.account.joinTrialWaitlist({
+  region: 'nb-eu-germany',
+  consent: true,
+  consentVersion: '2026-11',
+});
+// status → 'added'
 ```
 
 [↑ Top](#endpoints)

@@ -240,6 +240,44 @@ export class AccountModule {
   };
 
   /**
+   * GET /{version}/account/trial-availability
+   * Request DTO: GetTrialAvailabilityRequest
+   */
+  getTrialAvailability = (
+    request: Partial<CodeMashHub2.GetTrialAvailabilityRequest> = {} as Partial<CodeMashHub2.GetTrialAvailabilityRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TrialAvailabilityResponse> => {
+    return this.transport.send<CodeMashHub2.TrialAvailabilityResponse>({
+      target: 'hub',
+      path: '/{version}/account/trial-availability',
+      method: 'GET',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/trial-waitlist
+   * Request DTO: JoinTrialWaitlistRequest
+   */
+  joinTrialWaitlist = (
+    request: Partial<CodeMashHub2.JoinTrialWaitlistRequest> = {} as Partial<CodeMashHub2.JoinTrialWaitlistRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.TrialWaitlistResponse> => {
+    return this.transport.send<CodeMashHub2.TrialWaitlistResponse>({
+      target: 'hub',
+      path: '/{version}/account/trial-waitlist',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/team/member
    * Anonymous — no token and no `accountId` needed (accepts an invitation).
    * Request DTO: CreateTeamMemberFromInvitation
