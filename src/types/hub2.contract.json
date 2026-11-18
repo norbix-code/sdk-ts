@@ -771,10 +771,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "ExportWorkItemRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "FindOneRecord": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1595,14 +1591,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "GetWorkItemRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetWorkItemsRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "ImportUsersRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1680,10 +1668,6 @@
     "returnsBytes": false
   },
   "MarkAllNotificationsReadRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "MarkNeedsYouDoneRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
