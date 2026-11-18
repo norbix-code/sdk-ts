@@ -270,6 +270,67 @@ describe('end-user AI chat stream', () => {
     expect(url.searchParams.get('channels')).toBe('ai-chat:pr_x:usr_y');
   });
 
+  it('norbix.aiChat() opens GET {api}/event-stream?channels=ai-chat:{projectId}:{authId} and parses a turn', async () => {
+    const env = (eventName: string, payload: Record<string, unknown>) =>
+      JSON.stringify({
+        channel: 'ai-chat',
+        eventName,
+        projectId: 'pr_x',
+        createdAtUtc: '2026-11-18T10:00:00Z',
+        payload,
+      });
+    const token2 = env('ai.chat.turn.token', { turnId: 'trn_1', text: 'has shipped.' });
+    const split = token2.indexOf('"createdAtUtc"'); // between two members: the joined "\n" is JSON whitespace
+    const body =
+      ': heartbeat\n\n' +
+      'event: cmd.onConnect\ndata: {"id":"sub_1"}\n\n' +
+      `id: 1\nevent: cmd.ai.chat.turn.started\ndata: ${env('ai.chat.turn.started', { turnId: 'trn_1' })}\n\n` +
+      `id: 2\nevent: cmd.ai.chat.turn.token\ndata: ${env('ai.chat.turn.token', { turnId: 'trn_1', text: 'Your order ' })}\n\n` +
+      `id: 3\r\nevent: cmd.ai.chat.turn.token\r\ndata: ${token2.slice(0, split)}\r\ndata: ${token2.slice(split)}\r\n\r\n` +
+      `id: 4\nevent:cmd.ai.chat.turn.completed\ndata:${env('ai.chat.turn.completed', { turnId: 'trn_1' })}\n\n`;
+    const fakeFetch = vi.fn().mockResolvedValue(sseResponse(body, 7));
+    const norbix = new Norbix({
+      bearerToken: 'user-jwt',
+      projectId: 'pr_x',
+      baseUrl: { api: 'https://api.test', hub: 'https://hub.invalid' },
+      fetch: fakeFetch as unknown as typeof fetch,
+    });
+
+    const stream = norbix.aiChat({ authId: 'usr_y', reconnect: { enabled: false } });
+    const got: { eventName: string; turnId: unknown; text: unknown }[] = [];
+    const completed: string[] = [];
+    stream.onMessage((e) => {
+      const payload = e.payload as { turnId?: unknown; text?: unknown } | null | undefined;
+      got.push({ eventName: e.eventName, turnId: payload?.turnId, text: payload?.text });
+    });
+    stream.on(NorbixRealtimeEvents.AiChat.TurnCompleted, (e) => {
+      completed.push(e.eventName);
+    });
+    await stream.connect();
+
+    expect(fakeFetch).toHaveBeenCalledTimes(1);
+    const [url, init] = fakeFetch.mock.calls[0]! as [string, RequestInit];
+    const u = new URL(url);
+    expect(u.origin).toBe('https://api.test');
+    expect(u.pathname).toBe('/event-stream');
+    expect(u.searchParams.get('channels')).toBe('ai-chat:pr_x:usr_y');
+    expect([...u.searchParams.keys()].sort()).toEqual(['channels', 't']);
+    expect(init.method).toBe('GET');
+    expect(init.body).toBeUndefined();
+    const headers = init.headers as Record<string, string>;
+    expect(headers.Authorization).toBe('Bearer user-jwt');
+    expect(headers.Accept).toBe('text/event-stream');
+    expect(headers['Cache-Control']).toBe('no-cache');
+
+    expect(got).toEqual([
+      { eventName: 'ai.chat.turn.started', turnId: 'trn_1', text: undefined },
+      { eventName: 'ai.chat.turn.token', turnId: 'trn_1', text: 'Your order ' },
+      { eventName: 'ai.chat.turn.token', turnId: 'trn_1', text: 'has shipped.' },
+      { eventName: 'ai.chat.turn.completed', turnId: 'trn_1', text: undefined },
+    ]);
+    expect(completed).toEqual(['ai.chat.turn.completed']);
+  });
+
   it('norbix.aiChat() streams from the API host with the client token and project', async () => {
     const fakeFetch = vi
       .fn()
