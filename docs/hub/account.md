@@ -19,6 +19,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`changeManagedServiceBundle`](#changemanagedservicebundle)                   | `POST`   | `/{version}/account/stripe/change-bundle`                                    | `project` |
 | [`applyBundleDiscount`](#applybundlediscount)                                 | `POST`   | `/{version}/account/stripe/discount`                                         | `project` |
 | [`checkBundleDiscount`](#checkbundlediscount)                                 | `POST`   | `/{version}/account/stripe/discount/check`                                   | `project` |
+| [`setExtraRegions`](#setextraregions)                                         | `POST`   | `/{version}/account/stripe/extra-regions`                                    | `project` |
 | [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project` |
 | [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project` |
 | [`getManagedServiceBundles`](#getmanagedservicebundles)                       | `GET`    | `/{version}/account/stripe/bundles`                                          | `project` |
@@ -365,6 +366,32 @@ const { discount } = await norbix.hub.account.checkBundleDiscount({
   billingPeriod: CodeMashHub2.SubscriptionBillingPeriod.Monthly,
 });
 // discount → { code: 'LAUNCH30', percentOff: 30, months: 3, ... }
+```
+
+[↑ Top](#endpoints)
+
+### setExtraRegions
+
+`POST` `/{version}/account/stripe/extra-regions`
+
+Set how many extra regions the account's Starter or Growth subscription carries (`extraRegions`;
+0 removes them all). Norbix changes the Stripe subscription pro rata, so this changes what the
+account pays. The region limit follows a moment later, through the Stripe webhook: read
+[`getAccountStatus`](#getaccountstatus) again.
+
+Errors: `CM-ERRORS-PROJECTS-039` when the account has no subscription, `CM-ERRORS-ACCOUNT-024` when
+extra regions are not offered (trial, Scale, no price), `CM-ERRORS-ACCOUNT-025` when the projects
+already use more regions, `CM-ERRORS-ACCOUNT-026` when the number is out of range.
+
+**Request DTO**: `CodeMashHub2.SetExtraRegions`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+await norbix.hub.account.setExtraRegions({ extraRegions: 1 });
 ```
 
 [↑ Top](#endpoints)

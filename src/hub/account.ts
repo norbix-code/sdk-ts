@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: account
- * Endpoints: 132
+ * Endpoints: 133
  */
 export class AccountModule {
   constructor(private readonly transport: Transport) {}
@@ -174,6 +174,25 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.CheckBundleDiscountResponse>({
       target: 'hub',
       path: '/{version}/account/stripe/discount/check',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/stripe/extra-regions
+   * Request DTO: SetExtraRegions
+   */
+  setExtraRegions = (
+    request: Partial<CodeMashHub2.SetExtraRegions> = {} as Partial<CodeMashHub2.SetExtraRegions>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/stripe/extra-regions',
       method: 'POST',
       request,
       pathParams: [],

@@ -38,6 +38,7 @@ describe('hub.account', () => {
     expect(typeof ns['changeManagedServiceBundle']).toBe('function');
     expect(typeof ns['applyBundleDiscount']).toBe('function');
     expect(typeof ns['checkBundleDiscount']).toBe('function');
+    expect(typeof ns['setExtraRegions']).toBe('function');
     expect(typeof ns['createStripeCheckoutSession']).toBe('function');
     expect(typeof ns['getStripeBillingPortalUrl']).toBe('function');
     expect(typeof ns['getManagedServiceBundles']).toBe('function');
