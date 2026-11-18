@@ -46,15 +46,77 @@ export function projectHostLabel(projectId: string | undefined | null): string |
   return `pr-${hex}`;
 }
 
+/** The placeholder an install's address template carries (`/echo` → `apiUrlTemplate`). */
+export const PROJECT_HOST_LABEL_PLACEHOLDER = '{projectHostLabel}';
+
+const NORBIX_API_DOMAIN = 'api.norbix.ai';
+const PROJECT_LABEL = /^pr-[0-9a-f]{32}$/i;
+
 /**
- * The project's own base URL under a default one: `https://api.norbix.ai` +
- * `pr_5Xvm…` → `https://pr-022c….api.norbix.ai`. `undefined` when the id is not
- * a Norbix project id.
+ * Where a project's API calls go, from the API base URL the client has
+ * (devops docs/tasks/clients-project-host.md, round 2):
+ *
+ * - a norbix.ai API address — `https://api.norbix.ai` or
+ *   `https://<region>.api.norbix.ai`, built in or written out — becomes the
+ *   project's own host `https://pr-<hex>.api.norbix.ai` (its DNS record
+ *   follows the project's region);
+ * - a template with `{projectHostLabel}` (an install on its own domain that
+ *   serves project hosts) is filled with the project's label;
+ * - an address that is already a project's host (`https://pr-<hex>.…`) gets
+ *   the current project's label, so host and `norbix-project-id` always name
+ *   the same project;
+ * - any other address is used as given.
+ *
+ * `shared` is the same address without a project label (the social sign-in
+ * link is built on it). With a project id that is not a Norbix id, `project`
+ * is `shared`. Never throws.
  */
-export function composeProjectUrl(
+export function projectApiBaseUrl(
+  baseUrl: string,
   projectId: string | undefined | null,
-  defaultUrl: string,
-): string | undefined {
+): { project: string; shared: string } {
   const label = projectHostLabel(projectId);
-  return label ? defaultUrl.replace('://', `://${label}.`) : undefined;
+
+  if (baseUrl.includes(PROJECT_HOST_LABEL_PLACEHOLDER)) {
+    const shared = baseUrl.split(`${PROJECT_HOST_LABEL_PLACEHOLDER}.`).join('');
+    return {
+      project: label ? baseUrl.split(PROJECT_HOST_LABEL_PLACEHOLDER).join(label) : shared,
+      shared,
+    };
+  }
+
+  let url: URL;
+  try {
+    url = new URL(baseUrl);
+  } catch {
+    return { project: baseUrl, shared: baseUrl };
+  }
+  const labels = url.hostname.toLowerCase().split('.');
+
+  if (labels.length > 1 && PROJECT_LABEL.test(labels[0]!)) {
+    const shared = withHost(baseUrl, url, labels.slice(1).join('.'));
+    return {
+      project: label ? withHost(baseUrl, url, [label, ...labels.slice(1)].join('.')) : shared,
+      shared,
+    };
+  }
+
+  const host = labels.join('.');
+  const isNorbixApi =
+    host === NORBIX_API_DOMAIN || (labels.length === 4 && host.endsWith(`.${NORBIX_API_DOMAIN}`));
+  if (isNorbixApi && url.protocol === 'https:') {
+    return {
+      project: label ? withHost(baseUrl, url, `${label}.${NORBIX_API_DOMAIN}`) : baseUrl,
+      shared: baseUrl,
+    };
+  }
+
+  return { project: baseUrl, shared: baseUrl };
+}
+
+/** `baseUrl` with another host name; scheme, port and path are kept, and a trailing slash only when it had one. */
+function withHost(baseUrl: string, url: URL, hostname: string): string {
+  const copy = new URL(url.href);
+  copy.hostname = hostname;
+  return baseUrl.endsWith('/') || copy.pathname !== '/' ? copy.href : copy.href.replace(/\/$/, '');
 }

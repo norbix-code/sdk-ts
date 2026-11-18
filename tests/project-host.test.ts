@@ -172,7 +172,7 @@ describe('project host — with a region', () => {
   });
 });
 
-describe('project host — a custom base URL is never rewritten', () => {
+describe('project host — another address is used as given', () => {
   it('baseUrl option (staging)', async () => {
     const mock = createMockFetch({ body: {} });
     const norbix = new Norbix({
@@ -196,16 +196,28 @@ describe('project host — a custom base URL is never rewritten', () => {
     );
   });
 
-  it('NORBIX_API_URL, also when it is the default address written out', async () => {
+  it('a norbix.ai API address written out goes to the project host too', async () => {
     const mock = createMockFetch({ body: {} });
     const norbix = new Norbix(
       { apiKey: 'k', fetch: mock.fetch },
       { envSource: { NORBIX_PROJECT_ID: VIRGINIA, NORBIX_API_URL: 'https://api.norbix.ai' } },
     );
-
     await norbix.api.database.find({ collectionName: 'orders' });
+    expect(mock.lastCall?.url.startsWith(VIRGINIA_HOST)).toBe(true);
 
-    expect(mock.lastCall?.url.startsWith('https://api.norbix.ai/')).toBe(true);
+    const regional = new Norbix({
+      projectId: GERMANY,
+      apiKey: 'k',
+      baseUrl: { api: 'https://nb-eu-germany.api.norbix.ai' },
+      fetch: mock.fetch,
+    });
+    await regional.api.database.find({ collectionName: 'orders' });
+    expect(mock.lastCall?.url.startsWith(GERMANY_HOST)).toBe(true);
+    expect(
+      regional.api.auth
+        .socialSignInUrl('google')
+        .startsWith('https://nb-eu-germany.api.norbix.ai/'),
+    ).toBe(true);
   });
 
   it('a custom API URL with the default Hub URL: only the Hub follows the region', async () => {
@@ -222,5 +234,111 @@ describe('project host — a custom base URL is never rewritten', () => {
     expect(mock.lastCall?.url.startsWith('http://localhost:5002/')).toBe(true);
     await norbix.hub.regions.list();
     expect(mock.lastCall?.url.startsWith('https://nb-eu-germany.hub.norbix.ai/')).toBe(true);
+  });
+});
+
+describe('project host — an install on its own domain', () => {
+  const TEMPLATE = 'https://{projectHostLabel}.api.customer.com';
+
+  it('a template is filled with the project label; host and header agree after setScope', async () => {
+    const mock = createMockFetch({ body: {} });
+    const norbix = new Norbix({
+      projectId: VIRGINIA,
+      apiKey: 'k',
+      baseUrl: { api: TEMPLATE, hub: 'https://hub.customer.com' },
+      fetch: mock.fetch,
+    });
+
+    await norbix.api.database.find({ collectionName: 'orders' });
+    expect(
+      mock.lastCall?.url.startsWith(
+        'https://pr-022c4aca9f9e4df787ab0a20c83c44b6.api.customer.com/',
+      ),
+    ).toBe(true);
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe(VIRGINIA);
+
+    norbix.setScope({ projectId: GERMANY });
+    await norbix.api.database.find({ collectionName: 'orders' });
+    expect(
+      mock.lastCall?.url.startsWith(
+        'https://pr-184336d00e2141c3be5138e8dcf52e81.api.customer.com/',
+      ),
+    ).toBe(true);
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe(GERMANY);
+
+    expect(
+      norbix.api.auth.socialSignInUrl('google').startsWith('https://api.customer.com/v3/'),
+    ).toBe(true);
+    await norbix.hub.regions.list();
+    expect(mock.lastCall?.url.startsWith('https://hub.customer.com/')).toBe(true);
+  });
+
+  it('a template from NORBIX_API_URL, with a port and a version path', async () => {
+    const mock = createMockFetch({ body: {} });
+    const norbix = new Norbix(
+      { apiKey: 'k', fetch: mock.fetch },
+      {
+        envSource: {
+          NORBIX_PROJECT_ID: VIRGINIA,
+          NORBIX_API_URL: 'http://{projectHostLabel}.api.local.norbix.test:8443',
+        },
+      },
+    );
+    await norbix.api.database.find({ collectionName: 'orders' });
+    expect(
+      mock.lastCall?.url.startsWith(
+        'http://pr-022c4aca9f9e4df787ab0a20c83c44b6.api.local.norbix.test:8443/v3/',
+      ),
+    ).toBe(true);
+  });
+
+  it('a template with an id that is not a Norbix id: the address without the label', async () => {
+    const mock = createMockFetch({ body: {} });
+    const norbix = new Norbix({
+      projectId: 'p1',
+      apiKey: 'k',
+      baseUrl: { api: TEMPLATE },
+      fetch: mock.fetch,
+    });
+    await norbix.api.database.find({ collectionName: 'orders' });
+    expect(mock.lastCall?.url.startsWith('https://api.customer.com/')).toBe(true);
+  });
+
+  it("a pasted project host follows the client's project, so it never serves another project", async () => {
+    const mock = createMockFetch({ body: {} });
+    const norbix = new Norbix({
+      projectId: GERMANY,
+      apiKey: 'k',
+      baseUrl: { api: 'https://pr-022c4aca9f9e4df787ab0a20c83c44b6.api.customer.com' },
+      fetch: mock.fetch,
+    });
+    await norbix.api.database.find({ collectionName: 'orders' });
+    expect(
+      mock.lastCall?.url.startsWith(
+        'https://pr-184336d00e2141c3be5138e8dcf52e81.api.customer.com/',
+      ),
+    ).toBe(true);
+    expect(norbix.api.auth.socialSignInUrl('google').startsWith('https://api.customer.com/')).toBe(
+      true,
+    );
+  });
+
+  it('a plain own-domain address, staging and localhost are used as given', async () => {
+    for (const api of [
+      'https://api.customer.com',
+      'https://api.norbix.io',
+      'http://localhost:5002',
+      'http://api.norbix.ai',
+    ]) {
+      const mock = createMockFetch({ body: {} });
+      const norbix = new Norbix({
+        projectId: VIRGINIA,
+        apiKey: 'k',
+        baseUrl: { api },
+        fetch: mock.fetch,
+      });
+      await norbix.api.database.find({ collectionName: 'orders' });
+      expect(mock.lastCall?.url.startsWith(`${api}/`)).toBe(true);
+    }
   });
 });
