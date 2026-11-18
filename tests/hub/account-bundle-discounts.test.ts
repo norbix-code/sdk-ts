@@ -106,3 +106,25 @@ describe('hub.account bundle discounts', () => {
     expect(err.errors[0]?.meta).toMatchObject({ reason: 'already_used' });
   });
 });
+
+describe('hub.account extra regions', () => {
+  it('setExtraRegions: POST /account/stripe/extra-regions with the count in the body', async () => {
+    const { norbix, mock } = clientAnswering({ responseStatus: { isSuccess: true } });
+
+    await norbix.hub.account.setExtraRegions({ extraRegions: 2 });
+
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.split('?')[0]).toBe(`${HUB}/account/stripe/extra-regions`);
+    expect(mock.lastCall?.url.includes('?')).toBe(false);
+    expect(JSON.parse(mock.lastCall?.body ?? '{}')).toEqual({ extraRegions: 2 });
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+  });
+
+  it('setExtraRegions with 0 removes them: the 0 is sent, not dropped', async () => {
+    const { norbix, mock } = clientAnswering({ responseStatus: { isSuccess: true } });
+
+    await norbix.hub.account.setExtraRegions({ extraRegions: 0 });
+
+    expect(JSON.parse(mock.lastCall?.body ?? '{}')).toEqual({ extraRegions: 0 });
+  });
+});
