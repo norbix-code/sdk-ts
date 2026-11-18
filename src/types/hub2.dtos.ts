@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-17 18:29:20
+Date: 2026-11-18 12:56:36
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7872,6 +7872,31 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class BundleDiscountDto {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public percentOff?: number;
+
+    // @DataMember
+    public amountOff?: number;
+
+    // @DataMember
+    public currency?: string;
+
+    // @DataMember
+    public months?: number;
+
+    // @DataMember
+    public endsAt?: string;
+
+    public constructor(init?: Partial<BundleDiscountDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class AccountStatusDto {
     // @DataMember
     public accountId: string;
@@ -7916,6 +7941,12 @@ export module CodeMashHub2 {
     public isTrial: boolean;
 
     // @DataMember
+    public extraRegions: number;
+
+    // @DataMember
+    public discount?: BundleDiscountDto;
+
+    // @DataMember
     public renewsOn?: string;
 
     // @DataMember
@@ -7946,6 +7977,19 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class ExtraRegionPriceDto {
+    // @DataMember
+    public monthly: BundlePriceDto;
+
+    // @DataMember
+    public annual: BundlePriceDto;
+
+    public constructor(init?: Partial<ExtraRegionPriceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class ManagedServiceBundleDto {
     // @DataMember
     public bundle: ManagedServiceBundle;
@@ -7958,6 +8002,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public annual: BundlePriceDto;
+
+    // @DataMember
+    public regionCap?: number;
+
+    // @DataMember
+    public extraRegion?: ExtraRegionPriceDto;
 
     public constructor(init?: Partial<ManagedServiceBundleDto>) {
       (Object as any).assign(this, init);
@@ -7993,6 +8043,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public recordedAtUtc: string;
+
+    // @DataMember
+    public waived?: string;
 
     public constructor(init?: Partial<UsageBillingPeriodDto>) {
       (Object as any).assign(this, init);
@@ -15002,6 +15055,7 @@ export module CodeMashHub2 {
     public apiVersion: string;
     public hubVersion: string;
     public adminUrlTemplate?: string;
+    public apiUrlTemplate?: string;
     public emailServiceConfigured: boolean;
     public rootBootstrapPasswordSource?: string;
     public regions?: EchoRegionDto[];
@@ -15164,6 +15218,17 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class CheckBundleDiscountResponse extends ResponseBase {
+    // @DataMember
+    public discount?: BundleDiscountDto;
+
+    public constructor(init?: Partial<CheckBundleDiscountResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CreateStripeCheckoutSessionResponse extends IdResponse {
     // @DataMember
     public trialIncluded: boolean;
@@ -15202,6 +15267,46 @@ export module CodeMashHub2 {
     public token?: string;
 
     public constructor(init?: Partial<CreateTeamMemberFromInvitationResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TrialWaitlistResponse extends ResponseBase {
+    // @DataMember
+    public status?: string;
+
+    // @DataMember
+    public message?: string;
+
+    public constructor(init?: Partial<TrialWaitlistResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TrialAvailabilityResponse extends ResponseBase {
+    // @DataMember
+    public limitsOn: boolean;
+
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public trialsOpen: boolean;
+
+    // @DataMember
+    public waitlistOpen: boolean;
+
+    // @DataMember
+    public onWaitlist: boolean;
+
+    // @DataMember
+    public refusal?: string;
+
+    public constructor(init?: Partial<TrialAvailabilityResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -19858,6 +19963,57 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/stripe/discount/check", "POST")
+  // @DataContract
+  export class CheckBundleDiscount
+    extends RequestBase
+    implements IReturn<CheckBundleDiscountResponse>
+  {
+    // @DataMember
+    public code?: string;
+
+    // @DataMember
+    public bundle?: ManagedServiceBundle;
+
+    // @DataMember
+    public billingPeriod?: SubscriptionBillingPeriod;
+
+    public constructor(init?: Partial<CheckBundleDiscount>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CheckBundleDiscount';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CheckBundleDiscountResponse();
+    }
+  }
+
+  // @Route("/{version}/account/stripe/discount", "POST")
+  // @DataContract
+  export class ApplyBundleDiscount extends RequestBase implements IReturn<EmptyResponse> {
+    // @DataMember
+    public code?: string;
+
+    public constructor(init?: Partial<ApplyBundleDiscount>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ApplyBundleDiscount';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/stripe/change-bundle", "POST")
   // @DataContract
   export class ChangeManagedServiceBundle extends RequestBase implements IReturn<EmptyResponse> {
@@ -19905,6 +20061,18 @@ export module CodeMashHub2 {
 
     // @DataMember
     public returnUrl?: string;
+
+    // @DataMember
+    public discountCode?: string;
+
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public withoutTrial?: boolean;
+
+    // @DataMember
+    public trialInvite?: string;
 
     public constructor(init?: Partial<CreateStripeCheckoutSession>) {
       super(init);
@@ -19973,6 +20141,27 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/account/stripe/extra-regions", "POST")
+  // @DataContract
+  export class SetExtraRegions extends RequestBase implements IReturn<EmptyResponse> {
+    // @DataMember
+    public extraRegions?: number;
+
+    public constructor(init?: Partial<SetExtraRegions>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetExtraRegions';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmptyResponse();
+    }
+  }
+
   // @Route("/{version}/account/team/member", "POST")
   export class CreateTeamMemberFromInvitation
     extends RequestBase
@@ -20002,6 +20191,93 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new CreateTeamMemberFromInvitationResponse();
+    }
+  }
+
+  // @Route("/{version}/account/trial-waitlist", "POST")
+  // @DataContract
+  export class JoinTrialWaitlistRequest
+    extends RequestBase
+    implements IReturn<TrialWaitlistResponse>
+  {
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public consent: boolean;
+
+    // @DataMember
+    public consentVersion?: string;
+
+    public constructor(init?: Partial<JoinTrialWaitlistRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'JoinTrialWaitlistRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new TrialWaitlistResponse();
+    }
+  }
+
+  // @Route("/{version}/account/trial-waitlist/intake", "POST")
+  // @DataContract
+  export class TrialWaitlistIntakeRequest
+    extends RequestBase
+    implements IReturn<TrialWaitlistResponse>
+  {
+    // @DataMember
+    public email?: string;
+
+    // @DataMember
+    public region?: string;
+
+    // @DataMember
+    public consent: boolean;
+
+    // @DataMember
+    public consentVersion?: string;
+
+    public constructor(init?: Partial<TrialWaitlistIntakeRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TrialWaitlistIntakeRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new TrialWaitlistResponse();
+    }
+  }
+
+  // @Route("/{version}/account/trial-availability", "GET")
+  // @DataContract
+  export class GetTrialAvailabilityRequest
+    extends RequestBase
+    implements IReturn<TrialAvailabilityResponse>
+  {
+    // @DataMember
+    public region?: string;
+
+    public constructor(init?: Partial<GetTrialAvailabilityRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTrialAvailabilityRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new TrialAvailabilityResponse();
     }
   }
 

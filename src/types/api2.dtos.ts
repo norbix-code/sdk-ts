@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-17 17:15:08
+Date: 2026-11-18 12:56:36
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -3688,6 +3688,7 @@ export module CodeMashApi2 {
     public apiVersion: string;
     public hubVersion: string;
     public adminUrlTemplate?: string;
+    public apiUrlTemplate?: string;
     public emailServiceConfigured: boolean;
     public rootBootstrapPasswordSource?: string;
     public regions?: EchoRegionDto[];

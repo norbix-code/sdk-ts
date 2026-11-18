@@ -145,6 +145,44 @@ export class AccountModule {
   };
 
   /**
+   * POST /{version}/account/stripe/discount
+   * Request DTO: ApplyBundleDiscount
+   */
+  applyBundleDiscount = (
+    request: Partial<CodeMashHub2.ApplyBundleDiscount> = {} as Partial<CodeMashHub2.ApplyBundleDiscount>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.EmptyResponse> => {
+    return this.transport.send<CodeMashHub2.EmptyResponse>({
+      target: 'hub',
+      path: '/{version}/account/stripe/discount',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/account/stripe/discount/check
+   * Request DTO: CheckBundleDiscount
+   */
+  checkBundleDiscount = (
+    request: Partial<CodeMashHub2.CheckBundleDiscount> = {} as Partial<CodeMashHub2.CheckBundleDiscount>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.CheckBundleDiscountResponse> => {
+    return this.transport.send<CodeMashHub2.CheckBundleDiscountResponse>({
+      target: 'hub',
+      path: '/{version}/account/stripe/discount/check',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/account/stripe/create-checkout-session
    * Request DTO: CreateStripeCheckoutSession
    */

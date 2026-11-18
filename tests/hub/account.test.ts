@@ -7,7 +7,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  * Auto-generated. Do not edit by hand — run `npm run generate-endpoints`
  * to refresh this file from the DTO definitions.
  *
- * Tests for hub.account (136 endpoints).
+ * Tests for hub.account (138 endpoints).
  *
  * Each method is asserted against:
  *   - presence on the module (smoke check)
@@ -17,7 +17,7 @@ import { createMockFetch, expectedUrl, makeClient, stubRequestForPath } from '..
  *   - account-scope guard: throws NORBIX_ACCOUNT_SCOPE_REQUIRED without accountId
  */
 describe('hub.account', () => {
-  it('module exposes 136 method(s)', () => {
+  it('module exposes 138 method(s)', () => {
     const mock = createMockFetch();
     const mod = new AccountModule({} as never);
     void mod; // silence unused — we only need the type
@@ -36,6 +36,8 @@ describe('hub.account', () => {
     expect(typeof ns['resendAccountVerificationToken']).toBe('function');
     expect(typeof ns['getAccountStatus']).toBe('function');
     expect(typeof ns['changeManagedServiceBundle']).toBe('function');
+    expect(typeof ns['applyBundleDiscount']).toBe('function');
+    expect(typeof ns['checkBundleDiscount']).toBe('function');
     expect(typeof ns['createStripeCheckoutSession']).toBe('function');
     expect(typeof ns['getStripeBillingPortalUrl']).toBe('function');
     expect(typeof ns['getManagedServiceBundles']).toBe('function');
