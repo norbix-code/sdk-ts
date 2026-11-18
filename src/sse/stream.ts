@@ -112,18 +112,37 @@ export async function readSse(
     }
   };
 
-  for (;;) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-
-    // Normalize CRLF, split on newline, keep the trailing partial line.
-    buffer = buffer.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  // A CR at the very end of a chunk may be the first half of a CRLF that the
+  // next chunk completes. Turned into a line end on its own, the LF that
+  // follows would read as a blank line and end the event early (and split a
+  // multi-line `data:` in two), so it waits for the next chunk.
+  let heldCr = false;
+  const drain = () => {
     let idx: number;
     while ((idx = buffer.indexOf('\n')) !== -1) {
       const line = buffer.slice(0, idx);
       buffer = buffer.slice(idx + 1);
       handleLine(line);
     }
+  };
+
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) {
+      if (heldCr) {
+        buffer += '\n';
+        drain();
+      }
+      break;
+    }
+    let chunk = decoder.decode(value, { stream: true });
+    if (heldCr) chunk = '\r' + chunk;
+    heldCr = chunk.endsWith('\r');
+    if (heldCr) chunk = chunk.slice(0, -1);
+    buffer += chunk;
+
+    // Normalize CRLF, split on newline, keep the trailing partial line.
+    buffer = buffer.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    drain();
   }
 }

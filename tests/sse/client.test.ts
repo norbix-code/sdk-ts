@@ -49,6 +49,28 @@ describe('channel helpers', () => {
 });
 
 describe('readSse', () => {
+  it('keeps one event when a CRLF is split across two chunks (a CR ends one chunk, its LF starts the next)', async () => {
+    const enc = new TextEncoder();
+    const chunks = ['id: 7\r\ndata: {"a":1,\r', '\ndata: "b":2}\r', '\n\r\n'];
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const c of chunks) controller.enqueue(enc.encode(c));
+        controller.close();
+      },
+    });
+    const fakeFetch = vi.fn().mockResolvedValue(new Response(stream, { status: 200 }));
+    const messages: { event: string; data: string; id?: string }[] = [];
+
+    await readSse(
+      'https://api.test/event-stream',
+      { method: 'GET' },
+      { onMessage: (m) => messages.push(m) },
+      fakeFetch as unknown as typeof fetch,
+    );
+
+    expect(messages).toEqual([{ event: 'message', data: '{"a":1,\n"b":2}', id: '7' }]);
+  });
+
   it('parses a frame split across chunks and ignores heartbeats', async () => {
     const frame =
       `: heartbeat\n` +
