@@ -55,6 +55,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ApplyBundleDiscount": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ApplyDatabaseSchemaBundleRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -128,6 +132,10 @@
     "returnsBytes": false
   },
   "ChatTurnRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CheckBundleDiscount": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1595,6 +1603,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetTrialAvailabilityRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetTriggerDefinition": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1668,6 +1680,10 @@
     "returnsBytes": false
   },
   "IssueServiceUserApiKeyRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "JoinTrialWaitlistRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2163,6 +2179,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SetExtraRegions": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SetFilesIntegrationAsDefaultRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2289,6 +2309,10 @@
   },
   "TestTriggerPreExecuteCode": {
     "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TrialWaitlistIntakeRequest": {
+    "requiresAuth": false,
     "returnsBytes": false
   },
   "UnArchiveEmailTemplateRequest": {

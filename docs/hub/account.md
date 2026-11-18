@@ -17,6 +17,8 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`resendAccountVerificationToken`](#resendaccountverificationtoken)           | `POST`   | `/{version}/account/verify/resend`                                           | `project` |
 | [`getAccountStatus`](#getaccountstatus)                                       | `GET`    | `/{version}/account/status`                                                  | `project` |
 | [`changeManagedServiceBundle`](#changemanagedservicebundle)                   | `POST`   | `/{version}/account/stripe/change-bundle`                                    | `project` |
+| [`applyBundleDiscount`](#applybundlediscount)                                 | `POST`   | `/{version}/account/stripe/discount`                                         | `project` |
+| [`checkBundleDiscount`](#checkbundlediscount)                                 | `POST`   | `/{version}/account/stripe/discount/check`                                   | `project` |
 | [`createStripeCheckoutSession`](#createstripecheckoutsession)                 | `POST`   | `/{version}/account/stripe/create-checkout-session`                          | `project` |
 | [`getStripeBillingPortalUrl`](#getstripebillingportalurl)                     | `POST`   | `/{version}/account/stripe/get-portal-url`                                   | `project` |
 | [`getManagedServiceBundles`](#getmanagedservicebundles)                       | `GET`    | `/{version}/account/stripe/bundles`                                          | `project` |
@@ -311,6 +313,60 @@ const result = await norbix.hub.account.changeManagedServiceBundle({
 
 [↑ Top](#endpoints)
 
+### applyBundleDiscount
+
+`POST` `/{version}/account/stripe/discount`
+
+Put a discount code on the account's running Managed Service subscription. Norbix checks the code
+first (start date, once per owner email, bundle and billing period, one discount at a time) and then
+changes the Stripe subscription. The discount shows on the account a moment later, through the Stripe
+webhook: read [`getAccountStatus`](#getaccountstatus) again and look at `account.discount`.
+
+Errors: `CM-ERRORS-PROJECTS-039` when the account has no subscription, `CM-ERRORS-ACCOUNT-027` when
+the code is refused (the reason is in the error context, `reason`).
+
+**Request DTO**: `CodeMashHub2.ApplyBundleDiscount`
+**Response**: `CodeMashHub2.EmptyResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+await norbix.hub.account.applyBundleDiscount({ code: 'LAUNCH30' });
+```
+
+[↑ Top](#endpoints)
+
+### checkBundleDiscount
+
+`POST` `/{version}/account/stripe/discount/check`
+
+Check a discount code without changing anything, and see what it gives. `bundle` and
+`billingPeriod` are the plan about to be bought; leave them out to check against the current plan.
+The answer's `discount` has `code`, `percentOff` (20 = 20%) or `amountOff` (minor units, with
+`currency`), `months` (empty = forever) and `endsAt` (empty before checkout). A refused code fails
+with `CM-ERRORS-ACCOUNT-027` and the reason in the error context (`reason`).
+
+**Request DTO**: `CodeMashHub2.CheckBundleDiscount`
+**Response**: `CodeMashHub2.CheckBundleDiscountResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+import { CodeMashHub2 } from '@norbix.ai/ts/types/hub';
+
+const norbix = new Norbix();
+
+const { discount } = await norbix.hub.account.checkBundleDiscount({
+  code: 'LAUNCH30',
+  bundle: CodeMashHub2.ManagedServiceBundle.Growth,
+  billingPeriod: CodeMashHub2.SubscriptionBillingPeriod.Monthly,
+});
+// discount → { code: 'LAUNCH30', percentOff: 30, months: 3, ... }
+```
+
+[↑ Top](#endpoints)
+
 ### createStripeCheckoutSession
 
 `POST` `/{version}/account/stripe/create-checkout-session`
@@ -320,6 +376,8 @@ Create a new item.
 A Managed Service checkout needs both `bundle` (`Starter`, `Growth` or `Scale`) and `billingPeriod`
 (`Monthly` or `Annual`). The request no longer has `projectCap`: the bundle sets the project limit.
 [`getManagedServiceBundles`](#getmanagedservicebundles) lists the bundles with their limits and prices.
+An optional `discountCode` is checked first; a refused code fails the call with `CM-ERRORS-ACCOUNT-027`
+and no checkout is made ([`checkBundleDiscount`](#checkbundlediscount) checks one ahead).
 
 **Request DTO**: `CodeMashHub2.CreateStripeCheckoutSession`
 **Response**: `CodeMashHub2.CreateStripeCheckoutSessionResponse`
