@@ -118,6 +118,13 @@ export interface NorbixConfig {
    * Override default base URLs. Useful for custom domains,
    * staging environments, or pointing the SDK at localhost in tests.
    * Each URL falls back to its env var (`NORBIX_API_URL`, `NORBIX_HUB_URL`).
+   *
+   * A project's API calls go to its own host when the API URL allows it: a
+   * norbix.ai API address (`https://api.norbix.ai`, `https://<region>.api.norbix.ai`)
+   * becomes `https://pr-<hex>.api.norbix.ai`; an install on its own domain
+   * that serves project hosts gives a template such as
+   * `https://{projectHostLabel}.api.example.com` (its `/echo` →
+   * `apiUrlTemplate`), filled per project. Any other URL is used as given.
    */
   baseUrl?: {
     api?: string;
@@ -224,10 +231,10 @@ export interface ResolvedNorbixConfig {
   language?: string;
   baseUrl: { api: string; hub: string };
   /**
-   * The API address without the project's own host label. Set only when
-   * `baseUrl.api` is the project's host (`https://pr-<hex>.api.norbix.ai`);
-   * links a browser navigates to (social sign-in) are built on it, because
-   * the gateway's callback comes back to the shared host.
+   * The API address without a project's host label (`https://api.norbix.ai`,
+   * or the install's address on its own domain). Links a browser navigates
+   * to (social sign-in) are built on it, because the gateway's callback comes
+   * back to the shared host.
    */
   sharedApiBaseUrl?: string;
   apiVersion: string;

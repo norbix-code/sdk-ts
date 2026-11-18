@@ -317,7 +317,7 @@ await norbix.hub.account.getProjects({}, { region: 'nb-us-east' });
 
 **Regional base URLs.** When the client uses the SDK's built-in default base URLs, setting a client-level region also composes the regional Hub URL by prefixing the region code as a subdomain — `https://hub.norbix.ai` becomes `https://nb-eu-germany.hub.norbix.ai`. `setRegion(...)` re-composes the URL, and `setRegion(undefined)` restores the default. API calls go to the project's own host (see [Project host](#project-host)), which already points at the project's region, so no region label is added there. Two rules to remember:
 
-- A custom `baseUrl` (or `NORBIX_API_URL` / `NORBIX_HUB_URL`) is **never rewritten** — with a region set, only the `nb-region` header is added.
+- A custom Hub URL (or `NORBIX_HUB_URL`) is **never rewritten** — with a region set, only the `nb-region` header is added. For the API URL see [Project host](#project-host).
 - A **per-call** `region` override affects the **header only** — it never changes the request URL.
 
 **Managing a project's regions.** The Hub's `regions` module lists the regions available to the account and updates the set of regions a project spans (one primary + any additional):
@@ -348,12 +348,24 @@ await norbix.api.database.find({ collectionName: 'orders' });
 // → https://pr-022c4aca9f9e4df787ab0a20c83c44b6.api.norbix.ai/v3/...
 
 projectHostLabel('pr_5XvmrTA6JVggZdmEE5bGdm'); // 'pr-022c4aca9f9e4df787ab0a20c83c44b6'
+projectApiBaseUrl('https://{projectHostLabel}.api.example.com', 'pr_5XvmrTA6JVggZdmEE5bGdm');
+// { project: 'https://pr-022c….api.example.com', shared: 'https://api.example.com' }
 ```
+
+Which address a project's API calls use, from the API base URL the client has:
+
+| base URL                                                                           | calls go to                                |
+| ---------------------------------------------------------------------------------- | ------------------------------------------ |
+| none (the default), `https://api.norbix.ai`, `https://nb-eu-germany.api.norbix.ai` | `https://pr-<hex>.api.norbix.ai`           |
+| a template, `https://{projectHostLabel}.api.example.com`                           | `https://pr-<hex>.api.example.com`         |
+| a project's host already, `https://pr-<hex>.api.example.com`                       | the same, with the current project's label |
+| anything else (`https://api.example.com`, staging, localhost)                      | as given                                   |
+
+An install on its own domain gives its template in `GET /v3/echo` → `apiUrlTemplate` when it serves project hosts; put that as `baseUrl.api` (or `NORBIX_API_URL`). Without it the install's plain address is used as given.
 
 What does not change:
 
-- A custom `baseUrl.api` (or `NORBIX_API_URL`) is **never rewritten** — a custom domain, staging and localhost are called as given.
-- Hub calls stay on `https://hub.norbix.ai` (or the regional Hub host).
+- Hub calls stay on `https://hub.norbix.ai` (or the regional Hub host, or your own Hub URL).
 - The social sign-in link (`api.auth.socialSignInUrl`) stays on the shared API host, because the provider's callback comes back there.
 - A project id that is not a Norbix id (`pr_…`) keeps the shared host.
 
