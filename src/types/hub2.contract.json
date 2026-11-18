@@ -47,10 +47,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "AnswerChatQuestionRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "AppendSupportCaseMessageRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -125,14 +121,6 @@
   },
   "ChangeTeamMemberPassword": {
     "requiresAuth": false,
-    "returnsBytes": false
-  },
-  "ChatAvailabilityRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "ChatTurnRequest": {
-    "requiresAuth": true,
     "returnsBytes": false
   },
   "CheckBundleDiscount": {
@@ -299,10 +287,6 @@
     "requiresAuth": false,
     "returnsBytes": false
   },
-  "DecideChatPlanRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "DefineConsentPurposeRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -320,10 +304,6 @@
     "returnsBytes": false
   },
   "DeleteAiServiceUserRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "DeleteChatSessionRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -803,10 +783,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "ForgetChatMemoryRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "GetAccountCollaborators": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -884,18 +860,6 @@
     "returnsBytes": false
   },
   "GetAuthorizationSettings": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetChatMemoryRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetChatSessionEntriesRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "GetChatSessionsRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2151,22 +2115,6 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "SetChatEntryFeedbackRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetChatSessionArchivedRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetChatSessionPinnedRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetChatSessionSharingRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
   "SetDatabaseIntegrationAsDefaultRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2232,10 +2180,6 @@
     "returnsBytes": false
   },
   "StartPaymentsIntegrationConnect": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "StopChatRunStepRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2512,10 +2456,6 @@
     "returnsBytes": false
   },
   "UpgradeFlexCluster": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "UploadChatAttachmentRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
