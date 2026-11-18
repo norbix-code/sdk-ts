@@ -69,6 +69,38 @@ describe('open routes — scope optional', () => {
     expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
   });
 
+  // Public sign-up: the gateway signs a caller in only when the request
+  // brings credentials; with none it runs as the project's Guest role. The
+  // contract still says `requiresAuth: true` for these two, so the generator
+  // lists them by path (OPTIONAL_AUTH_ROUTES).
+  it('saveEmailUser with no token: the sign-up goes out with the project and no Authorization header', async () => {
+    const { t, mock } = transport({ projectId: 'p-1' });
+
+    await new MembershipModule(t).saveEmailUser({ email: 'ada@example.com', password: 'pw-1' });
+
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url).toBe('https://api.norbix.io/v2/membership/auth/register/email');
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('p-1');
+  });
+
+  it('saveUserNameUser with no token: goes out with no Authorization header', async () => {
+    const { t, mock } = transport({ projectId: 'p-1' });
+
+    await new MembershipModule(t).saveUserNameUser({ userName: 'ada', password: 'pw-1' });
+
+    expect(mock.lastCall?.url).toBe('https://api.norbix.io/v2/membership/auth/register/user-name');
+    expect(mock.lastCall?.headers.get('Authorization')).toBeNull();
+  });
+
+  it('saveEmailUser with an app key: sends it (the key with membership:register)', async () => {
+    const { t, mock } = transport({ apiKey: 'key-123', projectId: 'p-1' });
+
+    await new MembershipModule(t).saveEmailUser({ email: 'ada@example.com', password: 'pw-1' });
+
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer key-123');
+  });
+
   it('a route that needs sign-in still refuses a client with no token', async () => {
     const { t, mock } = transport({ projectId: 'p-1' });
 
