@@ -171,6 +171,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ConfirmAccountAuthenticatorRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "ConfirmAccountPasswordResetRequest": {
     "requiresAuth": false,
     "returnsBytes": false
@@ -224,6 +228,10 @@
     "returnsBytes": false
   },
   "CreateContactRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "CreateDashboardApiToken": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -815,6 +823,18 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetAccountTeamTwoFactorRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountTrustedDevicesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAccountTwoFactorRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetAccountUsageBilling": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -848,6 +868,14 @@
     "returnsBytes": false
   },
   "GetAllowedFlexTiers": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAppTemplateRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetAppTemplatesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1108,6 +1136,10 @@
     "returnsBytes": false
   },
   "GetEmbeddingIntegrations": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "GetEntityGraphRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1791,6 +1823,14 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RemoveAccountAuthenticatorRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "RemoveAccountTrustedDevicesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RemoveContactIdentityRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1864,6 +1904,10 @@
     "returnsBytes": false
   },
   "ResendAccountVerificationToken": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "ResetTeamMemberAuthenticatorRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -1944,6 +1988,10 @@
     "returnsBytes": false
   },
   "SaveCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "SaveCodeWorkflowCanvas": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2087,6 +2135,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SearchSchemaTemplatesRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SeedCollectionRecords": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2095,7 +2147,7 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
-  "SetAdminPortalEnabledRequest": {
+  "SetAccountTwoFactorPolicyRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },
@@ -2156,6 +2208,10 @@
     "returnsBytes": false
   },
   "SignOutMarketplaceIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StartAccountAuthenticatorRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

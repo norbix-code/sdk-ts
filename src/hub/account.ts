@@ -776,25 +776,6 @@ export class AccountModule {
   };
 
   /**
-   * PUT /{version}/account/projects/{projectId}/admin-portal/enabled
-   * Request DTO: SetAdminPortalEnabledRequest
-   */
-  setAdminPortalEnabled = (
-    request: Partial<CodeMashHub2.SetAdminPortalEnabledRequest> = {} as Partial<CodeMashHub2.SetAdminPortalEnabledRequest>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/admin-portal/enabled',
-      method: 'PUT',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * PATCH /{version}/account/projects/{projectId}/settings/brand/expose
    * Request DTO: UpdateProjectExposeBrand
    */

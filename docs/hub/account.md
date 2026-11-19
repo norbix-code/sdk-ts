@@ -50,7 +50,6 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project` |
 | [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project` |
 | [`getProjectHealth`](#getprojecthealth)                                       | `GET`    | `/{version}/account/projects/{projectId}/health`                             | `project` |
-| [`setAdminPortalEnabled`](#setadminportalenabled)                             | `PUT`    | `/{version}/account/projects/{projectId}/admin-portal/enabled`               | `project` |
 | [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
 | [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project` |
 | [`assignAdminPortalServiceUser`](#assignadminportalserviceuser)               | `PUT`    | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project` |
@@ -1075,27 +1074,6 @@ const result = await norbix.hub.account.getProjectHealth({
   periodDays: 7,
 });
 // → typed as CodeMashHub2.GetProjectHealthResponse
-```
-
-[↑ Top](#endpoints)
-
-### setAdminPortalEnabled
-
-`PUT` `/{version}/account/projects/{projectId}/admin-portal/enabled`
-
-**Request DTO**: `CodeMashHub2.SetAdminPortalEnabledRequest`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.setAdminPortalEnabled({
-  projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
 ```
 
 [↑ Top](#endpoints)

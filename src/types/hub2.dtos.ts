@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-18 12:56:36
+Date: 2026-11-19 15:02:38
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6560,8 +6560,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Instructions for the model. Never shown to end users. At most 20 000 characters.")
     public systemPrompt?: string;
 
-    /** @description Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (search_knowledge — the user's own and the project-wide knowledge). Any other name is refused. */
-    // @ApiMember(Description="Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (search_knowledge — the user's own and the project-wide knowledge). Any other name is refused.")
+    /** @description Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (the assistant may search the user's own and the project-wide knowledge). Any other name is refused. */
+    // @ApiMember(Description="Own-scope toolsets the assistant may use: own:records (the user's own database records), own:profile (their profile), own:preferences (their marketing preferences), own:knowledge (the assistant may search the user's own and the project-wide knowledge). Any other name is refused.")
     public toolsets?: string[];
 
     /** @description The assistant's own LLM integration id (int_…). Empty = the project's default LLM. */
@@ -9062,9 +9062,6 @@ export module CodeMashHub2 {
     public marketingUrl?: string;
 
     // @DataMember
-    public canonicalAdminUrl?: string;
-
-    // @DataMember
     public adminUrl?: string;
 
     // @DataMember
@@ -9108,9 +9105,6 @@ export module CodeMashHub2 {
 
     // @DataMember
     public exposeAuthToAdminPortal: boolean;
-
-    // @DataMember
-    public adminPortalEnabled: boolean;
 
     // @DataMember
     public adminPortalServiceUserId?: string;
@@ -9580,6 +9574,32 @@ export module CodeMashHub2 {
     public missingLanguages: string[] = [];
 
     public constructor(init?: Partial<TemplateLanguageGapDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AccountTrustedDeviceDto {
+    public id: string;
+    public label: string;
+    public rememberedAtUtc: string;
+    public lastUsedAtUtc: string;
+    public expiresAtUtc: string;
+    public isThisDevice: boolean;
+
+    public constructor(init?: Partial<AccountTrustedDeviceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AccountTeamTwoFactorMemberDto {
+    public id: string;
+    public email?: string;
+    public displayName?: string;
+    public isOwner: boolean;
+    public authenticatorEnabled: boolean;
+    public authenticatorEnabledAtUtc?: string;
+
+    public constructor(init?: Partial<AccountTeamTwoFactorMemberDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -11440,6 +11460,9 @@ export module CodeMashHub2 {
     // @DataMember
     public warnings: WorkflowValidationIssueDto[] = [];
 
+    // @DataMember
+    public canvas?: string;
+
     public constructor(init?: Partial<WorkflowDto>) {
       (Object as any).assign(this, init);
     }
@@ -12747,7 +12770,6 @@ export module CodeMashHub2 {
     public apiHost?: string;
     public adminUrl?: string;
     public marketingUrl?: string;
-    public adminPortalEnabled?: boolean;
     public modules?: AiProjectContextModuleWireDto[];
 
     public constructor(init?: Partial<AiProjectContextProjectWireDto>) {
@@ -12956,6 +12978,64 @@ export module CodeMashHub2 {
     public satisfiedBy: ProjectBriefSatisfiedByWireDto[] = [];
 
     public constructor(init?: Partial<ProjectBriefEventWireDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AppTemplateCollectionDto {
+    public entity: string;
+    public tier: string;
+
+    public constructor(init?: Partial<AppTemplateCollectionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AppTemplateCardDto {
+    public id: string;
+    public name: string;
+    public version: number;
+    public tags: string[] = [];
+    public summary: string;
+    public collections: AppTemplateCollectionDto[] = [];
+    public matchedTags: string[] = [];
+
+    public constructor(init?: Partial<AppTemplateCardDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AppTemplateCollectionSpecDto {
+    public fileName: string;
+    public json: string;
+
+    public constructor(init?: Partial<AppTemplateCollectionSpecDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SchemaTemplateCardDto {
+    public id: string;
+    public title: string;
+    public summary: string;
+    public aliases: string[] = [];
+    public tags: string[] = [];
+    public usesBlocks: string[] = [];
+    public usesTaxonomies: string[] = [];
+    public related: string[] = [];
+    public matchedOn: string[] = [];
+
+    public constructor(init?: Partial<SchemaTemplateCardDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class EntityGraphEntityDto {
+    public id: string;
+    public related: string[] = [];
+    public ifDocument: string;
+
+    public constructor(init?: Partial<EntityGraphEntityDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -14894,7 +14974,6 @@ export module CodeMashHub2 {
     public apiUrl: string;
     public apiVersion: string;
     public hubVersion: string;
-    public adminUrlTemplate?: string;
     public apiUrlTemplate?: string;
     public emailServiceConfigured: boolean;
     public rootBootstrapPasswordSource?: string;
@@ -14911,7 +14990,6 @@ export module CodeMashHub2 {
 
   export class PublicProjectConfigDto {
     public displayName: string;
-    public adminPortalEnabled: boolean;
     public branding?: PublicBrandDto;
     public auth: PublicAuthDto;
     public aiChat: PublicAiChatDto;
@@ -15258,7 +15336,6 @@ export module CodeMashHub2 {
 
   export class AdminPortalStructureDto {
     public projectId: string;
-    public adminPortalEnabled: boolean;
     public displayName: string;
     public modules: AdminPortalModuleDto[] = [];
 
@@ -15343,6 +15420,49 @@ export module CodeMashHub2 {
     }
   }
 
+  export class AccountTrustedDevicesResponse extends ResponseBase {
+    public devices: AccountTrustedDeviceDto[] = [];
+
+    public constructor(init?: Partial<AccountTrustedDevicesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AccountTwoFactorResponse extends ResponseBase {
+    public setupAvailable: boolean;
+    public authenticatorEnabled: boolean;
+    public authenticatorEnabledAtUtc?: string;
+    public teamRequiresAuthenticatorApp: boolean;
+
+    public constructor(init?: Partial<AccountTwoFactorResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AccountAuthenticatorSetupResponse extends ResponseBase {
+    public secret?: string;
+    public setupLink?: string;
+    public expiresAtUtc?: string;
+
+    public constructor(init?: Partial<AccountAuthenticatorSetupResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class AccountTeamTwoFactorResponse extends ResponseBase {
+    public requireAuthenticatorApp: boolean;
+    public setupAvailable: boolean;
+    public members: AccountTeamTwoFactorMemberDto[] = [];
+
+    public constructor(init?: Partial<AccountTeamTwoFactorResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetAccountCollaboratorsResponse extends ResponseBase {
     public list?: PaginatedResponse<AuthDto>;
 
@@ -15383,6 +15503,20 @@ export module CodeMashHub2 {
     public items: TeamInvitationDto[] = [];
 
     public constructor(init?: Partial<GetAccountTeamInvitationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class CreateDashboardApiTokenResponse extends ResponseBase {
+    // @DataMember
+    public accessToken?: string;
+
+    // @DataMember
+    public expiresAt?: string;
+
+    public constructor(init?: Partial<CreateDashboardApiTokenResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -17203,6 +17337,47 @@ export module CodeMashHub2 {
     public lastSeq: number;
 
     public constructor(init?: Partial<GetProjectBriefResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetAppTemplatesResponse extends ResponseBase {
+    public templates: AppTemplateCardDto[] = [];
+
+    public constructor(init?: Partial<GetAppTemplatesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetAppTemplateResponse extends ResponseBase {
+    public template?: AppTemplateCardDto;
+    public guide?: string;
+    public collectionSpecs: AppTemplateCollectionSpecDto[] = [];
+
+    public constructor(init?: Partial<GetAppTemplateResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class SearchSchemaTemplatesResponse extends ResponseBase {
+    public total: number;
+    public templates: SchemaTemplateCardDto[] = [];
+
+    public constructor(init?: Partial<SearchSchemaTemplatesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetEntityGraphResponse extends ResponseBase {
+    public capped: boolean;
+    public unknown: string[] = [];
+    public entities: EntityGraphEntityDto[] = [];
+
+    public constructor(init?: Partial<GetEntityGraphResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -20686,32 +20861,6 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Turns the project's managed Admin Portal on or off */
-  // @Route("/{version}/account/projects/{projectId}/admin-portal/enabled", "PUT")
-  // @Api(Description="Turns the project's managed Admin Portal on or off")
-  export class SetAdminPortalEnabledRequest
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description true turns the managed Admin Portal on; false turns it off. */
-    // @ApiMember(Description="true turns the managed Admin Portal on; false turns it off.", IsRequired=true)
-    public enabled: boolean;
-
-    public constructor(init?: Partial<SetAdminPortalEnabledRequest>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'SetAdminPortalEnabledRequest';
-    }
-    public getMethod() {
-      return 'PUT';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
   /** @description Sets whether the project's brand is returned by the public Admin Portal config */
   // @Route("/{version}/account/projects/{projectId}/settings/brand/expose", "PATCH")
   // @Api(Description="Sets whether the project's brand is returned by the public Admin Portal config")
@@ -20816,8 +20965,8 @@ export module CodeMashHub2 {
   // @Route("/{version}/account/projects/{projectId}/settings/admin-url", "PATCH")
   // @Api(Description="Updates the project's admin-portal URL override")
   export class UpdateProjectAdminUrl extends CodeMashRequestBase implements IReturn<EmptyResponse> {
-    /** @description Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr-{project hex}.admin.{host} address. */
-    // @ApiMember(Description="Custom admin-portal URL to use instead of the canonical address. Null/empty restores the canonical pr-{project hex}.admin.{host} address.")
+    /** @description The address where you host the project's Admin Portal (for example https://admin.example.com). Its origin is added to the Allowed Origins. Null/empty: the project has no Admin Portal. */
+    // @ApiMember(Description="The address where you host the project's Admin Portal (for example https://admin.example.com). Its origin is added to the Allowed Origins. Null/empty: the project has no Admin Portal.")
     public url?: string;
 
     public constructor(init?: Partial<UpdateProjectAdminUrl>) {
@@ -21252,8 +21401,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The complete new list of allowed origin URLs, e.g. [\"https://app.example.com\", \"https://example.com\"]. An entry with no scheme (e.g. \"example.com\") defaults to https. Whatever is not in this list stops being allowed.")
     public origins?: string[];
 
-    /** @description Optional. true removes the project's own Admin Portal origin (pr-{project hex}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API. */
-    // @ApiMember(Description="Optional. true removes the project's own Admin Portal origin (pr-{project hex}.{admin host}) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because the Norbix-generated end-user portal could no longer call the project's API.")
+    /** @description Optional. true removes the origin of the project's admin URL (where you host the Admin Portal) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because your portal could no longer call the project's API. */
+    // @ApiMember(Description="Optional. true removes the origin of the project's admin URL (where you host the Admin Portal) on purpose. Without it, a list that drops that origin is rejected with CM-ERRORS-PROJECTS-037, because your portal could no longer call the project's API.")
     public removeAdminPortalOrigin?: boolean;
 
     public constructor(init?: Partial<UpdateProjectAllowedOrigins>) {
@@ -21577,6 +21726,201 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new CreateAccountResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/devices", "GET")
+  export class GetAccountTrustedDevicesRequest
+    extends RequestBase
+    implements IReturn<AccountTrustedDevicesResponse>
+  {
+    public constructor(init?: Partial<GetAccountTrustedDevicesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAccountTrustedDevicesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new AccountTrustedDevicesResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/devices/remove", "POST")
+  export class RemoveAccountTrustedDevicesRequest
+    extends RequestBase
+    implements IReturn<AccountTrustedDevicesResponse>
+  {
+    public id?: string;
+    public all: boolean;
+
+    public constructor(init?: Partial<RemoveAccountTrustedDevicesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RemoveAccountTrustedDevicesRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AccountTrustedDevicesResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa", "GET")
+  export class GetAccountTwoFactorRequest
+    extends RequestBase
+    implements IReturn<AccountTwoFactorResponse>
+  {
+    public constructor(init?: Partial<GetAccountTwoFactorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAccountTwoFactorRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new AccountTwoFactorResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/authenticator/start", "POST")
+  export class StartAccountAuthenticatorRequest
+    extends RequestBase
+    implements IReturn<AccountAuthenticatorSetupResponse>
+  {
+    public currentPassword: string;
+
+    public constructor(init?: Partial<StartAccountAuthenticatorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartAccountAuthenticatorRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AccountAuthenticatorSetupResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/authenticator/confirm", "POST")
+  export class ConfirmAccountAuthenticatorRequest
+    extends RequestBase
+    implements IReturn<AccountTwoFactorResponse>
+  {
+    public code: string;
+
+    public constructor(init?: Partial<ConfirmAccountAuthenticatorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ConfirmAccountAuthenticatorRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AccountTwoFactorResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/authenticator/remove", "POST")
+  export class RemoveAccountAuthenticatorRequest
+    extends RequestBase
+    implements IReturn<AccountTwoFactorResponse>
+  {
+    public currentPassword: string;
+
+    public constructor(init?: Partial<RemoveAccountAuthenticatorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RemoveAccountAuthenticatorRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AccountTwoFactorResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/team", "GET")
+  export class GetAccountTeamTwoFactorRequest
+    extends RequestBase
+    implements IReturn<AccountTeamTwoFactorResponse>
+  {
+    public constructor(init?: Partial<GetAccountTeamTwoFactorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAccountTeamTwoFactorRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new AccountTeamTwoFactorResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/team/policy", "PUT")
+  export class SetAccountTwoFactorPolicyRequest
+    extends RequestBase
+    implements IReturn<AccountTeamTwoFactorResponse>
+  {
+    public requireAuthenticatorApp: boolean;
+    public currentPassword: string;
+
+    public constructor(init?: Partial<SetAccountTwoFactorPolicyRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetAccountTwoFactorPolicyRequest';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new AccountTeamTwoFactorResponse();
+    }
+  }
+
+  // @Route("/{version}/account/2fa/team/reset", "POST")
+  export class ResetTeamMemberAuthenticatorRequest
+    extends RequestBase
+    implements IReturn<AccountTeamTwoFactorResponse>
+  {
+    public memberId: string;
+    public currentPassword: string;
+
+    public constructor(init?: Partial<ResetTeamMemberAuthenticatorRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResetTeamMemberAuthenticatorRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new AccountTeamTwoFactorResponse();
     }
   }
 
@@ -22093,6 +22437,26 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/account/session/api-token", "POST")
+  export class CreateDashboardApiToken
+    extends RequestBase
+    implements IReturn<CreateDashboardApiTokenResponse>
+  {
+    public constructor(init?: Partial<CreateDashboardApiToken>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'CreateDashboardApiToken';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new CreateDashboardApiTokenResponse();
     }
   }
 
@@ -27932,12 +28296,48 @@ export module CodeMashHub2 {
     // @ApiMember(Description="The definition (JSON Schema v1 from GET /code/workflows/schema).", IsRequired=true)
     public definition: WorkflowDefinitionDto;
 
+    /** @description The canvas document of the Cloud visual builder (JSON text, where the steps are drawn). Leave it out: the stored one stays. */
+    // @DataMember
+    // @ApiMember(Description="The canvas document of the Cloud visual builder (JSON text, where the steps are drawn). Leave it out: the stored one stays.")
+    public canvas?: string;
+
     public constructor(init?: Partial<SaveCodeWorkflow>) {
       super(init);
       (Object as any).assign(this, init);
     }
     public getTypeName() {
       return 'SaveCodeWorkflow';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/canvas", "PUT")
+  // @DataContract
+  export class SaveCodeWorkflowCanvas
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description The canvas document as JSON text (an object, 64 KB at most). Empty or absent: back to the automatic layout. */
+    // @DataMember
+    // @ApiMember(Description="The canvas document as JSON text (an object, 64 KB at most). Empty or absent: back to the automatic layout.")
+    public canvas?: string;
+
+    public constructor(init?: Partial<SaveCodeWorkflowCanvas>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SaveCodeWorkflowCanvas';
     }
     public getMethod() {
       return 'PUT';
@@ -31154,6 +31554,118 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetProjectBriefResponse();
+    }
+  }
+
+  /** @description Lists the app templates: reviewed starting points for a whole backend (blog, CRM, HR …). */
+  // @Route("/{version}/account/ai/templates/apps", "GET")
+  // @Api(Description="Lists the app templates: reviewed starting points for a whole backend (blog, CRM, HR …).")
+  export class GetAppTemplatesRequest
+    extends RequestBase
+    implements IReturn<GetAppTemplatesResponse>
+  {
+    /** @description A few words about the app being built. Templates whose tags match come first. Optional. */
+    // @ApiMember(Description="A few words about the app being built. Templates whose tags match come first. Optional.")
+    public query?: string;
+
+    public constructor(init?: Partial<GetAppTemplatesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAppTemplatesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAppTemplatesResponse();
+    }
+  }
+
+  /** @description Reads one app template: its guide and its collection specs. */
+  // @Route("/{version}/account/ai/templates/apps/{Id}", "GET")
+  // @Api(Description="Reads one app template: its guide and its collection specs.")
+  export class GetAppTemplateRequest
+    extends RequestBase
+    implements IReturn<GetAppTemplateResponse>
+  {
+    /** @description The template id, e.g. hr. */
+    // @ApiMember(Description="The template id, e.g. hr.", IsRequired=true)
+    public id: string;
+
+    public constructor(init?: Partial<GetAppTemplateRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetAppTemplateRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetAppTemplateResponse();
+    }
+  }
+
+  /** @description Searches the schema registry: reviewed collection shapes to build from. */
+  // @Route("/{version}/account/ai/templates/schemas", "GET")
+  // @Api(Description="Searches the schema registry: reviewed collection shapes to build from.")
+  export class SearchSchemaTemplatesRequest
+    extends RequestBase
+    implements IReturn<SearchSchemaTemplatesResponse>
+  {
+    /** @description One or a few words, e.g. employee. Empty lists the first entities by id. */
+    // @ApiMember(Description="One or a few words, e.g. employee. Empty lists the first entities by id.")
+    public query?: string;
+
+    /** @description How many hits to return: 10 by default, 25 at most. */
+    // @ApiMember(Description="How many hits to return: 10 by default, 25 at most.")
+    public take?: number;
+
+    public constructor(init?: Partial<SearchSchemaTemplatesRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SearchSchemaTemplatesRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new SearchSchemaTemplatesResponse();
+    }
+  }
+
+  /** @description Reads schema registry entities with their related ones. */
+  // @Route("/{version}/account/ai/templates/schemas/graph", "GET")
+  // @Api(Description="Reads schema registry entities with their related ones.")
+  export class GetEntityGraphRequest
+    extends RequestBase
+    implements IReturn<GetEntityGraphResponse>
+  {
+    /** @description Comma-separated entity ids, e.g. blog_posts,comments. */
+    // @ApiMember(Description="Comma-separated entity ids, e.g. blog_posts,comments.", IsRequired=true)
+    public names: string;
+
+    /** @description 0 = named only, 1 = with directly related entities (default), 3 at most. */
+    // @ApiMember(Description="0 = named only, 1 = with directly related entities (default), 3 at most.")
+    public depth?: number;
+
+    public constructor(init?: Partial<GetEntityGraphRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetEntityGraphRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetEntityGraphResponse();
     }
   }
 

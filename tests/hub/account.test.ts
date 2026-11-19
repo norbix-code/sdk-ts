@@ -68,7 +68,6 @@ describe('hub.account', () => {
     expect(typeof ns['getAccountRegions']).toBe('function');
     expect(typeof ns['waitForProjectActive']).toBe('function');
     expect(typeof ns['getProjectTokens']).toBe('function');
-    expect(typeof ns['setAdminPortalEnabled']).toBe('function');
     expect(typeof ns['updateProjectExposeBrand']).toBe('function');
     expect(typeof ns['updateProjectExposeAuth']).toBe('function');
     expect(typeof ns['assignAdminPortalServiceUser']).toBe('function');
@@ -976,29 +975,6 @@ describe('hub.account', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('setAdminPortalEnabled: PUT /{version}/account/projects/{projectId}/admin-portal/enabled', async () => {
-    const stub = stubRequestForPath('/{version}/account/projects/{projectId}/admin-portal/enabled');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/projects/{projectId}/admin-portal/enabled',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['setAdminPortalEnabled']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
