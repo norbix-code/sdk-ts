@@ -68,8 +68,6 @@ describe('hub.account', () => {
     expect(typeof ns['getAccountRegions']).toBe('function');
     expect(typeof ns['waitForProjectActive']).toBe('function');
     expect(typeof ns['getProjectTokens']).toBe('function');
-    expect(typeof ns['updateProjectExposeBrand']).toBe('function');
-    expect(typeof ns['updateProjectExposeAuth']).toBe('function');
     expect(typeof ns['assignAdminPortalServiceUser']).toBe('function');
     expect(typeof ns['getAdminPortalStructure']).toBe('function');
     expect(typeof ns['updateProjectAdminUrl']).toBe('function');
@@ -97,7 +95,6 @@ describe('hub.account', () => {
     expect(typeof ns['updateProjectLanguages']).toBe('function');
     expect(typeof ns['checkProjectLanguages']).toBe('function');
     expect(typeof ns['updateProjectLegalDocuments']).toBe('function');
-    expect(typeof ns['updateProjectExposeLegal']).toBe('function');
     expect(typeof ns['updateProjectUrl']).toBe('function');
     expect(typeof ns['updateProjectName']).toBe('function');
     expect(typeof ns['updateProjectRegions']).toBe('function');
@@ -980,54 +977,6 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('updateProjectExposeBrand: PATCH /{version}/account/projects/{projectId}/settings/brand/expose', async () => {
-    const stub = stubRequestForPath(
-      '/{version}/account/projects/{projectId}/settings/brand/expose',
-    );
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/projects/{projectId}/settings/brand/expose',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['updateProjectExposeBrand']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PATCH');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('updateProjectExposeAuth: PATCH /{version}/account/projects/{projectId}/settings/auth/expose', async () => {
-    const stub = stubRequestForPath('/{version}/account/projects/{projectId}/settings/auth/expose');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/projects/{projectId}/settings/auth/expose',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['updateProjectExposeAuth']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PATCH');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
   it('assignAdminPortalServiceUser: PUT /{version}/account/projects/{projectId}/settings/admin-portal/service-user', async () => {
     const stub = stubRequestForPath(
       '/{version}/account/projects/{projectId}/settings/admin-portal/service-user',
@@ -1655,31 +1604,6 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['updateProjectLegalDocuments']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PATCH');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
-  it('updateProjectExposeLegal: PATCH /{version}/account/projects/{projectId}/settings/legal/expose', async () => {
-    const stub = stubRequestForPath(
-      '/{version}/account/projects/{projectId}/settings/legal/expose',
-    );
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/projects/{projectId}/settings/legal/expose',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['updateProjectExposeLegal']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PATCH');

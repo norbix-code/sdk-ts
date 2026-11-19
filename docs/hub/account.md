@@ -50,8 +50,6 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`waitForProjectActive`](#waitforprojectactive)                               | `GET`    | `/{version}/account/projects/{projectId}/wait-active`                        | `project` |
 | [`getProjectTokens`](#getprojecttokens)                                       | `GET`    | `/{version}/account/projects/{projectId}/tokens`                             | `project` |
 | [`getProjectHealth`](#getprojecthealth)                                       | `GET`    | `/{version}/account/projects/{projectId}/health`                             | `project` |
-| [`updateProjectExposeBrand`](#updateprojectexposebrand)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/brand/expose`              | `project` |
-| [`updateProjectExposeAuth`](#updateprojectexposeauth)                         | `PATCH`  | `/{version}/account/projects/{projectId}/settings/auth/expose`               | `project` |
 | [`assignAdminPortalServiceUser`](#assignadminportalserviceuser)               | `PUT`    | `/{version}/account/projects/{projectId}/settings/admin-portal/service-user` | `project` |
 | [`getAdminPortalStructure`](#getadminportalstructure)                         | `GET`    | `/{version}/account/projects/{projectId}/admin-portal/structure`             | `project` |
 | [`updateProjectAdminUrl`](#updateprojectadminurl)                             | `PATCH`  | `/{version}/account/projects/{projectId}/settings/admin-url`                 | `project` |
@@ -79,7 +77,6 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`updateProjectLanguages`](#updateprojectlanguages)                           | `PATCH`  | `/{version}/account/projects/{projectId}/settings/languages`                 | `project` |
 | [`checkProjectLanguages`](#checkprojectlanguages)                             | `POST`   | `/{version}/account/projects/{projectId}/settings/languages/check`           | `project` |
 | [`updateProjectLegalDocuments`](#updateprojectlegaldocuments)                 | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal`                     | `project` |
-| [`updateProjectExposeLegal`](#updateprojectexposelegal)                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/legal/expose`              | `project` |
 | [`updateProjectUrl`](#updateprojecturl)                                       | `PATCH`  | `/{version}/account/projects/{projectId}/settings/url`                       | `project` |
 | [`updateProjectName`](#updateprojectname)                                     | `PATCH`  | `/{version}/account/projects/{projectId}/settings/name`                      | `project` |
 | [`updateProjectRegions`](#updateprojectregions)                               | `PATCH`  | `/{version}/account/projects/{projectId}/settings/regions`                   | `project` |
@@ -1078,52 +1075,6 @@ const result = await norbix.hub.account.getProjectHealth({
 
 [↑ Top](#endpoints)
 
-### updateProjectExposeBrand
-
-`PATCH` `/{version}/account/projects/{projectId}/settings/brand/expose`
-
-Update an existing item.
-
-**Request DTO**: `CodeMashHub2.UpdateProjectExposeBrand`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.updateProjectExposeBrand({
-  projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### updateProjectExposeAuth
-
-`PATCH` `/{version}/account/projects/{projectId}/settings/auth/expose`
-
-Update an existing item.
-
-**Request DTO**: `CodeMashHub2.UpdateProjectExposeAuth`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.updateProjectExposeAuth({
-  projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
 ### assignAdminPortalServiceUser
 
 `PUT` `/{version}/account/projects/{projectId}/settings/admin-portal/service-user`
@@ -1739,29 +1690,6 @@ import { Norbix } from '@norbix.ai/ts';
 const norbix = new Norbix();
 
 const result = await norbix.hub.account.updateProjectLegalDocuments({
-  projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.EmptyResponse
-```
-
-[↑ Top](#endpoints)
-
-### updateProjectExposeLegal
-
-`PATCH` `/{version}/account/projects/{projectId}/settings/legal/expose`
-
-Update an existing item.
-
-**Request DTO**: `CodeMashHub2.UpdateProjectExposeLegal`
-**Response**: `CodeMashHub2.EmptyResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.updateProjectExposeLegal({
   projectId: 'projectId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
