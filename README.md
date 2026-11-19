@@ -512,7 +512,6 @@ await norbix.hub.ai.saveEmbeddingIntegration({
   apiKey,
 });
 await norbix.hub.ai.setLlmIntegrationAsDefault({ id: llmIntegrationId });
-await norbix.hub.account.setAdminPortalEnabled({ projectId, enabled: true });
 ```
 
 Full lists: [`docs/hub/ai.md`](./docs/hub/ai.md), [`docs/hub/account.md`](./docs/hub/account.md).
