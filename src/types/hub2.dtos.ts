@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-19 15:02:38
+Date: 2026-11-19 15:30:25
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -9101,19 +9101,10 @@ export module CodeMashHub2 {
     public defaultExecutionIdentities?: ProjectEnvironmentExecutionIdentityDto[];
 
     // @DataMember
-    public exposeBrandToAdminPortal: boolean;
-
-    // @DataMember
-    public exposeAuthToAdminPortal: boolean;
-
-    // @DataMember
     public adminPortalServiceUserId?: string;
 
     // @DataMember
     public membershipAuthenticationFlows?: AuthenticationFlowSummaryDto[];
-
-    // @DataMember
-    public exposeLegalToAdminPortal: boolean;
 
     // @DataMember
     public aiChat?: ProjectAiSettingsDto;
@@ -20861,58 +20852,6 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Sets whether the project's brand is returned by the public Admin Portal config */
-  // @Route("/{version}/account/projects/{projectId}/settings/brand/expose", "PATCH")
-  // @Api(Description="Sets whether the project's brand is returned by the public Admin Portal config")
-  export class UpdateProjectExposeBrand
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description True to return the brand in the public Admin Portal config, false to hide it. */
-    // @ApiMember(Description="True to return the brand in the public Admin Portal config, false to hide it.")
-    public exposed: boolean;
-
-    public constructor(init?: Partial<UpdateProjectExposeBrand>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UpdateProjectExposeBrand';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config */
-  // @Route("/{version}/account/projects/{projectId}/settings/auth/expose", "PATCH")
-  // @Api(Description="Sets whether the project's sign-in methods and password policy are returned by the public Admin Portal config")
-  export class UpdateProjectExposeAuth
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description True to return sign-in methods and password policy in the public Admin Portal config, false to hide them. */
-    // @ApiMember(Description="True to return sign-in methods and password policy in the public Admin Portal config, false to hide them.")
-    public exposed: boolean;
-
-    public constructor(init?: Partial<UpdateProjectExposeAuth>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UpdateProjectExposeAuth';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
   /** @description Assigns the project's Admin Portal service user */
   // @Route("/{version}/account/projects/{projectId}/settings/admin-portal/service-user", "PUT")
   // @Api(Description="Assigns the project's Admin Portal service user")
@@ -21590,32 +21529,6 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'UpdateProjectLegalDocuments';
-    }
-    public getMethod() {
-      return 'PATCH';
-    }
-    public createResponse() {
-      return new EmptyResponse();
-    }
-  }
-
-  /** @description Sets whether the project's legal documents are publicly readable via the Admin Portal */
-  // @Route("/{version}/account/projects/{projectId}/settings/legal/expose", "PATCH")
-  // @Api(Description="Sets whether the project's legal documents are publicly readable via the Admin Portal")
-  export class UpdateProjectExposeLegal
-    extends CodeMashRequestBase
-    implements IReturn<EmptyResponse>
-  {
-    /** @description True to make the legal documents publicly readable via the Admin Portal, false to hide them. */
-    // @ApiMember(Description="True to make the legal documents publicly readable via the Admin Portal, false to hide them.")
-    public exposed: boolean;
-
-    public constructor(init?: Partial<UpdateProjectExposeLegal>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'UpdateProjectExposeLegal';
     }
     public getMethod() {
       return 'PATCH';

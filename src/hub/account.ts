@@ -776,44 +776,6 @@ export class AccountModule {
   };
 
   /**
-   * PATCH /{version}/account/projects/{projectId}/settings/brand/expose
-   * Request DTO: UpdateProjectExposeBrand
-   */
-  updateProjectExposeBrand = (
-    request: Partial<CodeMashHub2.UpdateProjectExposeBrand> = {} as Partial<CodeMashHub2.UpdateProjectExposeBrand>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/settings/brand/expose',
-      method: 'PATCH',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PATCH /{version}/account/projects/{projectId}/settings/auth/expose
-   * Request DTO: UpdateProjectExposeAuth
-   */
-  updateProjectExposeAuth = (
-    request: Partial<CodeMashHub2.UpdateProjectExposeAuth> = {} as Partial<CodeMashHub2.UpdateProjectExposeAuth>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/settings/auth/expose',
-      method: 'PATCH',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * PUT /{version}/account/projects/{projectId}/settings/admin-portal/service-user
    * Request DTO: AssignAdminPortalServiceUserRequest
    */
@@ -1318,25 +1280,6 @@ export class AccountModule {
     return this.transport.send<CodeMashHub2.EmptyResponse>({
       target: 'hub',
       path: '/{version}/account/projects/{projectId}/settings/legal',
-      method: 'PATCH',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
-   * PATCH /{version}/account/projects/{projectId}/settings/legal/expose
-   * Request DTO: UpdateProjectExposeLegal
-   */
-  updateProjectExposeLegal = (
-    request: Partial<CodeMashHub2.UpdateProjectExposeLegal> = {} as Partial<CodeMashHub2.UpdateProjectExposeLegal>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/settings/legal/expose',
       method: 'PATCH',
       request,
       pathParams: ['projectId'],
