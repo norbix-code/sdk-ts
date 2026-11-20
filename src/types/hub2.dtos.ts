@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-19 15:30:25
+Date: 2026-11-20 10:55:35
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -14490,6 +14490,14 @@ export module CodeMashHub2 {
     Enterprise = 'Enterprise',
   }
 
+  export enum SupportCaseSource {
+    Cloud = 'Cloud',
+    Api = 'Api',
+    Cli = 'Cli',
+    Sdk = 'Sdk',
+    Mcp = 'Mcp',
+  }
+
   // @DataContract
   export class SupportCaseDto implements IHasViewId {
     // @DataMember
@@ -14550,6 +14558,21 @@ export module CodeMashHub2 {
     public resolution?: string;
 
     // @DataMember
+    public assigneeId?: string;
+
+    // @DataMember
+    public assigneeName?: string;
+
+    // @DataMember
+    public source?: SupportCaseSource;
+
+    // @DataMember
+    public automatic: boolean;
+
+    // @DataMember
+    public reportedBy?: string;
+
+    // @DataMember
     public messageCount: number;
 
     // @DataMember
@@ -14592,6 +14615,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public sentOn: number;
+
+    // @DataMember
+    public evidence?: { [index: string]: string };
 
     public constructor(init?: Partial<SupportCaseMessageDto>) {
       (Object as any).assign(this, init);
@@ -14642,6 +14668,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public lastMessageOn?: number;
+
+    // @DataMember
+    public source?: SupportCaseSource;
+
+    // @DataMember
+    public automatic: boolean;
 
     public constructor(init?: Partial<SupportCaseListProjection>) {
       (Object as any).assign(this, init);
@@ -15144,6 +15176,12 @@ export module CodeMashHub2 {
 
     // @DataMember
     public noTrialReason?: string;
+
+    // @DataMember
+    public clientSecret?: string;
+
+    // @DataMember
+    public publishableKey?: string;
 
     public constructor(init?: Partial<CreateStripeCheckoutSessionResponse>) {
       super(init);
@@ -18111,6 +18149,17 @@ export module CodeMashHub2 {
     }
   }
 
+  export class ReportNorbixIssueResponse extends ResponseBase {
+    public caseId?: string;
+    public alreadyReported: boolean;
+    public timesReported: number;
+
+    public constructor(init?: Partial<ReportNorbixIssueResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetDiagnosticPacksResponse extends ResponseBase {
     public packs?: DiagnosticPackDescriptorDto[];
 
@@ -19981,6 +20030,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public trialInvite?: string;
+
+    // @DataMember
+    public embedded?: boolean;
 
     public constructor(init?: Partial<CreateStripeCheckoutSession>) {
       super(init);
@@ -35570,6 +35622,56 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new IdResponse();
+    }
+  }
+
+  /** @description Report a problem in Norbix itself to Norbix support. */
+  // @Route("/{version}/support/issues", "POST")
+  // @Api(Description="Report a problem in Norbix itself to Norbix support.")
+  // @DataContract
+  export class ReportNorbixIssueRequest
+    extends RequestBase
+    implements IReturn<ReportNorbixIssueResponse>
+  {
+    // @DataMember
+    public subject: string;
+
+    // @DataMember
+    public message: string;
+
+    // @DataMember
+    public kind?: string;
+
+    // @DataMember
+    public severity?: string;
+
+    // @DataMember
+    public projectId?: string;
+
+    // @DataMember
+    public source?: string;
+
+    // @DataMember
+    public automatic?: boolean;
+
+    // @DataMember
+    public reportedBy?: string;
+
+    // @DataMember
+    public evidence?: { [index: string]: string };
+
+    public constructor(init?: Partial<ReportNorbixIssueRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ReportNorbixIssueRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new ReportNorbixIssueResponse();
     }
   }
 

@@ -15,6 +15,7 @@ Accessed as `norbix.hub.support` on the [`Norbix`](../../README.md#authenticatio
 | [`getSupportCase`](#getsupportcase)                     | `GET`  | `/{version}/support/cases/{CaseId}`          | `project` |
 | [`getSupportCases`](#getsupportcases)                   | `GET`  | `/{version}/support/cases`                   | `project` |
 | [`openSupportCase`](#opensupportcase)                   | `POST` | `/{version}/support/cases`                   | `project` |
+| [`reportNorbixIssue`](#reportnorbixissue)               | `POST` | `/{version}/support/issues`                  | `project` |
 
 ## Reference
 
@@ -163,6 +164,26 @@ const result = await norbix.hub.support.openSupportCase({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.IdResponse
+```
+
+[↑ Top](#endpoints)
+
+### reportNorbixIssue
+
+`POST` `/{version}/support/issues`
+
+**Request DTO**: `CodeMashHub2.ReportNorbixIssueRequest`
+**Response**: `CodeMashHub2.ReportNorbixIssueResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.support.reportNorbixIssue({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.ReportNorbixIssueResponse
 ```
 
 [↑ Top](#endpoints)

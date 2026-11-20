@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: support
- * Endpoints: 7
+ * Endpoints: 8
  */
 export class SupportModule {
   constructor(private readonly transport: Transport) {}
@@ -136,6 +136,25 @@ export class SupportModule {
     return this.transport.send<CodeMashHub2.IdResponse>({
       target: 'hub',
       path: '/{version}/support/cases',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/support/issues
+   * Request DTO: ReportNorbixIssueRequest
+   */
+  reportNorbixIssue = (
+    request: Partial<CodeMashHub2.ReportNorbixIssueRequest> = {} as Partial<CodeMashHub2.ReportNorbixIssueRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.ReportNorbixIssueResponse> => {
+    return this.transport.send<CodeMashHub2.ReportNorbixIssueResponse>({
+      target: 'hub',
+      path: '/{version}/support/issues',
       method: 'POST',
       request,
       pathParams: [],

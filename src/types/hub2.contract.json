@@ -1895,6 +1895,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ReportNorbixIssueRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RequestAccountPasswordResetRequest": {
     "requiresAuth": false,
     "returnsBytes": false
