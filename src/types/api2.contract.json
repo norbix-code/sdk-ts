@@ -87,6 +87,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DecideEndUserChatActionRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DeleteCollectionImportRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -607,6 +611,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "ResendEmailAddressVerificationRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
   "ResumeCodeWorkflowRun": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -768,6 +776,10 @@
     "returnsBytes": false
   },
   "UseRecoveryCodeRequest": {
+    "requiresAuth": false,
+    "returnsBytes": false
+  },
+  "VerifyEmailAddressRequest": {
     "requiresAuth": false,
     "returnsBytes": false
   },

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-20 10:55:35
+Date: 2026-11-22 10:35:12
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -8594,6 +8594,9 @@ export module CodeMashHub2 {
     // @DataMember
     public passwordComplexity?: AuthenticationFlowPasswordPolicyDto;
 
+    // @DataMember
+    public requireEmailVerification?: boolean;
+
     public constructor(init?: Partial<AuthenticationFlowSummaryDto>) {
       (Object as any).assign(this, init);
     }
@@ -10250,6 +10253,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public welcomeEmailTriggers: string[] = [];
+
+    // @DataMember
+    public requireEmailVerification: boolean;
 
     public constructor(init?: Partial<MembershipAuthorizationViewDto>) {
       (Object as any).assign(this, init);
@@ -23918,6 +23924,14 @@ export module CodeMashHub2 {
     /** @description Setting = 'PasswordResetCallback': your own "choose a new password" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page. */
     // @ApiMember(Description="Setting = 'PasswordResetCallback': your own \"choose a new password\" page (https://…, http only for localhost); the link is it + #token=…. Empty = the portal page.")
     public resetPasswordCallback?: string;
+
+    /** @description Setting = 'RequireEmailVerification': true = a password sign-in is refused (CM-ERRORS-MEMBERSHIP-USERS-052) until the user opened the verification link. Needs verification e-mails on ('AllowUserVerification'). Default false. */
+    // @ApiMember(Description="Setting = 'RequireEmailVerification': true = a password sign-in is refused (CM-ERRORS-MEMBERSHIP-USERS-052) until the user opened the verification link. Needs verification e-mails on ('AllowUserVerification'). Default false.")
+    public requireEmailVerification?: boolean;
+
+    /** @description Setting = 'UserVerificationCallback': your app's "confirm your e-mail" page (https://…, http only for localhost); the link is it + #token=…, and the page confirms the token. Empty = the admin portal page. */
+    // @ApiMember(Description="Setting = 'UserVerificationCallback': your app's \"confirm your e-mail\" page (https://…, http only for localhost); the link is it + #token=…, and the page confirms the token. Empty = the admin portal page.")
+    public verificationCallback?: string;
 
     /** @description Setting = 'RegistrationTemplate': the welcome e-mail template id (tmpl_…) of this environment; empty = no welcome e-mail in this environment (a sign-up trigger may send it instead). */
     // @ApiMember(Description="Setting = 'RegistrationTemplate': the welcome e-mail template id (tmpl_…) of this environment; empty = no welcome e-mail in this environment (a sign-up trigger may send it instead).")
