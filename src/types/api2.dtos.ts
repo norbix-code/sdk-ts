@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-19 15:30:23
+Date: 2026-11-22 10:35:12
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -3922,6 +3922,27 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class EmailAddressVerifiedResponse extends ResponseBase {
+    // @DataMember
+    public authId?: string;
+
+    // @DataMember
+    public verifiedAtUtc?: string;
+
+    public constructor(init?: Partial<EmailAddressVerifiedResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class PasskeyOkResponse extends ResponseBase {
+    public constructor(init?: Partial<PasskeyOkResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class CredentialChangedResponse extends ResponseBase {
     // @DataMember
     public authId?: string;
@@ -3930,13 +3951,6 @@ export module CodeMashApi2 {
     public credentialVersion?: string;
 
     public constructor(init?: Partial<CredentialChangedResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
-  export class PasskeyOkResponse extends ResponseBase {
-    public constructor(init?: Partial<PasskeyOkResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -5094,6 +5108,34 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Applies or dismisses an action the caller's AI chat held for them. */
+  // @Route("/{version}/ai/chat/sessions/{SessionId}/actions/{EntryId}", "POST")
+  // @Api(Description="Applies or dismisses an action the caller's AI chat held for them.")
+  export class DecideEndUserChatActionRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    public sessionId: string;
+    public entryId: string;
+    /** @description apply (runs the held action once, as you) or dismiss (runs nothing). */
+    // @ApiMember(Description="apply (runs the held action once, as you) or dismiss (runs nothing).", IsRequired=true)
+    public decision: string;
+
+    public constructor(init?: Partial<DecideEndUserChatActionRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DecideEndUserChatActionRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
     }
   }
 
@@ -6459,6 +6501,72 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new EmptyResponse();
+    }
+  }
+
+  /** @description Membership · E-mail verification */
+  // @Route("/{version}/membership/userauth/email-verification/confirm", "POST")
+  // @Api(Description="Membership · E-mail verification")
+  // @DataContract
+  export class VerifyEmailAddressRequest
+    extends CodeMashRequestBase
+    implements IReturn<EmailAddressVerifiedResponse>
+  {
+    /** @description The one-time token from the verification link (the part after #token=). */
+    // @DataMember
+    // @ApiMember(Description="The one-time token from the verification link (the part after #token=).", IsRequired=true)
+    public token: string;
+
+    /** @description Database integration id. Optional — defaults to the request environment's default integration. */
+    // @DataMember
+    // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<VerifyEmailAddressRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'VerifyEmailAddressRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new EmailAddressVerifiedResponse();
+    }
+  }
+
+  /** @description Membership · E-mail verification */
+  // @Route("/{version}/membership/userauth/email-verification/resend", "POST")
+  // @Api(Description="Membership · E-mail verification")
+  // @DataContract
+  export class ResendEmailAddressVerificationRequest
+    extends CodeMashRequestBase
+    implements IReturn<PasskeyOkResponse>
+  {
+    /** @description The e-mail address the user signed up with. */
+    // @DataMember
+    // @ApiMember(Description="The e-mail address the user signed up with.", IsRequired=true)
+    public email: string;
+
+    /** @description Database integration id. Optional — defaults to the request environment's default integration. */
+    // @DataMember
+    // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
+    public databaseIntegrationId?: string;
+
+    public constructor(init?: Partial<ResendEmailAddressVerificationRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'ResendEmailAddressVerificationRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new PasskeyOkResponse();
     }
   }
 
