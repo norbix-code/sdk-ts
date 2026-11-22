@@ -500,6 +500,44 @@ export class MembershipModule {
   };
 
   /**
+   * POST /{version}/membership/userauth/email-verification/confirm
+   * Request DTO: VerifyEmailAddressRequest
+   */
+  verifyEmailAddress = (
+    request: Partial<CodeMashApi2.VerifyEmailAddressRequest> = {} as Partial<CodeMashApi2.VerifyEmailAddressRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.EmailAddressVerifiedResponse> => {
+    return this.transport.send<CodeMashApi2.EmailAddressVerifiedResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/email-verification/confirm',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'optional',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/membership/userauth/email-verification/resend
+   * Request DTO: ResendEmailAddressVerificationRequest
+   */
+  resendEmailAddressVerification = (
+    request: Partial<CodeMashApi2.ResendEmailAddressVerificationRequest> = {} as Partial<CodeMashApi2.ResendEmailAddressVerificationRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.PasskeyOkResponse> => {
+    return this.transport.send<CodeMashApi2.PasskeyOkResponse>({
+      target: 'api',
+      path: '/{version}/membership/userauth/email-verification/resend',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'optional',
+      ...options,
+    });
+  };
+
+  /**
    * POST /{version}/membership/userauth/password/change
    * Request DTO: ChangePasswordRequest
    */

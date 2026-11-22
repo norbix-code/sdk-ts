@@ -57,6 +57,8 @@ describe('api.membership', () => {
     expect(typeof ns['clearContactBounce']).toBe('function');
     expect(typeof ns['updateUser']).toBe('function');
     expect(typeof ns['updateUserPreferences']).toBe('function');
+    expect(typeof ns['verifyEmailAddress']).toBe('function');
+    expect(typeof ns['resendEmailAddressVerification']).toBe('function');
     expect(typeof ns['changePassword']).toBe('function');
     expect(typeof ns['requestPasswordReset']).toBe('function');
     expect(typeof ns['confirmPasswordReset']).toBe('function');
@@ -690,6 +692,52 @@ describe('api.membership', () => {
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('verifyEmailAddress: POST /{version}/membership/userauth/email-verification/confirm', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/userauth/email-verification/confirm',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['verifyEmailAddress']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('resendEmailAddressVerification: POST /{version}/membership/userauth/email-verification/resend', async () => {
+    const stub = {};
+    const expected = expectedUrl({
+      baseUrl: 'https://api.norbix.io',
+      path: '/{version}/membership/userauth/email-verification/resend',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.api as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['membership']!['resendEmailAddressVerification']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('POST');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

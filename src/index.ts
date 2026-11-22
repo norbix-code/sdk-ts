@@ -1,7 +1,9 @@
 export { Norbix } from './client/Norbix.js';
 export {
   CREDENTIALS_CHANGED_ERROR_CODE,
+  EMAIL_NOT_VERIFIED_ERROR_CODE,
   errorFromBody,
+  isEmailNotVerifiedError,
   isFailedBody,
   NorbixAuthError,
   NorbixError,
