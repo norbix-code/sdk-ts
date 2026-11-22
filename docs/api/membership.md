@@ -37,6 +37,8 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`clearContactBounce`](#clearcontactbounce)                             | `POST`   | `/{version}/membership/users/{contactId}/marketing-state/{channel}/clear-bounce`             | `project` |
 | [`updateUser`](#updateuser)                                             | `PUT`    | `/{version}/membership/auth`                                                                 | `project` |
 | [`updateUserPreferences`](#updateuserpreferences)                       | `PUT`    | `/{version}/membership/auth/{id}/preferences`                                                | `project` |
+| [`verifyEmailAddress`](#verifyemailaddress)                             | `POST`   | `/{version}/membership/userauth/email-verification/confirm`                                  | `project` |
+| [`resendEmailAddressVerification`](#resendemailaddressverification)     | `POST`   | `/{version}/membership/userauth/email-verification/resend`                                   | `project` |
 | [`changePassword`](#changepassword)                                     | `POST`   | `/{version}/membership/userauth/password/change`                                             | `project` |
 | [`requestPasswordReset`](#requestpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/request`                                      | `project` |
 | [`confirmPasswordReset`](#confirmpasswordreset)                         | `POST`   | `/{version}/membership/userauth/password/reset/confirm`                                      | `project` |
@@ -659,6 +661,50 @@ const result = await norbix.api.membership.updateUserPreferences({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### verifyEmailAddress
+
+`POST` `/{version}/membership/userauth/email-verification/confirm`
+
+Confirm an e-mail address with the one-time token from the verification link (the part after `#token=`). Works once; a newer link replaces older ones. Answers `authId` and `verifiedAtUtc`. Public — no sign-in needed.
+
+**Request DTO**: `CodeMashApi2.VerifyEmailAddressRequest`
+**Response**: `CodeMashApi2.EmailAddressVerifiedResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.verifyEmailAddress({
+  token: new URLSearchParams(location.hash.slice(1)).get('token') ?? '',
+});
+// → typed as CodeMashApi2.EmailAddressVerifiedResponse
+```
+
+[↑ Top](#endpoints)
+
+### resendEmailAddressVerification
+
+`POST` `/{version}/membership/userauth/email-verification/resend`
+
+Send the verification link again. Always answers OK, whether or not the address exists or is verified; a link is sent only to an e-mail + password login that is not verified, at most once a minute. Public — no sign-in needed.
+
+**Request DTO**: `CodeMashApi2.ResendEmailAddressVerificationRequest`
+**Response**: `CodeMashApi2.PasskeyOkResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.membership.resendEmailAddressVerification({
+  email: 'user@example.com',
+});
+// → typed as CodeMashApi2.PasskeyOkResponse
 ```
 
 [↑ Top](#endpoints)

@@ -158,6 +158,21 @@ export class NorbixAuthError extends NorbixError {
 export const CREDENTIALS_CHANGED_ERROR_CODE = 'CM-ERRORS-MEMBERSHIP-USERS-050';
 
 /**
+ * The gateway's code for a password sign-in refused because the login's e-mail address is not
+ * verified yet, while the project blocks sign-in until it is (HTTP 401). Show "check your inbox"
+ * and offer `norbix.api.membership.resendEmailAddressVerification({ email })`.
+ */
+export const EMAIL_NOT_VERIFIED_ERROR_CODE = 'CM-ERRORS-MEMBERSHIP-USERS-052';
+
+/** True when `error` is the "e-mail not verified" sign-in refusal ({@link EMAIL_NOT_VERIFIED_ERROR_CODE}). */
+export function isEmailNotVerifiedError(error: unknown): error is NorbixError {
+  if (!(error instanceof NorbixError)) return false;
+  return [error.code, ...error.fieldErrors.map((e) => e.errorCode)].includes(
+    EMAIL_NOT_VERIFIED_ERROR_CODE,
+  );
+}
+
+/**
  * A cookie-session client got a 401. `reason` tells the two cases apart:
  * `expired` (signed out, timed out, or never valid) and `credentialsChanged`
  * (the password was changed or reset after this session signed in). In both
