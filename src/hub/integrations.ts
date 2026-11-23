@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: integrations
- * Endpoints: 3
+ * Endpoints: 5
  */
 export class IntegrationsModule {
   constructor(private readonly transport: Transport) {}
@@ -50,6 +50,25 @@ export class IntegrationsModule {
   };
 
   /**
+   * GET /{version}/integrations/{IntegrationId}/secrets
+   * Request DTO: GetIntegrationSecrets
+   */
+  getIntegrationSecrets = (
+    request: Partial<CodeMashHub2.GetIntegrationSecrets> = {} as Partial<CodeMashHub2.GetIntegrationSecrets>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetIntegrationSecretsResponse> => {
+    return this.transport.send<CodeMashHub2.GetIntegrationSecretsResponse>({
+      target: 'hub',
+      path: '/{version}/integrations/{IntegrationId}/secrets',
+      method: 'GET',
+      request,
+      pathParams: ['IntegrationId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
    * GET /{version}/integrations/keyless/setup
    * Request DTO: GetKeylessIntegrationSetup
    */
@@ -63,6 +82,25 @@ export class IntegrationsModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/integrations/{IntegrationId}/secrets/remove
+   * Request DTO: RemoveIntegrationSecretsRequest
+   */
+  removeIntegrationSecrets = (
+    request: Partial<CodeMashHub2.RemoveIntegrationSecretsRequest> = {} as Partial<CodeMashHub2.RemoveIntegrationSecretsRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.IdResponse> => {
+    return this.transport.send<CodeMashHub2.IdResponse>({
+      target: 'hub',
+      path: '/{version}/integrations/{IntegrationId}/secrets/remove',
+      method: 'POST',
+      request,
+      pathParams: ['IntegrationId'],
       scope: 'project',
       ...options,
     });

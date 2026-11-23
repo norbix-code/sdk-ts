@@ -1199,6 +1199,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetIntegrationSecrets": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetKeylessIntegrationSetup": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -1851,6 +1855,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "RemoveIntegrationSecretsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "RemoveRetentionWindowRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2260,6 +2268,10 @@
     "returnsBytes": false
   },
   "TestCodeIntegration": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "TestCodeWorkflow": {
     "requiresAuth": true,
     "returnsBytes": false
   },

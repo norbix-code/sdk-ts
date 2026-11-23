@@ -735,6 +735,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "TestCodeWorkflow": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "UnblockUserRequest": {
     "requiresAuth": true,
     "returnsBytes": false

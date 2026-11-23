@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-22 10:35:12
+Date: 2026-11-23 17:01:01
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -7873,6 +7873,9 @@ export module CodeMashApi2 {
     // @DataMember
     public arrayFilters?: string;
 
+    // @DataMember
+    public condition?: string;
+
     public constructor(init?: Partial<UpdateOneRequest>) {
       super(init);
       (Object as any).assign(this, init);
@@ -9135,6 +9138,72 @@ export module CodeMashApi2 {
     }
     public createResponse() {
       return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/test", "POST")
+  // @DataContract
+  export class TestCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeWorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description database | membership | manual. */
+    // @DataMember
+    // @ApiMember(Description="database | membership | manual.", IsRequired=true)
+    public source: string;
+
+    /** @description The event name, e.g. database.record.inserted; absent = inserted (database) or updated (membership). */
+    // @DataMember
+    // @ApiMember(Description="The event name, e.g. database.record.inserted; absent = inserted (database) or updated (membership).")
+    public event?: string;
+
+    /** @description database: the collection the record is in. */
+    // @DataMember
+    // @ApiMember(Description="database: the collection the record is in.")
+    public collection?: string;
+
+    /** @description database: the record's id. */
+    // @DataMember
+    // @ApiMember(Description="database: the record's id.")
+    public recordId?: string;
+
+    /** @description membership: the user's id (usr_…). */
+    // @DataMember
+    // @ApiMember(Description="membership: the user's id (usr_…).")
+    public userId?: string;
+
+    /** @description An update only: fields laid over the record or user as its new state (null removes a field). */
+    // @DataMember
+    // @ApiMember(Description="An update only: fields laid over the record or user as its new state (null removes a field).")
+    public edits?: { [index: string]: Object };
+
+    /** @description The @Model.Request object; for a manual test it is checked against the definition's inputs. */
+    // @DataMember
+    // @ApiMember(Description="The @Model.Request object; for a manual test it is checked against the definition's inputs.")
+    public payload?: { [index: string]: Object };
+
+    /** @description "draft" or a version number; absent = the draft when there is one, else the latest published. */
+    // @DataMember
+    // @ApiMember(Description="\"draft\" or a version number; absent = the draft when there is one, else the latest published.")
+    public runVersion?: string;
+
+    public constructor(init?: Partial<TestCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TestCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeWorkflowResponse();
     }
   }
 
