@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-23 09:09:09
+Date: 2026-11-23 17:01:01
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -11057,6 +11057,17 @@ export module CodeMashHub2 {
     }
   }
 
+  export class IntegrationSecretDto {
+    public key: string;
+    public field: string;
+    public isSet: boolean;
+    public isOptional: boolean;
+
+    public constructor(init?: Partial<IntegrationSecretDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class KeylessIntegrationSetupTemplate {
     public kind: string;
     public fileName: string;
@@ -16248,6 +16259,15 @@ export module CodeMashHub2 {
     public availableProviders: FileProvider[] = [];
 
     public constructor(init?: Partial<GetFilesIntegrationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetIntegrationSecretsResponse extends ResponseBase {
+    public result: IntegrationSecretDto[] = [];
+
+    public constructor(init?: Partial<GetIntegrationSecretsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -25849,6 +25869,10 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Optional MongoDB arrayFilters — a JSON array of filter documents, one per $[name] identifier used in the Update paths, e.g. [{\"line.sku\":\"A-1\"}] for {\"lines.$[line].qty\":3}.")
     public arrayFilters?: string;
 
+    /** @description Optional condition — a MongoDB extended-JSON filter the record must also match to be changed, e.g. {"revision":4}. When the record exists but does not match, nothing is written and the call fails with CM-ERRORS-DATABASE-070 (409). */
+    // @ApiMember(Description="Optional condition — a MongoDB extended-JSON filter the record must also match to be changed, e.g. {\"revision\":4}. When the record exists but does not match, nothing is written and the call fails with CM-ERRORS-DATABASE-070 (409).")
+    public condition?: string;
+
     public constructor(init?: Partial<UpdateOneRecord>) {
       super(init);
       (Object as any).assign(this, init);
@@ -26561,6 +26585,30 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/integrations/{IntegrationId}/secrets", "GET")
+  export class GetIntegrationSecrets
+    extends CodeMashRequestBase
+    implements IReturn<GetIntegrationSecretsResponse>
+  {
+    /** @description The integration id (any module). */
+    // @ApiMember(Description="The integration id (any module).", IsRequired=true)
+    public integrationId: string;
+
+    public constructor(init?: Partial<GetIntegrationSecrets>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetIntegrationSecrets';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetIntegrationSecretsResponse();
+    }
+  }
+
   // @Route("/{version}/integrations/keyless/setup", "GET")
   export class GetKeylessIntegrationSetup
     extends CodeMashRequestBase
@@ -26590,6 +26638,34 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new GetKeylessIntegrationSetupResponse();
+    }
+  }
+
+  // @Route("/{version}/integrations/{IntegrationId}/secrets/remove", "POST")
+  export class RemoveIntegrationSecretsRequest
+    extends CodeMashRequestBase
+    implements IReturn<IdResponse>
+  {
+    /** @description The integration id (any module). */
+    // @ApiMember(Description="The integration id (any module).", IsRequired=true)
+    public integrationId: string;
+
+    /** @description Secret keys to remove, as GET /integrations/{integrationId}/secrets lists them (only optional ones). */
+    // @ApiMember(Description="Secret keys to remove, as GET /integrations/{integrationId}/secrets lists them (only optional ones).", IsRequired=true)
+    public keys: string[] = [];
+
+    public constructor(init?: Partial<RemoveIntegrationSecretsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'RemoveIntegrationSecretsRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
     }
   }
 
@@ -29710,6 +29786,72 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new WorkflowRunResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/test", "POST")
+  // @DataContract
+  export class TestCodeWorkflow
+    extends CodeMashRequestBase
+    implements IReturn<InvokeCodeWorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description database | membership | manual. */
+    // @DataMember
+    // @ApiMember(Description="database | membership | manual.", IsRequired=true)
+    public source: string;
+
+    /** @description The event name, e.g. database.record.inserted; absent = inserted (database) or updated (membership). */
+    // @DataMember
+    // @ApiMember(Description="The event name, e.g. database.record.inserted; absent = inserted (database) or updated (membership).")
+    public event?: string;
+
+    /** @description database: the collection the record is in. */
+    // @DataMember
+    // @ApiMember(Description="database: the collection the record is in.")
+    public collection?: string;
+
+    /** @description database: the record's id. */
+    // @DataMember
+    // @ApiMember(Description="database: the record's id.")
+    public recordId?: string;
+
+    /** @description membership: the user's id (usr_…). */
+    // @DataMember
+    // @ApiMember(Description="membership: the user's id (usr_…).")
+    public userId?: string;
+
+    /** @description An update only: fields laid over the record or user as its new state (null removes a field). */
+    // @DataMember
+    // @ApiMember(Description="An update only: fields laid over the record or user as its new state (null removes a field).")
+    public edits?: { [index: string]: Object };
+
+    /** @description The @Model.Request object; for a manual test it is checked against the definition's inputs. */
+    // @DataMember
+    // @ApiMember(Description="The @Model.Request object; for a manual test it is checked against the definition's inputs.")
+    public payload?: { [index: string]: Object };
+
+    /** @description "draft" or a version number; absent = the draft when there is one, else the latest published. */
+    // @DataMember
+    // @ApiMember(Description="\"draft\" or a version number; absent = the draft when there is one, else the latest published.")
+    public runVersion?: string;
+
+    public constructor(init?: Partial<TestCodeWorkflow>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'TestCodeWorkflow';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new InvokeCodeWorkflowResponse();
     }
   }
 
