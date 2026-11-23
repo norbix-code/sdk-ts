@@ -39,6 +39,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "AddSupportCaseAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "AggregateRecords": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -499,6 +503,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "DeleteSupportCaseAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "DeprecateConsentPurposeRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -642,6 +650,10 @@
   "DistinctRecordValues": {
     "requiresAuth": true,
     "returnsBytes": false
+  },
+  "DownloadSupportCaseAttachmentRequest": {
+    "requiresAuth": true,
+    "returnsBytes": true
   },
   "Echo": {
     "requiresAuth": false,
@@ -1583,6 +1595,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetSupportCaseAttachmentsRequest": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetSupportCases": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -2224,6 +2240,10 @@
     "returnsBytes": false
   },
   "StartPaymentsIntegrationConnect": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
+  "StartPaymentsIntegrationTestPaymentRequest": {
     "requiresAuth": true,
     "returnsBytes": false
   },

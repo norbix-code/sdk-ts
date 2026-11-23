@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-22 10:35:12
+Date: 2026-11-23 09:09:09
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -1256,6 +1256,10 @@ export module CodeMashHub2 {
     /** @description AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise). */
     // @ApiMember(Description="AccessKey: true = I accept that Norbix stores this long-lived secret (required with AuthMode AccessKey; may be omitted otherwise).")
     public acceptKeyRisk?: boolean;
+
+    /** @description Re-save only: true removes the saved key or token. An empty privateKeyOrToken keeps the saved one (review batch 3, D3). */
+    // @ApiMember(Description="Re-save only: true removes the saved key or token. An empty privateKeyOrToken keeps the saved one (review batch 3, D3).")
+    public removePrivateKeyOrToken?: boolean;
 
     public constructor(init?: Partial<GoogleInAppPaymentIntegrationRequest>) {
       super(init);
@@ -9233,6 +9237,9 @@ export module CodeMashHub2 {
     // @DataMember
     public usersCount: number;
 
+    // @DataMember
+    public icon?: FileResourceRefDto;
+
     public constructor(init?: Partial<ProjectListItemDto>) {
       (Object as any).assign(this, init);
     }
@@ -14587,6 +14594,15 @@ export module CodeMashHub2 {
     // @DataMember
     public lastMessageOn?: number;
 
+    // @DataMember
+    public attachmentCount: number;
+
+    // @DataMember
+    public attachmentIds?: string[];
+
+    // @DataMember
+    public removedAttachmentIds?: string[];
+
     public constructor(init?: Partial<SupportCaseDto>) {
       (Object as any).assign(this, init);
     }
@@ -14631,12 +14647,52 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class SupportCaseAttachmentDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public caseId: string;
+
+    // @DataMember
+    public fileName: string;
+
+    // @DataMember
+    public sizeBytes: number;
+
+    // @DataMember
+    public contentType: string;
+
+    // @DataMember
+    public addedByKind: SupportMessageAuthorKind;
+
+    // @DataMember
+    public addedById?: string;
+
+    // @DataMember
+    public addedOn: number;
+
+    // @DataMember
+    public addedByYou: boolean;
+
+    // @DataMember
+    public canDelete: boolean;
+
+    public constructor(init?: Partial<SupportCaseAttachmentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class SupportCaseDetailDto {
     // @DataMember
     public case: SupportCaseDto;
 
     // @DataMember
     public messages: SupportCaseMessageDto[] = [];
+
+    // @DataMember
+    public attachments: SupportCaseAttachmentDto[] = [];
 
     public constructor(init?: Partial<SupportCaseDetailDto>) {
       (Object as any).assign(this, init);
@@ -14680,6 +14736,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public automatic: boolean;
+
+    // @DataMember
+    public attachmentCount: number;
 
     public constructor(init?: Partial<SupportCaseListProjection>) {
       (Object as any).assign(this, init);
@@ -17153,6 +17212,26 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class StartPaymentsIntegrationTestPaymentResponse extends ResponseBase {
+    // @DataMember
+    public payUrl?: string;
+
+    // @DataMember
+    public reference?: string;
+
+    // @DataMember
+    public amountMinor: number;
+
+    // @DataMember
+    public currency?: string;
+
+    public constructor(init?: Partial<StartPaymentsIntegrationTestPaymentResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class GetQuickConnectProvidersResponse extends ResponseBase {
     public providers: QuickConnectProviderDto[] = [];
 
@@ -18161,6 +18240,15 @@ export module CodeMashHub2 {
     public timesReported: number;
 
     public constructor(init?: Partial<ReportNorbixIssueResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetSupportCaseAttachmentsResponse extends ResponseBase {
+    public result?: SupportCaseAttachmentDto[];
+
+    public constructor(init?: Partial<GetSupportCaseAttachmentsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -30890,6 +30978,39 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Opens a 0.01 test payment at the provider of a payments integration and returns the link to pay it. */
+  // @Route("/{version}/payments/integrations/test-payment", "POST")
+  // @Api(Description="Opens a 0.01 test payment at the provider of a payments integration and returns the link to pay it.")
+  // @DataContract
+  export class StartPaymentsIntegrationTestPaymentRequest
+    extends CodeMashRequestBase
+    implements IReturn<StartPaymentsIntegrationTestPaymentResponse>
+  {
+    /** @description The id of the payments integration to test with a real payment. */
+    // @DataMember
+    // @ApiMember(Description="The id of the payments integration to test with a real payment.", IsRequired=true)
+    public integrationId: string;
+
+    /** @description Where the provider sends the payer back after paying: an absolute https URL (http only for localhost). */
+    // @DataMember
+    // @ApiMember(Description="Where the provider sends the payer back after paying: an absolute https URL (http only for localhost).", IsRequired=true)
+    public returnUrl: string;
+
+    public constructor(init?: Partial<StartPaymentsIntegrationTestPaymentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'StartPaymentsIntegrationTestPaymentRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new StartPaymentsIntegrationTestPaymentResponse();
+    }
+  }
+
   /** @description Disable logging service */
   // @Route("/{version}/logs/disable", "PUT")
   // @Api(Description="Disable logging service")
@@ -35686,6 +35807,90 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new ReportNorbixIssueResponse();
+    }
+  }
+
+  // @Route("/{version}/support/cases/{CaseId}/attachments", "POST")
+  export class AddSupportCaseAttachmentRequest extends RequestBase implements IReturn<IdResponse> {
+    public caseId: string;
+
+    public constructor(init?: Partial<AddSupportCaseAttachmentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'AddSupportCaseAttachmentRequest';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new IdResponse();
+    }
+  }
+
+  // @Route("/{version}/support/cases/{CaseId}/attachments", "GET")
+  export class GetSupportCaseAttachmentsRequest
+    extends RequestBase
+    implements IReturn<GetSupportCaseAttachmentsResponse>
+  {
+    public caseId: string;
+
+    public constructor(init?: Partial<GetSupportCaseAttachmentsRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetSupportCaseAttachmentsRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetSupportCaseAttachmentsResponse();
+    }
+  }
+
+  // @Route("/{version}/support/cases/{CaseId}/attachments/{AttachmentId}/download", "GET")
+  export class DownloadSupportCaseAttachmentRequest extends RequestBase implements IReturn<Blob> {
+    public caseId: string;
+    public attachmentId: string;
+
+    public constructor(init?: Partial<DownloadSupportCaseAttachmentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DownloadSupportCaseAttachmentRequest';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new Blob();
+    }
+  }
+
+  // @Route("/{version}/support/cases/{CaseId}/attachments/{AttachmentId}", "DELETE")
+  export class DeleteSupportCaseAttachmentRequest
+    extends RequestBase
+    implements IReturn<IdResponse>
+  {
+    public caseId: string;
+    public attachmentId: string;
+
+    public constructor(init?: Partial<DeleteSupportCaseAttachmentRequest>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'DeleteSupportCaseAttachmentRequest';
+    }
+    public getMethod() {
+      return 'DELETE';
+    }
+    public createResponse() {
+      return new IdResponse();
     }
   }
 

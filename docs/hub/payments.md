@@ -32,6 +32,7 @@ Accessed as `norbix.hub.payments` on the [`Norbix`](../../README.md#authenticati
 | [`getPaymentsIntegrations`](#getpaymentsintegrations)                                 | `GET`    | `/{version}/payments/integrations`                              | `project` |
 | [`savePaymentsIntegration`](#savepaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations`                              | `project` |
 | [`testPaymentsIntegration`](#testpaymentsintegration)                                 | `POST`   | `/{version}/payments/integrations/test`                         | `project` |
+| [`startPaymentsIntegrationTestPayment`](#startpaymentsintegrationtestpayment)         | `POST`   | `/{version}/payments/integrations/test-payment`                 | `project` |
 
 ## Reference
 
@@ -518,6 +519,26 @@ const result = await norbix.hub.payments.testPaymentsIntegration({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.TestPaymentsIntegrationResponse
+```
+
+[↑ Top](#endpoints)
+
+### startPaymentsIntegrationTestPayment
+
+`POST` `/{version}/payments/integrations/test-payment`
+
+**Request DTO**: `CodeMashHub2.StartPaymentsIntegrationTestPaymentRequest`
+**Response**: `CodeMashHub2.StartPaymentsIntegrationTestPaymentResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.payments.startPaymentsIntegrationTestPayment({
+  // See CodeMash type for the full request shape.
+});
+// → typed as CodeMashHub2.StartPaymentsIntegrationTestPaymentResponse
 ```
 
 [↑ Top](#endpoints)

@@ -69,6 +69,12 @@ export interface RequestOptions<TBody = unknown> {
    */
   responseType?: 'json' | 'binary';
   /**
+   * A multipart body (file upload). When set it is sent as the request body
+   * instead of JSON, and `fetch` writes the `Content-Type` with its boundary.
+   * Fields of `request` still fill the path tokens.
+   */
+  formData?: FormData;
+  /**
    * The call never carries a cookie — a sign-in that arrives with a session
    * cookie deletes that session. `browserSession` is the exception: the browser
    * must keep the answer's `Set-Cookie`, and rotating its one session is right.
@@ -202,7 +208,7 @@ export class Transport {
     const baseUrl = opts.target === 'api' ? this.cfg.baseUrl.api : this.cfg.baseUrl.hub;
     const version = opts.target === 'api' ? this.cfg.apiVersion : this.cfg.hubVersion;
 
-    const { url, body } = buildUrlAndBody({
+    const { url, body: jsonBody } = buildUrlAndBody({
       baseUrl,
       path: opts.path,
       method: opts.method,
@@ -267,7 +273,8 @@ export class Transport {
 
     if (opts.omitCookies) headers.delete('Cookie');
 
-    if (body !== undefined) headers.set('Content-Type', 'application/json');
+    const body: BodyInit | undefined = opts.formData ?? jsonBody;
+    if (jsonBody !== undefined && !opts.formData) headers.set('Content-Type', 'application/json');
 
     const credentials: RequestCredentials | undefined =
       authMode === 'browserSession' ? 'include' : authMode || opts.omitCookies ? 'omit' : undefined;
