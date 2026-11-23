@@ -6,7 +6,7 @@ import type { CodeMashHub2 } from '../types/hub2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: payments
- * Endpoints: 22
+ * Endpoints: 23
  */
 export class PaymentsModule {
   constructor(private readonly transport: Transport) {}
@@ -421,6 +421,25 @@ export class PaymentsModule {
     return this.transport.send<CodeMashHub2.TestPaymentsIntegrationResponse>({
       target: 'hub',
       path: '/{version}/payments/integrations/test',
+      method: 'POST',
+      request,
+      pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/payments/integrations/test-payment
+   * Request DTO: StartPaymentsIntegrationTestPaymentRequest
+   */
+  startPaymentsIntegrationTestPayment = (
+    request: Partial<CodeMashHub2.StartPaymentsIntegrationTestPaymentRequest> = {} as Partial<CodeMashHub2.StartPaymentsIntegrationTestPaymentRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.StartPaymentsIntegrationTestPaymentResponse> => {
+    return this.transport.send<CodeMashHub2.StartPaymentsIntegrationTestPaymentResponse>({
+      target: 'hub',
+      path: '/{version}/payments/integrations/test-payment',
       method: 'POST',
       request,
       pathParams: [],
