@@ -2179,6 +2179,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "SetCodeWorkflowStartEvent": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "SetDatabaseIntegrationAsDefaultRequest": {
     "requiresAuth": true,
     "returnsBytes": false

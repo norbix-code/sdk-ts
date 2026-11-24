@@ -9,7 +9,7 @@ import { LogsModule } from './logs.js'; // @hand-written
  * to refresh this file from the DTO definitions.
  *
  * Group: code
- * Endpoints: 71
+ * Endpoints: 74
  */
 export class CodeModule {
   constructor(private readonly transport: Transport) {}
@@ -560,6 +560,44 @@ export class CodeModule {
       method: 'PUT',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/{Id}/canvas
+   * Request DTO: SaveCodeWorkflowCanvas
+   */
+  saveCodeWorkflowCanvas = (
+    request: Partial<CodeMashHub2.SaveCodeWorkflowCanvas> = {} as Partial<CodeMashHub2.SaveCodeWorkflowCanvas>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/canvas',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * PUT /{version}/code/workflows/{Id}/start-event
+   * Request DTO: SetCodeWorkflowStartEvent
+   */
+  setCodeWorkflowStartEvent = (
+    request: Partial<CodeMashHub2.SetCodeWorkflowStartEvent> = {} as Partial<CodeMashHub2.SetCodeWorkflowStartEvent>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.WorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.WorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/start-event',
+      method: 'PUT',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });
@@ -1362,6 +1400,25 @@ export class CodeModule {
       method: 'POST',
       request,
       pathParams: ['RunId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/code/workflows/{Id}/test
+   * Request DTO: TestCodeWorkflow
+   */
+  testCodeWorkflow = (
+    request: Partial<CodeMashHub2.TestCodeWorkflow> = {} as Partial<CodeMashHub2.TestCodeWorkflow>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.InvokeCodeWorkflowResponse> => {
+    return this.transport.send<CodeMashHub2.InvokeCodeWorkflowResponse>({
+      target: 'hub',
+      path: '/{version}/code/workflows/{Id}/test',
+      method: 'POST',
+      request,
+      pathParams: ['Id'],
       scope: 'project',
       ...options,
     });

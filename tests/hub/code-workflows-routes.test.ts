@@ -39,6 +39,20 @@ interface RouteCase {
 }
 
 const invoke = { payload: { orderId: 'ord_1' }, waitSeconds: 10, runVersion: 'draft' };
+const startEvent = {
+  source: 'database',
+  event: 'database.record.inserted',
+  schema: 'moto_listings',
+  condition: 'return New.status == "review";',
+};
+const testRun = {
+  source: 'database',
+  event: 'database.record.updated',
+  collection: 'moto_listings',
+  recordId: 'rec_1',
+  edits: { status: 'review' },
+  runVersion: 'draft',
+};
 const resume = { stepId: 'approve', decision: 'approved', payload: { note: 'ok' } };
 
 /** The run routes exist on both hosts (sdk-ts has them on hub.code and api.code). */
@@ -234,6 +248,33 @@ const cases: RouteCase[] = [
   {
     host: 'hub',
     module: 'code',
+    method: 'setCodeWorkflowStartEvent',
+    request: { id: WF, start: startEvent },
+    verb: 'PUT',
+    path: `/v2/code/workflows/${WF}/start-event`,
+    body: { start: startEvent },
+  },
+  {
+    host: 'hub',
+    module: 'code',
+    method: 'testCodeWorkflow',
+    request: { id: WF, ...testRun },
+    verb: 'POST',
+    path: `/v2/code/workflows/${WF}/test`,
+    body: testRun,
+  },
+  {
+    host: 'hub',
+    module: 'code',
+    method: 'saveCodeWorkflowCanvas',
+    request: { id: WF, canvas: '{"nodes":{}}' },
+    verb: 'PUT',
+    path: `/v2/code/workflows/${WF}/canvas`,
+    body: { canvas: '{"nodes":{}}' },
+  },
+  {
+    host: 'hub',
+    module: 'code',
     method: 'publishCodeWorkflow',
     request: { id: WF },
     verb: 'POST',
@@ -376,12 +417,12 @@ describe('workflow, listing install and scheduler task routes — exact path', (
     });
   }
 
-  it('covers the 26 workflow routes on the hub, 11 on the api, the install, the listings and 6 task routes', () => {
+  it('covers the 29 workflow routes on the hub, 11 on the api, the install, the listings and 6 task routes', () => {
     const keys = new Set(cases.map((c) => `${c.host} ${c.verb} ${c.path}`));
     expect(keys.size).toBe(cases.length);
     expect(
       cases.filter((c) => c.host === 'hub' && c.path.startsWith('/v2/code/workflows')).length,
-    ).toBe(26);
+    ).toBe(29);
     expect(cases.filter((c) => c.host === 'api').length).toBe(11);
   });
 });

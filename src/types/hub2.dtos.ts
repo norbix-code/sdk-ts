@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-23 17:01:01
+Date: 2026-11-24 07:12:17
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -266,6 +266,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public campaignTime?: number;
+
+    // @DataMember
+    public attachments?: string[];
 
     public constructor(init?: Partial<EmailCampaignRequest>) {
       (Object as any).assign(this, init);
@@ -2637,7 +2640,9 @@ export module CodeMashHub2 {
 
   // @DataContract
   export class TriggerActionWorkflowDto extends TriggerActionDto {
+    /** @description The workflow (wf_…). From a trigger screen a Workflow action must have resumeKey (it resumes a waiting run); to START a workflow on an event, set the workflow's start event with set_code_workflow_start_event (PUT /code/workflows/{id}/start-event) and publish — a start saved here is refused (CM-ERRORS-WORKFLOWS-053). */
     // @DataMember
+    // @ApiMember(Description="The workflow (wf_…). From a trigger screen a Workflow action must have resumeKey (it resumes a waiting run); to START a workflow on an event, set the workflow's start event with set_code_workflow_start_event (PUT /code/workflows/{id}/start-event) and publish — a start saved here is refused (CM-ERRORS-WORKFLOWS-053).")
     public workflowRef?: string;
 
     // @DataMember
@@ -5061,6 +5066,7 @@ export module CodeMashHub2 {
     Prompt = 'Prompt',
     Web = 'Web',
     MembershipUser = 'MembershipUser',
+    Document = 'Document',
   }
 
   // @DataContract
@@ -7054,6 +7060,33 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowStartEventDto {
+    /** @description database | membership | files | payments | ai. */
+    // @DataMember
+    // @ApiMember(Description="database | membership | files | payments | ai.", IsRequired=true)
+    public source: string;
+
+    /** @description The event name, e.g. database.record.inserted, database.record.updated, membership.user.registered, files.file.uploaded, payments.order.paid. */
+    // @DataMember
+    // @ApiMember(Description="The event name, e.g. database.record.inserted, database.record.updated, membership.user.registered, files.file.uploaded, payments.order.paid.", IsRequired=true)
+    public event: string;
+
+    /** @description Database only: the collection (schema unique name). */
+    // @DataMember
+    // @ApiMember(Description="Database only: the collection (schema unique name).")
+    public schema?: string;
+
+    /** @description Optional sandbox code that must return true for a run to start (like a trigger's pre-execute code). */
+    // @DataMember
+    // @ApiMember(Description="Optional sandbox code that must return true for a run to start (like a trigger's pre-execute code).")
+    public condition?: string;
+
+    public constructor(init?: Partial<WorkflowStartEventDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowStepRetryDto {
     /** @description 0–10 automatic retries. */
     // @DataMember
@@ -7236,6 +7269,11 @@ export module CodeMashHub2 {
     // @DataMember
     // @ApiMember(Description="Optional JSON Schema (draft 2020-12, type object) of the manual-invoke payload.")
     public inputs?: { [index: string]: Object };
+
+    /** @description Optional: the event that starts the workflow — { source: database | membership | files | payments | ai, event: e.g. database.record.inserted, schema: the collection (database only), condition: optional sandbox code that must return true }. Publishing writes the matching trigger; the trigger screens cannot change it. */
+    // @DataMember
+    // @ApiMember(Description="Optional: the event that starts the workflow — { source: database | membership | files | payments | ai, event: e.g. database.record.inserted, schema: the collection (database only), condition: optional sandbox code that must return true }. Publishing writes the matching trigger; the trigger screens cannot change it.")
+    public trigger?: WorkflowStartEventDto;
 
     // @DataMember
     public start?: string;
@@ -8712,6 +8750,9 @@ export module CodeMashHub2 {
     // @DataMember
     public executionIdentity?: ExecutionIdentitySummaryDto;
 
+    // @DataMember
+    public managedByWorkflowId?: string;
+
     public constructor(init?: Partial<TriggerDto>) {
       (Object as any).assign(this, init);
     }
@@ -9943,6 +9984,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public executionIdentityId?: string;
+
+    // @DataMember
+    public managedByWorkflowId?: string;
 
     public constructor(init?: Partial<TriggerProjectionList>) {
       (Object as any).assign(this, init);
@@ -13762,6 +13806,9 @@ export module CodeMashHub2 {
     public validationIntegrationId?: string;
 
     // @DataMember
+    public attachmentFileIds?: string[];
+
+    // @DataMember
     public templateIsSystem: boolean;
 
     public constructor(init?: Partial<EmailCampaignDto>) {
@@ -14119,6 +14166,22 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class SentAttachmentDto {
+    // @DataMember
+    public fileName: string;
+
+    // @DataMember
+    public sizeBytes: number;
+
+    // @DataMember
+    public contentType: string;
+
+    public constructor(init?: Partial<SentAttachmentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class EmailCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
     // @DataMember
     public subject?: string;
@@ -14131,6 +14194,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public content?: EmailMessageContentDto;
+
+    // @DataMember
+    public attachments?: SentAttachmentDto[];
 
     // @DataMember
     public transactionalKind?: string;
@@ -28481,6 +28547,37 @@ export module CodeMashHub2 {
     }
     public getTypeName() {
       return 'SaveCodeWorkflowCanvas';
+    }
+    public getMethod() {
+      return 'PUT';
+    }
+    public createResponse() {
+      return new WorkflowResponse();
+    }
+  }
+
+  // @Route("/{version}/code/workflows/{Id}/start-event", "PUT")
+  // @DataContract
+  export class SetCodeWorkflowStartEvent
+    extends CodeMashRequestBase
+    implements IReturn<WorkflowResponse>
+  {
+    /** @description wf_… */
+    // @DataMember
+    // @ApiMember(Description="wf_…", IsRequired=true)
+    public id: string;
+
+    /** @description { source, event, schema? (database), condition? } */
+    // @DataMember
+    // @ApiMember(Description="{ source, event, schema? (database), condition? }", IsRequired=true)
+    public start: WorkflowStartEventDto;
+
+    public constructor(init?: Partial<SetCodeWorkflowStartEvent>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'SetCodeWorkflowStartEvent';
     }
     public getMethod() {
       return 'PUT';
