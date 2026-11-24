@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeClient } from '../_helpers.js';
+import { createMockFetch, makeClient } from '../_helpers.js';
 
 /**
  * Every workflow (beta) route, the workflow listing install and every
@@ -424,5 +424,95 @@ describe('workflow, listing install and scheduler task routes — exact path', (
       cases.filter((c) => c.host === 'hub' && c.path.startsWith('/v2/code/workflows')).length,
     ).toBe(29);
     expect(cases.filter((c) => c.host === 'api').length).toBe(11);
+  });
+});
+
+/**
+ * What goes into and comes out of each step (gateway Code.Workflows.md §3.7a–§3.7b, §3.2c): a step names the
+ * earlier steps it also `uses`, an Ask AI step takes a `context`, and validate answers the `ports` of the
+ * definition. The request goes out as written and the answer is typed.
+ */
+describe('workflow steps with inputs and outputs — the definition and the validate answer', () => {
+  it('sends uses, context, contextExclude and reask as written, and reads the ports of the answer', async () => {
+    const adCheck = {
+      name: 'Ad check',
+      trigger: { source: 'database', event: 'database.record.inserted', schema: 'ads' },
+      steps: [
+        {
+          id: 'checkAd',
+          kind: 'ai.invoke',
+          next: 'decide',
+          config: {
+            prompt: 'Is this ad fine?',
+            context: '@Model.Input',
+            contextExclude: ['ownerPhone'],
+            jsonSchema: { type: 'object' },
+            reask: 1,
+          },
+        },
+        {
+          id: 'decide',
+          kind: 'condition',
+          then: 'approve',
+          config: { expression: 'return Input.ok == true;' },
+        },
+        {
+          id: 'approve',
+          kind: 'database.update',
+          uses: ['checkAd'],
+          config: {
+            collection: 'ads',
+            id: '@Model.Trigger.New._id',
+            update: { status: 'approved' },
+          },
+        },
+      ],
+    };
+    const mock = createMockFetch({
+      body: {
+        isValid: true,
+        ports: {
+          start: { format: 'record', collection: 'ads', choices: ['record'] },
+          startEvent: 'database.record.inserted',
+          steps: [
+            {
+              stepId: 'checkAd',
+              inputs: [{ from: 'start', exit: 'start', format: 'record', collection: 'ads' }],
+              output: { format: 'json', choices: ['text', 'json'], value: 'json' },
+              uses: [],
+              takes: [
+                {
+                  field: 'config.context',
+                  accepts: ['text', 'json', 'record', 'records', 'event'],
+                },
+              ],
+            },
+            {
+              stepId: 'approve',
+              inputs: [{ from: 'decide', exit: 'then', format: 'boolean' }],
+              output: { format: 'json', choices: ['json'] },
+              uses: [{ stepId: 'checkAd', format: 'json' }],
+              takes: [],
+            },
+          ],
+        },
+      },
+    });
+    const { norbix } = makeClient({ fetch: mock.fetch });
+
+    const answer = await norbix.hub.code.validateCodeWorkflow({ definition: adCheck } as never);
+
+    expect(JSON.parse(mock.lastCall!.body ?? '{}')).toEqual({ definition: adCheck });
+    expect(answer.ports?.start.format).toBe('record');
+    expect(
+      answer.ports?.steps.map((s) => [s.stepId, s.output.format, s.uses.map((u) => u.stepId)]),
+    ).toEqual([
+      ['checkAd', 'json', []],
+      ['approve', 'json', ['checkAd']],
+    ]);
+    expect(answer.ports?.steps[0]?.takes[0]).toEqual({
+      field: 'config.context',
+      accepts: ['text', 'json', 'record', 'records', 'event'],
+    });
   });
 });

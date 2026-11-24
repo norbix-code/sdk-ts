@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-24 07:12:17
+Date: 2026-11-24 14:31:32
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -7160,6 +7160,11 @@ export module CodeMashHub2 {
     // @ApiMember(Description="wait: the step when the wait times out; absent = the run fails (-022).")
     public onTimeout?: string;
 
+    /** @description The earlier steps whose output this step also uses, beside its input (the output of the step it was reached from, @Model.Input): step ids. The step reads each as @Model.Steps.<id>.Output; the run keeps every step's output, so nothing has to be carried along. */
+    // @DataMember
+    // @ApiMember(Description="The earlier steps whose output this step also uses, beside its input (the output of the step it was reached from, @Model.Input): step ids. The step reads each as @Model.Steps.<id>.Output; the run keeps every step's output, so nothing has to be carried along.")
+    public uses?: string[];
+
     // @DataMember
     public retry?: WorkflowStepRetryDto;
 
@@ -11566,6 +11571,114 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowPortOutputDto {
+    // @DataMember
+    public format: string;
+
+    // @DataMember
+    public collection?: string;
+
+    // @DataMember
+    public choices: string[] = [];
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public value?: string;
+
+    public constructor(init?: Partial<WorkflowPortOutputDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowPortInputDto {
+    // @DataMember
+    public from: string;
+
+    // @DataMember
+    public exit: string;
+
+    // @DataMember
+    public format: string;
+
+    // @DataMember
+    public collection?: string;
+
+    public constructor(init?: Partial<WorkflowPortInputDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowPortUsedDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public format: string;
+
+    // @DataMember
+    public collection?: string;
+
+    public constructor(init?: Partial<WorkflowPortUsedDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowPortTakeDto {
+    // @DataMember
+    public field: string;
+
+    // @DataMember
+    public accepts: string[] = [];
+
+    public constructor(init?: Partial<WorkflowPortTakeDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowStepPortsDto {
+    // @DataMember
+    public stepId: string;
+
+    // @DataMember
+    public inputs: WorkflowPortInputDto[] = [];
+
+    // @DataMember
+    public output: WorkflowPortOutputDto;
+
+    // @DataMember
+    public uses: WorkflowPortUsedDto[] = [];
+
+    // @DataMember
+    public takes: WorkflowPortTakeDto[] = [];
+
+    public constructor(init?: Partial<WorkflowStepPortsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowPortsDto {
+    // @DataMember
+    public start: WorkflowPortOutputDto;
+
+    // @DataMember
+    public startEvent?: string;
+
+    // @DataMember
+    public steps: WorkflowStepPortsDto[] = [];
+
+    public constructor(init?: Partial<WorkflowPortsDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowLastRunDto {
     // @DataMember
     public runId: string;
@@ -11642,6 +11755,12 @@ export module CodeMashHub2 {
     public outputSchema?: { [index: string]: Object };
 
     // @DataMember
+    public outputFormats: string[] = [];
+
+    // @DataMember
+    public outputDescription?: string;
+
+    // @DataMember
     public requires: string[] = [];
 
     public constructor(init?: Partial<WorkflowStepKindSchemaDto>) {
@@ -11663,6 +11782,44 @@ export module CodeMashHub2 {
   }
 
   // @DataContract
+  export class WorkflowFormatDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public label: string;
+
+    // @DataMember
+    public description: string;
+
+    public constructor(init?: Partial<WorkflowFormatDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class WorkflowStartOutputDto {
+    // @DataMember
+    public source: string;
+
+    // @DataMember
+    public event?: string;
+
+    // @DataMember
+    public format: string;
+
+    // @DataMember
+    public reads: string[] = [];
+
+    // @DataMember
+    public description: string;
+
+    public constructor(init?: Partial<WorkflowStartOutputDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class WorkflowSchemaDto {
     // @DataMember
     public schemaVersion: string;
@@ -11675,6 +11832,15 @@ export module CodeMashHub2 {
 
     // @DataMember
     public bindings: WorkflowBindingFamilyDto[] = [];
+
+    // @DataMember
+    public formats: WorkflowFormatDto[] = [];
+
+    // @DataMember
+    public startEvents: WorkflowStartOutputDto[] = [];
+
+    // @DataMember
+    public triggerSchemas: { [index: string]: Object } = {};
 
     public constructor(init?: Partial<WorkflowSchemaDto>) {
       (Object as any).assign(this, init);
@@ -15155,6 +15321,7 @@ export module CodeMashHub2 {
 
   export class PublicProjectConfigDto {
     public displayName: string;
+    public websiteUrl?: string;
     public branding?: PublicBrandDto;
     public auth: PublicAuthDto;
     public aiChat: PublicAiChatDto;
@@ -16696,6 +16863,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public warnings: WorkflowValidationIssueDto[] = [];
+
+    // @DataMember
+    public ports?: WorkflowPortsDto;
 
     public constructor(init?: Partial<ValidateCodeWorkflowResponse>) {
       super(init);
