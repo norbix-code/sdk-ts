@@ -37,6 +37,8 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`getMarketplaceListing`](#getmarketplacelisting)                                   | `GET`    | `/{version}/code/marketplace/listings/{ListingViewId}`                                            | `project` |
 | [`testMarketplaceIntegration`](#testmarketplaceintegration)                         | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/test`                               | `project` |
 | [`saveCodeWorkflow`](#savecodeworkflow)                                             | `PUT`    | `/{version}/code/workflows`                                                                       | `project` |
+| [`saveCodeWorkflowCanvas`](#savecodeworkflowcanvas)                                 | `PUT`    | `/{version}/code/workflows/{Id}/canvas`                                                           | `project` |
+| [`setCodeWorkflowStartEvent`](#setcodeworkflowstartevent)                           | `PUT`    | `/{version}/code/workflows/{Id}/start-event`                                                      | `project` |
 | [`publishCodeWorkflow`](#publishcodeworkflow)                                       | `POST`   | `/{version}/code/workflows/{Id}/publish`                                                          | `project` |
 | [`getCodeWorkflowDraft`](#getcodeworkflowdraft)                                     | `GET`    | `/{version}/code/workflows/{Id}/draft`                                                            | `project` |
 | [`discardCodeWorkflowDraft`](#discardcodeworkflowdraft)                             | `DELETE` | `/{version}/code/workflows/{Id}/draft`                                                            | `project` |
@@ -53,6 +55,7 @@ Accessed as `norbix.hub.code` on the [`Norbix`](../../README.md#authentication) 
 | [`disableCodeWorkflows`](#disablecodeworkflows)                                     | `PUT`    | `/{version}/code/workflows/disable`                                                               | `project` |
 | [`installMarketplaceWorkflow`](#installmarketplaceworkflow)                         | `POST`   | `/{version}/code/marketplace/listings/{ListingViewId}/install-workflow`                           | `project` |
 | [`invokeCodeWorkflow`](#invokecodeworkflow)                                         | `POST`   | `/{version}/code/workflows/{Id}/invoke`                                                           | `project` |
+| [`testCodeWorkflow`](#testcodeworkflow)                                             | `POST`   | `/{version}/code/workflows/{Id}/test`                                                             | `project` |
 | [`getMarketplaceIntegrationAccess`](#getmarketplaceintegrationaccess)               | `GET`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access`                             | `project` |
 | [`setMarketplaceIntegrationRoleAccess`](#setmarketplaceintegrationroleaccess)       | `PUT`    | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles`                       | `project` |
 | [`saveMarketplaceIntegrationCustomAccess`](#savemarketplaceintegrationcustomaccess) | `POST`   | `/{version}/code/marketplace/integrations/{IntegrationViewId}/access/roles/custom`                | `project` |
@@ -737,6 +740,53 @@ const result = await norbix.hub.code.saveCodeWorkflow({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.WorkflowResponse
+```
+
+[↑ Top](#endpoints)
+
+### saveCodeWorkflowCanvas
+
+`PUT` `/{version}/code/workflows/{Id}/canvas`
+
+Saves where the Visual Builder draws each step (a JSON text). It changes only the layout, never the steps: no draft and no new version.
+
+**Request DTO**: `CodeMashHub2.SaveCodeWorkflowCanvas`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+const result = await norbix.hub.code.saveCodeWorkflowCanvas({
+  id: 'wf_…',
+  canvas: JSON.stringify({ nodes: { send: { x: 240, y: 120 } } }),
+});
+```
+
+[↑ Top](#endpoints)
+
+### setCodeWorkflowStartEvent
+
+`PUT` `/{version}/code/workflows/{Id}/start-event`
+
+Beta. Sets the event that starts the workflow and saves it as a **draft** for you to check and publish. Publishing that version writes the trigger of the module for you; that trigger is linked to the workflow (`managedByWorkflowId`) and cannot be changed from the trigger routes (`CM-ERRORS-WORKFLOWS-052`). Disabling, enabling or deleting the workflow does the same to its trigger.
+
+- `source`: `database` · `membership` · `files` · `payments` · `ai`; `event`: for example `database.record.inserted`, `membership.user.registered`, `payments.order.paid`; `schema`: the collection name (database only).
+- `condition` (optional) reads `Old`, `New` and `Event`, like a trigger's activation code: `return New.status == "review";`. It is compiled when you save (`CM-ERRORS-WORKFLOWS-051`).
+- The same start again saves nothing. A workflow that already has a different start is refused (`CM-ERRORS-WORKFLOWS-054`).
+- The start can also be written straight into the definition as `trigger` with `saveCodeWorkflow`.
+
+**Request DTO**: `CodeMashHub2.SetCodeWorkflowStartEvent`
+**Response**: `CodeMashHub2.WorkflowResponse`
+
+```ts
+await norbix.hub.code.setCodeWorkflowStartEvent({
+  id: 'wf_…',
+  start: {
+    source: 'database',
+    event: 'database.record.inserted',
+    schema: 'moto_listings',
+    condition: 'return New.status == "review";',
+  },
+});
+await norbix.hub.code.publishCodeWorkflow({ id: 'wf_…' }); // writes the trigger
 ```
 
 [↑ Top](#endpoints)
@@ -1585,6 +1635,29 @@ const result = await norbix.hub.code.getCodeWorkflowRun({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.WorkflowRunResponse
+```
+
+[↑ Top](#endpoints)
+
+### testCodeWorkflow
+
+`POST` `/{version}/code/workflows/{Id}/test`
+
+Beta. Starts a run of the workflow with a test event, as the event would start it: a database record (`source: 'database'`, `collection`, `recordId`; `edits` laid over it for an update), a Membership user (`source: 'membership'`, `userId`) or a manual start (`source: 'manual'`, `payload` checked against the inputs). It runs the draft when there is one, else the latest published version (`runVersion` picks another). **The run is real**: its steps send, write and call like any run. Answers like `invokeCodeWorkflow` (`runId`, `status`).
+
+**Request DTO**: `CodeMashHub2.TestCodeWorkflow`
+**Response**: `CodeMashHub2.InvokeCodeWorkflowResponse`
+
+```ts
+const started = await norbix.hub.code.testCodeWorkflow({
+  id: 'wf_…',
+  source: 'database',
+  event: 'database.record.updated',
+  collection: 'moto_listings',
+  recordId: 'rec_…',
+  edits: { status: 'review' },
+});
+const run = await norbix.hub.code.workflows.waitForRun(started.runId!);
 ```
 
 [↑ Top](#endpoints)

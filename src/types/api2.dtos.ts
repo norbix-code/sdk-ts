@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-23 17:01:01
+Date: 2026-11-24 07:12:15
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -793,6 +793,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public campaignTime?: number;
+
+    // @DataMember
+    public attachments?: string[];
 
     public constructor(init?: Partial<EmailCampaignRequest>) {
       (Object as any).assign(this, init);
@@ -1644,6 +1647,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public executionIdentity?: ExecutionIdentitySummaryDto;
+
+    // @DataMember
+    public managedByWorkflowId?: string;
 
     public constructor(init?: Partial<TriggerDto>) {
       (Object as any).assign(this, init);
@@ -2871,6 +2877,9 @@ export module CodeMashApi2 {
     public validationIntegrationId?: string;
 
     // @DataMember
+    public attachmentFileIds?: string[];
+
+    // @DataMember
     public templateIsSystem: boolean;
 
     public constructor(init?: Partial<EmailCampaignDto>) {
@@ -3228,6 +3237,22 @@ export module CodeMashApi2 {
   }
 
   // @DataContract
+  export class SentAttachmentDto {
+    // @DataMember
+    public fileName: string;
+
+    // @DataMember
+    public sizeBytes: number;
+
+    // @DataMember
+    public contentType: string;
+
+    public constructor(init?: Partial<SentAttachmentDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
   export class EmailCampaignBatchNotificationDto extends CampaignBatchNotificationDto {
     // @DataMember
     public subject?: string;
@@ -3240,6 +3265,9 @@ export module CodeMashApi2 {
 
     // @DataMember
     public content?: EmailMessageContentDto;
+
+    // @DataMember
+    public attachments?: SentAttachmentDto[];
 
     // @DataMember
     public transactionalKind?: string;
