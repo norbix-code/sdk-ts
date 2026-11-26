@@ -78,7 +78,7 @@ describe('api.membership', () => {
     expect(typeof ns['verifyPasskeyRegistration']).toBe('function');
     expect(typeof ns['refreshPasskeyToken']).toBe('function');
     expect(typeof ns['passkeyLogout']).toBe('function');
-    expect(typeof ns['setUserAiPlan']).toBe('function');
+    expect(typeof ns['getUserAiPlan']).toBe('function');
     expect(typeof ns['createContact']).toBe('function');
     expect(typeof ns['deleteContact']).toBe('function');
     expect(typeof ns['getContact']).toBe('function');
@@ -1184,7 +1184,7 @@ describe('api.membership', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('setUserAiPlan: PUT /{version}/membership/users/{userId}/ai-plan', async () => {
+  it('getUserAiPlan: GET /{version}/membership/users/{userId}/ai-plan', async () => {
     const stub = stubRequestForPath('/{version}/membership/users/{userId}/ai-plan');
     const expected = expectedUrl({
       baseUrl: 'https://api.norbix.io',
@@ -1198,10 +1198,10 @@ describe('api.membership', () => {
         string,
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
-    )['membership']!['setUserAiPlan']!;
+    )['membership']!['getUserAiPlan']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('PUT');
+    expect(mock.lastCall?.method).toBe('GET');
     expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
     expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');

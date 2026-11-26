@@ -909,25 +909,6 @@ export class AccountModule {
   };
 
   /**
-   * GET /{version}/account/projects/{projectId}/ai/plans/users
-   * Request DTO: GetProjectAiUserPlans
-   */
-  getProjectAiUserPlans = (
-    request: Partial<CodeMashHub2.GetProjectAiUserPlans> = {} as Partial<CodeMashHub2.GetProjectAiUserPlans>,
-    options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.GetProjectAiUserPlansResponse> => {
-    return this.transport.send<CodeMashHub2.GetProjectAiUserPlansResponse>({
-      target: 'hub',
-      path: '/{version}/account/projects/{projectId}/ai/plans/users',
-      method: 'GET',
-      request,
-      pathParams: ['projectId'],
-      scope: 'project',
-      ...options,
-    });
-  };
-
-  /**
    * GET /{version}/account/projects/{projectId}/ai/settings
    * Request DTO: GetProjectAiSettings
    */
@@ -1531,6 +1512,27 @@ export class AccountModule {
       method: 'GET',
       request,
       pathParams: [],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * GET /{version}/account/team/member/{MemberId}
+   * Request DTO: GetTeamMember
+   *
+   * One team member with their roles, phone and push devices.
+   */
+  getTeamMember = (
+    request: Partial<CodeMashHub2.GetTeamMember> = {} as Partial<CodeMashHub2.GetTeamMember>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashHub2.GetTeamMemberResponse> => {
+    return this.transport.send<CodeMashHub2.GetTeamMemberResponse>({
+      target: 'hub',
+      path: '/{version}/account/team/member/{MemberId}',
+      method: 'GET',
+      request,
+      pathParams: ['MemberId'],
       scope: 'project',
       ...options,
     });

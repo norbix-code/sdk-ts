@@ -57,7 +57,6 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getProjectAiPlans`](#getprojectaiplans)                                     | `GET`    | `/{version}/account/projects/{projectId}/ai/plans`                           | `project` |
 | [`updateProjectAiPlans`](#updateprojectaiplans)                               | `PUT`    | `/{version}/account/projects/{projectId}/ai/plans`                           | `project` |
 | [`updateProjectAiPlanAssignments`](#updateprojectaiplanassignments)           | `PUT`    | `/{version}/account/projects/{projectId}/ai/plans/assignments`               | `project` |
-| [`getProjectAiUserPlans`](#getprojectaiuserplans)                             | `GET`    | `/{version}/account/projects/{projectId}/ai/plans/users`                     | `project` |
 | [`getProjectAiSettings`](#getprojectaisettings)                               | `GET`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
 | [`updateProjectAiSettings`](#updateprojectaisettings)                         | `PUT`    | `/{version}/account/projects/{projectId}/ai/settings`                        | `project` |
 | [`updateProjectAiKnowledge`](#updateprojectaiknowledge)                       | `PUT`    | `/{version}/account/projects/{projectId}/ai/knowledge`                       | `project` |
@@ -90,6 +89,7 @@ Accessed as `norbix.hub.account` on the [`Norbix`](../../README.md#authenticatio
 | [`getAccountCollaborators`](#getaccountcollaborators)                         | `GET`    | `/{version}/account/collaborators`                                           | `project` |
 | [`getAccountPasswordPolicy`](#getaccountpasswordpolicy)                       | `GET`    | `/{version}/account/team/password-policy`                                    | `project` |
 | [`getAccountTeamPolicies`](#getaccountteampolicies)                           | `GET`    | `/{version}/account/team/policies`                                           | `project` |
+| [`getTeamMember`](#getteammember)                                             | `GET`    | `/{version}/account/team/member/{MemberId}`                                  | `project` |
 | [`removeTeamMember`](#removeteammember)                                       | `DELETE` | `/{version}/account/team/member/{MemberId}`                                  | `project` |
 | [`setTeamMemberRoleEnvironments`](#setteammemberroleenvironments)             | `PUT`    | `/{version}/account/team/member/role-environments`                           | `project` |
 | [`setTeamMemberRoleProjects`](#setteammemberroleprojects)                     | `PUT`    | `/{version}/account/team/member/role-projects`                               | `project` |
@@ -1236,29 +1236,6 @@ const result = await norbix.hub.account.updateProjectAiPlanAssignments({
 
 [↑ Top](#endpoints)
 
-### getProjectAiUserPlans
-
-`GET` `/{version}/account/projects/{projectId}/ai/plans/users`
-
-Fetch a single item by ID.
-
-**Request DTO**: `CodeMashHub2.GetProjectAiUserPlans`
-**Response**: `CodeMashHub2.GetProjectAiUserPlansResponse`
-
-```ts
-import { Norbix } from '@norbix.ai/ts';
-
-const norbix = new Norbix();
-
-const result = await norbix.hub.account.getProjectAiUserPlans({
-  projectId: 'projectId-here',
-  // Other fields: see CodeMash type for the full request shape.
-});
-// → typed as CodeMashHub2.GetProjectAiUserPlansResponse
-```
-
-[↑ Top](#endpoints)
-
 ### getProjectAiSettings
 
 `GET` `/{version}/account/projects/{projectId}/ai/settings`
@@ -1983,6 +1960,28 @@ const result = await norbix.hub.account.getAccountTeamPolicies({
   // See CodeMash type for the full request shape.
 });
 // → typed as CodeMashHub2.GetAccountTeamPoliciesResponse
+```
+
+[↑ Top](#endpoints)
+
+### getTeamMember
+
+`GET` `/{version}/account/team/member/{MemberId}`
+
+One team member with their roles, phone and push devices.
+
+**Request DTO**: `CodeMashHub2.GetTeamMember`
+**Response**: `CodeMashHub2.GetTeamMemberResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.hub.account.getTeamMember({
+  memberId: 'usr_…',
+});
+// → typed as CodeMashHub2.GetTeamMemberResponse
 ```
 
 [↑ Top](#endpoints)
