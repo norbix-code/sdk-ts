@@ -176,6 +176,23 @@ const norbix = new Norbix({ projectId: 'proj_123' });
 const { userId } = await norbix.login({ userName: 'alice@team.io', password: 'secret' }); // usr_…
 ```
 
+#### Sessions
+
+A project user's sign-in lives a **sliding 12 hours**, or a **sliding 30 days** with `rememberMe: true`, and never more than **90 days** from the sign-in. "Sliding" means each use moves the end, so an idle sign-in ends 6–12 hours (or 15–30 days) after its last call. A social sign-in counts as remembered.
+
+- **`rememberMe`.** `norbix.login`, `api.auth.signIn` and `api.auth.browserSignIn` take `rememberMe` (default `false`) and send it.
+- **The token is renewed for you.** When less than half of a token's time is left, an answer carries a fresh token in the `norbix-session-token` header. If the request carried the client's stored bearer token (from `bearerToken`, `login` or `setBearerToken`), the SDK uses the new token from then on and calls `onSessionToken`, so you can save it. The old token keeps working until it expires. An API key, a per-call `bearerToken` and a cookie session are never swapped; `with()` does not copy the callback.
+
+```ts
+const norbix = new Norbix({
+  projectId: 'proj_123',
+  bearerToken: savedToken,
+  onSessionToken: (token) => localStorage.setItem('norbix-token', token),
+});
+```
+
+A cookie session is renewed by the server alone; the SDK does nothing.
+
 #### Cookie sessions
 
 For an app whose own backend or browser holds a Norbix session instead of a JWT. Set `auth`; it cannot be combined with `apiKey` or `bearerToken`, and `NORBIX_API_KEY` / `NORBIX_BEARER_TOKEN` are ignored.
@@ -201,7 +218,7 @@ await browser.api.auth.signOut();
 | `session`        | Node    | `Cookie: ss-id=<sessionId>`                         |
 | `browserSession` | Browser | the browser's own cookie (`credentials: 'include'`) |
 
-In all three no `Authorization` header leaves the client, redirects are not followed (`NORBIX_UNEXPECTED_REDIRECT`), `retry.maxRetries` defaults to 0 and `refreshBearerToken` is not called.
+In all three no `Authorization` header leaves the client, redirects are not followed (`NORBIX_UNEXPECTED_REDIRECT`), `retry.maxRetries` defaults to 0, and neither `refreshBearerToken` nor `onSessionToken` is called.
 
 - **`browserSignIn` keeps the session out of JavaScript.** It answers `{ userId, displayName, credentialVersion }` and needs no session id in the answer, so your backend can hold the id in an `HttpOnly` cookie and return only public user data. Point `baseUrl.api` at that backend.
 - **No JWT is issued.** `signIn` and `browserSignIn` ask the gateway for none. `signIn` answers `{ sessionId, userId, credentialVersion }` and sends no cookie from a Node client: a sign-in that arrives with a session cookie deletes that session. `norbix.login()` is refused on these clients.
@@ -211,7 +228,7 @@ In all three no `Authorization` header leaves the client, redirects are not foll
 - **Streams are not covered.** `sse()`, `inbox()` and `aiChat()` authenticate with a token, which these clients do not have.
 - `onRequest` sees the `Cookie` header in `session` mode, so do not log headers.
 
-**Social sign-in.** Google, Apple, Microsoft, GitHub, Facebook, X and Okta, for project users. The project's enabled providers are in the public config (`auth.socialSignIn`: `provider`, `displayName`, `startPath`). The browser goes to `api.auth.redirectToSocialSignIn(provider, { returnUrl })` (PKCE by default: the verifier stays in `sessionStorage`, only its challenge travels), and your return page calls `api.auth.completeSocialSignIn()`, which trades the one-time code and the verifier for a JWT (`{ bearerToken, userId, displayName, expiresAt, credentialVersion }`, 14 days, no refresh token). A signed-in user links another provider with `api.membership.redirectToLinkIdentity` and `completeLinkIdentity` (or `startLinkIdentity` / `finishLinkIdentity` with `codeChallenge` / `codeVerifier` from `createPkcePair()`). A PKCE mismatch is `CM-ERRORS-MEMBERSHIP-058`, a bad challenge `-059`. The exchange sends no credentials, even when the client has a key or a JWT: the gateway refuses an old token on any route. The start route (a redirect) and the provider callback have no method on purpose; the endpoint generator is not in this repository and does not skip them yet, so after `npm run generate-endpoints` remove `startSocialSignIn` and `socialSignInCallback` from `src/api/membership.ts` again. Details: [docs/api/auth.md](docs/api/auth.md#social-sign-in).
+**Social sign-in.** Google, Apple, Microsoft, GitHub, Facebook, X and Okta, for project users. The project's enabled providers are in the public config (`auth.socialSignIn`: `provider`, `displayName`, `startPath`). The browser goes to `api.auth.redirectToSocialSignIn(provider, { returnUrl })` (PKCE by default: the verifier stays in `sessionStorage`, only its challenge travels), and your return page calls `api.auth.completeSocialSignIn()`, which trades the one-time code and the verifier for a JWT (`{ bearerToken, userId, displayName, expiresAt, credentialVersion }`; it lives like a remembered sign-in, see [Sessions](#sessions); no refresh token). A signed-in user links another provider with `api.membership.redirectToLinkIdentity` and `completeLinkIdentity` (or `startLinkIdentity` / `finishLinkIdentity` with `codeChallenge` / `codeVerifier` from `createPkcePair()`). A PKCE mismatch is `CM-ERRORS-MEMBERSHIP-058`, a bad challenge `-059`. The exchange sends no credentials, even when the client has a key or a JWT: the gateway refuses an old token on any route. The start route (a redirect) and the provider callback have no method on purpose; the endpoint generator is not in this repository and does not skip them yet, so after `npm run generate-endpoints` remove `startSocialSignIn` and `socialSignInCallback` from `src/api/membership.ts` again. Details: [docs/api/auth.md](docs/api/auth.md#social-sign-in).
 
 ```ts
 norbix.api.auth.redirectToSocialSignIn('google', {

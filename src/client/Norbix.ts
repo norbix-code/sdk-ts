@@ -171,6 +171,7 @@ export class Norbix {
       onResponse: config.onResponse,
       retry,
       refreshBearerToken: auth ? undefined : config.refreshBearerToken,
+      onSessionToken: auth ? undefined : config.onSessionToken,
       middleware: config.middleware ?? [],
     };
 
@@ -219,9 +220,12 @@ export class Norbix {
    * precedence over any configured `apiKey`). The full /auth response is
    * returned so the caller can also read `userId` (`usr_…`), etc.
    *
-   * Project users get **no refresh token**: when the bearer token expires the
-   * call fails with 401 (`NorbixError`, status 401) and the app shows its
-   * sign-in again. The SDK never keeps the credentials.
+   * Project users get **no refresh token**. The token lives a sliding 12
+   * hours (30 days with `rememberMe: true`), never more than 90 days from
+   * sign-in: while it is used, the server renews it and the SDK swaps it in
+   * (`onSessionToken`). When it expires the call fails with 401 (`NorbixError`,
+   * status 401) and the app shows its sign-in again. The SDK never keeps the
+   * credentials.
    *
    * The login call itself runs unauthenticated — no Authorization header is
    * sent for /auth even if a token is already configured.
@@ -465,7 +469,15 @@ export class Norbix {
   with(
     overrides: Pick<
       NorbixConfig,
-      'auth' | 'apiKey' | 'bearerToken' | 'projectId' | 'accountId' | 'env' | 'region' | 'language'
+      | 'auth'
+      | 'apiKey'
+      | 'bearerToken'
+      | 'projectId'
+      | 'accountId'
+      | 'env'
+      | 'region'
+      | 'language'
+      | 'onSessionToken'
     >,
   ): Norbix {
     const auth = overrides.auth ?? this.cfg.auth;
@@ -492,6 +504,8 @@ export class Norbix {
       defaultHeaders: this.cfg.defaultHeaders,
       onRequest: this.cfg.onRequest,
       onResponse: this.cfg.onResponse,
+      // Never inherited: the new client may hold another user's token.
+      onSessionToken: overrides.onSessionToken,
     };
     // We pass envSource={} to guarantee this new instance is derived only from explicit inputs.
     return new Norbix(next, { envSource: {} });
