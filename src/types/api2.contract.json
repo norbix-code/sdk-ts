@@ -415,6 +415,10 @@
     "requiresAuth": true,
     "returnsBytes": false
   },
+  "GetUserAiPlan": {
+    "requiresAuth": true,
+    "returnsBytes": false
+  },
   "GetUserPreferencesRequest": {
     "requiresAuth": true,
     "returnsBytes": false
@@ -688,10 +692,6 @@
     "returnsBytes": false
   },
   "SetEndUserChatEntryFeedbackRequest": {
-    "requiresAuth": true,
-    "returnsBytes": false
-  },
-  "SetUserAiPlan": {
     "requiresAuth": true,
     "returnsBytes": false
   },
