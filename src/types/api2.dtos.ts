@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-24 14:31:31
+Date: 2026-11-26 14:45:52
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5002
@@ -1200,7 +1200,6 @@ export module CodeMashApi2 {
     public used: number;
     public remaining: number;
     public attachments: boolean;
-    public rag: boolean;
     public memory: boolean;
 
     public constructor(init?: Partial<EndUserChatPlan>) {
@@ -2372,6 +2371,28 @@ export module CodeMashApi2 {
     public createdAtUtc: string;
 
     public constructor(init?: Partial<InAppNotificationDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class UserAiPlanDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public planId?: string;
+
+    // @DataMember
+    public planName?: string;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public roleId?: string;
+
+    public constructor(init?: Partial<UserAiPlanDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -4468,6 +4489,15 @@ export module CodeMashApi2 {
 
   export class MarkAllNotificationsReadResponse extends ResponseBase {
     public constructor(init?: Partial<MarkAllNotificationsReadResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetUserAiPlanResponse extends ResponseBase {
+    public item?: UserAiPlanDto;
+
+    public constructor(init?: Partial<GetUserAiPlanResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -8986,6 +9016,11 @@ export module CodeMashApi2 {
     // @DataMember
     public to?: string;
 
+    /** @description Only runs of this published workflow version (1, 2, …). Empty = every version. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="Only runs of this published workflow version (1, 2, …). Empty = every version.")
+    public workflowVersion?: number;
+
     public constructor(init?: Partial<GetCodeWorkflowRuns>) {
       super(init);
       (Object as any).assign(this, init);
@@ -9321,34 +9356,30 @@ export module CodeMashApi2 {
     }
   }
 
-  /** @description Sets or removes one user's own end-user AI plan */
-  // @Route("/{version}/membership/users/{userId}/ai-plan", "PUT")
-  // @Api(Description="Sets or removes one user's own end-user AI plan")
-  export class SetUserAiPlan extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+  /** @description Reads which end-user AI plan one user gets and why */
+  // @Route("/{version}/membership/users/{userId}/ai-plan", "GET")
+  // @Api(Description="Reads which end-user AI plan one user gets and why")
+  export class GetUserAiPlan extends CodeMashRequestBase implements IReturn<GetUserAiPlanResponse> {
     /** @description The human user id (ct_…). */
     // @ApiMember(Description="The human user id (ct_…).", IsRequired=true)
     public userId: string;
-
-    /** @description The plan id (aip_…). Empty removes the user's own plan. */
-    // @ApiMember(Description="The plan id (aip_…). Empty removes the user's own plan.")
-    public planId?: string;
 
     /** @description Database integration id. Optional — defaults to the request environment's default integration. */
     // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
     public databaseIntegrationId?: string;
 
-    public constructor(init?: Partial<SetUserAiPlan>) {
+    public constructor(init?: Partial<GetUserAiPlan>) {
       super(init);
       (Object as any).assign(this, init);
     }
     public getTypeName() {
-      return 'SetUserAiPlan';
+      return 'GetUserAiPlan';
     }
     public getMethod() {
-      return 'PUT';
+      return 'GET';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new GetUserAiPlanResponse();
     }
   }
 

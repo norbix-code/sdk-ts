@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* Options:
-Date: 2026-11-24 14:31:32
+Date: 2026-11-26 14:45:54
 Version: 10.20
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://localhost:5001
@@ -6478,6 +6478,33 @@ export module CodeMashHub2 {
     }
   }
 
+  export enum ProjectHealthSeverity {
+    Warning = 'Warning',
+    Error = 'Error',
+  }
+
+  // @Flags()
+  export enum ApplicationModule {
+    Account = 0,
+    Membership = 1,
+    Database = 2,
+    Files = 4,
+    Code = 8,
+    Email = 16,
+    Push = 32,
+    Payment = 64,
+    Scheduler = 128,
+    Logging = 256,
+    ServerEvents = 512,
+    Ai = 1024,
+    Sms = 2048,
+    Project = 4096,
+    Compliance = 8192,
+    Contacts = 16384,
+    Marketplace = 32768,
+    Diagnostics = 65536,
+  }
+
   // @DataContract
   export class AiPlanModelDto {
     // @DataMember
@@ -6501,9 +6528,6 @@ export module CodeMashHub2 {
   export class AiPlanFeaturesDto {
     // @DataMember
     public attachments: boolean;
-
-    // @DataMember
-    public rag: boolean;
 
     // @DataMember
     public memory: boolean;
@@ -8543,6 +8567,12 @@ export module CodeMashHub2 {
     // @DataMember
     public icon?: FileResourceRefDto;
 
+    // @DataMember
+    public logoEnv?: string;
+
+    // @DataMember
+    public iconEnv?: string;
+
     public constructor(init?: Partial<ProjectBrandDto>) {
       (Object as any).assign(this, init);
     }
@@ -9286,36 +9316,12 @@ export module CodeMashHub2 {
     // @DataMember
     public icon?: FileResourceRefDto;
 
+    // @DataMember
+    public iconEnv?: string;
+
     public constructor(init?: Partial<ProjectListItemDto>) {
       (Object as any).assign(this, init);
     }
-  }
-
-  export enum ProjectHealthSeverity {
-    Warning = 'Warning',
-    Error = 'Error',
-  }
-
-  // @Flags()
-  export enum ApplicationModule {
-    Account = 0,
-    Membership = 1,
-    Database = 2,
-    Files = 4,
-    Code = 8,
-    Email = 16,
-    Push = 32,
-    Payment = 64,
-    Scheduler = 128,
-    Logging = 256,
-    ServerEvents = 512,
-    Ai = 1024,
-    Sms = 2048,
-    Project = 4096,
-    Compliance = 8192,
-    Contacts = 16384,
-    Marketplace = 32768,
-    Diagnostics = 65536,
   }
 
   // @DataContract
@@ -9408,6 +9414,15 @@ export module CodeMashHub2 {
     public warnings: ProjectHealthWarningDto[] = [];
 
     // @DataMember
+    public warningsTotal: number;
+
+    // @DataMember
+    public pageNumber: number;
+
+    // @DataMember
+    public pageSize?: number;
+
+    // @DataMember
     public stats: ProjectHealthStatsDto;
 
     // @DataMember
@@ -9455,29 +9470,6 @@ export module CodeMashHub2 {
     public defaultPlanId?: string;
 
     public constructor(init?: Partial<ProjectAiPlansDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class AiUserPlanAssignmentDto {
-    // @DataMember
-    public userId: string;
-
-    // @DataMember
-    public planId: string;
-
-    public constructor(init?: Partial<AiUserPlanAssignmentDto>) {
-      (Object as any).assign(this, init);
-    }
-  }
-
-  // @DataContract
-  export class AiUserPlansDto {
-    // @DataMember
-    public users: AiUserPlanAssignmentDto[] = [];
-
-    public constructor(init?: Partial<AiUserPlansDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -9715,6 +9707,99 @@ export module CodeMashHub2 {
     public credentialVersion?: string;
 
     public constructor(init?: Partial<AuthDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TeamMemberRoleDto {
+    // @DataMember
+    public roleId: string;
+
+    // @DataMember
+    public environments: string[] = [];
+
+    // @DataMember
+    public projects: string[] = [];
+
+    public constructor(init?: Partial<TeamMemberRoleDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TeamMemberPushDeviceDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public deviceOs: string;
+
+    // @DataMember
+    public deviceName?: string;
+
+    // @DataMember
+    public brand?: string;
+
+    // @DataMember
+    public modelName?: string;
+
+    // @DataMember
+    public osName?: string;
+
+    // @DataMember
+    public osVersion?: string;
+
+    // @DataMember
+    public appVersion?: string;
+
+    // @DataMember
+    public updatedAtUtc?: string;
+
+    public constructor(init?: Partial<TeamMemberPushDeviceDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class TeamMemberDetailsDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public email?: string;
+
+    // @DataMember
+    public displayName?: string;
+
+    // @DataMember
+    public firstName?: string;
+
+    // @DataMember
+    public lastName?: string;
+
+    // @DataMember
+    public fullName?: string;
+
+    // @DataMember
+    public phone?: string;
+
+    // @DataMember
+    public status: AuthStatus;
+
+    // @DataMember
+    public isAccountOwner: boolean;
+
+    // @DataMember
+    public roles: TeamMemberRoleDto[] = [];
+
+    // @DataMember
+    public pushDevices: TeamMemberPushDeviceDto[] = [];
+
+    // @DataMember
+    public createdOn: string;
+
+    public constructor(init?: Partial<TeamMemberDetailsDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -11061,6 +11146,9 @@ export module CodeMashHub2 {
 
     // @DataMember
     public errors?: IReadOnlyList<string>;
+
+    // @DataMember
+    public detail?: string;
 
     public constructor(init?: Partial<IntegrationTestResultItemDto>) {
       (Object as any).assign(this, init);
@@ -12838,6 +12926,7 @@ export module CodeMashHub2 {
     public deliveries?: number;
     public norbixEvent: string;
     public at: string;
+    public triggerRunId?: string;
 
     public constructor(init?: Partial<PaymentsWebhookRunActionDto>) {
       (Object as any).assign(this, init);
@@ -13332,6 +13421,46 @@ export module CodeMashHub2 {
     }
   }
 
+  // @DataContract
+  export class LlmModelSuggestionDto {
+    // @DataMember
+    public id: string;
+
+    // @DataMember
+    public provider: LlmProvider;
+
+    // @DataMember
+    public vendor: string;
+
+    // @DataMember
+    public modelId: string;
+
+    // @DataMember
+    public displayName: string;
+
+    // @DataMember
+    public description?: string;
+
+    // @DataMember
+    public tags: string[] = [];
+
+    // @DataMember
+    public contextWindow?: number;
+
+    // @DataMember
+    public order: number;
+
+    // @DataMember
+    public modelsPageUrl?: string;
+
+    // @DataMember
+    public checkedOn: string;
+
+    public constructor(init?: Partial<LlmModelSuggestionDto>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
   export class McpIntegrationListProjection extends IntegrationListProjection {
     public mcpProvider: McpProvider;
     public transport: McpTransport;
@@ -13583,6 +13712,28 @@ export module CodeMashHub2 {
     public diagnostic?: string;
 
     public constructor(init?: Partial<ResolvedResourceEntry>) {
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class UserAiPlanDto {
+    // @DataMember
+    public userId: string;
+
+    // @DataMember
+    public planId?: string;
+
+    // @DataMember
+    public planName?: string;
+
+    // @DataMember
+    public reason: string;
+
+    // @DataMember
+    public roleId?: string;
+
+    public constructor(init?: Partial<UserAiPlanDto>) {
       (Object as any).assign(this, init);
     }
   }
@@ -15709,15 +15860,6 @@ export module CodeMashHub2 {
     }
   }
 
-  export class GetProjectAiUserPlansResponse extends ResponseBase {
-    public result?: AiUserPlansDto;
-
-    public constructor(init?: Partial<GetProjectAiUserPlansResponse>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-  }
-
   export class GetProjectAiSettingsResponse extends ResponseBase {
     public result?: ProjectAiSettingsDto;
 
@@ -15805,6 +15947,15 @@ export module CodeMashHub2 {
     public list?: PaginatedResponse<AuthDto>;
 
     public constructor(init?: Partial<GetAccountCollaboratorsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetTeamMemberResponse extends ResponseBase {
+    public item?: TeamMemberDetailsDto;
+
+    public constructor(init?: Partial<GetTeamMemberResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -15911,6 +16062,17 @@ export module CodeMashHub2 {
     public recoveryCodes?: string[];
 
     public constructor(init?: Partial<AccountPasskeyEnrollmentResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  // @DataContract
+  export class OnboardingEmailsResponse extends ResponseBase {
+    // @DataMember
+    public stopped: boolean;
+
+    public constructor(init?: Partial<OnboardingEmailsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -17776,6 +17938,7 @@ export module CodeMashHub2 {
     public userCode?: string;
     public verificationUri?: string;
     public verificationUriComplete?: string;
+    public signInText?: string;
     public expiresIn: number;
     public interval: number;
 
@@ -17900,6 +18063,15 @@ export module CodeMashHub2 {
     public list?: PaginatedResponse<LlmIntegrationListProjection>;
 
     public constructor(init?: Partial<GetLlmIntegrationsResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetLlmModelSuggestionsResponse extends ResponseBase {
+    public items: LlmModelSuggestionDto[] = [];
+
+    public constructor(init?: Partial<GetLlmModelSuggestionsResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -18036,6 +18208,15 @@ export module CodeMashHub2 {
     public resolved: IReadOnlyList<ResolvedResourceEntry>;
 
     public constructor(init?: Partial<ResolveResourcesResponse>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+  }
+
+  export class GetUserAiPlanResponse extends ResponseBase {
+    public item?: UserAiPlanDto;
+
+    public constructor(init?: Partial<GetUserAiPlanResponse>) {
       super(init);
       (Object as any).assign(this, init);
     }
@@ -21185,6 +21366,26 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Days the user and e-mail numbers cover: 7, 30 (default) or 90. The problem list is the same for every period.")
     public periodDays?: number;
 
+    /** @description Only problems of this severity: Warning or Error. Empty = both. */
+    // @DataMember
+    // @ApiMember(Description="Only problems of this severity: Warning or Error. Empty = both.")
+    public severity?: ProjectHealthSeverity;
+
+    /** @description Only problems of this module (Email, Files, Payments, …). Empty = every module. */
+    // @DataMember
+    // @ApiMember(Description="Only problems of this module (Email, Files, Payments, …). Empty = every module.")
+    public module?: ApplicationModule;
+
+    /** @description The page of problems to return, 0-based. Used with pageSize. */
+    // @DataMember
+    // @ApiMember(Description="The page of problems to return, 0-based. Used with pageSize.")
+    public pageNumber: number;
+
+    /** @description Problems per page, 1 to 100. Empty = every matching problem. warningsTotal says how many match. */
+    // @DataMember
+    // @ApiMember(Description="Problems per page, 1 to 100. Empty = every matching problem. warningsTotal says how many match.")
+    public pageSize?: number;
+
     public constructor(init?: Partial<GetProjectHealth>) {
       super(init);
       (Object as any).assign(this, init);
@@ -21414,8 +21615,8 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Role → plan rows, in order; the first row whose role the user has wins.")
     public roles?: AiPlanRoleAssignmentDto[];
 
-    /** @description Plan id (aip_…) of users with no per-user plan and no mapped role. Empty = no default. */
-    // @ApiMember(Description="Plan id (aip_…) of users with no per-user plan and no mapped role. Empty = no default.")
+    /** @description Plan id (aip_…) of users with no mapped role. Empty = no default. */
+    // @ApiMember(Description="Plan id (aip_…) of users with no mapped role. Empty = no default.")
     public defaultPlanId?: string;
 
     public constructor(init?: Partial<UpdateProjectAiPlanAssignments>) {
@@ -21430,28 +21631,6 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new EmptyResponse();
-    }
-  }
-
-  /** @description Lists the users that have their own end-user AI plan */
-  // @Route("/{version}/account/projects/{projectId}/ai/plans/users", "GET")
-  // @Api(Description="Lists the users that have their own end-user AI plan")
-  export class GetProjectAiUserPlans
-    extends CodeMashRequestBase
-    implements IReturn<GetProjectAiUserPlansResponse>
-  {
-    public constructor(init?: Partial<GetProjectAiUserPlans>) {
-      super(init);
-      (Object as any).assign(this, init);
-    }
-    public getTypeName() {
-      return 'GetProjectAiUserPlans';
-    }
-    public getMethod() {
-      return 'GET';
-    }
-    public createResponse() {
-      return new GetProjectAiUserPlansResponse();
     }
   }
 
@@ -22438,6 +22617,29 @@ export module CodeMashHub2 {
     }
   }
 
+  /** @description Gets one team member: names, e-mail, phone, account roles and push devices */
+  // @Route("/{version}/account/team/member/{MemberId}", "GET")
+  // @Api(Description="Gets one team member: names, e-mail, phone, account roles and push devices")
+  export class GetTeamMember extends RequestBase implements IReturn<GetTeamMemberResponse> {
+    /** @description The team member's id (usr_…). */
+    // @ApiMember(Description="The team member's id (usr_…).", IsRequired=true, ParameterType="path")
+    public memberId: string;
+
+    public constructor(init?: Partial<GetTeamMember>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetTeamMember';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetTeamMemberResponse();
+    }
+  }
+
   // @Route("/{version}/account/team/password-policy", "GET")
   export class GetAccountPasswordPolicy
     extends RequestBase
@@ -22658,9 +22860,9 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Updates a team member's display name and/or account roles */
+  /** @description Updates a team member's display name, phone and/or account roles */
   // @Route("/{version}/account/team/member", "PUT")
-  // @Api(Description="Updates a team member's display name and/or account roles")
+  // @Api(Description="Updates a team member's display name, phone and/or account roles")
   export class UpdateTeamMember extends RequestBase implements IReturn<IdResponse> {
     /** @description The team member's id (usr_…), as get_account_collaborators lists it. */
     // @ApiMember(Description="The team member's id (usr_…), as get_account_collaborators lists it.", IsRequired=true)
@@ -22673,6 +22875,10 @@ export module CodeMashHub2 {
     /** @description The member's account roles after the change — REPLACES the current ones. Omit to keep the roles; an empty list removes every account role (the member stays on the team). */
     // @ApiMember(Description="The member's account roles after the change — REPLACES the current ones. Omit to keep the roles; an empty list removes every account role (the member stays on the team).")
     public roles?: TeamMemberRoleInput[];
+
+    /** @description The member's phone in E.164 format (+ and the country code, then digits, e.g. +37060000000). Omit to keep it; an empty string removes it. */
+    // @ApiMember(Description="The member's phone in E.164 format (+ and the country code, then digits, e.g. +37060000000). Omit to keep it; an empty string removes it.")
+    public phone?: string;
 
     public constructor(init?: Partial<UpdateTeamMember>) {
       super(init);
@@ -23123,6 +23329,57 @@ export module CodeMashHub2 {
     }
     public createResponse() {
       return new AccountPasskeyEnrollmentResponse();
+    }
+  }
+
+  // @Route("/{version}/account/emails/onboarding/{Token}", "GET")
+  // @DataContract
+  export class OpenOnboardingEmailsLink
+    extends RequestBase
+    implements IReturn<OnboardingEmailsResponse>
+  {
+    // @DataMember
+    public token: string;
+
+    public constructor(init?: Partial<OpenOnboardingEmailsLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'OpenOnboardingEmailsLink';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new OnboardingEmailsResponse();
+    }
+  }
+
+  // @Route("/{version}/account/emails/onboarding/{Token}", "POST")
+  // @DataContract
+  export class UseOnboardingEmailsLink
+    extends RequestBase
+    implements IReturn<OnboardingEmailsResponse>
+  {
+    // @DataMember
+    public token: string;
+
+    // @DataMember
+    public action?: string;
+
+    public constructor(init?: Partial<UseOnboardingEmailsLink>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'UseOnboardingEmailsLink';
+    }
+    public getMethod() {
+      return 'POST';
+    }
+    public createResponse() {
+      return new OnboardingEmailsResponse();
     }
   }
 
@@ -28933,6 +29190,11 @@ export module CodeMashHub2 {
     // @ApiMember(Description="Only enabled (true) or only disabled (false) workflows.")
     public isEnabled?: boolean;
 
+    /** @description Only workflows whose name contains this text (any case). Empty = every workflow. */
+    // @DataMember
+    // @ApiMember(Description="Only workflows whose name contains this text (any case). Empty = every workflow.")
+    public search?: string;
+
     public constructor(init?: Partial<GetCodeWorkflows>) {
       super(init);
       (Object as any).assign(this, init);
@@ -29871,6 +30133,11 @@ export module CodeMashHub2 {
 
     // @DataMember
     public to?: string;
+
+    /** @description Only runs of this published workflow version (1, 2, …). Empty = every version. */
+    // @DataMember
+    // @ApiMember(DataType="integer", Description="Only runs of this published workflow version (1, 2, …). Empty = every version.")
+    public workflowVersion?: number;
 
     public constructor(init?: Partial<GetCodeWorkflowRuns>) {
       super(init);
@@ -32895,6 +33162,28 @@ export module CodeMashHub2 {
     }
   }
 
+  // @Route("/{version}/ai/integrations/llms/model-suggestions", "GET")
+  export class GetLlmModelSuggestions
+    extends CodeMashRequestBase
+    implements IReturn<GetLlmModelSuggestionsResponse>
+  {
+    public provider?: string;
+
+    public constructor(init?: Partial<GetLlmModelSuggestions>) {
+      super(init);
+      (Object as any).assign(this, init);
+    }
+    public getTypeName() {
+      return 'GetLlmModelSuggestions';
+    }
+    public getMethod() {
+      return 'GET';
+    }
+    public createResponse() {
+      return new GetLlmModelSuggestionsResponse();
+    }
+  }
+
   // @Route("/{version}/ai/integrations/llms/", "POST")
   // @DataContract
   export class SaveLlmIntegration extends CodeMashRequestBase implements IReturn<IdResponse> {
@@ -33590,34 +33879,30 @@ export module CodeMashHub2 {
     }
   }
 
-  /** @description Sets or removes one user's own end-user AI plan */
-  // @Route("/{version}/membership/users/{userId}/ai-plan", "PUT")
-  // @Api(Description="Sets or removes one user's own end-user AI plan")
-  export class SetUserAiPlan extends CodeMashRequestBase implements IReturn<EmptyResponse> {
+  /** @description Reads which end-user AI plan one user gets and why */
+  // @Route("/{version}/membership/users/{userId}/ai-plan", "GET")
+  // @Api(Description="Reads which end-user AI plan one user gets and why")
+  export class GetUserAiPlan extends CodeMashRequestBase implements IReturn<GetUserAiPlanResponse> {
     /** @description The human user id (ct_…). */
     // @ApiMember(Description="The human user id (ct_…).", IsRequired=true)
     public userId: string;
-
-    /** @description The plan id (aip_…). Empty removes the user's own plan. */
-    // @ApiMember(Description="The plan id (aip_…). Empty removes the user's own plan.")
-    public planId?: string;
 
     /** @description Database integration id. Optional — defaults to the request environment's default integration. */
     // @ApiMember(Description="Database integration id. Optional — defaults to the request environment's default integration.")
     public databaseIntegrationId?: string;
 
-    public constructor(init?: Partial<SetUserAiPlan>) {
+    public constructor(init?: Partial<GetUserAiPlan>) {
       super(init);
       (Object as any).assign(this, init);
     }
     public getTypeName() {
-      return 'SetUserAiPlan';
+      return 'GetUserAiPlan';
     }
     public getMethod() {
-      return 'PUT';
+      return 'GET';
     }
     public createResponse() {
-      return new EmptyResponse();
+      return new GetUserAiPlanResponse();
     }
   }
 
