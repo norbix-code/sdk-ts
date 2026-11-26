@@ -182,9 +182,24 @@ export interface NorbixConfig {
    * The callback should return the new JWT bearer token string (without "Bearer ").
    *
    * Project users get no refresh token from sign-in: when their bearer token
-   * expires the call fails with 401 and the app shows sign-in again.
+   * expires the call fails with 401 and the app shows sign-in again. A token in
+   * use is renewed by the server instead (see `onSessionToken`).
    */
   refreshBearerToken?: (info: { url: string; status: 401 }) => Promise<string | undefined>;
+
+  /**
+   * Called when the server renews the stored bearer token. A project user's
+   * token lives a sliding 12 hours (30 days with `rememberMe`), never more than
+   * 90 days from sign-in; once less than half of that is left, an answer
+   * carries a fresh token in the `norbix-session-token` header. The client
+   * then uses the new token for every later call and calls this so the app can
+   * save it (the old token still works until it expires).
+   *
+   * Only for the stored token (`bearerToken`, `login`, `setBearerToken`): never
+   * for an API key, a per-call `bearerToken` or a cookie session. Not copied by
+   * `with()`; pass it there again if the new client needs one.
+   */
+  onSessionToken?: (token: string) => void;
 
   /**
    * Transport middleware chain. Each middleware can observe or mutate the
@@ -246,6 +261,7 @@ export interface ResolvedNorbixConfig {
   onResponse?: NorbixConfig['onResponse'];
   retry: Required<NonNullable<NorbixConfig['retry']>>;
   refreshBearerToken?: NorbixConfig['refreshBearerToken'];
+  onSessionToken?: NorbixConfig['onSessionToken'];
   middleware: NonNullable<NorbixConfig['middleware']>;
 }
 
@@ -255,6 +271,7 @@ export interface LoginCredentials {
   provider?: string;
   userName?: string;
   password?: string;
+  /** "Remember me": the token lives a sliding 30 days instead of 12 hours. */
   rememberMe?: boolean;
   /** OAuth-style access token + secret, used for federated providers. */
   accessToken?: string;
@@ -283,6 +300,11 @@ export interface LoginResponse {
 export interface SignInCredentials {
   userName: string;
   password: string;
+  /**
+   * "Remember me". `true`: the session lives a sliding 30 days; `false` (the
+   * default): a sliding 12 hours. Never more than 90 days from sign-in.
+   */
+  rememberMe?: boolean;
 }
 
 /**

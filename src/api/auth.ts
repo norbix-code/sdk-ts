@@ -59,7 +59,7 @@ export class AuthModule {
     provider: 'credentials',
     userName: credentials.userName,
     password: credentials.password,
-    rememberMe: false,
+    rememberMe: credentials.rememberMe ?? false,
     meta: { ignore: 'jwt' },
   });
 
@@ -174,8 +174,9 @@ export class AuthModule {
   /**
    * POST /{version}/membership/auth/social/{provider}/exchange. Trades the
    * one-time code from the return page (2 minutes, once) for the same JWT a
-   * project password sign-in gives: 14 days, no refresh token, no cookie
-   * session. Use it as a bearer token, e.g. `norbix.setBearerToken(bearerToken)`.
+   * project password sign-in gives with "Remember me": a sliding 30 days
+   * (never past 90 days, renewed through `onSessionToken`), no refresh token,
+   * no cookie session. Use it as a bearer token, e.g. `norbix.setBearerToken(bearerToken)`.
    * Sends no token of its own. A used, expired or unknown code is refused with
    * CM-ERRORS-MEMBERSHIP-051.
    *

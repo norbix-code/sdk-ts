@@ -170,6 +170,20 @@ export class Transport {
     }).url;
   }
 
+  /**
+   * Sessions (D18): an answer to a request that carried the stored bearer
+   * token may bring a renewed one in `norbix-session-token`. Swap it in and
+   * tell the app. Never for an API key, a per-call token, a cookie session,
+   * or a token that was replaced while the request was in flight.
+   */
+  private takeSessionToken(res: Response, sentToken: string | undefined): void {
+    if (this.cfg.auth || !sentToken || sentToken !== this.cfg.bearerToken) return;
+    const renewed = res.headers?.get?.(SESSION_TOKEN_HEADER)?.trim();
+    if (!renewed || renewed === sentToken) return;
+    this.cfg.bearerToken = renewed;
+    this.cfg.onSessionToken?.(renewed);
+  }
+
   async send<TResponse>(opts: RequestOptions): Promise<TResponse> {
     if (opts.scope === 'account' && !this.cfg.accountId) {
       throw new NorbixError({
@@ -222,6 +236,10 @@ export class Transport {
       ...this.cfg.defaultHeaders,
     });
 
+    // The token this request carries, to tell later whether it was the
+    // stored bearer token (the only one a renewal may replace).
+    let sentToken: string | undefined;
+
     if (authMode) {
       // Nothing from `defaultHeaders` may stand in for the session below.
       headers.delete('Authorization');
@@ -234,6 +252,7 @@ export class Transport {
       // there is one (a signed-in member), never demand one.
       const token = opts.bearerToken ?? this.cfg.bearerToken ?? this.cfg.apiKey;
       if (token) headers.set('Authorization', `Bearer ${token}`);
+      sentToken = token;
     } else if (opts.scope !== 'unauthenticated') {
       const token = opts.bearerToken ?? this.cfg.bearerToken ?? this.cfg.apiKey;
       if (!token) {
@@ -245,6 +264,7 @@ export class Transport {
         });
       }
       headers.set('Authorization', `Bearer ${token}`);
+      sentToken = token;
     }
 
     // Tenant scope headers. `norbix-project-id` / `norbix-account-id` are the
@@ -337,6 +357,7 @@ export class Transport {
           durationMs,
           contentLanguage: res.headers?.get?.('content-language') ?? undefined,
         });
+        this.takeSessionToken(res, sentToken);
       }
 
       if (res && fetchErr === undefined) {
@@ -364,6 +385,7 @@ export class Transport {
           if (nextToken) {
             this.cfg.bearerToken = nextToken;
             headers.set('Authorization', `Bearer ${nextToken}`);
+            sentToken = nextToken;
             didRefresh = true;
             continue;
           }
@@ -432,6 +454,9 @@ export class Transport {
     }
   }
 }
+
+/** The response header that carries a renewed bearer token. */
+export const SESSION_TOKEN_HEADER = 'norbix-session-token';
 
 /** A browser hides a `redirect: 'manual'` answer behind `opaqueredirect`, status 0. */
 function isRedirect(res: Response): boolean {
