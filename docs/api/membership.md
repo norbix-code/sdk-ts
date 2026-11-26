@@ -58,7 +58,7 @@ Accessed as `norbix.api.membership` on the [`Norbix`](../../README.md#authentica
 | [`verifyPasskeyRegistration`](#verifypasskeyregistration)               | `POST`   | `/{version}/membership/userauth/passkey/verify-registration`                                 | `project` |
 | [`refreshPasskeyToken`](#refreshpasskeytoken)                           | `POST`   | `/{version}/membership/userauth/token/refresh`                                               | `project` |
 | [`passkeyLogout`](#passkeylogout)                                       | `POST`   | `/{version}/membership/userauth/logout`                                                      | `project` |
-| [`setUserAiPlan`](#setuseraiplan)                                       | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                                               | `project` |
+| [`getUserAiPlan`](#getuseraiplan)                                       | `GET`    | `/{version}/membership/users/{userId}/ai-plan`                                               | `project` |
 | [`createContact`](#createcontact)                                       | `POST`   | `/{version}/membership/users`                                                                | `project` |
 | [`deleteContact`](#deletecontact)                                       | `DELETE` | `/{version}/membership/users/{contactId}`                                                    | `project` |
 | [`getContact`](#getcontact)                                             | `GET`    | `/{version}/membership/users/{contactId}`                                                    | `project` |
@@ -1097,23 +1097,25 @@ const result = await norbix.api.membership.passkeyLogout({
 
 [↑ Top](#endpoints)
 
-### setUserAiPlan
+### getUserAiPlan
 
-`PUT` `/{version}/membership/users/{userId}/ai-plan`
+`GET` `/{version}/membership/users/{userId}/ai-plan`
 
-**Request DTO**: `CodeMashApi2.SetUserAiPlan`
-**Response**: `CodeMashApi2.EmptyResponse`
+One user's AI plan: the plan their roles give them. Plans are given by role in the project's AI plans.
+
+**Request DTO**: `CodeMashApi2.GetUserAiPlan`
+**Response**: `CodeMashApi2.GetUserAiPlanResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.api.membership.setUserAiPlan({
+const result = await norbix.api.membership.getUserAiPlan({
   userId: 'userId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashApi2.EmptyResponse
+// → typed as CodeMashApi2.GetUserAiPlanResponse
 ```
 
 [↑ Top](#endpoints)

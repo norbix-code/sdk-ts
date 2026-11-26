@@ -48,7 +48,7 @@ Accessed as `norbix.hub.membership` on the [`Norbix`](../../README.md#authentica
 | [`updatePasswordComplexity`](#updatepasswordcomplexity)               | `PUT`    | `/{version}/membership/authorization/password-complexity`             | `project` |
 | [`getAuthenticationSettings`](#getauthenticationsettings)             | `GET`    | `/{version}/membership/authentication`                                | `project` |
 | [`updateAuthenticationSettings`](#updateauthenticationsettings)       | `PUT`    | `/{version}/membership/authentication`                                | `project` |
-| [`setUserAiPlan`](#setuseraiplan)                                     | `PUT`    | `/{version}/membership/users/{userId}/ai-plan`                        | `project` |
+| [`getUserAiPlan`](#getuseraiplan)                                     | `GET`    | `/{version}/membership/users/{userId}/ai-plan`                        | `project` |
 | [`createContact`](#createcontact)                                     | `POST`   | `/{version}/membership/users`                                         | `project` |
 | [`deleteContact`](#deletecontact)                                     | `DELETE` | `/{version}/membership/users/{contactId}`                             | `project` |
 | [`getContact`](#getcontact)                                           | `GET`    | `/{version}/membership/users/{contactId}`                             | `project` |
@@ -931,23 +931,25 @@ const result = await norbix.hub.membership.updateAuthenticationSettings({
 
 [↑ Top](#endpoints)
 
-### setUserAiPlan
+### getUserAiPlan
 
-`PUT` `/{version}/membership/users/{userId}/ai-plan`
+`GET` `/{version}/membership/users/{userId}/ai-plan`
 
-**Request DTO**: `CodeMashHub2.SetUserAiPlan`
-**Response**: `CodeMashHub2.EmptyResponse`
+One user's AI plan: the plan their roles give them. Plans are given by role in the project's AI plans.
+
+**Request DTO**: `CodeMashHub2.GetUserAiPlan`
+**Response**: `CodeMashHub2.GetUserAiPlanResponse`
 
 ```ts
 import { Norbix } from '@norbix.ai/ts';
 
 const norbix = new Norbix();
 
-const result = await norbix.hub.membership.setUserAiPlan({
+const result = await norbix.hub.membership.getUserAiPlan({
   userId: 'userId-here',
   // Other fields: see CodeMash type for the full request shape.
 });
-// → typed as CodeMashHub2.EmptyResponse
+// → typed as CodeMashHub2.GetUserAiPlanResponse
 ```
 
 [↑ Top](#endpoints)

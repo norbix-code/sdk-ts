@@ -734,17 +734,20 @@ export class MembershipModule {
   };
 
   /**
-   * PUT /{version}/membership/users/{userId}/ai-plan
-   * Request DTO: SetUserAiPlan
+   * GET /{version}/membership/users/{userId}/ai-plan
+   * Request DTO: GetUserAiPlan
+   *
+   * One user's AI plan: the plan their roles give them. Plans are given by
+   * role in the project's AI plans (`updateProjectAiPlans`).
    */
-  setUserAiPlan = (
-    request: Partial<CodeMashHub2.SetUserAiPlan> = {} as Partial<CodeMashHub2.SetUserAiPlan>,
+  getUserAiPlan = (
+    request: Partial<CodeMashHub2.GetUserAiPlan> = {} as Partial<CodeMashHub2.GetUserAiPlan>,
     options: RequestOverrideOptions = {},
-  ): Promise<CodeMashHub2.EmptyResponse> => {
-    return this.transport.send<CodeMashHub2.EmptyResponse>({
+  ): Promise<CodeMashHub2.GetUserAiPlanResponse> => {
+    return this.transport.send<CodeMashHub2.GetUserAiPlanResponse>({
       target: 'hub',
       path: '/{version}/membership/users/{userId}/ai-plan',
-      method: 'PUT',
+      method: 'GET',
       request,
       pathParams: ['userId'],
       scope: 'project',

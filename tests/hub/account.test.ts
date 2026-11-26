@@ -75,7 +75,6 @@ describe('hub.account', () => {
     expect(typeof ns['getProjectAiPlans']).toBe('function');
     expect(typeof ns['updateProjectAiPlans']).toBe('function');
     expect(typeof ns['updateProjectAiPlanAssignments']).toBe('function');
-    expect(typeof ns['getProjectAiUserPlans']).toBe('function');
     expect(typeof ns['getProjectAiSettings']).toBe('function');
     expect(typeof ns['updateProjectAiSettings']).toBe('function');
     expect(typeof ns['updateProjectAiKnowledge']).toBe('function');
@@ -108,6 +107,7 @@ describe('hub.account', () => {
     expect(typeof ns['getAccountCollaborators']).toBe('function');
     expect(typeof ns['getAccountPasswordPolicy']).toBe('function');
     expect(typeof ns['getAccountTeamPolicies']).toBe('function');
+    expect(typeof ns['getTeamMember']).toBe('function');
     expect(typeof ns['removeTeamMember']).toBe('function');
     expect(typeof ns['setTeamMemberRoleEnvironments']).toBe('function');
     expect(typeof ns['setTeamMemberRoleProjects']).toBe('function');
@@ -1142,29 +1142,6 @@ describe('hub.account', () => {
     expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
   });
 
-  it('getProjectAiUserPlans: GET /{version}/account/projects/{projectId}/ai/plans/users', async () => {
-    const stub = stubRequestForPath('/{version}/account/projects/{projectId}/ai/plans/users');
-    const expected = expectedUrl({
-      baseUrl: 'https://hub.norbix.io',
-      path: '/{version}/account/projects/{projectId}/ai/plans/users',
-      version: 'v2',
-      stub,
-    });
-    const { norbix, mock } = makeClient({});
-    const fn = (
-      norbix.hub as unknown as Record<
-        string,
-        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
-      >
-    )['account']!['getProjectAiUserPlans']!;
-    await fn(stub);
-    expect(mock.lastCall).toBeDefined();
-    expect(mock.lastCall?.method).toBe('GET');
-    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
-    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
-    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
-  });
-
   it('getProjectAiSettings: GET /{version}/account/projects/{projectId}/ai/settings', async () => {
     const stub = stubRequestForPath('/{version}/account/projects/{projectId}/ai/settings');
     const expected = expectedUrl({
@@ -1903,6 +1880,29 @@ describe('hub.account', () => {
         Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
       >
     )['account']!['getAccountTeamPolicies']!;
+    await fn(stub);
+    expect(mock.lastCall).toBeDefined();
+    expect(mock.lastCall?.method).toBe('GET');
+    expect(mock.lastCall?.url.startsWith(expected)).toBe(true);
+    expect(mock.lastCall?.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(mock.lastCall?.headers.get('norbix-project-id')).toBe('test-project');
+  });
+
+  it('getTeamMember: GET /{version}/account/team/member/{MemberId}', async () => {
+    const stub = stubRequestForPath('/{version}/account/team/member/{MemberId}');
+    const expected = expectedUrl({
+      baseUrl: 'https://hub.norbix.io',
+      path: '/{version}/account/team/member/{MemberId}',
+      version: 'v2',
+      stub,
+    });
+    const { norbix, mock } = makeClient({});
+    const fn = (
+      norbix.hub as unknown as Record<
+        string,
+        Record<string, (a?: unknown, o?: unknown) => Promise<unknown>>
+      >
+    )['account']!['getTeamMember']!;
     await fn(stub);
     expect(mock.lastCall).toBeDefined();
     expect(mock.lastCall?.method).toBe('GET');
