@@ -6,7 +6,7 @@ import type { CodeMashApi2 } from '../types/api2.dtos.js';
  * to refresh this file from the DTO definitions.
  *
  * Group: ai
- * Endpoints: 18
+ * Endpoints: 19
  */
 export class AiModule {
   constructor(private readonly transport: Transport) {}
@@ -80,6 +80,25 @@ export class AiModule {
       target: 'api',
       path: '/{version}/ai/chat/sessions/{SessionId}/entries/{EntryId}/feedback',
       method: 'PUT',
+      request,
+      pathParams: ['SessionId', 'EntryId'],
+      scope: 'project',
+      ...options,
+    });
+  };
+
+  /**
+   * POST /{version}/ai/chat/sessions/{SessionId}/actions/{EntryId}
+   * Request DTO: DecideEndUserChatActionRequest
+   */
+  decideEndUserChatAction = (
+    request: Partial<CodeMashApi2.DecideEndUserChatActionRequest> = {} as Partial<CodeMashApi2.DecideEndUserChatActionRequest>,
+    options: RequestOverrideOptions = {},
+  ): Promise<CodeMashApi2.IdResponse> => {
+    return this.transport.send<CodeMashApi2.IdResponse>({
+      target: 'api',
+      path: '/{version}/ai/chat/sessions/{SessionId}/actions/{EntryId}',
+      method: 'POST',
       request,
       pathParams: ['SessionId', 'EntryId'],
       scope: 'project',

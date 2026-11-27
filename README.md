@@ -513,6 +513,21 @@ Sessions, entries, feedback, attachments and memory: `listEndUserChatSessions`,
 `getEndUserChatEntries`, `setEndUserChatEntryFeedback`, `uploadEndUserChatAttachment`,
 `listEndUserChatMemory`, `forgetEndUserChatMemory` — see [`docs/api/ai.md`](./docs/api/ai.md).
 
+**Held actions.** A tool that changes something (sends, pays, creates,
+deletes) is not run by the assistant: it lands in the chat as an
+`action.pending` entry with the tool and its exact arguments, and runs only
+when the signed-in user decides — never on the model's word:
+
+```ts
+// entry.kind === 'action.pending' && entry.status === 'open'
+const { status } = await norbix.api.ai.decideEndUserChatAction({
+  sessionId,
+  entryId: entry.id,
+  decision: 'apply', // or 'dismiss' — runs nothing
+});
+// status: 'applied' | 'failed' | 'skipped'; a second decision is refused (409)
+```
+
 Project owners configure the assistant and the providers on the Hub:
 
 ```ts
