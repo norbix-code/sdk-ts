@@ -12,6 +12,7 @@ Accessed as `norbix.api.ai` on the [`Norbix`](../../README.md#authentication) cl
 | [`listEndUserChatAttachments`](#listenduserchatattachments)   | `GET`    | `/{version}/ai/chat/sessions/{SessionId}/attachments`                | `project` |
 | [`deleteEndUserChatAttachment`](#deleteenduserchatattachment) | `DELETE` | `/{version}/ai/chat/attachments/{AttachmentId}`                      | `project` |
 | [`setEndUserChatEntryFeedback`](#setenduserchatentryfeedback) | `PUT`    | `/{version}/ai/chat/sessions/{SessionId}/entries/{EntryId}/feedback` | `project` |
+| [`decideEndUserChatAction`](#decideenduserchataction)         | `POST`   | `/{version}/ai/chat/sessions/{SessionId}/actions/{EntryId}`          | `project` |
 | [`listEndUserChatMemory`](#listenduserchatmemory)             | `GET`    | `/{version}/ai/chat/memory`                                          | `project` |
 | [`forgetEndUserChatMemory`](#forgetenduserchatmemory)         | `DELETE` | `/{version}/ai/chat/memory/{NoteId}`                                 | `project` |
 | [`getEndUserChatAvailability`](#getenduserchatavailability)   | `GET`    | `/{version}/ai/chat/availability`                                    | `project` |
@@ -112,6 +113,28 @@ const result = await norbix.api.ai.setEndUserChatEntryFeedback({
   // Other fields: see CodeMash type for the full request shape.
 });
 // → typed as CodeMashApi2.EmptyResponse
+```
+
+[↑ Top](#endpoints)
+
+### decideEndUserChatAction
+
+`POST` `/{version}/ai/chat/sessions/{SessionId}/actions/{EntryId}`
+
+**Request DTO**: `CodeMashApi2.DecideEndUserChatActionRequest`
+**Response**: `CodeMashApi2.IdResponse`
+
+```ts
+import { Norbix } from '@norbix.ai/ts';
+
+const norbix = new Norbix();
+
+const result = await norbix.api.ai.decideEndUserChatAction({
+  SessionId: 'SessionId-here',
+  EntryId: 'EntryId-here',
+  // Other fields: see CodeMash type for the full request shape.
+});
+// → typed as CodeMashApi2.IdResponse
 ```
 
 [↑ Top](#endpoints)

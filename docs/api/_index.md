@@ -10,7 +10,7 @@ name for the full method reference and TypeScript examples.
 | Module                                | Endpoints | Description                                                                                                                              |
 | ------------------------------------- | --------: | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | [`accessToken`](./access_token.md)    |         1 | Refresh-token exchange to get a new bearer token.                                                                                        |
-| [`ai`](./ai.md)                       |        18 |                                                                                                                                          |
+| [`ai`](./ai.md)                       |        19 |                                                                                                                                          |
 | [`apikeys`](./apikeys.md)             |         2 | List and regenerate per-environment API keys for service auth.                                                                           |
 | [`auth`](./auth.md)                   |         1 | Sign-in / sign-out and federated provider flows. Most apps prefer `norbix.login(...)` over calling these directly.                       |
 | [`code`](./code.md)                   |        11 |                                                                                                                                          |
